@@ -267,6 +267,15 @@ class SmolVLAPolicy(PreTrainedPolicy):
     def predict_action_chunk(
         self, batch: dict[str, Tensor], noise: Tensor | None = None, **kwargs: Unpack[ActionSelectKwargs]
     ) -> Tensor:
+        """Predict one action chunk, optionally from caller-supplied future context.
+
+        ``future_image_tokens`` are native SmolVLA image tokens after the model's
+        ``sqrt(hidden_dim)`` scaling and must be paired with ordered boolean token
+        masks. ``future_state`` is strictly model-ready: the caller has already
+        applied policy-side adaptation, normalization, and padding, and its
+        shape, dtype, and device must match the state entering ``sample_actions``.
+        This method does not repeat or infer any future-state preprocessing.
+        """
         self.eval()
 
         batch = self._prepare_batch(batch)

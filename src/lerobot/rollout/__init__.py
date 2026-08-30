@@ -55,6 +55,8 @@ from .controller import (
 from .inference import (
     InferenceEngine,
     InferenceEngineConfig,
+    PredictiveAsyncInferenceConfig,
+    PredictiveAsyncInferenceEngine,
     QueryAnswer,
     QueryKind,
     RTCInferenceConfig,
@@ -93,6 +95,8 @@ __all__ = [
     "InteractiveSession",
     "LinkedEvent",
     "PolicyContext",
+    "PredictiveAsyncInferenceConfig",
+    "PredictiveAsyncInferenceEngine",
     "ProcessorContext",
     "QueryAnswer",
     "QueryKind",

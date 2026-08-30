@@ -15,6 +15,13 @@ If you get stuck, hop into our [Discord community](https://discord.gg/s3KuuzsPFb
 In a nutshell: with _async inference_, your robot keeps acting while the policy server is already busy computing the next chunk of actions---eliminating "wait-for-inference" lags and unlocking smoother, more reactive behaviours.
 This is fundamentally different from synchronous inference (sync), where the robot stays idle while the policy computes the next chunk of actions.
 
+<Tip>
+  This guide describes the networked `PolicyServer`/`RobotClient` system. The
+  experimental SmolVLA `--inference.type=predictive_async` backend instead runs
+  a latency-planned worker and scheduled queue inside `lerobot-rollout`; see
+  [Policy Deployment](./inference#predictive-async-for-smolvla).
+</Tip>
+
 ---
 
 ## Getting started with async inference

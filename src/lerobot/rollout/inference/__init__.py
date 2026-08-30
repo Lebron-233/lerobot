@@ -21,17 +21,28 @@ rollout strategies never branch on which backend is in use.
 from .base import InferenceEngine, PolicyQuery, QueryAnswer, QueryKind
 from .factory import (
     InferenceEngineConfig,
+    PredictiveAsyncInferenceConfig,
     RTCInferenceConfig,
     SyncInferenceConfig,
     create_inference_engine,
 )
+from .oracle_context import (
+    OracleContextUnavailableError,
+    OracleFutureTokenKwargs,
+    encode_oracle_future_tokens,
+)
+from .predictive_async import PredictiveAsyncInferenceEngine
 from .rtc import RTCInferenceEngine
 from .sync import SyncInferenceEngine
 
 __all__ = [
     "InferenceEngine",
     "InferenceEngineConfig",
+    "OracleContextUnavailableError",
+    "OracleFutureTokenKwargs",
     "PolicyQuery",
+    "PredictiveAsyncInferenceConfig",
+    "PredictiveAsyncInferenceEngine",
     "QueryAnswer",
     "QueryKind",
     "RTCInferenceConfig",
@@ -39,4 +50,5 @@ __all__ = [
     "SyncInferenceConfig",
     "SyncInferenceEngine",
     "create_inference_engine",
+    "encode_oracle_future_tokens",
 ]
