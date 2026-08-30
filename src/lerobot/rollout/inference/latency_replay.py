@@ -45,9 +45,10 @@ class DelayPlan:
     """One delay estimate computed only from previously observed latencies."""
 
     estimated_latency_s: float
-    raw_delay_steps: int
+    raw_required_delay_steps: int
     planned_delay_steps: int
     available_after_guard_steps: int
+    prediction_cap_exceeded: bool
 
 
 @dataclass(frozen=True)
@@ -57,8 +58,9 @@ class LatencyReplayItem:
     index: int
     latency_s: float
     estimated_latency_s: float | None
-    raw_planned_delay_steps: int | None
+    raw_required_delay_steps: int | None
     planned_delay_steps: int | None
+    prediction_cap_exceeded: bool | None
     actual_delay_steps: int
     available_actions: int
     available_after_guard_steps: int
@@ -78,6 +80,7 @@ class LatencyReplaySummary:
     latency_p90_s: float
     late_chunk_count: int
     late_chunk_rate: float | None
+    prediction_cap_exceeded_count: int
     underflow_count: int
     underflow_steps: int
     mean_actual_delay_steps: float
@@ -159,15 +162,16 @@ def compute_delay_plan(
     if estimated_latency_s is None:
         return None
 
-    raw_delay_steps = latency_to_steps(estimated_latency_s, fps) + delay_safety_margin_steps
+    raw_required_delay_steps = latency_to_steps(estimated_latency_s, fps) + delay_safety_margin_steps
     available_after_guard_steps = max(0, available_actions - committed_guard_steps)
     effective_max_delay = min(max_prediction_delay, available_after_guard_steps)
-    planned_delay_steps = min(max(raw_delay_steps, min_prediction_delay), effective_max_delay)
+    planned_delay_steps = min(max(raw_required_delay_steps, min_prediction_delay), effective_max_delay)
     return DelayPlan(
         estimated_latency_s=estimated_latency_s,
-        raw_delay_steps=raw_delay_steps,
+        raw_required_delay_steps=raw_required_delay_steps,
         planned_delay_steps=planned_delay_steps,
         available_after_guard_steps=available_after_guard_steps,
+        prediction_cap_exceeded=raw_required_delay_steps > max_prediction_delay,
     )
 
 
@@ -196,7 +200,7 @@ def replay_latencies(
     min_prediction_delay: int = 0,
     max_prediction_delay: int = 8,
     available_actions: int | Iterable[int] = 30,
-    committed_guard_steps: int = 1,
+    committed_guard_steps: int = 2,
 ) -> LatencyReplayResult:
     """Replay observed latencies through the quantile delay planner.
 
@@ -235,15 +239,17 @@ def replay_latencies(
             late_steps = None
             early_steps = None
             estimated_latency_s = None
-            raw_planned_delay_steps = None
+            raw_required_delay_steps = None
             planned_delay_steps = None
+            prediction_cap_exceeded = None
             available_after_guard_steps = max(0, available - committed_guard_steps)
         else:
             late_steps = max(0, actual_delay_steps - plan.planned_delay_steps)
             early_steps = max(0, plan.planned_delay_steps - actual_delay_steps)
             estimated_latency_s = plan.estimated_latency_s
-            raw_planned_delay_steps = plan.raw_delay_steps
+            raw_required_delay_steps = plan.raw_required_delay_steps
             planned_delay_steps = plan.planned_delay_steps
+            prediction_cap_exceeded = plan.prediction_cap_exceeded
             available_after_guard_steps = plan.available_after_guard_steps
 
         items.append(
@@ -251,8 +257,9 @@ def replay_latencies(
                 index=index,
                 latency_s=latency_s,
                 estimated_latency_s=estimated_latency_s,
-                raw_planned_delay_steps=raw_planned_delay_steps,
+                raw_required_delay_steps=raw_required_delay_steps,
                 planned_delay_steps=planned_delay_steps,
+                prediction_cap_exceeded=prediction_cap_exceeded,
                 actual_delay_steps=actual_delay_steps,
                 available_actions=available,
                 available_after_guard_steps=available_after_guard_steps,
@@ -265,6 +272,7 @@ def replay_latencies(
 
     calibrated_items = [item for item in items if item.planned_delay_steps is not None]
     late_chunk_count = sum(bool(item.late_steps) for item in calibrated_items)
+    prediction_cap_exceeded_count = sum(item.prediction_cap_exceeded is True for item in calibrated_items)
     underflow_items = [item for item in items if item.underflow_steps > 0]
     planned_steps = [
         int(item.planned_delay_steps) for item in calibrated_items if item.planned_delay_steps is not None
@@ -277,6 +285,7 @@ def replay_latencies(
         latency_p90_s=float(tracker.percentile(0.9)),
         late_chunk_count=late_chunk_count,
         late_chunk_rate=(late_chunk_count / len(calibrated_items) if calibrated_items else None),
+        prediction_cap_exceeded_count=prediction_cap_exceeded_count,
         underflow_count=len(underflow_items),
         underflow_steps=sum(item.underflow_steps for item in underflow_items),
         mean_actual_delay_steps=sum(item.actual_delay_steps for item in items) / len(items),

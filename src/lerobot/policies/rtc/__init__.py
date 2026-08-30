@@ -20,12 +20,28 @@ from .configuration_rtc import RTCConfig
 from .latency_tracker import LatencyTracker
 from .modeling_rtc import RTCProcessor
 from .relative import reanchor_relative_rtc_prefix
+from .scheduled_action_queue import (
+    CancelOutcome,
+    GetOutcome,
+    InstallOutcome,
+    PlanOutcome,
+    ScheduledActionQueue,
+    StageOutcome,
+    TakeoverPlan,
+)
 
 __all__ = [
     "ActionInterpolator",
     "ActionQueue",
+    "CancelOutcome",
+    "GetOutcome",
+    "InstallOutcome",
     "LatencyTracker",
+    "PlanOutcome",
     "RTCConfig",
     "RTCProcessor",
+    "ScheduledActionQueue",
+    "StageOutcome",
+    "TakeoverPlan",
     "reanchor_relative_rtc_prefix",
 ]

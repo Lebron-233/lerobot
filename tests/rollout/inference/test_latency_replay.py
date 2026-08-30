@@ -73,9 +73,10 @@ def test_delay_plan_clamps_to_maximum_and_available_actions_after_guard():
         committed_guard_steps=2,
     )
     assert availability_limited is not None
-    assert availability_limited.raw_delay_steps == 6
+    assert availability_limited.raw_required_delay_steps == 6
     assert availability_limited.available_after_guard_steps == 3
     assert availability_limited.planned_delay_steps == 3
+    assert not availability_limited.prediction_cap_exceeded
 
     no_committable_actions = compute_delay_plan(
         tracker,
@@ -121,6 +122,23 @@ def test_replay_q_one_forgets_peak_after_it_leaves_sliding_window():
 
     assert result.items[-1].estimated_latency_s == pytest.approx(0.1)
     assert result.items[-1].planned_delay_steps == 1
+
+
+def test_replay_reports_prediction_cap_without_claiming_full_coverage():
+    result = replay_latencies(
+        [0.5, 0.5],
+        fps=30,
+        delay_safety_margin_steps=1,
+        max_prediction_delay=8,
+        available_actions=30,
+        committed_guard_steps=2,
+    )
+
+    planned = result.items[1]
+    assert planned.raw_required_delay_steps == 16
+    assert planned.planned_delay_steps == 8
+    assert planned.prediction_cap_exceeded
+    assert result.summary.prediction_cap_exceeded_count == 1
 
 
 def test_replay_counts_underflow_requests_and_ticks_with_per_request_availability():
