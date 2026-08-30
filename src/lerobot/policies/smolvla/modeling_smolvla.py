@@ -83,6 +83,9 @@ class ActionSelectKwargs(TypedDict, total=False):
     inference_delay: int | None
     prev_chunk_left_over: Tensor | None
     execution_horizon: int | None
+    future_image_tokens: tuple[Tensor, ...] | None
+    future_image_token_masks: tuple[Tensor, ...] | None
+    future_state: Tensor | None
 
 
 def normalize(x, min_val, max_val):
@@ -204,7 +207,17 @@ class SmolVLAPolicy(PreTrainedPolicy):
             if k in self._queues and k != ACTION:
                 batch[k] = torch.stack(list(self._queues[k]), dim=1)
 
-        images, img_masks = self.prepare_images(batch)
+        has_image_token_override = (
+            kwargs.get("future_image_tokens") is not None
+            or kwargs.get("future_image_token_masks") is not None
+        )
+        if has_image_token_override:
+            # A latent-only caller does not need to retain the source RGB tensors. Pairing and
+            # tensor validation happens in ``VLAFlowMatching.sample_actions``.
+            images = None
+            img_masks = None
+        else:
+            images, img_masks = self.prepare_images(batch)
         state = self.prepare_state(batch)
         lang_tokens = batch[f"{OBS_LANGUAGE_TOKENS}"]
         lang_masks = batch[f"{OBS_LANGUAGE_ATTENTION_MASK}"]
@@ -554,21 +567,182 @@ class VLAFlowMatching(nn.Module):
     ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         """Embed images with SigLIP and language tokens with embedding layer to prepare
         for SmolVLM transformer processing.
+
+        This compatibility entry point preserves the original image path. Future-context
+        callers can use :meth:`encode_image_tokens` once and pass those scaled native tokens
+        to :meth:`embed_prefix_from_tokens` without invoking the vision encoder again.
         """
+        image_tokens, image_token_masks = self.encode_image_tokens(images, img_masks)
+        return self.embed_prefix_from_tokens(
+            image_tokens,
+            image_token_masks,
+            lang_tokens,
+            lang_masks,
+            state,
+        )
+
+    def encode_image_tokens(
+        self,
+        images: list[Tensor] | tuple[Tensor, ...],
+        img_masks: list[Tensor] | tuple[Tensor, ...],
+    ) -> tuple[tuple[Tensor, ...], tuple[Tensor, ...]]:
+        """Encode images into SmolVLA's native, scaled visual-token representation.
+
+        The returned tuple preserves the input camera order. Tokens already include the
+        model's ``sqrt(hidden_dim)`` scaling and therefore must not be scaled again when
+        supplied through the future-context override API.
+        """
+        if len(images) == 0:
+            raise ValueError("images must contain at least one camera")
+        if len(images) != len(img_masks):
+            raise ValueError(
+                "images and img_masks must contain the same number of cameras, got "
+                f"{len(images)} and {len(img_masks)}"
+            )
+
+        image_tokens: list[Tensor] = []
+        image_token_masks: list[Tensor] = []
+        for camera_index, (image, image_mask) in enumerate(zip(images, img_masks, strict=True)):
+            if image.ndim != 4:
+                raise ValueError(
+                    f"images[{camera_index}] must have shape [B,C,H,W], got {tuple(image.shape)}"
+                )
+            if image_mask.ndim != 1 or image_mask.shape[0] != image.shape[0]:
+                raise ValueError(
+                    f"img_masks[{camera_index}] must have shape [{image.shape[0]}], got "
+                    f"{tuple(image_mask.shape)}"
+                )
+
+            tokens = self.vlm_with_expert.embed_image(image)
+            hidden_dim = tokens.shape[-1]
+            tokens = tokens * torch.tensor(hidden_dim**0.5, dtype=tokens.dtype, device=tokens.device)
+
+            batch_size, token_count = tokens.shape[:2]
+            token_mask = image_mask.to(device=tokens.device, dtype=torch.bool)[:, None].expand(
+                batch_size, token_count
+            )
+            image_tokens.append(tokens)
+            image_token_masks.append(token_mask)
+
+        return tuple(image_tokens), tuple(image_token_masks)
+
+    def _expected_image_token_count(self) -> int | None:
+        target_size = self.config.resize_imgs_with_padding
+        if target_size is None:
+            # The legacy API permits caller-sized images when resizing is disabled. In that
+            # configuration the token count is dynamic, while masks and hidden size remain fixed.
+            return None
+        width, height = target_size
+        vision_config = self.vlm_with_expert.config.vision_config
+        patch_size = int(vision_config.patch_size)
+        scale_factor = int(self.vlm_with_expert.config.scale_factor)
+        token_stride = patch_size * scale_factor
+        return (height // token_stride) * (width // token_stride)
+
+    def _validate_image_token_overrides(
+        self,
+        image_tokens: tuple[Tensor, ...],
+        image_token_masks: tuple[Tensor, ...],
+        *,
+        batch_size: int,
+        device: torch.device,
+    ) -> None:
+        if not isinstance(image_tokens, tuple) or not isinstance(image_token_masks, tuple):
+            raise TypeError("future image tokens and masks must be ordered tuples")
+        if len(image_tokens) == 0:
+            raise ValueError("future_image_tokens must contain at least one camera")
+        if len(image_tokens) != len(image_token_masks):
+            raise ValueError(
+                "future_image_tokens and future_image_token_masks must contain the same number "
+                f"of cameras, got {len(image_tokens)} and {len(image_token_masks)}"
+            )
+
+        expected_token_count = self._expected_image_token_count()
+        expected_hidden_dim = int(self.vlm_with_expert.config.text_config.hidden_size)
+        connector = self.vlm_with_expert.get_vlm_model().connector
+        connector_parameter = next(connector.parameters(), None)
+        expected_dtype = image_tokens[0].dtype if connector_parameter is None else connector_parameter.dtype
+        for camera_index, (tokens, mask) in enumerate(zip(image_tokens, image_token_masks, strict=True)):
+            if tokens.ndim != 3:
+                raise ValueError(
+                    f"future_image_tokens[{camera_index}] must have shape [B,N,D], got {tuple(tokens.shape)}"
+                )
+            expected_shape = (batch_size, tokens.shape[1], expected_hidden_dim)
+            if tokens.shape[0] != batch_size or tokens.shape[2] != expected_hidden_dim:
+                raise ValueError(
+                    f"future_image_tokens[{camera_index}] expected shape {expected_shape}, got "
+                    f"{tuple(tokens.shape)}"
+                )
+            if expected_token_count is not None and tokens.shape[1] != expected_token_count:
+                raise ValueError(
+                    f"future_image_tokens[{camera_index}] expected {expected_token_count} native tokens, "
+                    f"got {tokens.shape[1]}"
+                )
+            if tokens.device != device:
+                raise ValueError(
+                    f"future_image_tokens[{camera_index}] expected device {device}, got {tokens.device}"
+                )
+            if tokens.dtype != expected_dtype:
+                raise ValueError(
+                    f"future_image_tokens[{camera_index}] expected dtype {expected_dtype}, got {tokens.dtype}"
+                )
+
+            expected_mask_shape = (batch_size, tokens.shape[1])
+            if tuple(mask.shape) != expected_mask_shape:
+                raise ValueError(
+                    f"future_image_token_masks[{camera_index}] expected shape {expected_mask_shape}, "
+                    f"got {tuple(mask.shape)}"
+                )
+            if mask.dtype != torch.bool:
+                raise ValueError(
+                    f"future_image_token_masks[{camera_index}] expected dtype torch.bool, got {mask.dtype}"
+                )
+            if mask.device != device:
+                raise ValueError(
+                    f"future_image_token_masks[{camera_index}] expected device {device}, got {mask.device}"
+                )
+
+    def embed_prefix_from_tokens(
+        self,
+        image_tokens: tuple[Tensor, ...],
+        image_token_masks: tuple[Tensor, ...],
+        lang_tokens: Tensor,
+        lang_masks: Tensor,
+        state: Tensor,
+    ) -> tuple[Tensor, Tensor, Tensor]:
+        """Build the VLM prefix from already encoded and scaled visual tokens."""
+        if state.ndim != 2:
+            raise ValueError(f"state must have shape [B,S], got {tuple(state.shape)}")
+        batch_size = state.shape[0]
+        self._validate_image_token_overrides(
+            image_tokens,
+            image_token_masks,
+            batch_size=batch_size,
+            device=state.device,
+        )
+        if lang_tokens.ndim != 2 or lang_tokens.shape[0] != batch_size:
+            raise ValueError(
+                f"lang_tokens must have shape [B,L] with B={batch_size}, got {tuple(lang_tokens.shape)}"
+            )
+        if tuple(lang_masks.shape) != tuple(lang_tokens.shape):
+            raise ValueError(
+                f"lang_masks must match lang_tokens shape {tuple(lang_tokens.shape)}, got "
+                f"{tuple(lang_masks.shape)}"
+            )
+        if lang_tokens.device != state.device or lang_masks.device != state.device:
+            raise ValueError("lang_tokens, lang_masks, image tokens, and state must be on the same device")
+
         embs = []
         pad_masks = []
         att_masks = []
-        for _img_idx, (
-            img,
-            img_mask,
-        ) in enumerate(zip(images, img_masks, strict=False)):
+        for img_emb, img_mask in zip(image_tokens, image_token_masks, strict=True):
             if self.add_image_special_tokens:
                 image_start_token = (
                     self.vlm_with_expert.embed_language_tokens(
                         self.global_image_start_token.to(device=self.vlm_with_expert.vlm.device)
                     )
                     .unsqueeze(0)
-                    .expand(img.shape[0], -1, -1)
+                    .expand(batch_size, -1, -1)
                 )
                 image_start_mask = torch.ones_like(
                     image_start_token[:, :, 0], dtype=torch.bool, device=image_start_token.device
@@ -577,15 +751,7 @@ class VLAFlowMatching(nn.Module):
                 embs.append(image_start_token)
                 pad_masks.append(image_start_mask)
 
-            img_emb = self.vlm_with_expert.embed_image(img)
-            img_emb = img_emb
-
-            # Normalize image embeddings
-            img_emb_dim = img_emb.shape[-1]
-            img_emb = img_emb * torch.tensor(img_emb_dim**0.5, dtype=img_emb.dtype, device=img_emb.device)
-
             bsize, num_img_embs = img_emb.shape[:2]
-            img_mask = img_mask[:, None].expand(bsize, num_img_embs)
 
             embs.append(img_emb)
             pad_masks.append(img_mask)
@@ -597,7 +763,7 @@ class VLAFlowMatching(nn.Module):
                         self.image_end_token.to(device=self.vlm_with_expert.vlm.device)
                     )
                     .unsqueeze(0)
-                    .expand(img.shape[0], -1, -1)
+                    .expand(batch_size, -1, -1)
                 )
                 image_end_mask = torch.ones_like(
                     image_end_token[:, :, 0], dtype=torch.bool, device=image_end_token.device
@@ -734,6 +900,32 @@ class VLAFlowMatching(nn.Module):
         **kwargs: Unpack[ActionSelectKwargs],
     ) -> Tensor:
         """Do a full inference forward and compute the action (batch_size x num_steps x num_motors)"""
+        future_image_tokens = kwargs.get("future_image_tokens")
+        future_image_token_masks = kwargs.get("future_image_token_masks")
+        if (future_image_tokens is None) != (future_image_token_masks is None):
+            raise ValueError(
+                "future_image_tokens and future_image_token_masks must either both be provided or both be None"
+            )
+        if future_image_tokens is not None:
+            expected_camera_count = len(self.config.image_features)
+            if len(future_image_tokens) != expected_camera_count:
+                raise ValueError(
+                    f"future_image_tokens expected {expected_camera_count} cameras in policy feature order, "
+                    f"got {len(future_image_tokens)}"
+                )
+
+        future_state = kwargs.get("future_state")
+        if future_state is not None:
+            if future_state.shape != state.shape:
+                raise ValueError(
+                    f"future_state expected shape {tuple(state.shape)}, got {tuple(future_state.shape)}"
+                )
+            if future_state.dtype != state.dtype:
+                raise ValueError(f"future_state expected dtype {state.dtype}, got {future_state.dtype}")
+            if future_state.device != state.device:
+                raise ValueError(f"future_state expected device {state.device}, got {future_state.device}")
+            state = future_state
+
         bsize = state.shape[0]
         device = state.device
 
@@ -741,9 +933,22 @@ class VLAFlowMatching(nn.Module):
             actions_shape = (bsize, self.config.chunk_size, self.config.max_action_dim)
             noise = self.sample_noise(actions_shape, device)
 
-        prefix_embs, prefix_pad_masks, prefix_att_masks = self.embed_prefix(
-            images, img_masks, lang_tokens, lang_masks, state=state
-        )
+        if future_image_tokens is None:
+            if images is None or img_masks is None:
+                raise ValueError(
+                    "images and img_masks are required when future image tokens are not provided"
+                )
+            prefix_embs, prefix_pad_masks, prefix_att_masks = self.embed_prefix(
+                images, img_masks, lang_tokens, lang_masks, state=state
+            )
+        else:
+            prefix_embs, prefix_pad_masks, prefix_att_masks = self.embed_prefix_from_tokens(
+                future_image_tokens,
+                future_image_token_masks,
+                lang_tokens,
+                lang_masks,
+                state,
+            )
         prefix_att_2d_masks = make_att_2d_masks(prefix_pad_masks, prefix_att_masks)
         prefix_position_ids = torch.cumsum(prefix_pad_masks, dim=1) - 1
         # Compute image and language key value cache
