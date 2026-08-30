@@ -63,7 +63,7 @@ class LatencyTracker:
         if q <= 0.0:
             return min(self._values)
         if q >= 1.0:
-            return self.max_latency
+            return max(self._values)
         vals = np.array(list(self._values), dtype=np.float32)
         return float(np.quantile(vals, q))
 

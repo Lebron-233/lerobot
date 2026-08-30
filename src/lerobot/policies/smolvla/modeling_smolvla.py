@@ -225,7 +225,11 @@ class SmolVLAPolicy(PreTrainedPolicy):
         lang_masks = batch[f"{OBS_LANGUAGE_ATTENTION_MASK}"]
 
         timings = kwargs.pop("timings", None)
-        if timings is None:
+        if timings is None or self.config.compile_model:
+            # Keep telemetry observational: when sample_actions was replaced by
+            # torch.compile, phase profiling must not silently switch inference back
+            # to the eager implementation. The RTC wrapper still records the compiled
+            # policy's total latency; fine-grained model phases remain unset.
             actions = self.model.sample_actions(
                 images, img_masks, lang_tokens, lang_masks, state, noise=noise, **kwargs
             )
@@ -679,7 +683,9 @@ class VLAFlowMatching(nn.Module):
         expected_hidden_dim = int(self.vlm_with_expert.config.text_config.hidden_size)
         connector = self.vlm_with_expert.get_vlm_model().connector
         connector_parameter = next(connector.parameters(), None)
-        expected_dtype = image_tokens[0].dtype if connector_parameter is None else connector_parameter.dtype
+        allowed_dtypes = {image_tokens[0].dtype if connector_parameter is None else connector_parameter.dtype}
+        if torch.amp.autocast_mode.is_autocast_available(device.type):
+            allowed_dtypes.add(torch.get_autocast_dtype(device.type))
         for camera_index, (tokens, mask) in enumerate(zip(image_tokens, image_token_masks, strict=True)):
             if tokens.ndim != 3:
                 raise ValueError(
@@ -700,9 +706,11 @@ class VLAFlowMatching(nn.Module):
                 raise ValueError(
                     f"future_image_tokens[{camera_index}] expected device {device}, got {tokens.device}"
                 )
-            if tokens.dtype != expected_dtype:
+            if tokens.dtype not in allowed_dtypes:
+                expected_dtypes = ", ".join(sorted(str(dtype) for dtype in allowed_dtypes))
                 raise ValueError(
-                    f"future_image_tokens[{camera_index}] expected dtype {expected_dtype}, got {tokens.dtype}"
+                    f"future_image_tokens[{camera_index}] expected one of dtypes "
+                    f"[{expected_dtypes}], got {tokens.dtype}"
                 )
 
             expected_mask_shape = (batch_size, tokens.shape[1])

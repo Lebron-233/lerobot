@@ -107,6 +107,22 @@ def test_replay_reports_final_sliding_window_quantiles():
     assert result.summary.latency_p90_s == pytest.approx(0.1)
 
 
+def test_replay_q_one_forgets_peak_after_it_leaves_sliding_window():
+    result = replay_latencies(
+        [1.0, 0.1, 0.1, 0.1],
+        fps=10,
+        latency_quantile=1.0,
+        latency_window=2,
+        delay_safety_margin_steps=0,
+        max_prediction_delay=20,
+        available_actions=20,
+        committed_guard_steps=0,
+    )
+
+    assert result.items[-1].estimated_latency_s == pytest.approx(0.1)
+    assert result.items[-1].planned_delay_steps == 1
+
+
 def test_replay_counts_underflow_requests_and_ticks_with_per_request_availability():
     result = replay_latencies(
         [0.4, 0.2, 0.1],

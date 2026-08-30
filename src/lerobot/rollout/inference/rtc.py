@@ -61,6 +61,12 @@ _RTC_MAX_CONSECUTIVE_DISCARDS: int = 5
 _RTC_JOIN_TIMEOUT_S: float = 3.0
 
 
+def _synchronize_for_metrics(device: torch.device) -> None:
+    """Wait for device work at an opt-in metrics phase boundary."""
+    if device.type == "cuda":
+        torch.cuda.synchronize(device)
+
+
 class _FatalRTCInferenceError(RuntimeError):
     """Base class for RTC errors that cannot become valid after a retry."""
 
@@ -308,15 +314,20 @@ class RTCInferenceEngine(InferenceEngine):
         logger.info("Stopping RTC inference thread...")
         self._shutdown_event.set()
         self._policy_active.clear()
-        if self._rtc_thread is not None and self._rtc_thread.is_alive():
-            self._rtc_thread.join(timeout=_RTC_JOIN_TIMEOUT_S)
-            if self._rtc_thread.is_alive():
+        thread = self._rtc_thread
+        if thread is None:
+            # The worker owns the sink once started. Before start there is no
+            # worker finally block to release it.
+            self._close_metrics_sink()
+            return
+        if thread.is_alive():
+            thread.join(timeout=_RTC_JOIN_TIMEOUT_S)
+            if thread.is_alive():
                 logger.warning("RTC thread did not join within %.1fs", _RTC_JOIN_TIMEOUT_S)
+                return
             else:
                 logger.info("RTC inference thread stopped")
-            self._rtc_thread = None
-        if self._metrics_sink is not None:
-            self._metrics_sink.close()
+        self._rtc_thread = None
 
     def pause(self) -> None:
         """Pause the RTC background thread."""
@@ -411,6 +422,18 @@ class RTCInferenceEngine(InferenceEngine):
             # Metrics are explicitly observational and must not alter control behavior.
             logger.exception("Failed to write RTC inference metrics")
 
+    def _close_metrics_sink(self) -> None:
+        sink = self._metrics_sink
+        if sink is None:
+            return
+        # Clear ownership before closing so a failing sink cannot be retried from
+        # teardown and affect control cleanup a second time.
+        self._metrics_sink = None
+        try:
+            sink.close()
+        except Exception:
+            logger.exception("Failed to close RTC inference metrics")
+
     def notify_observation(self, obs: dict) -> None:
         """Publish the latest observation for the RTC thread to consume."""
         with self._obs_lock:
@@ -492,6 +515,8 @@ class RTCInferenceEngine(InferenceEngine):
                 if queue.qsize() <= self._rtc_queue_threshold:
                     metrics_event: dict[str, Any] | None = None
                     try:
+                        if self._metrics_sink is not None:
+                            _synchronize_for_metrics(policy_device)
                         current_time = time.perf_counter()
                         metrics_request = self._start_metrics_request()
                         if metrics_request is not None:
@@ -566,23 +591,31 @@ class RTCInferenceEngine(InferenceEngine):
                             # inference; with blending off the queue drains first.
                             logger.info("Task changed to '%s' — applied from the next merged chunk", task)
 
-                        phase_started_at = time.perf_counter() if metrics_event is not None else None
+                        if metrics_event is not None:
+                            _synchronize_for_metrics(policy_device)
+                            phase_started_at = time.perf_counter()
                         obs_batch = build_dataset_frame(self._hw_features, obs, prefix="observation")
                         obs_batch = prepare_observation_for_inference(
                             obs_batch, policy_device, task, self._robot.robot_type
                         )
                         obs_batch["task"] = [task]
                         if metrics_event is not None:
+                            _synchronize_for_metrics(policy_device)
                             metrics_event["observation_preparation_s"] = (
                                 time.perf_counter() - phase_started_at
                             )
 
-                        phase_started_at = time.perf_counter() if metrics_event is not None else None
+                        if metrics_event is not None:
+                            _synchronize_for_metrics(policy_device)
+                            phase_started_at = time.perf_counter()
                         preprocessed = self._preprocessor(obs_batch)
                         if metrics_event is not None:
+                            _synchronize_for_metrics(policy_device)
                             metrics_event["preprocessor_s"] = time.perf_counter() - phase_started_at
 
-                        phase_started_at = time.perf_counter() if metrics_event is not None else None
+                        if metrics_event is not None:
+                            _synchronize_for_metrics(policy_device)
+                            phase_started_at = time.perf_counter()
                         if prev_actions is not None and self._relative_step is not None:
                             # Rebase against the raw cached state so the leftover tail stays in
                             # the training-time coordinate frame.
@@ -603,6 +636,7 @@ class RTCInferenceEngine(InferenceEngine):
                                 prev_actions, target_steps=self._rtc_config.execution_horizon
                             )
                         if metrics_event is not None:
+                            _synchronize_for_metrics(policy_device)
                             metrics_event["rtc_prefix_preparation_s"] = time.perf_counter() - phase_started_at
 
                         policy_timings: dict[str, float] | None = None
@@ -610,26 +644,38 @@ class RTCInferenceEngine(InferenceEngine):
                             "inference_delay": delay,
                             "prev_chunk_left_over": prev_actions,
                         }
-                        if metrics_event is not None and hasattr(
-                            getattr(self._policy, "model", None), "sample_actions_profiled"
+                        if (
+                            metrics_event is not None
+                            and not self._use_torch_compile
+                            and hasattr(getattr(self._policy, "model", None), "sample_actions_profiled")
                         ):
                             policy_timings = {}
                             predict_kwargs["timings"] = policy_timings
-                        phase_started_at = time.perf_counter() if metrics_event is not None else None
+                        if metrics_event is not None:
+                            _synchronize_for_metrics(policy_device)
+                            phase_started_at = time.perf_counter()
                         actions = self._policy.predict_action_chunk(preprocessed, **predict_kwargs)
                         if metrics_event is not None:
+                            _synchronize_for_metrics(policy_device)
                             metrics_event["policy_total_s"] = time.perf_counter() - phase_started_at
                             if policy_timings is not None:
                                 metrics_event.update(policy_timings)
 
                         original = actions.squeeze(0).clone()
-                        phase_started_at = time.perf_counter() if metrics_event is not None else None
+                        if metrics_event is not None:
+                            _synchronize_for_metrics(policy_device)
+                            phase_started_at = time.perf_counter()
                         processed = self._postprocessor(actions).squeeze(0)
                         if metrics_event is not None:
+                            _synchronize_for_metrics(policy_device)
                             metrics_event["postprocessor_s"] = time.perf_counter() - phase_started_at
                         new_latency = time.perf_counter() - current_time
                         new_delay = math.ceil(new_latency / time_per_chunk)
-                        consumed_steps = max(0, queue.get_action_index() - idx_before)
+                        consumed_steps = (
+                            max(0, queue.get_action_index() - idx_before)
+                            if metrics_event is not None
+                            else None
+                        )
 
                         inference_count += 1
                         consecutive_errors = 0
@@ -695,11 +741,14 @@ class RTCInferenceEngine(InferenceEngine):
                                     "--fps, or switch to --inference.rtc.mode=guided."
                                 )
                             if metrics_event is not None:
+                                with self._obs_lock:
+                                    completion_epoch = self._reset_epoch
+                                    queue_size_after = queue.qsize()
                                 metrics_event.update(
                                     {
                                         "status": "discarded_trained_delay",
-                                        "reset_epoch_at_completion": self._reset_epoch,
-                                        "queue_size_after": queue.qsize(),
+                                        "reset_epoch_at_completion": completion_epoch,
+                                        "queue_size_after": queue_size_after,
                                     }
                                 )
                                 self._emit_metrics(metrics_event)
@@ -713,6 +762,14 @@ class RTCInferenceEngine(InferenceEngine):
                             epoch_unchanged = epoch_before == self._reset_epoch
                             if epoch_unchanged:
                                 queue.merge(original, processed, new_delay, idx_before, task=task)
+                            if metrics_event is not None:
+                                completion_epoch = self._reset_epoch
+                                queue_size_after = queue.qsize()
+                                discarded_prefix_steps = (
+                                    min(new_delay, len(original), len(processed))
+                                    if epoch_unchanged and self._rtc_config.enabled
+                                    else 0
+                                )
                         if not epoch_unchanged:
                             logger.info("Discarding action chunk computed before an engine reset")
 
@@ -720,13 +777,9 @@ class RTCInferenceEngine(InferenceEngine):
                             metrics_event.update(
                                 {
                                     "status": "merged" if epoch_unchanged else "discarded_reset",
-                                    "reset_epoch_at_completion": self._reset_epoch,
-                                    "queue_size_after": queue.qsize(),
-                                    "discarded_prefix_steps": (
-                                        min(new_delay, len(original), len(processed))
-                                        if epoch_unchanged and self._rtc_config.enabled
-                                        else 0
-                                    ),
+                                    "reset_epoch_at_completion": completion_epoch,
+                                    "queue_size_after": queue_size_after,
+                                    "discarded_prefix_steps": discarded_prefix_steps,
                                 }
                             )
                             self._emit_metrics(metrics_event)
@@ -803,3 +856,5 @@ class RTCInferenceEngine(InferenceEngine):
             # Signal the top-level shutdown so strategies exit their control loops
             if self._global_shutdown_event is not None:
                 self._global_shutdown_event.set()
+        finally:
+            self._close_metrics_sink()

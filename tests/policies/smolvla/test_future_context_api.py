@@ -282,6 +282,30 @@ def test_image_and_token_paths_produce_same_actions_with_same_noise(tiny_policy)
     torch.testing.assert_close(image_actions, token_actions, rtol=0, atol=0)
 
 
+def test_feature_off_and_cached_storage_tokens_work_under_autocast(tiny_policy) -> None:
+    batch = _make_batch()
+    images, image_masks = tiny_policy.prepare_images(batch)
+    state = tiny_policy.prepare_state(batch)
+    language_tokens = batch[OBS_LANGUAGE_TOKENS]
+    language_masks = batch[OBS_LANGUAGE_ATTENTION_MASK]
+    storage_tokens, storage_masks = tiny_policy.model.encode_image_tokens(images, image_masks)
+    assert storage_tokens[0].dtype is torch.float32
+
+    with torch.autocast("cpu", dtype=torch.bfloat16):
+        autocast_tokens, autocast_masks = tiny_policy.model.encode_image_tokens(images, image_masks)
+        assert autocast_tokens[0].dtype is torch.bfloat16
+
+        # The legacy feature-off path validates the tokens it just encoded.
+        tiny_policy.model.embed_prefix(images, image_masks, language_tokens, language_masks, state)
+        # Tokens cached outside autocast remain a valid native representation inside it.
+        tiny_policy.model.embed_prefix_from_tokens(
+            storage_tokens, storage_masks, language_tokens, language_masks, state
+        )
+        tiny_policy.model.embed_prefix_from_tokens(
+            autocast_tokens, autocast_masks, language_tokens, language_masks, state
+        )
+
+
 @pytest.mark.parametrize(
     "invalid_case",
     [
