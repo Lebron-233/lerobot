@@ -24,6 +24,7 @@ from __future__ import annotations
 import abc
 import logging
 from dataclasses import dataclass, field
+from pathlib import Path
 from threading import Event
 
 import draccus
@@ -34,6 +35,7 @@ from lerobot.processor import PolicyProcessorPipeline
 
 from ..robot_wrapper import ThreadSafeRobot
 from .base import InferenceEngine
+from .metrics import JsonlMetricsSink
 from .rtc import RTCInferenceEngine
 from .sync import SyncInferenceEngine
 
@@ -72,6 +74,7 @@ class RTCInferenceConfig(InferenceEngineConfig):
     # (e.g. ``--inference.rtc.execution_horizon=...``).
     rtc: RTCConfig = field(default_factory=RTCConfig)
     queue_threshold: int = 30
+    metrics_path: Path | None = None
 
 
 # ---------------------------------------------------------------------------
@@ -110,6 +113,7 @@ def create_inference_engine(
             robot_type=robot_wrapper.robot_type,
         )
     if isinstance(config, RTCInferenceConfig):
+        metrics_sink = JsonlMetricsSink(config.metrics_path) if config.metrics_path is not None else None
         return RTCInferenceEngine(
             policy=policy,
             preprocessor=preprocessor,
@@ -124,5 +128,6 @@ def create_inference_engine(
             compile_warmup_inferences=compile_warmup_inferences,
             rtc_queue_threshold=config.queue_threshold,
             shutdown_event=shutdown_event,
+            metrics_sink=metrics_sink,
         )
     raise ValueError(f"Unknown inference engine type: {type(config).__name__}")

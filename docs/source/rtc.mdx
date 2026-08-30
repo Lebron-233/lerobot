@@ -185,6 +185,44 @@ lerobot-rollout \
     --device=cuda
 ```
 
+## Recording RTC Latency Metrics
+
+RTC request telemetry is disabled by default. Set an output path to record one
+machine-readable JSON object per generated action chunk:
+
+```bash
+lerobot-rollout \
+    --strategy.type=base \
+    --policy.path=${HF_USERNAME}/policy_repo_id \
+    --inference.type=rtc \
+    --inference.metrics_path=outputs/rtc_metrics.jsonl \
+    # ... robot and task arguments
+```
+
+Each row reports observation preparation, preprocessing, policy, SmolVLA vision
+encoding/prefix prefill/flow matching when available, postprocessing, and total
+latency. It also records queue size, estimated and measured delay, discarded
+prefix length, underflow count, task provenance, and reset epoch. Enabling the
+file adds synchronization needed for accurate CUDA phase timing; leave it unset
+for normal deployment performance.
+
+You can replay a measured or synthetic latency sequence without loading a policy
+or connecting robot hardware:
+
+```bash
+uv run python examples/advanced/predictive_async/replay_latency.py \
+    --latencies-ms 620 590 710 640 \
+    --fps 30 \
+    --latency-quantile 0.9 \
+    --delay-safety-margin-steps 1 \
+    --max-prediction-delay 24 \
+    --available-actions 30
+```
+
+The first request is reported as an uncalibrated cold start. Later plans use only
+previous samples and report P50/P90 latency, late-chunk rate, and queue-underflow
+statistics.
+
 ## How It Differs from the Async Inference in LeRobot
 
 Both RTC and [async inference](./async) improve real-time robot control, but they solve different problems.

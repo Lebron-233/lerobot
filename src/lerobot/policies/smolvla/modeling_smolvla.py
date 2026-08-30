@@ -53,6 +53,7 @@ policy = SmolVLAPolicy.from_pretrained("lerobot/smolvla_base")
 """
 
 import math
+import time
 from collections import deque
 from typing import TypedDict, Unpack
 
@@ -86,6 +87,7 @@ class ActionSelectKwargs(TypedDict, total=False):
     future_image_tokens: tuple[Tensor, ...] | None
     future_image_token_masks: tuple[Tensor, ...] | None
     future_state: Tensor | None
+    timings: dict[str, float] | None
 
 
 def normalize(x, min_val, max_val):
@@ -222,9 +224,25 @@ class SmolVLAPolicy(PreTrainedPolicy):
         lang_tokens = batch[f"{OBS_LANGUAGE_TOKENS}"]
         lang_masks = batch[f"{OBS_LANGUAGE_ATTENTION_MASK}"]
 
-        actions = self.model.sample_actions(
-            images, img_masks, lang_tokens, lang_masks, state, noise=noise, **kwargs
-        )
+        timings = kwargs.pop("timings", None)
+        if timings is None:
+            actions = self.model.sample_actions(
+                images, img_masks, lang_tokens, lang_masks, state, noise=noise, **kwargs
+            )
+        else:
+            # ``sample_actions`` may be replaced by torch.compile at construction time.
+            # Profiling deliberately uses the original method so Python timers and CUDA
+            # synchronization do not enter or invalidate the compiled graph.
+            actions = self.model.sample_actions_profiled(
+                images,
+                img_masks,
+                lang_tokens,
+                lang_masks,
+                state,
+                noise=noise,
+                timings=timings,
+                **kwargs,
+            )
 
         # Unpad actions
         original_action_dim = self.config.action_feature.shape[0]
@@ -897,6 +915,7 @@ class VLAFlowMatching(nn.Module):
         lang_masks,
         state,
         noise=None,
+        timings: dict[str, float] | None = None,
         **kwargs: Unpack[ActionSelectKwargs],
     ) -> Tensor:
         """Do a full inference forward and compute the action (batch_size x num_steps x num_motors)"""
@@ -938,17 +957,29 @@ class VLAFlowMatching(nn.Module):
                 raise ValueError(
                     "images and img_masks are required when future image tokens are not provided"
                 )
-            prefix_embs, prefix_pad_masks, prefix_att_masks = self.embed_prefix(
-                images, img_masks, lang_tokens, lang_masks, state=state
-            )
+            if timings is not None:
+                self._synchronize_for_timing(device)
+                phase_started_at = time.perf_counter()
+            image_tokens, image_token_masks = self.encode_image_tokens(images, img_masks)
+            if timings is not None:
+                self._synchronize_for_timing(device)
+                timings["vision_encode_s"] = time.perf_counter() - phase_started_at
         else:
-            prefix_embs, prefix_pad_masks, prefix_att_masks = self.embed_prefix_from_tokens(
-                future_image_tokens,
-                future_image_token_masks,
-                lang_tokens,
-                lang_masks,
-                state,
-            )
+            image_tokens = future_image_tokens
+            image_token_masks = future_image_token_masks
+            if timings is not None:
+                timings["vision_encode_s"] = 0.0
+
+        if timings is not None:
+            self._synchronize_for_timing(device)
+            phase_started_at = time.perf_counter()
+        prefix_embs, prefix_pad_masks, prefix_att_masks = self.embed_prefix_from_tokens(
+            image_tokens,
+            image_token_masks,
+            lang_tokens,
+            lang_masks,
+            state,
+        )
         prefix_att_2d_masks = make_att_2d_masks(prefix_pad_masks, prefix_att_masks)
         prefix_position_ids = torch.cumsum(prefix_pad_masks, dim=1) - 1
         # Compute image and language key value cache
@@ -959,9 +990,15 @@ class VLAFlowMatching(nn.Module):
             inputs_embeds=[prefix_embs, None],
             use_cache=self.config.use_cache,
         )
+        if timings is not None:
+            self._synchronize_for_timing(device)
+            timings["prefix_prefill_s"] = time.perf_counter() - phase_started_at
         num_steps = self.config.num_steps
 
-        return euler_integrate(
+        if timings is not None:
+            self._synchronize_for_timing(device)
+            phase_started_at = time.perf_counter()
+        actions = euler_integrate(
             lambda input_x_t, current_timestep: self.denoise_step(
                 x_t=input_x_t,
                 prefix_pad_masks=prefix_pad_masks,
@@ -976,6 +1013,40 @@ class VLAFlowMatching(nn.Module):
             prev_chunk_left_over=kwargs.get("prev_chunk_left_over"),
             execution_horizon=kwargs.get("execution_horizon"),
         )
+        if timings is not None:
+            self._synchronize_for_timing(device)
+            timings["flow_matching_s"] = time.perf_counter() - phase_started_at
+        return actions
+
+    def sample_actions_profiled(
+        self,
+        images,
+        img_masks,
+        lang_tokens,
+        lang_masks,
+        state,
+        noise=None,
+        *,
+        timings: dict[str, float],
+        **kwargs: Unpack[ActionSelectKwargs],
+    ) -> Tensor:
+        """Run the eager action sampler and populate opt-in phase timings."""
+        return type(self).sample_actions(
+            self,
+            images,
+            img_masks,
+            lang_tokens,
+            lang_masks,
+            state,
+            noise=noise,
+            timings=timings,
+            **kwargs,
+        )
+
+    @staticmethod
+    def _synchronize_for_timing(device: torch.device) -> None:
+        if device.type == "cuda":
+            torch.cuda.synchronize(device)
 
     def denoise_step(
         self,

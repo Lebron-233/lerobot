@@ -45,6 +45,7 @@ from lerobot.utils.feature_utils import build_dataset_frame
 
 from ..robot_wrapper import ThreadSafeRobot
 from .base import InferenceEngine, PolicyQuery
+from .metrics import InferenceMetricsSink
 
 logger = logging.getLogger(__name__)
 
@@ -194,6 +195,7 @@ class RTCInferenceEngine(InferenceEngine):
         compile_warmup_inferences: int = 2,
         rtc_queue_threshold: int = 30,
         shutdown_event: Event | None = None,
+        metrics_sink: InferenceMetricsSink | None = None,
     ) -> None:
         super().__init__(task=task)
         self._policy = policy
@@ -207,6 +209,13 @@ class RTCInferenceEngine(InferenceEngine):
         self._use_torch_compile = use_torch_compile
         self._compile_warmup_inferences = compile_warmup_inferences
         self._rtc_queue_threshold = rtc_queue_threshold
+        self._metrics_sink = metrics_sink
+        self._metrics_lock = Lock()
+        self._metrics_request_id = 0
+        # Process-lifetime action index. ``reset_epoch`` remains a separate field, so
+        # telemetry never reuses an absolute index after an episode reset.
+        self._metrics_next_action_index = 0
+        self._metrics_underflow_total = 0
 
         self._action_queue: ActionQueue | None = None
         self._obs_holder: dict[str, Any] = {}
@@ -306,6 +315,8 @@ class RTCInferenceEngine(InferenceEngine):
             else:
                 logger.info("RTC inference thread stopped")
             self._rtc_thread = None
+        if self._metrics_sink is not None:
+            self._metrics_sink.close()
 
     def pause(self) -> None:
         """Pause the RTC background thread."""
@@ -347,9 +358,11 @@ class RTCInferenceEngine(InferenceEngine):
     def get_action(self, obs_frame: dict | None) -> torch.Tensor | None:
         """Pop the next action from the RTC queue (ignores ``obs_frame``)."""
         if self._action_queue is None:
+            self._record_metrics_action_result(returned=False)
             return None
         queued = self._action_queue.get_with_task()
         if queued is None:
+            self._record_metrics_action_result(returned=False)
             return None
         # The queue pairs each action with its chunk's task under the queue lock, so a
         # concurrent merge cannot cross labels between chunks.
@@ -359,7 +372,44 @@ class RTCInferenceEngine(InferenceEngine):
             # writer: fail loudly rather than corrupt dispatched_task and frame labels.
             raise RuntimeError("RTC action queue returned an action without task provenance")
         self._set_dispatched_task(task)
+        self._record_metrics_action_result(returned=True)
         return action
+
+    def _record_metrics_action_result(self, *, returned: bool) -> None:
+        if self._metrics_sink is None:
+            return
+        with self._metrics_lock:
+            if returned:
+                self._metrics_next_action_index += 1
+            else:
+                self._metrics_underflow_total += 1
+
+    def _start_metrics_request(self) -> tuple[int, int, int] | None:
+        if self._metrics_sink is None:
+            return None
+        with self._metrics_lock:
+            request_id = self._metrics_request_id
+            self._metrics_request_id += 1
+            return request_id, self._metrics_next_action_index, self._metrics_underflow_total
+
+    def _finish_metrics_request(self) -> tuple[int, int]:
+        with self._metrics_lock:
+            return self._metrics_next_action_index, self._metrics_underflow_total
+
+    def _emit_metrics(self, event: dict[str, Any]) -> None:
+        if self._metrics_sink is None:
+            return
+        event = {
+            "schema_version": 1,
+            "event": "chunk_request",
+            "backend": "rtc",
+            **event,
+        }
+        try:
+            self._metrics_sink.emit(event)
+        except (OSError, RuntimeError, TypeError, ValueError):
+            # Metrics are explicitly observational and must not alter control behavior.
+            logger.exception("Failed to write RTC inference metrics")
 
     def notify_observation(self, obs: dict) -> None:
         """Publish the latest observation for the RTC thread to consume."""
@@ -440,8 +490,44 @@ class RTCInferenceEngine(InferenceEngine):
                         continue
 
                 if queue.qsize() <= self._rtc_queue_threshold:
+                    metrics_event: dict[str, Any] | None = None
                     try:
                         current_time = time.perf_counter()
+                        metrics_request = self._start_metrics_request()
+                        if metrics_request is not None:
+                            request_id, next_action_index, underflow_before = metrics_request
+                            metrics_event = {
+                                "request_id": request_id,
+                                "status": None,
+                                "task": None,
+                                "task_changed": False,
+                                "reset_epoch_at_request": epoch_before,
+                                "reset_epoch_at_completion": None,
+                                "queue_size_at_request": queue.qsize(),
+                                "queue_size_after": None,
+                                "next_action_index": next_action_index,
+                                "next_action_index_at_completion": None,
+                                "estimated_latency_s": None,
+                                "estimated_delay_steps": None,
+                                "measured_latency_s": None,
+                                "measured_delay_steps_wall": None,
+                                "consumed_steps_during_request": None,
+                                "discarded_prefix_steps": 0,
+                                "underflow_total": underflow_before,
+                                "underflow_during_request": None,
+                                "latency_p50_s": None,
+                                "latency_p90_s": None,
+                                "observation_preparation_s": None,
+                                "preprocessor_s": None,
+                                "rtc_prefix_preparation_s": None,
+                                "policy_total_s": None,
+                                "vision_encode_s": None,
+                                "prefix_prefill_s": None,
+                                "flow_matching_s": None,
+                                "future_predictor_s": None,
+                                "postprocessor_s": None,
+                                "total_chunk_s": None,
+                            }
                         idx_before = queue.get_action_index()
                         prev_actions = queue.get_left_over()
                         has_previous_actions = prev_actions is not None and prev_actions.numel() > 0
@@ -456,14 +542,22 @@ class RTCInferenceEngine(InferenceEngine):
                             training_max_delay=training_max_delay,
                             has_previous_actions=has_previous_actions,
                         )
+                        if metrics_event is not None:
+                            metrics_event["estimated_latency_s"] = latency
+                            metrics_event["estimated_delay_steps"] = delay
                         if self._rtc_config.mode == "trained" and delay > 0:
                             delay = _clamp_trained_rtc_delay(
                                 conditioned_delay=delay,
                                 available_steps=0 if prev_actions is None else prev_actions.shape[0],
                                 training_max_delay=training_max_delay,
                             )
+                            if metrics_event is not None:
+                                metrics_event["estimated_delay_steps"] = delay
 
                         task, task_changed = self._take_task()
+                        if metrics_event is not None:
+                            metrics_event["task"] = task
+                            metrics_event["task_changed"] = task_changed
                         if task_changed:
                             # No queue flush on purpose: dropping queued actions would
                             # leave the robot uncommanded for a full inference latency.
@@ -472,14 +566,23 @@ class RTCInferenceEngine(InferenceEngine):
                             # inference; with blending off the queue drains first.
                             logger.info("Task changed to '%s' — applied from the next merged chunk", task)
 
+                        phase_started_at = time.perf_counter() if metrics_event is not None else None
                         obs_batch = build_dataset_frame(self._hw_features, obs, prefix="observation")
                         obs_batch = prepare_observation_for_inference(
                             obs_batch, policy_device, task, self._robot.robot_type
                         )
                         obs_batch["task"] = [task]
+                        if metrics_event is not None:
+                            metrics_event["observation_preparation_s"] = (
+                                time.perf_counter() - phase_started_at
+                            )
 
+                        phase_started_at = time.perf_counter() if metrics_event is not None else None
                         preprocessed = self._preprocessor(obs_batch)
+                        if metrics_event is not None:
+                            metrics_event["preprocessor_s"] = time.perf_counter() - phase_started_at
 
+                        phase_started_at = time.perf_counter() if metrics_event is not None else None
                         if prev_actions is not None and self._relative_step is not None:
                             # Rebase against the raw cached state so the leftover tail stays in
                             # the training-time coordinate frame.
@@ -499,15 +602,34 @@ class RTCInferenceEngine(InferenceEngine):
                             prev_actions = _normalize_prev_actions_length(
                                 prev_actions, target_steps=self._rtc_config.execution_horizon
                             )
+                        if metrics_event is not None:
+                            metrics_event["rtc_prefix_preparation_s"] = time.perf_counter() - phase_started_at
 
-                        actions = self._policy.predict_action_chunk(
-                            preprocessed, inference_delay=delay, prev_chunk_left_over=prev_actions
-                        )
+                        policy_timings: dict[str, float] | None = None
+                        predict_kwargs: dict[str, Any] = {
+                            "inference_delay": delay,
+                            "prev_chunk_left_over": prev_actions,
+                        }
+                        if metrics_event is not None and hasattr(
+                            getattr(self._policy, "model", None), "sample_actions_profiled"
+                        ):
+                            policy_timings = {}
+                            predict_kwargs["timings"] = policy_timings
+                        phase_started_at = time.perf_counter() if metrics_event is not None else None
+                        actions = self._policy.predict_action_chunk(preprocessed, **predict_kwargs)
+                        if metrics_event is not None:
+                            metrics_event["policy_total_s"] = time.perf_counter() - phase_started_at
+                            if policy_timings is not None:
+                                metrics_event.update(policy_timings)
 
                         original = actions.squeeze(0).clone()
+                        phase_started_at = time.perf_counter() if metrics_event is not None else None
                         processed = self._postprocessor(actions).squeeze(0)
+                        if metrics_event is not None:
+                            metrics_event["postprocessor_s"] = time.perf_counter() - phase_started_at
                         new_latency = time.perf_counter() - current_time
                         new_delay = math.ceil(new_latency / time_per_chunk)
+                        consumed_steps = max(0, queue.get_action_index() - idx_before)
 
                         inference_count += 1
                         consecutive_errors = 0
@@ -519,6 +641,29 @@ class RTCInferenceEngine(InferenceEngine):
                             latency_tracker.reset()
                         else:
                             latency_tracker.add(new_latency)
+                        if metrics_event is not None:
+                            next_index_after, underflow_after = self._finish_metrics_request()
+                            metrics_event.update(
+                                {
+                                    "is_warmup": is_warmup,
+                                    "is_initial_trained_chunk": is_initial_trained_chunk,
+                                    "measured_latency_s": new_latency,
+                                    "measured_delay_steps_wall": new_delay,
+                                    "consumed_steps_during_request": consumed_steps,
+                                    "next_action_index_at_completion": next_index_after,
+                                    "underflow_total": underflow_after,
+                                    "underflow_during_request": (
+                                        underflow_after - metrics_event["underflow_total"]
+                                    ),
+                                    "latency_p50_s": (
+                                        latency_tracker.percentile(0.5) if len(latency_tracker) > 0 else None
+                                    ),
+                                    "latency_p90_s": (
+                                        latency_tracker.percentile(0.9) if len(latency_tracker) > 0 else None
+                                    ),
+                                    "total_chunk_s": new_latency,
+                                }
+                            )
 
                         if (
                             not is_warmup
@@ -549,6 +694,15 @@ class RTCInferenceEngine(InferenceEngine):
                                     f"{training_max_delay}. Retrain with a larger delay, lower "
                                     "--fps, or switch to --inference.rtc.mode=guided."
                                 )
+                            if metrics_event is not None:
+                                metrics_event.update(
+                                    {
+                                        "status": "discarded_trained_delay",
+                                        "reset_epoch_at_completion": self._reset_epoch,
+                                        "queue_size_after": queue.qsize(),
+                                    }
+                                )
+                                self._emit_metrics(metrics_event)
                             continue
 
                         consecutive_discards = 0
@@ -562,6 +716,21 @@ class RTCInferenceEngine(InferenceEngine):
                         if not epoch_unchanged:
                             logger.info("Discarding action chunk computed before an engine reset")
 
+                        if metrics_event is not None:
+                            metrics_event.update(
+                                {
+                                    "status": "merged" if epoch_unchanged else "discarded_reset",
+                                    "reset_epoch_at_completion": self._reset_epoch,
+                                    "queue_size_after": queue.qsize(),
+                                    "discarded_prefix_steps": (
+                                        min(new_delay, len(original), len(processed))
+                                        if epoch_unchanged and self._rtc_config.enabled
+                                        else 0
+                                    ),
+                                }
+                            )
+                            self._emit_metrics(metrics_event)
+
                         if (
                             is_warmup
                             and inference_count >= warmup_required
@@ -572,9 +741,43 @@ class RTCInferenceEngine(InferenceEngine):
 
                         logger.debug("RTC inference latency=%.2fs, queue=%d", new_latency, queue.qsize())
 
-                    except _FatalRTCInferenceError:
+                    except _FatalRTCInferenceError as e:
+                        if metrics_event is not None:
+                            _, underflow_after = self._finish_metrics_request()
+                            metrics_event.update(
+                                {
+                                    "status": "fatal_error",
+                                    "error_type": type(e).__name__,
+                                    "error": str(e),
+                                    "reset_epoch_at_completion": self._reset_epoch,
+                                    "queue_size_after": queue.qsize(),
+                                    "underflow_during_request": (
+                                        underflow_after - metrics_event["underflow_total"]
+                                    ),
+                                    "underflow_total": underflow_after,
+                                    "total_chunk_s": time.perf_counter() - current_time,
+                                }
+                            )
+                            self._emit_metrics(metrics_event)
                         raise
                     except Exception as e:
+                        if metrics_event is not None:
+                            _, underflow_after = self._finish_metrics_request()
+                            metrics_event.update(
+                                {
+                                    "status": "error",
+                                    "error_type": type(e).__name__,
+                                    "error": str(e),
+                                    "reset_epoch_at_completion": self._reset_epoch,
+                                    "queue_size_after": queue.qsize(),
+                                    "underflow_during_request": (
+                                        underflow_after - metrics_event["underflow_total"]
+                                    ),
+                                    "underflow_total": underflow_after,
+                                    "total_chunk_s": time.perf_counter() - current_time,
+                                }
+                            )
+                            self._emit_metrics(metrics_event)
                         consecutive_errors += 1
                         logger.error(
                             "RTC inference error (%d/%d): %s",
