@@ -313,6 +313,59 @@ def run_with_shared_noise(
     return outputs
 
 
+def remap_checkpoint_action_stats(
+    checkpoint_stats: Mapping[str, Tensor],
+    *,
+    source_key: str,
+    action_dim: int,
+) -> dict[str, dict[str, Tensor]]:
+    """Map one explicit checkpoint embodiment's mean/std statistics to ``action``.
+
+    Some multi-embodiment checkpoints store processor state under keys such as
+    ``so100.buffer.action.mean`` while the generic unnormalizer looks up the literal
+    feature key ``action``. The offline evaluator must choose the approved embodiment
+    explicitly rather than silently falling back to another embodiment or dataset stats.
+    """
+    if not source_key:
+        raise OracleEvaluationError("source_key must identify one checkpoint action-stat entry")
+    if not isinstance(action_dim, int) or isinstance(action_dim, bool):
+        raise TypeError(f"action_dim must be an integer, got {type(action_dim).__name__}")
+    if action_dim <= 0:
+        raise OracleEvaluationError(f"action_dim must be > 0, got {action_dim}")
+
+    remapped: dict[str, Tensor] = {}
+    for stat_name in ("mean", "std"):
+        checkpoint_key = f"{source_key}.{stat_name}"
+        if checkpoint_key not in checkpoint_stats:
+            raise OracleEvaluationError(
+                f"Checkpoint processor state is missing required statistic {checkpoint_key!r}"
+            )
+        value = checkpoint_stats[checkpoint_key]
+        if not isinstance(value, Tensor):
+            raise TypeError(f"Checkpoint statistic {checkpoint_key!r} must be a torch tensor")
+        if tuple(value.shape) != (action_dim,):
+            raise OracleEvaluationError(
+                f"Checkpoint statistic {checkpoint_key!r} must have shape ({action_dim},), "
+                f"got {tuple(value.shape)}"
+            )
+        remapped[stat_name] = value.clone()
+    return {"action": remapped}
+
+
+def postprocess_action_triplet(
+    postprocessor: Callable[[Tensor], Tensor], actions: ActionTriplet
+) -> ActionTriplet:
+    """Apply one postprocessor independently without mutating policy-output chunks."""
+    _validate_action_triplet(actions)
+    outputs = ActionTriplet(
+        current=postprocessor(actions.current.clone()),
+        oracle_visual=postprocessor(actions.oracle_visual.clone()),
+        full_future_teacher=postprocessor(actions.full_future_teacher.clone()),
+    )
+    _validate_action_triplet(outputs)
+    return outputs
+
+
 def _validate_action_triplet(actions: ActionTriplet) -> None:
     named_actions = {
         "current": actions.current,

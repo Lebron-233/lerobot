@@ -19,6 +19,9 @@ import torch
 
 pytest.importorskip("datasets", reason="datasets is required (install lerobot[dataset])")
 
+from lerobot.configs.types import FeatureType, NormalizationMode, PolicyFeature
+from lerobot.processor import TransitionKey, UnnormalizerProcessorStep
+from lerobot.processor.converters import create_transition
 from lerobot.rollout.inference.oracle_evaluation import (
     ActionTriplet,
     OracleAnchorCandidate,
@@ -27,10 +30,13 @@ from lerobot.rollout.inference.oracle_evaluation import (
     PairedActionErrors,
     aggregate_by_delay,
     make_evaluation_record,
+    postprocess_action_triplet,
+    remap_checkpoint_action_stats,
     run_with_shared_noise,
     select_common_anchor_ids,
     slice_temporal_sample,
 )
+from lerobot.utils.constants import ACTION
 
 _FRONT = "observation.images.front"
 _WRIST = "observation.images.wrist"
@@ -151,6 +157,87 @@ def test_run_with_shared_noise_gives_each_path_an_independent_equal_clone() -> N
     torch.testing.assert_close(outputs.current, noise + 1)
     torch.testing.assert_close(outputs.oracle_visual, noise + 2)
     torch.testing.assert_close(outputs.full_future_teacher, noise + 3)
+
+
+def test_remap_checkpoint_action_stats_selects_only_the_approved_embodiment() -> None:
+    checkpoint_stats = {
+        "so100.buffer.action.mean": torch.tensor([10.0, -5.0]),
+        "so100.buffer.action.std": torch.tensor([2.0, 4.0]),
+        "so100-blue.buffer.action.mean": torch.tensor([100.0, 100.0]),
+        "so100-blue.buffer.action.std": torch.tensor([10.0, 10.0]),
+    }
+
+    mapped = remap_checkpoint_action_stats(
+        checkpoint_stats,
+        source_key="so100.buffer.action",
+        action_dim=2,
+    )
+
+    torch.testing.assert_close(mapped[ACTION]["mean"], torch.tensor([10.0, -5.0]))
+    torch.testing.assert_close(mapped[ACTION]["std"], torch.tensor([2.0, 4.0]))
+    mapped[ACTION]["mean"][0] = -100
+    assert checkpoint_stats["so100.buffer.action.mean"][0].item() == 10.0
+
+
+def test_remap_checkpoint_action_stats_fails_when_approved_stats_are_missing() -> None:
+    checkpoint_stats = {
+        "so100-blue.buffer.action.mean": torch.zeros(2),
+        "so100-blue.buffer.action.std": torch.ones(2),
+    }
+
+    with pytest.raises(OracleEvaluationError, match=r"missing.*so100\.buffer\.action\.mean"):
+        remap_checkpoint_action_stats(
+            checkpoint_stats,
+            source_key="so100.buffer.action",
+            action_dim=2,
+        )
+
+
+def test_remap_checkpoint_action_stats_fails_on_wrong_action_dimension() -> None:
+    checkpoint_stats = {
+        "so100.buffer.action.mean": torch.zeros(3),
+        "so100.buffer.action.std": torch.ones(3),
+    }
+
+    with pytest.raises(OracleEvaluationError, match=r"shape \(2,\).*got \(3,\)"):
+        remap_checkpoint_action_stats(
+            checkpoint_stats,
+            source_key="so100.buffer.action",
+            action_dim=2,
+        )
+
+
+def test_checkpoint_postprocessing_is_non_identity_and_keeps_policy_output_unchanged() -> None:
+    mapped_stats = remap_checkpoint_action_stats(
+        {
+            "so100.buffer.action.mean": torch.tensor([10.0, -5.0]),
+            "so100.buffer.action.std": torch.tensor([2.0, 4.0]),
+        },
+        source_key="so100.buffer.action",
+        action_dim=2,
+    )
+    unnormalizer = UnnormalizerProcessorStep(
+        features={ACTION: PolicyFeature(FeatureType.ACTION, (2,))},
+        norm_map={FeatureType.ACTION: NormalizationMode.MEAN_STD},
+        stats=mapped_stats,
+    )
+
+    def postprocessor(action: torch.Tensor) -> torch.Tensor:
+        return unnormalizer(create_transition(action=action))[TransitionKey.ACTION]
+
+    policy_output = ActionTriplet(
+        current=torch.tensor([[[1.0, 2.0]]]),
+        oracle_visual=torch.tensor([[[0.5, -0.5]]]),
+        full_future_teacher=torch.tensor([[[0.0, 1.0]]]),
+    )
+    original_chunks = tuple(chunk.clone() for chunk in policy_output.__dict__.values())
+
+    post_policy = postprocess_action_triplet(postprocessor, policy_output)
+
+    torch.testing.assert_close(post_policy.current, torch.tensor([[[12.0, 3.0]]]))
+    assert not torch.equal(post_policy.current, policy_output.current)
+    for chunk, original in zip(policy_output.__dict__.values(), original_chunks, strict=True):
+        torch.testing.assert_close(chunk, original)
 
 
 def _errors(current_l1: float, current_l2: float, oracle_l1: float, oracle_l2: float):

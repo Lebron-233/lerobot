@@ -32,6 +32,7 @@ import argparse
 import json
 import logging
 import platform
+import shutil
 import subprocess
 import sys
 import time
@@ -44,6 +45,7 @@ from typing import Any
 
 import torch
 from huggingface_hub import snapshot_download
+from safetensors.torch import load_file
 from torch import Tensor
 
 import lerobot.policies  # noqa: F401 - registers policy/config subclasses
@@ -53,11 +55,12 @@ from lerobot.datasets.lerobot_dataset import LeRobotDataset
 from lerobot.policies.factory import get_policy_class, make_pre_post_processors
 from lerobot.rollout.inference.oracle_context import encode_oracle_future_tokens
 from lerobot.rollout.inference.oracle_evaluation import (
-    ActionTriplet,
     OracleAnchorCandidate,
     OracleEvaluationRecord,
     aggregate_by_delay,
     make_evaluation_record,
+    postprocess_action_triplet,
+    remap_checkpoint_action_stats,
     run_with_shared_noise,
     select_common_anchor_ids,
     slice_temporal_sample,
@@ -84,6 +87,9 @@ APPROVED_PRIMARY_DELAYS = tuple(range(1, 9))
 APPROVED_DIAGNOSTIC_DELAYS = (12, 16, 20)
 APPROVED_DELAYS = APPROVED_PRIMARY_DELAYS + APPROVED_DIAGNOSTIC_DELAYS
 VIDEO_BACKEND = "pyav"
+POSTPROCESSOR_STATE_FILE = "policy_postprocessor_step_0_unnormalizer_processor.safetensors"
+POSTPROCESSOR_STATS_EMBODIMENT = "so100"
+POSTPROCESSOR_STATS_SOURCE_KEY = "so100.buffer.action"
 
 
 def parse_args() -> argparse.Namespace:
@@ -211,26 +217,34 @@ def _build_processors(config, *, checkpoint_snapshot: Path, vlm_snapshot: Path, 
         "tokenizer_processor": {"tokenizer_name": str(vlm_snapshot)},
         "device_processor": {"device": device},
     }
+    action_feature = config.action_feature
+    if action_feature is None:
+        raise ValueError("SmolVLA checkpoint config is missing the action output feature")
+    processor_state = load_file(str(checkpoint_snapshot / POSTPROCESSOR_STATE_FILE), device="cpu")
+    checkpoint_action_stats = remap_checkpoint_action_stats(
+        processor_state,
+        source_key=POSTPROCESSOR_STATS_SOURCE_KEY,
+        action_dim=action_feature.shape[0],
+    )
+    postprocessor_overrides = {
+        "unnormalizer_processor": {"stats": checkpoint_action_stats},
+    }
     preprocessor, postprocessor = make_pre_post_processors(
         policy_cfg=config,
         pretrained_path=str(checkpoint_snapshot),
         preprocessor_overrides=preprocessor_overrides,
+        postprocessor_overrides=postprocessor_overrides,
     )
     return preprocessor, postprocessor, rename_map, preprocessor_overrides
 
 
-def _postprocess_triplet(postprocessor, actions: ActionTriplet) -> ActionTriplet:
-    return ActionTriplet(
-        current=postprocessor(actions.current.clone()),
-        oracle_visual=postprocessor(actions.oracle_visual.clone()),
-        full_future_teacher=postprocessor(actions.full_future_teacher.clone()),
-    )
-
-
 def _git_sha() -> str:
     repo_root = Path(__file__).resolve().parents[3]
+    git = shutil.which("git")
+    if git is None:
+        raise RuntimeError("git is required to record the evaluation commit in the manifest")
     return subprocess.run(
-        ["git", "rev-parse", "HEAD"],
+        [git, "rev-parse", "HEAD"],
         cwd=repo_root,
         check=True,
         capture_output=True,
@@ -406,7 +420,7 @@ def main() -> None:
                         _clone_mapping(batch), noise=path_noise
                     ),
                 )
-                post_policy = _postprocess_triplet(postprocessor, policy_output)
+                post_policy = postprocess_action_triplet(postprocessor, policy_output)
                 record = make_evaluation_record(
                     anchor_id=candidate.anchor_id,
                     episode_index=candidate.episode_index,
@@ -492,6 +506,11 @@ def main() -> None:
             "boundary_filtered_count": len(candidates) - valid_candidate_count,
             "per_delay_sample_count": len(selected_candidates),
             "total_record_count": len(records),
+            "path_sample_counts": {
+                "current": len(records),
+                "oracle_visual": len(records),
+                "full_future_teacher": len(records),
+            },
             "noise_contract": (
                 "one noise per anchor, reused across delays; three independent clones per paired record"
             ),
@@ -508,6 +527,15 @@ def main() -> None:
             "preprocessor_config": "policy_preprocessor.json",
             "postprocessor_config": "policy_postprocessor.json",
             "preprocessor_overrides": preprocessor_overrides,
+            "postprocessor_action_stats": {
+                "embodiment": POSTPROCESSOR_STATS_EMBODIMENT,
+                "source_repo_id": CHECKPOINT_REPO_ID,
+                "source_revision": CHECKPOINT_REVISION,
+                "state_file": POSTPROCESSOR_STATE_FILE,
+                "source_key": POSTPROCESSOR_STATS_SOURCE_KEY,
+                "target_key": ACTION,
+                "dataset_stats_used": False,
+            },
             "post_policy_definition": (
                 "the same checkpoint postprocessor applied to all three policy-output chunks"
             ),
