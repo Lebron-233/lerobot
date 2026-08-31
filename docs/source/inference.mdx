@@ -201,7 +201,9 @@ Teleop is optional — if omitted the robot holds its position during the reset 
 
 ## Inference Backends
 
-Select a backend with `--inference.type=<name>`. All strategies work with both backends.
+Select a backend with `--inference.type=<name>`. All strategies use the same
+backend interface, although individual backends may support only specific
+policies or action representations.
 
 ### Sync (default)
 
@@ -239,6 +241,107 @@ lerobot-rollout \
 | `--inference.queue_threshold`               | Backpressure threshold; trained RTC requires at least its maximum delay        |
 
 See the [Real-Time Chunking](./rtc) guide for details on tuning RTC parameters.
+
+### Predictive async for SmolVLA
+
+This experimental local backend schedules each SmolVLA chunk for an absolute
+future takeover index. A single background worker estimates inference delay
+from earlier requests, snapshots the committed prefix, and generates the next
+chunk with SmolVLA's future-context token API. Unlike the separate
+[client/server async inference](./async) system, it runs inside
+`lerobot-rollout` and owns a local scheduled action queue.
+
+PR-1 provides live `identity` context: it reuses the current model-ready image
+tokens and state to exercise the scheduled takeover contract, without claiming
+learned future prediction. `oracle` is reserved for an explicit offline/test
+provider and is rejected by live rollout. `predicted` is not implemented yet.
+
+Offline dataset replay can call `encode_oracle_future_tokens()` on a
+preprocessed temporal sample whose camera `delta_timestamps` cover `t+d`. The
+helper selects the true future frame in policy camera order and rejects any
+`*_is_pad` episode-tail frame instead of treating the dataset's clamped last
+frame as an oracle. It returns token kwargs for `predict_action_chunk()` and is
+never constructed by the live backend.
+
+```bash
+lerobot-rollout \
+    --strategy.type=base \
+    --inference.type=predictive_async \
+    --inference.context_mode=identity \
+    --inference.latency_quantile=0.9 \
+    --inference.delay_safety_margin_steps=1 \
+    --inference.max_prediction_delay=8 \
+    --inference.committed_guard_steps=2 \
+    --inference.max_late_steps=2 \
+    --policy.path=lerobot/smolvla_base \
+    --robot.type=so100_follower \
+    --robot.port=/dev/ttyACM0 \
+    --robot.cameras="{ front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30}}" \
+    --task="Pick up the cube" \
+    --duration=60 \
+    --device=cuda
+```
+
+| Flag                                    | Meaning                                                                                       |
+| --------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `--inference.queue_threshold`           | Start another request when the available queue reaches this threshold (default: 30)           |
+| `--inference.latency_quantile`          | Quantile of earlier request latencies used for planning (default: 0.9)                        |
+| `--inference.latency_window`            | Number of recent latency samples retained (default: 50)                                       |
+| `--inference.delay_safety_margin_steps` | Extra control ticks added to the latency estimate (default: 1)                                |
+| `--inference.min_prediction_delay`      | Lower planning bound when enough committed actions remain (default: 0)                        |
+| `--inference.max_prediction_delay`      | Largest future horizon supported by the predictor contract (default: 8)                       |
+| `--inference.committed_guard_steps`     | Old active actions retained beyond the planned takeover (default: 2)                          |
+| `--inference.max_late_steps`            | Bound used to size the guard; reserved for a future compensated-late mode (default: 2)        |
+| `--inference.context_mode`              | Live PR-1 supports `identity`; `oracle` is offline/test-only and `predicted` is not available |
+| `--inference.fallback_mode`             | On an unserviceable plan, use an identity bootstrap when empty or wait/discard                |
+
+`committed_guard_steps` must be at least `max_late_steps`; both default to 2.
+This does **not** make a late predictive chunk acceptable. If a result arrives
+even one tick after its takeover index, the backend records a deadline miss and
+discards the entire new chunk. It never skips that chunk's prefix as though the
+robot had executed it: the robot actually executed old guard actions during
+those ticks. If no old action remains, the queue returns an underflow; the
+generic backend does not invent hold-last or robot-specific safe-stop behavior.
+
+The planner reports three distinct values:
+
+- `raw_required_delay_steps`: the quantile latency converted to control ticks,
+  plus the configured safety margin.
+- `planned_delay_steps`: the bounded takeover offset allowed by the configured
+  predictor horizon and currently committed actions.
+- `prediction_cap_exceeded`: whether the raw requirement exceeds
+  `max_prediction_delay`.
+
+When the cap is exceeded, a clamped number is not treated as valid predictive
+coverage. The backend uses the configured identity/baseline fallback when
+possible or waits for another feasible request.
+
+`next_action_index` is absolute and increases only after a successful action
+get for the lifetime of one engine. Reset clears the queue but does not rewind
+the index. Task changes advance a separate monotonic `task_epoch`, including an
+A→B→A sequence. A change invalidates an in-flight plan and staged result; old
+active actions may finish and retain the task provenance under which they were
+generated.
+
+The frozen plan names its two action views `committed_policy_actions` and
+`committed_post_policy_actions`. The latter is the output of the policy
+postprocessor, before any `ActionInterpolator` or robot action processor; it is
+not a claim that the values are final physical/executable commands.
+
+Predictive async currently fails fast when the policy pipeline contains a
+relative-action processor. Future-takeover anchor/rebase semantics are not yet
+defined; use `--inference.type=rtc` or an absolute-action pipeline instead.
+
+#### SmolVLA future-context API contract
+
+`SmolVLAPolicy.predict_action_chunk()` accepts image-token overrides as an
+ordered tuple in policy camera-feature order. Tokens are native encoder outputs
+after SmolVLA's `sqrt(hidden_dim)` scaling and are paired with boolean masks;
+the override path does not scale them again and can run without RGB in the
+batch. A supplied `future_state` must already have policy adaptation,
+normalization, and padding applied, and must match the normal model-ready state
+in shape, dtype, and device. The policy does not repeat or infer that state
+preprocessing.
 
 ---
 

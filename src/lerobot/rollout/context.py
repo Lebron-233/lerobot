@@ -55,6 +55,7 @@ from lerobot.utils.import_utils import _peft_available, require_package
 from .configs import BaseStrategyConfig, DAggerStrategyConfig, RolloutConfig
 from .inference import (
     InferenceEngine,
+    PredictiveAsyncInferenceConfig,
     RTCInferenceConfig,
     SyncInferenceConfig,
     create_inference_engine,
@@ -310,10 +311,23 @@ def build_rollout_context(
     fails fast without touching the robot.
     """
     is_rtc = isinstance(cfg.inference, RTCInferenceConfig)
+    is_predictive_async = isinstance(cfg.inference, PredictiveAsyncInferenceConfig)
 
     # --- 1. Policy (heavy I/O, but no hardware yet) -------------------
     logger.info("Loading policy from '%s'...", cfg.policy.pretrained_path)
     policy_config = cfg.policy
+
+    if is_predictive_async:
+        if policy_config.type != "smolvla":
+            raise ValueError(
+                f"Predictive async rollout currently requires a SmolVLA policy, got {policy_config.type!r}"
+            )
+        if cfg.inference.context_mode == "oracle":
+            raise ValueError("context_mode='oracle' is offline-only and cannot be used by live rollout")
+        if cfg.inference.context_mode == "predicted":
+            raise NotImplementedError(
+                "context_mode='predicted' is implemented in the learned-predictor milestone"
+            )
 
     if is_rtc:
         _validate_trained_rtc_rollout_config(policy_config, cfg.inference)
@@ -559,11 +573,26 @@ def build_rollout_context(
         ),
         None,
     )
+    relative_action_error: str | None = None
     if isinstance(cfg.inference, SyncInferenceConfig) and relative_action_step is not None:
-        raise NotImplementedError(
-            "SyncInferenceEngine does not support policies with relative actions for now."
+        relative_action_error = (
+            "SyncInferenceEngine does not support policies with relative actions for now. "
             "Use --inference.type=rtc or remove relative action processor steps from the policy pipeline."
         )
+    elif is_predictive_async and relative_action_step is not None:
+        relative_action_error = (
+            "PredictiveAsyncInferenceEngine does not yet define relative-action anchor/rebase semantics. "
+            "Use --inference.type=rtc or remove relative action processor steps from the policy pipeline."
+        )
+    if relative_action_error is not None:
+        # Saved processor metadata is only available after processor construction,
+        # which currently follows hardware feature discovery. Do not leave hardware
+        # connected when this supported configuration check rejects the backend.
+        if teleop is not None and teleop.is_connected:
+            teleop.disconnect()
+        if robot.is_connected:
+            robot.disconnect()
+        raise NotImplementedError(relative_action_error)
 
     # --- 7. Inference strategy (needs policy + pre/post + hardware) --
     logger.info(

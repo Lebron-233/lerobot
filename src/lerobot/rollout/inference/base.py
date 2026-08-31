@@ -117,6 +117,8 @@ class InferenceEngine(abc.ABC):
 
     def __init__(self, task: str = "") -> None:
         self._task = task
+        # The constructor establishes epoch zero; each later task change advances it.
+        self._task_epoch = 0
         self._task_changed = False
         self._dispatched_task = task
         self._task_lock = Lock()
@@ -146,6 +148,18 @@ class InferenceEngine(abc.ABC):
         with self._task_lock:
             return self._task
 
+    @property
+    def task_snapshot(self) -> tuple[str, int]:
+        """Atomically return the requested task and its monotonic epoch.
+
+        A newly constructed engine starts at epoch zero.  Every successful
+        :meth:`set_task` advances the epoch, including a later return to a previously
+        used task string.  Repeating the current task is still a no-op, matching
+        :meth:`set_task`'s existing changed-edge contract.
+        """
+        with self._task_lock:
+            return self._task, self._task_epoch
+
     def set_task(self, task: str) -> bool:
         """Set the instruction used from the next inference onwards.
 
@@ -155,6 +169,7 @@ class InferenceEngine(abc.ABC):
             if task == self._task:
                 return False
             previous, self._task = self._task, task
+            self._task_epoch += 1
             self._task_changed = True
         logger.info("Task changed: '%s' -> '%s'", previous, task)
         return True
