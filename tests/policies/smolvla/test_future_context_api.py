@@ -29,6 +29,11 @@ import torch
 import torch.nn.functional as F  # noqa: N812
 from torch import Tensor, nn
 
+pytest.importorskip(
+    "transformers",
+    reason="SmolVLA tests require the `smolvla` extra (transformers)",
+)
+
 from lerobot.configs.types import FeatureType, PolicyFeature
 from lerobot.policies.smolvla.configuration_smolvla import SmolVLAConfig
 from lerobot.policies.smolvla.modeling_smolvla import SmolVLAPolicy
