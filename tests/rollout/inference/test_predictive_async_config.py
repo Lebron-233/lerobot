@@ -17,6 +17,8 @@ from types import SimpleNamespace
 
 import pytest
 
+pytest.importorskip("datasets", reason="datasets is required (install lerobot[dataset])")
+
 from lerobot.rollout import context as rollout_context
 from lerobot.rollout.inference import factory
 from lerobot.rollout.inference.factory import PredictiveAsyncInferenceConfig

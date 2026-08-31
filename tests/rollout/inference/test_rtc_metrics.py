@@ -25,6 +25,8 @@ from types import SimpleNamespace
 import pytest
 import torch
 
+pytest.importorskip("datasets", reason="datasets is required (install lerobot[dataset])")
+
 from lerobot.policies.rtc.configuration_rtc import RTCConfig
 from lerobot.rollout.inference import factory
 from lerobot.rollout.inference.factory import RTCInferenceConfig

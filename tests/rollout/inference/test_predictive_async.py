@@ -21,6 +21,8 @@ from types import SimpleNamespace
 import pytest
 import torch
 
+pytest.importorskip("datasets", reason="datasets is required (install lerobot[dataset])")
+
 from lerobot.policies.rtc.scheduled_action_queue import InstallOutcome
 from lerobot.processor import RelativeActionsProcessorStep
 from lerobot.rollout.inference import predictive_async

@@ -19,6 +19,8 @@ from pathlib import Path
 
 import pytest
 
+pytest.importorskip("datasets", reason="datasets is required (install lerobot[dataset])")
+
 from lerobot.policies.rtc.latency_tracker import LatencyTracker
 from lerobot.rollout.inference.latency_replay import compute_delay_plan, replay_latencies
 

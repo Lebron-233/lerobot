@@ -17,7 +17,10 @@ from __future__ import annotations
 from threading import Event, Thread
 from types import SimpleNamespace
 
+import pytest
 import torch
+
+pytest.importorskip("datasets", reason="datasets is required (install lerobot[dataset])")
 
 from lerobot.rollout.inference.predictive_async import PredictiveAsyncInferenceEngine
 

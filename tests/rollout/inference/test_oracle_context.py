@@ -17,6 +17,8 @@ from types import SimpleNamespace
 import pytest
 import torch
 
+pytest.importorskip("datasets", reason="datasets is required (install lerobot[dataset])")
+
 from lerobot.rollout.inference.oracle_context import (
     OracleContextUnavailableError,
     encode_oracle_future_tokens,

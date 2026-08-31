@@ -17,6 +17,8 @@ from concurrent.futures import ThreadPoolExecutor
 
 import pytest
 
+pytest.importorskip("datasets", reason="datasets is required (install lerobot[dataset])")
+
 from lerobot.rollout.inference.metrics import JsonlMetricsSink
 
 
