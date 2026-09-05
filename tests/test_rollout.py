@@ -799,6 +799,177 @@ def _make_sentry(ctx, multiplier: int):
     return strategy
 
 
+@pytest.mark.parametrize(
+    "loop",
+    ["base", "sentry", "highlight", "episodic", "dagger_continuous", "dagger_corrections_only"],
+)
+def test_predicted_startup_blocks_strategy_get_until_fresh_bootstrap(loop, clock):
+    from lerobot.rollout import (
+        BaseStrategyConfig,
+        DAggerStrategyConfig,
+        EpisodicStrategyConfig,
+        HighlightStrategyConfig,
+        SentryStrategyConfig,
+    )
+    from lerobot.rollout.ring_buffer import RolloutRingBuffer
+    from lerobot.rollout.strategies import (
+        BaseStrategy,
+        DAggerStrategy,
+        EpisodicStrategy,
+        HighlightStrategy,
+        SentryStrategy,
+    )
+    from lerobot.utils.action_interpolator import ActionInterpolator
+
+    ctx, dataset = _make_loop_ctx(fps=30.0, multiplier=1, num_ticks=4)
+    engine = ctx.policy.inference
+    engine.ready = False
+    engine.failed = False
+    factories = {
+        "base": lambda: BaseStrategy(BaseStrategyConfig()),
+        "sentry": lambda: SentryStrategy(SentryStrategyConfig()),
+        "highlight": lambda: HighlightStrategy(HighlightStrategyConfig()),
+        "episodic": lambda: EpisodicStrategy(EpisodicStrategyConfig()),
+        "dagger_continuous": lambda: DAggerStrategy(
+            DAggerStrategyConfig(record_autonomous=True, num_episodes=1)
+        ),
+        "dagger_corrections_only": lambda: DAggerStrategy(
+            DAggerStrategyConfig(record_autonomous=False, num_episodes=1)
+        ),
+    }
+    strategy = factories[loop]()
+    strategy._engine = engine
+    interpolator = ActionInterpolator(multiplier=1)
+    interpolator.reset = MagicMock(wraps=interpolator.reset)
+    strategy._interpolator = interpolator
+    if loop in {"sentry", "dagger_continuous"}:
+        strategy._episode_duration_s = 1e9
+    ring = None
+    if loop == "highlight":
+        ring = RolloutRingBuffer(max_seconds=10.0, max_memory_mb=64, fps=30.0)
+        strategy._ring = ring
+
+    phases = ["cold_temporary", "probe", "fresh_warmed", "complete"]
+    observed = []
+    initial_calls = []
+
+    def notify(obs):
+        # Every startup tick reaches the real observation processor and notify,
+        # but neither temporary actions nor probe outputs reach the dispatcher.
+        engine.get_action.assert_not_called()
+        ctx.hardware.robot_wrapper.send_action.assert_not_called()
+        dataset.add_frame.assert_not_called()
+        if ring is not None:
+            assert len(ring) == 0
+        assert interpolator.needs_new_action()
+        assert len(clock.sleeps) == len(observed)
+        observed.append(obs["m.pos"])
+        if len(observed) == 1:
+            # DAgger performs its normal reset/resume before the first notify.
+            initial_calls.extend(
+                [engine.reset.call_count, interpolator.reset.call_count, engine.resume.call_count]
+            )
+        engine.startup_phase = phases[len(observed) - 1]
+        engine.ready = engine.startup_phase == "complete"
+
+    def get_fresh_action(_obs_frame):
+        assert engine.startup_phase == "complete"
+        assert observed == [1.0, 2.0, 3.0, 4.0]
+        assert [engine.reset.call_count, interpolator.reset.call_count, engine.resume.call_count] == (
+            initial_calls
+        )
+        return torch.tensor([40.0])
+
+    engine.notify_observation.side_effect = notify
+    engine.get_action.side_effect = get_fresh_action
+    if loop == "episodic":
+        strategy._policy_loop(
+            ctx=ctx,
+            robot=ctx.hardware.robot_wrapper,
+            events={"exit_early": False},
+            features=_LOOP_FEATURES,
+            timer=CycleTimer(30.0, 1),
+            control_time_s=10.0,
+            dataset=dataset,
+            single_task="task",
+        )
+    elif loop == "dagger_continuous":
+        strategy._run_continuous(ctx)
+    elif loop == "dagger_corrections_only":
+        strategy._run_corrections_only(ctx)
+    else:
+        strategy.run(ctx)
+
+    assert observed == [1.0, 2.0, 3.0, 4.0]
+    assert ctx.processors.robot_observation_processor.call_count == 4
+    assert engine.notify_observation.call_count == 4
+    engine.get_action.assert_called_once()
+    ctx.hardware.robot_wrapper.send_action.assert_called_once_with({"m.pos": 40.0})
+    assert [engine.reset.call_count, interpolator.reset.call_count, engine.resume.call_count] == (
+        initial_calls
+    )
+    assert not strategy._warmup_flushed
+    assert len(clock.sleeps) == 4
+    if loop in {"sentry", "episodic", "dagger_continuous"}:
+        assert _recorded_actions(dataset) == [40.0]
+    else:
+        dataset.add_frame.assert_not_called()
+    if ring is not None:
+        assert len(ring) == 1
+
+
+def test_predicted_startup_failure_keeps_strategy_get_blocked(clock):
+    from lerobot.rollout import BaseStrategyConfig
+    from lerobot.rollout.strategies import BaseStrategy
+    from lerobot.utils.action_interpolator import ActionInterpolator
+
+    ctx, dataset = _make_loop_ctx(fps=30.0, multiplier=1, num_ticks=2)
+    engine = ctx.policy.inference
+    engine.ready = False
+    engine.failed = False
+    strategy = BaseStrategy(BaseStrategyConfig())
+    strategy._engine = engine
+    strategy._interpolator = ActionInterpolator(multiplier=1)
+
+    def fail_startup(_obs):
+        engine.failed = True
+        engine.failure_traceback = "startup probe exceeds the runtime cap"
+
+    engine.notify_observation.side_effect = fail_startup
+    with pytest.raises(RuntimeError, match="Inference startup failed: startup probe exceeds"):
+        strategy.run(ctx)
+
+    assert not ctx.runtime.shutdown_event.is_set()
+    assert not engine.ready
+    engine.notify_observation.assert_called_once()
+    engine.get_action.assert_not_called()
+    ctx.hardware.robot_wrapper.get_observation.assert_called_once()
+    ctx.hardware.robot_wrapper.send_action.assert_not_called()
+    dataset.add_frame.assert_not_called()
+    engine.reset.assert_not_called()
+    assert strategy._interpolator.needs_new_action()
+    assert clock.sleeps == []
+
+
+def test_noncompile_ready_backend_does_not_flush_startup_state():
+    from lerobot.rollout import BaseStrategyConfig
+    from lerobot.rollout.strategies import BaseStrategy
+
+    strategy = BaseStrategy(BaseStrategyConfig())
+    strategy._engine = MagicMock(ready=True, failed=False)
+    strategy._interpolator = MagicMock()
+    timer = MagicMock()
+
+    assert strategy._handle_warmup(False, timer) is False
+
+    strategy._engine.reset.assert_not_called()
+    strategy._engine.resume.assert_not_called()
+    strategy._interpolator.reset.assert_not_called()
+    timer.wait.assert_not_called()
+    timer.restart.assert_not_called()
+    assert not strategy._warmup_flushed
+
+
 def test_sentry_records_once_per_interpolation_cycle():
     ctx, dataset = _make_loop_ctx(fps=200.0, multiplier=2, num_ticks=8)
 

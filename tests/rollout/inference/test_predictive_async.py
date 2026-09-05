@@ -15,7 +15,9 @@
 from __future__ import annotations
 
 import json
+import math
 import time
+from contextlib import contextmanager
 from copy import deepcopy
 from threading import Event
 from types import SimpleNamespace
@@ -510,7 +512,15 @@ def _take_pending(engine):
     return request
 
 
+def _mark_candidate_steady(engine) -> None:
+    """Put manually installed steady-state fixtures beyond the real startup tests."""
+    if engine._startup_phase is not None:
+        engine._startup_phase = "complete"
+        engine._ready_event.set()
+
+
 def _candidate_planned_request(engine, delay: int):
+    _mark_candidate_steady(engine)
     count = 2 if delay == 0 else 12
     old_actions = torch.arange(count * 6, dtype=torch.float32).reshape(count, 6) / 10 + 10
     installed = engine.queue.install_active_chunk(
@@ -670,6 +680,7 @@ def test_predicted_cap_exceeded_keeps_existing_empty_queue_behavior(
 ) -> None:
     arguments = _candidate_arguments()
     engine = PredictiveAsyncInferenceEngine(**arguments, fallback_mode=fallback_mode)
+    _mark_candidate_steady(engine)
     if available:
         engine.queue.install_active_chunk(
             torch.zeros(available, 6),
@@ -851,6 +862,813 @@ class _RecordingMetrics:
         self.close_calls += 1
 
 
+class _StartupClock:
+    """A controlled host clock; waiting for the real worker never changes latency."""
+
+    def __init__(self) -> None:
+        self.value = 100.0
+        self.calls = 0
+
+    def __call__(self):
+        self.calls += 1
+        self.value += 0.0001
+        return self.value
+
+
+def _startup_observation(marker: int) -> dict:
+    observation = _candidate_observation()
+    observation[RUNTIME_SCALAR_KEYS[0]] = float(marker)
+    observation["top"].fill(marker)
+    observation["wrist"].fill(255 - marker)
+    return observation
+
+
+def _startup_harness(monkeypatch, *, sink=None, cap=8, fallback_mode="identity"):
+    arguments = _candidate_arguments()
+    arguments["max_prediction_delay"] = cap
+    shutdown = Event()
+    engine = PredictiveAsyncInferenceEngine(
+        **arguments, metrics_sink=sink, shutdown_event=shutdown, fallback_mode=fallback_mode
+    )
+    clock = _StartupClock()
+    harness = SimpleNamespace(
+        engine=engine,
+        arguments=arguments,
+        sink=sink,
+        shutdown=shutdown,
+        clock=clock,
+        requests=[],
+        finished=[],
+        active=None,
+        clock_counts={},
+        policy_attempts=[],
+        outputs={},
+        publications=[],
+        syncs=[],
+        durations={"cold_temporary": 0.6, "probe": 0.005, "fresh_warmed": 0.4},
+        fail=None,
+        nonfinite=None,
+        block_phase=None,
+        block_request_id=None,
+        entered=Event(),
+        release=Event(),
+        fail_after_release=False,
+    )
+    monkeypatch.setattr(predictive_async, "time", SimpleNamespace(perf_counter=clock, sleep=time.sleep))
+    run = engine._run_request
+    policy = arguments["policy"]
+    predict = policy.predict_action_chunk
+    predictor = arguments["future_latent_predictor"]
+    postprocess = _CandidatePostprocessor.__call__
+
+    def run_request(request):
+        harness.active = request
+        harness.requests.append(request)
+        before = clock.calls
+        try:
+            return run(request)
+        finally:
+            harness.clock_counts[request.request_id] = clock.calls - before
+            harness.finished.append(request.request_id)
+            harness.active = None
+
+    def public_policy(batch, **kwargs):
+        request = harness.active
+        harness.policy_attempts.append(request.request_id)
+        if (
+            request.startup_phase == harness.block_phase and harness.block_phase is not None
+        ) or request.request_id == harness.block_request_id:
+            harness.entered.set()
+            if not harness.release.wait(timeout=3):
+                raise RuntimeError("Synthetic policy was not released")
+            if harness.fail_after_release:
+                raise ValueError("Synthetic public policy failed after interruption")
+        if harness.fail == (request.startup_phase, "policy_total"):
+            raise ValueError("Synthetic policy failure")
+        actions = predict(batch, **kwargs) + batch["observation.state"][0, 0]
+        clock.value += harness.durations.get(request.startup_phase, 0.001)
+        if request.kind == "startup_probe" and harness.nonfinite == "policy":
+            actions[0, 0, 0] = float("nan")
+        harness.outputs[request.request_id] = actions.clone()
+        return actions
+
+    def public_predictor(*args):
+        if harness.fail == (harness.active.startup_phase, "predictor_forward"):
+            raise ValueError("Synthetic predictor failure")
+        return predictor(*args)
+
+    def public_postprocessor(self, actions):
+        if harness.fail == (harness.active.startup_phase, "postprocessor"):
+            raise ValueError("Synthetic postprocessor failure")
+        result = postprocess(self, actions)
+        if harness.active.kind == "startup_probe" and harness.nonfinite == "post_policy":
+            result[0, 0, 0] = float("inf")
+        return result
+
+    def synchronize(device):
+        harness.syncs.append(harness.active.request_id)
+        if harness.active.kind == "startup_probe" and harness.nonfinite == "total":
+            clock.value = float("nan")
+
+    monkeypatch.setattr(engine, "_run_request", run_request)
+    monkeypatch.setattr(policy, "predict_action_chunk", public_policy)
+    monkeypatch.setattr(engine, "_future_latent_predictor", public_predictor)
+    monkeypatch.setattr(_CandidatePostprocessor, "__call__", public_postprocessor)
+    monkeypatch.setattr(predictive_async, "_synchronize_policy_device", synchronize)
+    for method_name in ("install_active_chunk", "stage_chunk"):
+        original = getattr(engine.queue, method_name)
+
+        def publish(*args, _original=original, _name=method_name, **kwargs):
+            harness.publications.append(
+                (None if harness.active is None else harness.active.request_id, _name)
+            )
+            return _original(*args, **kwargs)
+
+        monkeypatch.setattr(engine.queue, method_name, publish)
+    return harness
+
+
+def _submit_startup(harness, marker: int):
+    count = len(harness.finished) + 1
+    harness.engine.notify_observation(_startup_observation(marker))
+    _wait_for(lambda: len(harness.finished) == count and not harness.engine._request_in_flight)
+    return harness.requests[-1]
+
+
+def _startup_evidence(tmp_path, harness, **extra) -> None:
+    """Keep the synthetic inputs, terminal timing and action provenance reviewable."""
+    (tmp_path / "startup_evidence.json").write_text(
+        json.dumps(
+            {
+                "requests": [
+                    {
+                        "id": request.request_id,
+                        "kind": request.kind,
+                        "phase": request.startup_phase,
+                        "reset_epoch": request.reset_epoch,
+                        "task_epoch": request.task_epoch,
+                        "task": request.task,
+                        "observation_marker": request.observation[RUNTIME_SCALAR_KEYS[0]],
+                    }
+                    for request in harness.requests
+                ],
+                "events": [] if harness.sink is None else harness.sink.events,
+                "probe_record": harness.engine._startup_probe_record,
+                "tracker_samples_s": list(harness.engine._latency_tracker._values),
+                "publications": harness.publications,
+                "final_barrier_request_ids": harness.syncs,
+                "policy_attempt_request_ids": harness.policy_attempts,
+                "requests_started": harness.engine.stats.requests_started,
+                "queue_reset_epoch": harness.engine.queue.reset_epoch,
+                "queue_task_epoch": harness.engine.queue.task_epoch,
+                "next_action_index": harness.engine.queue.next_action_index,
+                "phase": harness.engine._startup_phase,
+                "ready": harness.engine.ready,
+                "failed": harness.engine.failed,
+                **extra,
+            },
+            indent=2,
+        )
+    )
+
+
+@pytest.mark.parametrize("fallback_mode", ["identity", "discard"])
+def test_predicted_startup_cold_is_temporary_and_not_admitted(monkeypatch, tmp_path, fallback_mode):
+    harness = _startup_harness(monkeypatch, sink=_RecordingMetrics(), fallback_mode=fallback_mode)
+    engine = harness.engine
+    assert not engine.ready
+    with pytest.raises(RuntimeError, match="cold_temporary"):
+        engine.get_action(None)
+    engine.start()
+    engine.resume()
+    try:
+        cold = _submit_startup(harness, 10)
+        assert (cold.request_id, cold.kind, cold.startup_phase) == (0, "bootstrap", "cold_temporary")
+        assert engine._startup_phase == "probe" and not engine.ready
+        assert engine.queue.qsize() == 12
+        assert len(engine._latency_tracker) == 0
+        assert harness.arguments["policy"].kwargs == [{}]
+        assert harness.arguments["policy"].model.encode_calls == 1
+        assert harness.arguments["future_latent_predictor"].calls == []
+        with pytest.raises(RuntimeError, match="probe"):
+            engine.get_action(None)
+        assert engine.queue.next_action_index == 0
+        assert engine.stats.underflows == 0
+        assert engine.stats.requests_started == engine.stats.bootstrap_requests == 1
+        assert engine.stats.planned_requests == 0
+        assert harness.sink.events[0]["total_chunk_s"] > 0.6
+        assert not harness.sink.events[0]["latency_tracker_admitted"]
+        assert [event["event"] for event in harness.sink.events] == ["chunk_request"]
+        assert len(harness.requests) == 1 and engine._pending_request is None
+        _startup_evidence(tmp_path, harness, temporary_policy_actions=harness.outputs[0][0].tolist())
+    finally:
+        engine.stop()
+
+
+def test_predicted_startup_probe_uses_fresh_observation_and_true_d8_prefix(monkeypatch, tmp_path):
+    harness = _startup_harness(monkeypatch, sink=_RecordingMetrics(), cap=3)
+    engine = harness.engine
+    engine._queue_threshold = 0
+    creations = []
+    create = engine.queue.create_takeover_plan
+
+    def create_plan(**kwargs):
+        result = create(**kwargs)
+        creations.append((kwargs, result.plan))
+        return result
+
+    monkeypatch.setattr(engine.queue, "create_takeover_plan", create_plan)
+    engine.start()
+    engine.resume()
+    try:
+        _submit_startup(harness, 10)
+        assert engine.stats.requests_started == 1
+        probe = _submit_startup(harness, 20)
+        assert probe.kind == "startup_probe" and probe.startup_phase == "probe"
+        assert len(creations) == 1
+        kwargs, plan = creations[0]
+        assert kwargs["planned_delay_steps"] == kwargs["max_prediction_delay"] == 8
+        assert kwargs["committed_guard_steps"] == engine._committed_guard_steps
+        assert (plan.request_id, plan.reset_epoch, plan.task_epoch, plan.task) == (1, 0, 0, "task A")
+        assert plan.next_action_index == 0 and plan.takeover_index == 8
+        assert torch.equal(plan.committed_policy_actions, harness.outputs[0][0, :8])
+        assert plan.committed_mask.tolist() == [True] * 8
+        predictor = harness.arguments["future_latent_predictor"]
+        assert len(predictor.calls) == 1
+        tokens, masks, actions, action_mask, state, delay = predictor.calls[0]
+        assert torch.equal(actions[0], harness.outputs[0][0, :8])
+        assert action_mask.tolist() == [[True] * 8] and delay.tolist() == [8]
+        assert state.shape == (1, 32) and state[0, 0].item() == 20
+        assert torch.count_nonzero(state[0, 6:]) == 0
+        policy = harness.arguments["policy"]
+        assert policy.model.encode_calls == policy.prepare_image_calls == 2
+        assert policy.prepare_state_calls == 1 and len(policy.kwargs) == 2
+        assert policy.batches[1][POLICY_CAMERA_KEYS[0]].mean().item() == pytest.approx(20 / 255)
+        assert policy.batches[1][POLICY_CAMERA_KEYS[1]].mean().item() == pytest.approx(235 / 255)
+        assert policy.kwargs[1]["future_image_token_masks"] is masks
+        for token, residual, future in zip(
+            tokens, predictor.prediction.delta_tokens, policy.kwargs[1]["future_image_tokens"], strict=True
+        ):
+            assert torch.equal(future, (token.float() + residual.float()).to(token.dtype))
+        assert harness.publications == [(0, "install_active_chunk")]
+        assert harness.syncs == [0, 1]
+        assert engine.last_delay_plan is None and engine.stats.planned_requests == 0
+        assert not any(event["event"] == "planner_decision" for event in harness.sink.events)
+        record = engine._startup_probe_record
+        assert record["outcome"] == "probe_discarded"
+        assert record["planned_delay_steps"] == 8
+        assert (record["plan_next_action_index"], record["takeover_index"]) == (0, 8)
+        assert all(
+            record[key] is None
+            for key in ("result_next_action_index", "late_steps", "consumed_steps_at_stage")
+        )
+        _startup_evidence(
+            tmp_path, harness, committed_policy_actions=actions[0].tolist(), state=state.tolist()
+        )
+    finally:
+        engine.stop()
+
+
+@pytest.mark.parametrize("cap", [1, 8])
+def test_predicted_startup_pass_preserves_only_seed_and_waits_for_fresh_bootstrap(monkeypatch, tmp_path, cap):
+    harness = _startup_harness(monkeypatch, sink=_RecordingMetrics(), cap=cap, fallback_mode="discard")
+    harness.durations["probe"] = (cap - 0.5) / 30
+    engine = harness.engine
+    queue, tracker = engine.queue, engine._latency_tracker
+    reset_calls = []
+    for name in ("policy", "preprocessor", "postprocessor"):
+        monkeypatch.setattr(harness.arguments[name], "reset", lambda _name=name: reset_calls.append(_name))
+    engine.start()
+    engine.resume()
+    try:
+        _submit_startup(harness, 10)
+        _submit_startup(harness, 20)
+        record = engine._startup_probe_record
+        seed = record["total_chunk_s"]
+        assert record["startup_gate_raw_required_delay_steps"] == cap
+        assert record["startup_gate_outcome"] == "passed" and record["latency_tracker_admitted"]
+        assert list(tracker._values) == [seed]
+        assert engine._startup_phase == "fresh_warmed" and not engine.ready
+        assert engine._reset_epoch == queue.reset_epoch == record["startup_queue_reset_epoch_after"] == 1
+        assert queue.qsize() == 0 and queue.plan_snapshot() is None and not queue.has_staged_chunk()
+        assert queue.next_action_index == 0
+        assert reset_calls == [] and engine.queue is queue and engine._latency_tracker is tracker
+        assert engine._pending_request is None and len(harness.requests) == 2
+        with pytest.raises(RuntimeError, match="fresh_warmed"):
+            engine.get_action(None)
+        fresh = _submit_startup(harness, 30)
+        assert (fresh.request_id, fresh.kind, fresh.reset_epoch) == (2, "bootstrap", 1)
+        assert engine._startup_phase == "complete" and engine.ready
+        assert list(tracker._values) == [seed]
+        assert harness.arguments["policy"].kwargs[2] == {}
+        assert engine.stats.requests_started == 3 and engine.stats.bootstrap_requests == 2
+        assert engine.stats.planned_requests == 0 and engine.stats.prediction_cap_exceeded == 0
+        first_action = engine.get_action(None)
+        assert torch.equal(first_action, harness.outputs[2][0, 0] + 1000)
+        assert not torch.equal(first_action, harness.outputs[0][0, 0] + 1000)
+        assert not torch.equal(first_action, harness.outputs[1][0, 0] + 1000)
+        planned = _submit_startup(harness, 40)
+        assert (planned.request_id, planned.kind, planned.reset_epoch) == (3, "planned", 1)
+        assert planned.plan.planned_delay_steps == cap
+        assert planned.plan.next_action_index == 1 and planned.plan.takeover_index == 1 + cap
+        assert len(tracker) == 2 and tracker._values[0] == seed
+        assert reset_calls == []
+        _startup_evidence(tmp_path, harness, actual_cap=cap, first_action=first_action.tolist())
+    finally:
+        engine.stop()
+
+
+@pytest.mark.parametrize(
+    "failure", ["cap", "policy", "post_policy", "total", "phase_missing", "phase_nonfinite"]
+)
+def test_predicted_startup_probe_gate_stops_once(monkeypatch, tmp_path, failure):
+    harness = _startup_harness(monkeypatch, sink=_RecordingMetrics(), cap=3)
+    engine = harness.engine
+    if failure == "cap":
+        harness.durations["probe"] = 3.5 / 30
+    elif failure in ("policy", "post_policy", "total"):
+        harness.nonfinite = failure
+    else:
+        record_phase = engine._record_metrics_phase
+
+        @contextmanager
+        def broken_phase(phase, metrics, cuda_events):
+            with record_phase(phase, metrics, cuda_events):
+                yield
+            if harness.active.kind == "startup_probe" and phase == "vision_encode":
+                metrics["phase_host_wall_s"][phase] = None if failure == "phase_missing" else float("nan")
+
+        monkeypatch.setattr(engine, "_record_metrics_phase", broken_phase)
+    engine.start()
+    engine.resume()
+    try:
+        _submit_startup(harness, 10)
+        _submit_startup(harness, 20)
+        _wait_for(lambda: engine.failed)
+        assert harness.shutdown.is_set() and not engine.ready and engine._startup_phase == "failed"
+        assert engine.failure_traceback
+        assert len(engine._latency_tracker) == 0
+        assert harness.publications == [(0, "install_active_chunk")]
+        assert engine.stats.prediction_cap_exceeded == (failure == "cap")
+        assert engine.stats.deadline_misses == engine.stats.stale_results == 0
+        errors = [event for event in harness.sink.events if event["request_id"] == 1]
+        assert len(errors) == 1 and errors[0]["event"] == "request_error"
+        error = errors[0]
+        assert error["failed_phase"] == "startup_gate"
+        assert not error["latency_tracker_admitted"]
+        expected_gate = (
+            "cap_exceeded"
+            if failure == "cap"
+            else "telemetry_missing"
+            if failure == "phase_missing"
+            else "nonfinite"
+        )
+        assert error["startup_gate_outcome"] == expected_gate
+        if failure == "cap":
+            assert error["startup_gate_raw_required_delay_steps"] == 4
+        assert engine._startup_probe_record["request_id"] == error["request_id"]
+        assert engine._startup_probe_record["startup_gate_outcome"] == expected_gate
+        assert not any(event["event"] == "planner_decision" for event in harness.sink.events)
+        engine.notify_observation(_startup_observation(30))
+        assert engine.stats.requests_started == 2 and len(harness.requests) == 2
+        with pytest.raises(RuntimeError, match="failed"):
+            engine.get_action(None)
+        assert engine.queue.next_action_index == engine.stats.underflows == 0
+        _startup_evidence(tmp_path, harness, failure=failure)
+    finally:
+        engine.stop()
+
+
+@pytest.mark.parametrize(
+    "startup_phase,failed_phase",
+    [
+        ("cold_temporary", "policy_total"),
+        ("probe", "predictor_forward"),
+        ("probe", "policy_total"),
+        ("probe", "postprocessor"),
+        ("fresh_warmed", "policy_total"),
+    ],
+)
+def test_predicted_startup_probe_error_is_fatal_on_first_request(
+    monkeypatch, tmp_path, startup_phase, failed_phase
+):
+    harness = _startup_harness(monkeypatch, sink=_RecordingMetrics())
+    harness.fail = (startup_phase, failed_phase)
+    engine = harness.engine
+    engine.start()
+    engine.resume()
+    try:
+        phases = ["cold_temporary", "probe", "fresh_warmed"]
+        for index in range(phases.index(startup_phase) + 1):
+            _submit_startup(harness, 10 * (index + 1))
+        _wait_for(lambda: engine.failed)
+        assert not engine.ready and harness.shutdown.is_set()
+        errors = [event for event in harness.sink.events if event["event"] == "request_error"]
+        assert len(errors) == 1
+        error = errors[0]
+        assert error["failed_phase"] == failed_phase and error["startup_phase"] == startup_phase
+        assert error["startup_gate_outcome"] == "error" and error["error_type"] == "ValueError"
+        assert not error["latency_tracker_admitted"]
+        assert len(harness.requests) == phases.index(startup_phase) + 1
+        assert engine.stats.requests_started == len(harness.requests)
+        assert len(engine._latency_tracker) == (startup_phase == "fresh_warmed")
+        engine.notify_observation(_startup_observation(40))
+        assert engine._pending_request is None
+        assert sum(event["request_id"] == error["request_id"] for event in harness.sink.events) == 1
+        assert engine.failure_traceback and "Synthetic" in engine.failure_traceback
+        _startup_evidence(tmp_path, harness, injected_failure=list(harness.fail))
+    finally:
+        engine.stop()
+
+
+@pytest.mark.parametrize("sink_mode", ["off", "record", "emit_failure", "close_failure"])
+def test_predicted_startup_probe_internal_record_with_optional_sink(monkeypatch, tmp_path, sink_mode):
+    class OptionalSink(_RecordingMetrics):
+        def emit(self, event):
+            super().emit(event)
+            if sink_mode == "emit_failure":
+                raise OSError("Synthetic metrics emit failure")
+
+        def close(self):
+            super().close()
+            if sink_mode == "close_failure":
+                raise OSError("Synthetic metrics close failure")
+
+    sink = None if sink_mode == "off" else OptionalSink()
+    harness = _startup_harness(monkeypatch, sink=sink)
+    engine = harness.engine
+    engine.start()
+    engine.resume()
+    try:
+        _submit_startup(harness, 10)
+        assert engine._startup_probe_record is None
+        _submit_startup(harness, 20)
+        record = engine._startup_probe_record
+        assert record["schema_version"] == 1 and record["backend"] == "predictive_async"
+        assert record["context_mode"] == "predicted" and record["request_kind"] == "startup_probe"
+        assert record["startup_gate_outcome"] == "passed" and record["latency_tracker_admitted"]
+        assert set(record["phase_host_wall_s"]) == _METRIC_PHASES
+        assert all(math.isfinite(value) and value >= 0 for value in record["phase_host_wall_s"].values())
+        assert record["phase_cuda_stream_elapsed_ms"] is None
+        assert record["predictor_calls"] == 1 and not record["policy_includes_vision"]
+        _submit_startup(harness, 30)
+        assert engine.ready and not engine.failed and not harness.shutdown.is_set()
+        assert engine._startup_probe_record is record
+        if sink is None:
+            assert harness.clock_counts[0] == harness.clock_counts[2] == 1
+            assert harness.clock_counts[1] > 1
+        else:
+            assert [event for event in sink.events if event["request_kind"] == "startup_probe"] == [record]
+            assert len(sink.events) == 3
+    finally:
+        engine.stop()
+    assert not engine.failed and not harness.shutdown.is_set()
+    if sink is not None:
+        assert sink.close_calls == 1
+    _startup_evidence(tmp_path, harness, sink_mode=sink_mode, host_clock_calls=harness.clock_counts)
+
+
+@pytest.mark.parametrize("cuda_timing", ["complete", "missing_phase"])
+def test_predicted_startup_probe_timing_uses_original_final_barrier(monkeypatch, tmp_path, cuda_timing):
+    harness = _startup_harness(monkeypatch)
+    engine = harness.engine
+    engine.start()
+    engine.resume()
+    order = []
+    try:
+        _submit_startup(harness, 10)
+        engine._device = torch.device("cuda:0")
+        stream = object()
+        prepare = predictive_async.prepare_observation_for_inference
+        tensor, zeros, finite, item = torch.tensor, torch.zeros, torch.isfinite, torch.Tensor.item
+        synchronize = predictive_async._synchronize_policy_device
+
+        class FakeEvent:
+            def __init__(self, *, enable_timing):
+                assert enable_timing
+
+            def record(self, actual_stream):
+                assert actual_stream is stream and "barrier" not in order
+                order.append("record")
+
+            def elapsed_time(self, other):
+                assert "barrier" in order
+                order.append("elapsed")
+                if cuda_timing == "missing_phase" and order.count("elapsed") == 1:
+                    raise RuntimeError("Synthetic CUDA event elapsed is unavailable")
+                return 0.25
+
+        def cpu_factory(factory):
+            def allocate(*args, **kwargs):
+                if torch.device(kwargs.get("device", "cpu")).type == "cuda":
+                    kwargs["device"] = "cpu"
+                return factory(*args, **kwargs)
+
+            return allocate
+
+        def finite_reduction(value):
+            assert "barrier" not in order
+            order.append("finite_enqueued")
+            return finite(value)
+
+        def read_scalar(value, *args):
+            if value.ndim == 0 and value.dtype == torch.bool:
+                assert "barrier" in order
+                order.append("finite_read")
+            return item(value, *args)
+
+        def final_barrier(device):
+            assert device == torch.device("cuda:0")
+            order.append("barrier")
+            synchronize(device)
+
+        monkeypatch.setattr(
+            predictive_async,
+            "prepare_observation_for_inference",
+            lambda batch, device, task, robot: prepare(batch, torch.device("cpu"), task, robot),
+        )
+        monkeypatch.setattr(torch, "tensor", cpu_factory(tensor))
+        monkeypatch.setattr(torch, "zeros", cpu_factory(zeros))
+        monkeypatch.setattr(torch, "isfinite", finite_reduction)
+        monkeypatch.setattr(torch.Tensor, "item", read_scalar)
+        monkeypatch.setattr(torch.cuda, "Event", FakeEvent)
+        monkeypatch.setattr(torch.cuda, "current_stream", lambda device: stream)
+        monkeypatch.setattr(
+            torch.cuda, "synchronize", lambda *args: pytest.fail("Probe added a second CUDA synchronization")
+        )
+        monkeypatch.setattr(predictive_async, "_synchronize_policy_device", final_barrier)
+        _submit_startup(harness, 20)
+        assert order.count("record") == 16 and order.count("elapsed") == 8
+        assert order.count("barrier") == order.count("finite_read") == 1
+        assert order.index("finite_enqueued") < order.index("barrier") < order.index("finite_read")
+        record = engine._startup_probe_record
+        assert set(record["phase_cuda_stream_elapsed_ms"]) == _METRIC_PHASES
+        if cuda_timing == "complete":
+            assert not engine.failed and engine._startup_phase == "fresh_warmed"
+            assert set(record["phase_cuda_stream_elapsed_ms"].values()) == {0.25}
+        else:
+            _wait_for(lambda: engine.failed)
+            assert not engine.ready and harness.shutdown.is_set()
+            assert (
+                record["event"] == "request_error" and record["startup_gate_outcome"] == "telemetry_missing"
+            )
+            assert record["phase_cuda_stream_elapsed_ms"]["observation_preparation"] is None
+            assert len(engine._latency_tracker) == 0
+        assert all(math.isfinite(value) and value >= 0 for value in record["phase_host_wall_s"].values())
+        assert record["total_chunk_s"] == pytest.approx(
+            record["cuda_completed_at_s"] - record["requested_at_s"]
+        )
+        assert record["device_completion_wait_s"] >= 0
+        assert harness.publications == [(0, "install_active_chunk")]
+        _startup_evidence(tmp_path, harness, fake_cuda_order=order, cuda_timing=cuda_timing)
+    finally:
+        engine.stop()
+
+
+@pytest.mark.parametrize(
+    "boundary",
+    [
+        "initial",
+        "noops",
+        "complete_reset",
+        "complete_task",
+        "pending_cold_reset",
+        "pending_probe_task",
+        "pending_fresh_reset",
+        "inflight_cold_task",
+        "inflight_probe_reset",
+        "inflight_fresh_task",
+        "inflight_probe_task_error",
+        "gap_probe_reset",
+        "gap_fresh_task",
+    ],
+)
+def test_predicted_startup_reset_and_task_boundaries(monkeypatch, tmp_path, boundary):
+    class DispatchGate(Event):
+        def __init__(self):
+            super().__init__()
+            self.release = Event()
+            self.release.set()
+            self.blocked = Event()
+
+        def wait(self, timeout=None):
+            signaled = super().wait(timeout)
+            if signaled and not self.release.is_set():
+                self.blocked.set()
+                if not self.release.wait(timeout=3):
+                    raise RuntimeError("Synthetic pending dispatch was not released")
+            return signaled
+
+    harness = _startup_harness(monkeypatch, sink=_RecordingMetrics())
+    engine = harness.engine
+    dispatch = DispatchGate()
+    engine._request_ready = dispatch
+    if boundary == "initial":
+        engine.reset()
+        engine.reset()
+        assert engine.set_task("task B")
+        assert not engine.failed and not engine.ready
+    engine.start()
+    engine.resume()
+    try:
+        if boundary in ("initial", "noops", "complete_reset", "complete_task"):
+            cold = _submit_startup(harness, 10)
+            if boundary == "initial":
+                assert (cold.reset_epoch, cold.task_epoch, cold.task) == (2, 1, "task B")
+            if boundary == "noops":
+                assert not engine.set_task("task A")
+                engine.pause()
+                engine.notify_observation(_startup_observation(15))
+                assert engine.stats.requests_started == 1
+                engine.resume()
+            _submit_startup(harness, 20)
+            _submit_startup(harness, 30)
+            assert engine.ready and not engine.failed
+            seed = list(engine._latency_tracker._values)
+            assert len(seed) == 1
+            record = engine._startup_probe_record
+            if boundary.startswith("complete"):
+                if boundary == "complete_reset":
+                    engine.reset()
+                else:
+                    assert engine.set_task("task B")
+                assert engine.ready and engine._startup_phase == "complete"
+                assert list(engine._latency_tracker._values) == seed
+                followup = _submit_startup(harness, 40)
+                assert followup.startup_phase is None
+                assert followup.kind == ("bootstrap" if boundary == "complete_reset" else "planned")
+                assert engine._startup_probe_record is record
+                assert sum(request.kind == "startup_probe" for request in harness.requests) == 1
+            assert not harness.shutdown.is_set()
+        else:
+            window, phase_name, change, *suffix = boundary.split("_")
+            phase = {"cold": "cold_temporary", "probe": "probe", "fresh": "fresh_warmed"}[phase_name]
+            prerequisites = {"cold": 0, "probe": 1, "fresh": 2}[phase_name]
+            for index in range(prerequisites):
+                _submit_startup(harness, 10 * (index + 1))
+            assert engine._startup_phase == phase
+            before = len(harness.sink.events)
+            cancelled_id = None
+            if window == "pending":
+                dispatch.release.clear()
+                engine.notify_observation(_startup_observation(40))
+                assert dispatch.blocked.wait(timeout=3)
+                pending = engine._pending_request
+                assert pending is not None and pending.startup_phase == phase
+                cancelled_id = pending.request_id
+            elif window == "inflight":
+                harness.block_phase = phase
+                harness.fail_after_release = suffix == ["error"]
+                engine.notify_observation(_startup_observation(40))
+                assert harness.entered.wait(timeout=3)
+                cancelled_id = harness.requests[-1].request_id
+            if change == "reset":
+                engine.reset()
+            else:
+                assert engine.set_task("task B")
+            harness.release.set()
+            dispatch.release.set()
+            _wait_for(lambda: engine.failed and not engine._request_in_flight)
+            _wait_for(lambda: not engine._worker.is_alive())
+            assert not engine.ready and engine._startup_phase == "failed"
+            assert harness.shutdown.is_set() and engine.failure_traceback
+            assert engine._pending_request is None
+            assert len(harness.sink.events) == before + (window != "gap")
+            if cancelled_id is not None:
+                terminals = [event for event in harness.sink.events if event["request_id"] == cancelled_id]
+                assert len(terminals) == 1
+                terminal = terminals[0]
+                assert (
+                    terminal["event"] == "request_error" and terminal["failed_phase"] == "startup_interrupted"
+                )
+                assert (
+                    terminal["error_type"] == "RuntimeError" and terminal["startup_gate_outcome"] == "error"
+                )
+                assert ("reset" if change == "reset" else "task change") in terminal["error_message"]
+                assert not terminal["latency_tracker_admitted"]
+                if window == "pending":
+                    assert all(value is None for value in terminal["phase_host_wall_s"].values())
+                    assert all(
+                        terminal[key] is None
+                        for key in ("started_at_s", "total_chunk_s", "cuda_completed_at_s")
+                    )
+                    assert cancelled_id not in harness.policy_attempts
+                else:
+                    assert terminal["phase_host_wall_s"]["preprocessor"] is not None
+                    assert harness.policy_attempts.count(cancelled_id) == 1
+                    if suffix == ["error"]:
+                        assert terminal["phase_host_wall_s"]["policy_total"] is None
+                        assert terminal["total_chunk_s"] is None
+                    else:
+                        assert terminal["phase_host_wall_s"]["policy_total"] is not None
+                        assert terminal["total_chunk_s"] is not None
+                assert not any(request_id == cancelled_id for request_id, _ in harness.publications)
+            terminal_count = len(harness.sink.events)
+            accepted_count = engine.stats.requests_started
+            engine.reset()
+            engine.set_task("task C")
+            engine.notify_observation(_startup_observation(50))
+            assert len(harness.sink.events) == terminal_count
+            assert engine.stats.requests_started == accepted_count
+            with pytest.raises(RuntimeError, match="failed"):
+                engine.get_action(None)
+            assert engine.queue.next_action_index == engine.stats.underflows == 0
+        _startup_evidence(tmp_path, harness, boundary=boundary)
+    finally:
+        harness.release.set()
+        dispatch.release.set()
+        engine.stop()
+
+
+@pytest.mark.parametrize(
+    "outcome", ["early", "on_time", "late", "reset", "task", "publication_error", "d0", "fallback"]
+)
+def test_predicted_tracker_admits_only_probe_and_positive_planned(monkeypatch, tmp_path, outcome):
+    harness = _startup_harness(monkeypatch, sink=_RecordingMetrics())
+    engine = harness.engine
+    engine.start()
+    engine.resume()
+    try:
+        for marker in (10, 20, 30):
+            _submit_startup(harness, marker)
+        assert engine.ready
+        seed = list(engine._latency_tracker._values)
+        assert len(seed) == 1
+        calls_before = len(harness.arguments["future_latent_predictor"].calls)
+        if outcome in ("d0", "fallback"):
+            remaining = 2 if outcome == "d0" else 0
+            while engine.queue.qsize() > remaining:
+                engine.get_action(None)
+        harness.block_request_id = 3
+        engine.notify_observation(_startup_observation(40))
+        assert harness.entered.wait(timeout=3)
+        request = harness.requests[-1]
+        assert request.request_id == 3 and request.startup_phase is None
+        if outcome == "fallback":
+            assert request.kind == "bootstrap" and request.plan is None
+        else:
+            assert request.kind == "planned"
+            assert request.plan.planned_delay_steps == (0 if outcome == "d0" else 1)
+        if outcome in ("on_time", "late"):
+            for _ in range(1 + (outcome == "late")):
+                engine.get_action(None)
+        elif outcome == "reset":
+            engine.reset()
+        elif outcome == "task":
+            engine.set_task("task B")
+        elif outcome == "publication_error":
+
+            def fail_publication(*args, **kwargs):
+                raise RuntimeError("Synthetic stage publication failure")
+
+            monkeypatch.setattr(engine.queue, "stage_chunk", fail_publication)
+        harness.release.set()
+        _wait_for(lambda: len(harness.finished) == 4 and not engine._request_in_flight)
+        event = [
+            event
+            for event in harness.sink.events
+            if event.get("request_id") == 3 and event["event"] != "planner_decision"
+        ]
+        assert len(event) == 1
+        event = event[0]
+        admitted = outcome not in ("d0", "fallback")
+        assert event["latency_tracker_admitted"] == admitted
+        assert len(engine._latency_tracker) == 1 + admitted
+        assert engine._latency_tracker._values[0] == seed[0]
+        assert len(harness.arguments["future_latent_predictor"].calls) == calls_before + admitted
+        assert not engine.failed and engine._startup_phase == "complete"
+        if outcome == "publication_error":
+            assert event["event"] == "request_error" and event["failed_phase"] == "queue_publication"
+            assert engine._latency_tracker._values[-1] > 0
+        else:
+            expected = {
+                "early": "staged_early",
+                "on_time": "staged_on_time",
+                "late": "deadline_miss",
+                "reset": "stale",
+                "task": "stale",
+                "d0": "staged_on_time",
+                "fallback": "installed",
+            }
+            assert event["outcome"] == expected[outcome]
+            if admitted:
+                assert engine._latency_tracker._values[-1] == event["total_chunk_s"]
+        assert engine.stats.deadline_misses == (outcome == "late")
+        assert engine.stats.stale_results == (outcome in ("reset", "task"))
+        assert (
+            sum(
+                event["latency_tracker_admitted"]
+                for event in harness.sink.events
+                if event["event"] in ("chunk_request", "request_error")
+            )
+            == 1 + admitted
+        )
+        _startup_evidence(tmp_path, harness, planned_outcome=outcome)
+    finally:
+        harness.release.set()
+        engine.stop()
+
+
 def test_predictive_metrics_off_preserves_calls_and_barrier(monkeypatch) -> None:
     arguments = _candidate_arguments()
     engine = PredictiveAsyncInferenceEngine(**arguments)
@@ -925,6 +1743,8 @@ def test_predictive_metrics_request_phases_and_outcomes(case, tmp_path) -> None:
         elif case == "predicted_task":
             engine.set_task("task B")
     else:
+        if case in ("bootstrap", "bootstrap_stale"):
+            _mark_candidate_steady(engine)
         engine.resume()
         if case == "warmup_override":
             engine.notify_observation(_candidate_observation())
@@ -962,7 +1782,9 @@ def test_predictive_metrics_request_phases_and_outcomes(case, tmp_path) -> None:
     assert event["dispatch_wait_s"] == pytest.approx(event["started_at_s"] - request.requested_at)
     assert event["device_completion_wait_s"] >= 0
     assert event["d_actual_wall"] == predictive_async.latency_to_steps(event["total_chunk_s"], engine._fps)
-    assert len(engine._latency_tracker) == tracker_before + (request.kind != "warmup")
+    admitted = request.kind != "warmup" and case not in ("predicted_d0", "bootstrap", "bootstrap_stale")
+    assert event["latency_tracker_admitted"] == admitted
+    assert len(engine._latency_tracker) == tracker_before + admitted
     assert event["underflow_total"] == 0
     if request.plan is None:
         assert event["planned_delay_steps"] is None
@@ -1060,6 +1882,7 @@ def test_predictive_metrics_cap_decision_without_request(case, tmp_path) -> None
     engine = PredictiveAsyncInferenceEngine(
         **arguments, metrics_sink=sink, fallback_mode="discard" if case == "cap_discard" else "identity"
     )
+    _mark_candidate_steady(engine)
     if case in ("cap_wait", "plan_failed"):
         engine.queue.install_active_chunk(
             torch.zeros(12, 6), torch.zeros(12, 6), task="task A", reset_epoch=0, task_epoch=0

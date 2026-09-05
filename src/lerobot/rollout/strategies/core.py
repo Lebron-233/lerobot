@@ -125,20 +125,22 @@ class RolloutStrategy(abc.ABC):
         return self._cached_obs_processed
 
     def _handle_warmup(self, use_torch_compile: bool, timer: CycleTimer) -> bool:
-        """Handle torch.compile warmup phase.
+        """Wait for inference readiness and flush torch.compile warmup state.
 
-        Returns ``True`` if the caller should ``continue`` (still warming
-        up).  Warmup ticks are paced through *timer* so the loop cadence
-        stays anchored.  On the first post-warmup iteration the engine and
-        interpolator are reset so stale warmup state is discarded.
+        Returns ``True`` if the caller should ``continue`` while not ready.
+        Waiting ticks are paced through *timer*.  Only torch.compile warmup
+        resets the engine and interpolator on the first ready iteration;
+        noncompile startup preserves its freshly installed actions.
         """
         engine = self._engine
         interpolator = self._interpolator
-        if not use_torch_compile:
-            return False
         if not engine.ready:
+            if not use_torch_compile and engine.failed:
+                raise RuntimeError(f"Inference startup failed: {engine.failure_traceback}")
             timer.wait()
             return True
+        if not use_torch_compile:
+            return False
         if not self._warmup_flushed:
             logger.info("Warmup complete — flushing stale state and resuming engine")
             engine.reset()

@@ -451,9 +451,73 @@ already encoded current tokens and masks as an exact identity override. It
 remains a planned request with the same request/reset/task epochs and takeover
 index. Early/on-time staging and whole-chunk discard for any `late_steps>0`
 remain in effect. Compile warmup covers normal RGB and identity-token override
-branches and calls the predictor zero times. Bootstrap, empty-queue and
-cap-exceeded handling, and stale reset/task rejection retain their existing
-behavior.
+branches and calls the predictor zero times.
+
+#### Predicted startup without torch.compile
+
+With `context_mode=predicted` and compilation disabled, readiness requires
+three startup requests, each triggered by a fresh observation:
+
+1. **Cold temporary bootstrap.** Observation A runs the normal RGB policy and
+   installs a temporary chunk solely to supply a real policy-space prefix.
+2. **One startup probe.** A later observation B creates one takeover plan with
+   internal `d=8`, the queue's actual first eight committed policy actions,
+   and an all-true eight-row mask. The worker runs the usual state preparation,
+   one vision encode, one predictor call, residual application, token-override
+   policy call, postprocessing, and final device-completion barrier. Probe
+   outputs are discarded; they are never staged or installed.
+3. **Fresh warmed bootstrap.** After the probe passes, the worker advances the
+   reset epoch and clears the temporary queue while preserving the tracker
+   seed, model warmth, and monotonic request/action indices. It waits for a
+   new observation C and runs another native-RGB bootstrap. Only a successful
+   installation for the current reset/task identity makes the engine ready.
+
+Throughout startup, autonomous rollout loops continue to collect observations
+and notify the worker, with paced waits and zero policy gets, robot policy
+sends, or recorded policy frames. The first control action comes from C.
+Readiness does not flush or reset that fresh chunk. Direct `get_action()` calls
+before completion raise with the current startup phase, without consuming
+actions or recording an underflow. Both startup bootstraps are required even
+when `fallback_mode=discard`.
+
+The fixed d8 probe preserves the public runtime cap of one through eight. Its
+gate uses the actual configured cap:
+
+```text
+latency_to_steps(probe_total_chunk_s, fps) + delay_safety_margin_steps
+    <= max_prediction_delay
+```
+
+Equality passes. Exceeding the cap, a non-finite action or timing, missing
+required phase telemetry, or any startup computation error fails startup on
+the first occurrence. Failure remains not-ready, sets the existing shutdown
+signal, and makes the strategy raise before another wait or policy get. There
+is no second probe or automatic retry. The probe's normal final barrier also
+completes its joint policy/post-policy action finite check; no extra barrier
+is added.
+
+Only the passing probe and subsequent completed positive-delay planned
+predicted computations enter the existing latency tracker on this path.
+Cold, fresh, and fallback bootstrap latencies remain visible in telemetry but
+do not enter that cohort. Legal d0 requests execute normally and do not enter
+the tracker. A positive-delay computation completed through the final barrier
+is admitted before publication, including results later classified as late
+or stale; publication errors do not remove it. The probe is a startup request,
+not a formal planned request or a later profile warmup/measurement sample.
+
+Resets and task updates before the first accepted startup request are allowed.
+After acceptance and before completion, an external reset or a changed task
+cancels startup, latches failure, and prevents a replacement cold/probe run
+in that engine. An accepted cancelled request emits one interruption terminal,
+including any phases already completed; it never also emits a success event.
+An unchanged task and pause/resume do not cancel startup. The private queue
+reset after a passing probe is part of initialization. After completion, normal
+reset/task/fallback behavior resumes with the tracker retained and no second
+probe. `stop()` remains ordinary teardown.
+
+Identity, sync, RTC, and existing torch.compile warmup retain their readiness
+and tracker behavior. Compile warmup still performs its original one-time
+flush/reset/restart/resume sequence.
 
 #### Predictive telemetry
 
@@ -461,17 +525,25 @@ Set `--inference.metrics_path=/path/to/predictive.jsonl` to use the existing
 `JsonlMetricsSink`. Constructing the engine opens and truncates that file;
 each event is written as one JSON object and flushed. Direct engine callers
 can supply `metrics_sink: InferenceMetricsSink | None` instead. With the default
-`metrics_path=None`, no sink, event payload, extra phase timer, CUDA event,
-serialization, or metrics file I/O is created. The existing request timestamps
-and final device-completion barrier remain active.
+`metrics_path=None`, ordinary requests create no sink, event payload, extra
+phase timer, CUDA event, serialization, or metrics file I/O. The single
+noncompile predicted startup probe is the exception: it records and retains
+one private terminal payload with the same primitive fields for the startup
+gate. It requires complete finite, nonnegative host phase times and, on CUDA,
+all eight CUDA phase intervals. This uses the existing phase instrumentation
+and final barrier; its overhead remains inside the probe latency. It creates
+no writer or JSON output. With a sink, that same terminal payload is also
+emitted normally. No metrics-off history is retained for other requests.
+The existing request timestamps and final device-completion barrier remain
+active for all requests.
 
 All events have `schema_version=1` and `backend="predictive_async"`:
 
 | Event | Meaning |
 | ----- | ------- |
 | `planner_decision` | A computed delay plan or attempted takeover, including cap wait/discard and plan failure; `request_id=null` when no request was created |
-| `chunk_request` | Completed warmup, bootstrap, or planned computation, with its original install/stage disposition, including late or stale results |
-| `request_error` | An actual request execution failure, with request identity, failing phase, completed host phases, and error type/message |
+| `chunk_request` | Completed warmup, bootstrap, planned computation, or a discarded passing startup probe, with its original disposition |
+| `request_error` | A request execution failure, startup gate failure, or startup interruption, with request identity, failing phase, completed phases, and error type/message |
 | `queue_get` | Every actual action get, including ACTION, TAKEOVER, and each UNDERFLOW tick, with the returned action index/task and cumulative underflows |
 
 Use request IDs, monotonic timestamps, and action indices to correlate events.
@@ -502,6 +574,31 @@ wait, `device_completion_wait_s` records the final barrier wait, and
 `total_chunk_s` retains the original request-to-device-completion latency.
 Queue publication precedes CUDA-event resolution and JSON emission.
 
+The startup probe resolves and validates its required timings before the gate
+and private queue reset. It has no output publication. Startup requests add
+these fields to `chunk_request` and `request_error`; inapplicable values are
+null or false:
+
+| Field | Meaning |
+| ----- | ------- |
+| `startup_phase` | `cold_temporary`, `probe`, or `fresh_warmed`; null for other requests |
+| `latency_tracker_admitted` | Whether this computation was admitted to the existing tracker |
+| `startup_gate_raw_required_delay_steps` | Probe wall delay plus the unchanged safety margin |
+| `startup_gate_outcome` | Probe gate or startup failure disposition; a passing probe is `passed` |
+| `startup_queue_reset_epoch_after` | New reset epoch recorded by the passing probe after temporary queue invalidation |
+
+A passing probe emits one `chunk_request` with
+`request_kind=startup_probe`, `outcome=probe_discarded`, real plan indices,
+`planned_delay_steps=8`, and `latency_tracker_admitted=true`. Result action
+index, late steps, and consumed steps at stage are null. Startup failures emit
+one `request_error`, without a preceding success event or synthetic
+`planner_decision`. Reset/task interruptions use
+`failed_phase=startup_interrupted` and preserve completed partial fields.
+The three startup requests count in `requests_started`; the two bootstraps
+count in `bootstrap_requests`, while the probe does not count in
+`planned_requests`. A probe cap failure increments `prediction_cap_exceeded`
+once without inventing a deadline miss.
+
 Bootstrap and the first RGB warmup retain native vision inside the public
 policy call: their vision phase is null and `policy_includes_vision=true`.
 Uncalled predictor phases are null with `predictor_calls=0` for identity, d0,
@@ -521,11 +618,14 @@ finishes; stopping an engine that was never started also closes it.
 
 ##### Limitations
 
-Validation has reached the M5.2 single-request integration stage. This
-telemetry increment uses CPU synthetic contract checks; threaded CUDA
-profiling, efficiency calibration, online rollout, and robot connection or
-motion require a separate approved stage. The CLI fragment is not a verified
-robot command. The candidate's
+M5.2 single-request integration passed. The M5.3b-r2 threaded run reached one
+real cold bootstrap, then stopped because its raw delay requirement was 23
+against a cap of eight; no planned predictor call or identity calibration was
+reached. M5.3c implements the startup transition with CPU synthetic contract
+coverage. There is no actual warmed startup/profile PASS yet. A new actual
+profile, efficiency calibration, online rollout, and robot connection or motion
+require a separate approved stage. The CLI fragment is not a verified robot
+command. The candidate's
 restrictions do not authorize disabling safety measures in a future robot
 deployment; clipped-action or feedback-aware integration requires its own
 contract.

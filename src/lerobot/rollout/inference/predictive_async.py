@@ -102,7 +102,7 @@ class PredictiveAsyncStats:
 @dataclass(frozen=True)
 class _InferenceRequest:
     request_id: int
-    kind: Literal["warmup", "bootstrap", "planned"]
+    kind: Literal["warmup", "bootstrap", "planned", "startup_probe"]
     observation: dict[str, Any]
     requested_at: float
     reset_epoch: int
@@ -110,6 +110,7 @@ class _InferenceRequest:
     task_epoch: int
     plan: TakeoverPlan | None = None
     delay_plan: DelayPlan | None = None
+    startup_phase: Literal["cold_temporary", "probe", "fresh_warmed"] | None = None
 
 
 class PredictiveAsyncInferenceEngine(InferenceEngine):
@@ -253,7 +254,12 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
         self._failure_traceback: str | None = None
         self._worker: Thread | None = None
         self._warmup_completed = 0
-        if not use_torch_compile:
+        self._startup_phase = (
+            "cold_temporary" if context_mode == "predicted" and not use_torch_compile else None
+        )
+        self._startup_interruption_reason: str | None = None
+        self._startup_probe_record: dict[str, Any] | None = None
+        if not use_torch_compile and self._startup_phase is None:
             self._ready_event.set()
 
     @property
@@ -355,8 +361,55 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
     def resume(self) -> None:
         self._policy_active.set()
 
+    def _latch_startup_failure_locked(self, message: str) -> None:
+        self._startup_phase = "failed"
+        self._ready_event.clear()
+        self._failure_traceback = f"RuntimeError: {message}"
+
+    def _signal_startup_failure(self) -> None:
+        self._worker_error.set()
+        self._shutdown_event.set()
+        self._request_ready.set()
+        if self._global_shutdown_event is not None:
+            self._global_shutdown_event.set()
+
+    def _interrupt_startup_locked(self, reason: str) -> tuple[bool, _InferenceRequest | None]:
+        if self._startup_phase in (None, "complete", "failed") or self._stats.requests_started == 0:
+            return False, None
+        message = f"Inference startup interrupted by {reason}"
+        self._startup_interruption_reason = message
+        self._latch_startup_failure_locked(message)
+        # A running request owns its terminal; a pending request will never run
+        # after removal and must receive its terminal from this caller.
+        cancelled = None
+        if self._pending_request is not None:
+            cancelled = self._pending_request
+            self._pending_request = None
+            self._request_ready.clear()
+        return True, cancelled
+
+    def _finish_startup_interruption(self, interrupted: bool, request: _InferenceRequest | None) -> None:
+        if not interrupted:
+            return
+        if request is not None and (self._metrics_sink is not None or request.kind == "startup_probe"):
+            metrics = self._new_request_metrics(request, started_at=None)
+            metrics.update(
+                event="request_error",
+                failed_phase="startup_interrupted",
+                error_type="RuntimeError",
+                error_message=self._startup_interruption_reason,
+                startup_gate_outcome="error",
+            )
+            self._publish_request_metrics(metrics)
+        # Emit a cancelled pending request before waking the worker to close its
+        # sink. In-flight requests instead emit from their existing worker call.
+        self._signal_startup_failure()
+
     def reset(self) -> None:
         """Clear episode state while retaining lifetime action and request indices."""
+        with self._request_lock:
+            interrupted, cancelled = self._interrupt_startup_locked("reset")
+        self._finish_startup_interruption(interrupted, cancelled)
         self._policy.reset()
         self._preprocessor.reset()
         self._postprocessor.reset()
@@ -375,16 +428,22 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
         _, task_epoch = self.task_snapshot
         self._queue.invalidate_task(task_epoch)
         with self._request_lock:
+            interrupted, cancelled = self._interrupt_startup_locked("task change")
             pending = self._pending_request
             current_task_epoch = self._queue.task_epoch
             if pending is not None and pending.task_epoch < current_task_epoch:
                 self._pending_request = None
                 self._request_ready.clear()
+        self._finish_startup_interruption(interrupted, cancelled)
         return True
 
     def notify_observation(self, obs: dict) -> None:
         """Atomically pair this control-tick observation with a takeover plan."""
-        if not self._policy_active.is_set() or self._shutdown_event.is_set():
+        if (
+            not self._policy_active.is_set()
+            or self._shutdown_event.is_set()
+            or self._startup_phase == "failed"
+        ):
             return
         metrics_event = {} if self._metrics_sink is not None else None
         with self._request_lock:
@@ -424,6 +483,33 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
     ) -> _InferenceRequest | None:
         request_id = self._request_id
         now = time.perf_counter()
+        if self._startup_phase not in (None, "complete"):
+            if self._startup_phase == "failed":
+                return None
+            plan = None
+            if self._startup_phase == "probe":
+                creation = self._queue.create_takeover_plan(
+                    request_id=request_id,
+                    planned_delay_steps=8,
+                    max_prediction_delay=8,
+                    committed_guard_steps=self._committed_guard_steps,
+                    reset_epoch=self._reset_epoch,
+                    task_epoch=task_epoch,
+                    task=task,
+                )
+                plan = creation.plan
+            self._request_id += 1
+            return _InferenceRequest(
+                request_id=request_id,
+                kind="startup_probe" if self._startup_phase == "probe" else "bootstrap",
+                observation=observation,
+                requested_at=now,
+                reset_epoch=self._reset_epoch,
+                task=task,
+                task_epoch=task_epoch,
+                plan=plan,
+                startup_phase=self._startup_phase,
+            )
         if self._use_torch_compile and not self._ready_event.is_set():
             self._request_id += 1
             return _InferenceRequest(
@@ -572,6 +658,8 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
 
     def get_action(self, obs_frame: dict | None) -> torch.Tensor | None:
         """Return one post-policy action; ``obs_frame`` is ignored."""
+        if self._startup_phase not in (None, "complete"):
+            raise RuntimeError(f"Inference startup is not ready: {self._startup_phase}")
         result = self._queue.get_with_task()
         if result.post_policy_action is None:
             with self._request_lock:
@@ -622,6 +710,8 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
                             reset_epoch=request.reset_epoch,
                             task_epoch=request.task_epoch,
                         )
+                    if request.startup_phase is not None:
+                        raise
                     consecutive_errors += 1
                     logger.exception(
                         "Predictive async inference error (%d/%d)",
@@ -637,7 +727,10 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
             self._failure_traceback = traceback.format_exc()
             logger.error("Fatal predictive async worker error: %s", error)
             self._worker_error.set()
-            self._ready_event.set()
+            if self._startup_phase == "failed":
+                self._ready_event.clear()
+            else:
+                self._ready_event.set()
             if self._global_shutdown_event is not None:
                 self._global_shutdown_event.set()
         finally:
@@ -676,6 +769,97 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
         except Exception:
             logger.exception("Failed to finish predictive async phase metrics: %s", phase)
 
+    def _new_request_metrics(self, request: _InferenceRequest, *, started_at: float | None) -> dict[str, Any]:
+        delay_plan = request.delay_plan
+        plan = request.plan
+        return {
+            "event": "chunk_request",
+            "request_id": request.request_id,
+            "request_kind": request.kind,
+            "reset_epoch": request.reset_epoch,
+            "task_epoch": request.task_epoch,
+            "task": request.task,
+            "requested_at_s": request.requested_at,
+            "started_at_s": started_at,
+            "cuda_completed_at_s": None,
+            "dispatch_wait_s": None if started_at is None else started_at - request.requested_at,
+            "device_completion_wait_s": None,
+            "total_chunk_s": None,
+            "d_actual_wall": None,
+            "phase_host_wall_s": dict.fromkeys(_METRIC_PHASES),
+            "phase_cuda_stream_elapsed_ms": dict.fromkeys(_METRIC_PHASES)
+            if self._device.type == "cuda"
+            else None,
+            "predictor_calls": 0,
+            "policy_includes_vision": None,
+            "estimated_latency_s": None if delay_plan is None else delay_plan.estimated_latency_s,
+            "raw_required_delay_steps": None if delay_plan is None else delay_plan.raw_required_delay_steps,
+            "planned_delay_steps": None if plan is None else plan.planned_delay_steps,
+            "available_after_guard_steps": None
+            if delay_plan is None
+            else delay_plan.available_after_guard_steps,
+            "prediction_cap_exceeded": None if delay_plan is None else delay_plan.prediction_cap_exceeded,
+            "plan_next_action_index": None if plan is None else plan.next_action_index,
+            "takeover_index": None if plan is None else plan.takeover_index,
+            "result_next_action_index": None,
+            "outcome": None,
+            "late_steps": None,
+            "consumed_steps_at_stage": None,
+            "underflow_total": self._stats.underflows,
+            "failed_phase": None,
+            "startup_phase": request.startup_phase,
+            "latency_tracker_admitted": False,
+            "startup_gate_raw_required_delay_steps": None,
+            "startup_gate_outcome": None,
+            "startup_queue_reset_epoch_after": None,
+        }
+
+    def _publish_request_metrics(self, metrics: dict[str, Any]) -> None:
+        if metrics["request_kind"] == "startup_probe":
+            metrics = {
+                "schema_version": 1,
+                "backend": "predictive_async",
+                "context_mode": self._context_mode,
+                **metrics,
+            }
+            self._startup_probe_record = metrics
+        self._emit_metrics(metrics)
+
+    def _complete_request_metrics(
+        self,
+        metrics: dict[str, Any] | None,
+        cuda_events: dict[str, tuple[Any, Any]] | None,
+        *,
+        latency_s: float,
+        completion_started_at: float | None,
+        outcome: str,
+        result_next_action_index: int | None = None,
+        late_steps: int | None = None,
+        consumed_steps_at_stage: int | None = None,
+    ) -> None:
+        if metrics is None:
+            return
+        # Ordinary requests call this after publication. The startup probe must
+        # inspect its complete measurements before admitting the only seed.
+        if cuda_events is not None:
+            for phase, (start_event, end_event) in cuda_events.items():
+                try:
+                    metrics["phase_cuda_stream_elapsed_ms"][phase] = start_event.elapsed_time(end_event)
+                except Exception:
+                    logger.exception("Failed to resolve predictive async phase metrics: %s", phase)
+        completed_at = metrics["requested_at_s"] + latency_s
+        metrics.update(
+            cuda_completed_at_s=completed_at,
+            device_completion_wait_s=completed_at - completion_started_at,
+            total_chunk_s=latency_s,
+            d_actual_wall=latency_to_steps(latency_s, self._fps) if math.isfinite(latency_s) else None,
+            outcome=outcome,
+            result_next_action_index=result_next_action_index,
+            late_steps=late_steps,
+            consumed_steps_at_stage=consumed_steps_at_stage,
+            underflow_total=self._stats.underflows,
+        )
+
     def _finish_request_metrics(
         self,
         metrics: dict[str, Any] | None,
@@ -690,77 +874,77 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
     ) -> None:
         if metrics is None:
             return
-        # Called only after the original completion barrier, latency sample and
-        # warmup/install/stage disposition. Event inspection cannot delay takeover.
-        if cuda_events is not None:
-            for phase, (start_event, end_event) in cuda_events.items():
-                try:
-                    metrics["phase_cuda_stream_elapsed_ms"][phase] = start_event.elapsed_time(end_event)
-                except Exception:
-                    logger.exception("Failed to resolve predictive async phase metrics: %s", phase)
-        completed_at = metrics["requested_at_s"] + latency_s
-        metrics.update(
-            cuda_completed_at_s=completed_at,
-            device_completion_wait_s=completed_at - completion_started_at,
-            total_chunk_s=latency_s,
-            d_actual_wall=latency_to_steps(latency_s, self._fps),
+        self._complete_request_metrics(
+            metrics,
+            cuda_events,
+            latency_s=latency_s,
+            completion_started_at=completion_started_at,
             outcome=outcome,
             result_next_action_index=result_next_action_index,
             late_steps=late_steps,
             consumed_steps_at_stage=consumed_steps_at_stage,
-            underflow_total=self._stats.underflows,
         )
         metrics.pop("failed_phase")
-        self._emit_metrics(metrics)
+        self._publish_request_metrics(metrics)
+
+    def _check_startup_request_locked(self, request: _InferenceRequest) -> None:
+        if self._startup_interruption_reason is not None:
+            raise RuntimeError(self._startup_interruption_reason)
+        task, task_epoch = self.task_snapshot
+        if (
+            self._startup_phase != request.startup_phase
+            or self._reset_epoch != request.reset_epoch
+            or task_epoch != request.task_epoch
+            or task != request.task
+            or self._queue.reset_epoch != request.reset_epoch
+            or self._queue.task_epoch != request.task_epoch
+        ):
+            raise RuntimeError("Inference startup request identity is no longer current")
+
+    def _validate_startup_probe(
+        self, metrics: dict[str, Any], *, latency_s: float, actions_finite: bool
+    ) -> None:
+        metrics["failed_phase"] = "startup_gate"
+        if not actions_finite or not math.isfinite(latency_s) or latency_s < 0:
+            metrics["startup_gate_outcome"] = "nonfinite"
+            raise RuntimeError("Startup probe actions and latency must be finite and latency non-negative")
+        families = ["phase_host_wall_s"]
+        if self._device.type == "cuda":
+            families.append("phase_cuda_stream_elapsed_ms")
+        for family in families:
+            for phase in _METRIC_PHASES:
+                value = metrics[family][phase]
+                if value is None:
+                    metrics["startup_gate_outcome"] = "telemetry_missing"
+                    raise RuntimeError(f"Startup probe requires {family}.{phase}")
+                if not math.isfinite(value) or value < 0:
+                    metrics["startup_gate_outcome"] = "nonfinite"
+                    raise RuntimeError(f"Startup probe requires finite non-negative {family}.{phase}")
+        raw_required = latency_to_steps(latency_s, self._fps) + self._delay_safety_margin_steps
+        metrics["startup_gate_raw_required_delay_steps"] = raw_required
+        if raw_required > self._max_prediction_delay:
+            metrics["startup_gate_outcome"] = "cap_exceeded"
+            with self._request_lock:
+                self._stats = replace(
+                    self._stats, prediction_cap_exceeded=self._stats.prediction_cap_exceeded + 1
+                )
+            raise RuntimeError(
+                f"Startup probe requires {raw_required} delay steps, exceeding runtime cap {self._max_prediction_delay}"
+            )
 
     def _run_request(self, request: _InferenceRequest) -> None:
         metrics = None
         cuda_events = None
         completion_started_at = None
-        if self._metrics_sink is not None:
+        latency_s = None
+        if self._metrics_sink is not None or request.kind == "startup_probe":
             started_at = time.perf_counter()
-            delay_plan = request.delay_plan
-            plan = request.plan
             cuda_events = {} if self._device.type == "cuda" else None
-            metrics = {
-                "event": "chunk_request",
-                "request_id": request.request_id,
-                "request_kind": request.kind,
-                "reset_epoch": request.reset_epoch,
-                "task_epoch": request.task_epoch,
-                "task": request.task,
-                "requested_at_s": request.requested_at,
-                "started_at_s": started_at,
-                "cuda_completed_at_s": None,
-                "dispatch_wait_s": started_at - request.requested_at,
-                "device_completion_wait_s": None,
-                "total_chunk_s": None,
-                "d_actual_wall": None,
-                "phase_host_wall_s": dict.fromkeys(_METRIC_PHASES),
-                "phase_cuda_stream_elapsed_ms": (
-                    dict.fromkeys(_METRIC_PHASES) if cuda_events is not None else None
-                ),
-                "predictor_calls": 0,
-                "policy_includes_vision": None,
-                "estimated_latency_s": None if delay_plan is None else delay_plan.estimated_latency_s,
-                "raw_required_delay_steps": (
-                    None if delay_plan is None else delay_plan.raw_required_delay_steps
-                ),
-                "planned_delay_steps": None if plan is None else plan.planned_delay_steps,
-                "available_after_guard_steps": (
-                    None if delay_plan is None else delay_plan.available_after_guard_steps
-                ),
-                "prediction_cap_exceeded": None if delay_plan is None else delay_plan.prediction_cap_exceeded,
-                "plan_next_action_index": None if plan is None else plan.next_action_index,
-                "takeover_index": None if plan is None else plan.takeover_index,
-                "result_next_action_index": None,
-                "outcome": None,
-                "late_steps": None,
-                "consumed_steps_at_stage": None,
-                "underflow_total": self._stats.underflows,
-                "failed_phase": None,
-            }
+            metrics = self._new_request_metrics(request, started_at=started_at)
         try:
+            if request.kind == "startup_probe" and request.plan is None:
+                metrics["failed_phase"] = "startup_gate"
+                raise RuntimeError("Startup probe could not obtain a real eight-row committed prefix")
             with self._record_metrics_phase("observation_preparation", metrics, cuda_events):
                 batch = build_dataset_frame(self._hw_features, request.observation, prefix="observation")
                 batch = prepare_observation_for_inference(
@@ -775,11 +959,13 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
                 warmup_token_override = request.kind == "warmup" and self._warmup_completed > 0
                 if metrics is not None:
                     metrics["policy_includes_vision"] = not (
-                        request.kind == "planned" or warmup_token_override
+                        request.kind in ("planned", "startup_probe") or warmup_token_override
                     )
-                if request.kind == "planned" or warmup_token_override:
+                if request.kind in ("planned", "startup_probe") or warmup_token_override:
                     token_policy: Any = self._policy
-                    predicted_request = request.kind == "planned" and self._context_mode == "predicted"
+                    predicted_request = (
+                        request.kind in ("planned", "startup_probe") and self._context_mode == "predicted"
+                    )
                     with self._record_metrics_phase("vision_encode", metrics, cuda_events):
                         if predicted_request and {
                             key for key in batch if key.startswith("observation.images.")
@@ -843,6 +1029,10 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
             with self._record_metrics_phase("postprocessor", metrics, cuda_events):
                 policy_actions = actions.squeeze(0).clone()
                 post_policy_actions = self._postprocessor(actions).squeeze(0)
+                if request.kind == "startup_probe":
+                    probe_actions_finite = (
+                        torch.isfinite(policy_actions).all() & torch.isfinite(post_policy_actions).all()
+                    )
             # Keep the original CUDA-complete sample before publication. Metrics
             # add event records, never an extra phase synchronization.
             if metrics is not None:
@@ -850,6 +1040,32 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
                 completion_started_at = time.perf_counter()
             _synchronize_policy_device(self._device)
             latency_s = time.perf_counter() - request.requested_at
+
+            if request.kind == "startup_probe":
+                self._complete_request_metrics(
+                    metrics,
+                    cuda_events,
+                    latency_s=latency_s,
+                    completion_started_at=completion_started_at,
+                    outcome="probe_discarded",
+                )
+                with self._request_lock:
+                    self._check_startup_request_locked(request)
+                self._validate_startup_probe(
+                    metrics, latency_s=latency_s, actions_finite=bool(probe_actions_finite.item())
+                )
+                with self._request_lock:
+                    self._check_startup_request_locked(request)
+                    self._latency_tracker.add(latency_s)
+                    metrics["latency_tracker_admitted"] = True
+                    self._reset_epoch += 1
+                    self._queue.reset(self._reset_epoch, task_epoch=request.task_epoch)
+                    metrics["startup_queue_reset_epoch_after"] = self._reset_epoch
+                    metrics["startup_gate_outcome"] = "passed"
+                    self._startup_phase = "fresh_warmed"
+                metrics.pop("failed_phase")
+                self._publish_request_metrics(metrics)
+                return
 
             if metrics is not None:
                 metrics["failed_phase"] = "queue_publication"
@@ -867,7 +1083,44 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
                 )
                 return
 
-            self._latency_tracker.add(latency_s)
+            if request.startup_phase is not None:
+                with self._request_lock:
+                    self._check_startup_request_locked(request)
+                    installed = self._queue.install_active_chunk(
+                        policy_actions,
+                        post_policy_actions,
+                        task=request.task,
+                        reset_epoch=request.reset_epoch,
+                        task_epoch=request.task_epoch,
+                    )
+                    if metrics is not None:
+                        metrics["outcome"] = installed.outcome.value
+                        metrics["result_next_action_index"] = installed.next_action_index
+                    if installed.outcome is not InstallOutcome.INSTALLED:
+                        self._stats = replace(self._stats, stale_results=self._stats.stale_results + 1)
+                        raise RuntimeError(
+                            f"Startup bootstrap installation failed: {installed.outcome.value}"
+                        )
+                    self._startup_phase = "probe" if request.startup_phase == "cold_temporary" else "complete"
+                    if self._startup_phase == "complete":
+                        self._ready_event.set()
+                self._finish_request_metrics(
+                    metrics,
+                    cuda_events,
+                    latency_s=latency_s,
+                    completion_started_at=completion_started_at,
+                    outcome=installed.outcome.value,
+                    result_next_action_index=installed.next_action_index,
+                )
+                return
+
+            admit_latency = self._startup_phase is None or (
+                request.kind == "planned" and request.plan.planned_delay_steps > 0
+            )
+            if admit_latency:
+                self._latency_tracker.add(latency_s)
+                if metrics is not None:
+                    metrics["latency_tracker_admitted"] = True
             if request.kind == "bootstrap":
                 installed = self._queue.install_active_chunk(
                     policy_actions,
@@ -931,7 +1184,27 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
                     else None
                 ),
             )
-        except Exception as error:
+        except Exception as caught_error:
+            error = caught_error
+            if request.startup_phase is not None:
+                if metrics is not None and latency_s is not None and metrics["total_chunk_s"] is None:
+                    self._complete_request_metrics(
+                        metrics,
+                        cuda_events,
+                        latency_s=latency_s,
+                        completion_started_at=completion_started_at,
+                        outcome=metrics["outcome"],
+                        result_next_action_index=metrics["result_next_action_index"],
+                    )
+                with self._request_lock:
+                    if self._startup_interruption_reason is not None:
+                        error = RuntimeError(self._startup_interruption_reason)
+                        if metrics is not None:
+                            metrics["failed_phase"] = "startup_interrupted"
+                            metrics["startup_gate_outcome"] = "error"
+                    self._latch_startup_failure_locked(str(error))
+                if metrics is not None and metrics["startup_gate_outcome"] is None:
+                    metrics["startup_gate_outcome"] = "error"
             if metrics is not None:
                 metrics.update(
                     event="request_error",
@@ -939,5 +1212,9 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
                     error_message=str(error),
                     underflow_total=self._stats.underflows,
                 )
-                self._emit_metrics(metrics)
+                self._publish_request_metrics(metrics)
+            if request.startup_phase is not None:
+                self._signal_startup_failure()
+                if error is not caught_error:
+                    raise error from caught_error
             raise
