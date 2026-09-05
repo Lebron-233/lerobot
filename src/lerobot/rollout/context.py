@@ -360,8 +360,10 @@ def _validate_frozen_rollout_config(
 
 def _load_frozen_future_latent_runtime(policy_config: PreTrainedConfig, *, device: str):
     """Construct the policy and processors from the candidate's two exact snapshots."""
-    policy_snapshot = Path(snapshot_download(repo_id=POLICY_REPO_ID, revision=POLICY_REVISION))
-    vlm_snapshot = Path(snapshot_download(repo_id=VLM_REPO_ID, revision=VLM_REVISION))
+    policy_snapshot = Path(
+        snapshot_download(repo_id=POLICY_REPO_ID, revision=POLICY_REVISION, local_files_only=True)
+    )
+    vlm_snapshot = Path(snapshot_download(repo_id=VLM_REPO_ID, revision=VLM_REVISION, local_files_only=True))
     if policy_snapshot.name != POLICY_REVISION or vlm_snapshot.name != VLM_REVISION:
         raise ValueError("predicted resolver returned a different policy or VLM revision")
     config = PreTrainedConfig.from_pretrained(policy_snapshot, local_files_only=True)

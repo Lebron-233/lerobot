@@ -415,8 +415,9 @@ def synthetic_runtime(monkeypatch):
         "so100.buffer.action.std": torch.ones(6) * 2,
     }
 
-    def resolve(*, repo_id, revision):
+    def resolve(*, repo_id, revision, local_files_only):
         events.append(f"resolve:{repo_id}")
+        assert local_files_only is True
         assert (repo_id, revision) in ((POLICY_REPO, POLICY_REVISION), (VLM_REPO, VLM_REVISION))
         return str(policy_snapshot if repo_id == POLICY_REPO else vlm_snapshot)
 
@@ -480,8 +481,8 @@ def test_predicted_build_resolves_and_loads_once_before_connection(synthetic_run
     ctx = rollout_context.build_rollout_context(cfg, Event())
 
     assert runtime.resolver.call_args_list == [
-        call(repo_id=POLICY_REPO, revision=POLICY_REVISION),
-        call(repo_id=VLM_REPO, revision=VLM_REVISION),
+        call(repo_id=POLICY_REPO, revision=POLICY_REVISION, local_files_only=True),
+        call(repo_id=VLM_REPO, revision=VLM_REVISION, local_files_only=True),
     ]
     runtime.config_loader.assert_called_once_with(runtime.policy_snapshot, local_files_only=True)
     runtime.policy_loader.assert_called_once_with(
