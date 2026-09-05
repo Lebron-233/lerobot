@@ -251,10 +251,12 @@ chunk with SmolVLA's future-context token API. Unlike the separate
 [client/server async inference](./async) system, it runs inside
 `lerobot-rollout` and owns a local scheduled action queue.
 
-PR-1 provides live `identity` context: it reuses the current model-ready image
-tokens and state to exercise the scheduled takeover contract, without claiming
-learned future prediction. `oracle` is reserved for an explicit offline/test
-provider and is rejected by live rollout. `predicted` is not implemented yet.
+The default `identity` context reuses current model-ready image tokens and
+state to exercise scheduled takeover. `predicted` adds the frozen B3.3a
+future-latent candidate described below. `oracle` is reserved for an explicit
+offline/test provider and is rejected by live rollout. The default
+`context_mode="identity"`, `future_latent_checkpoint=None` path does not
+resolve, load, or call a future-latent predictor.
 
 Offline dataset replay can call `encode_oracle_future_tokens()` on a
 preprocessed temporal sample whose camera `delta_timestamps` cover `t+d`. The
@@ -289,10 +291,11 @@ lerobot-rollout \
 | `--inference.latency_window`            | Number of recent latency samples retained (default: 50)                                       |
 | `--inference.delay_safety_margin_steps` | Extra control ticks added to the latency estimate (default: 1)                                |
 | `--inference.min_prediction_delay`      | Lower planning bound when enough committed actions remain (default: 0)                        |
-| `--inference.max_prediction_delay`      | Largest future horizon supported by the predictor contract (default: 8)                       |
+| `--inference.max_prediction_delay`      | Runtime horizon cap; predicted mode accepts caps from 1 through 8 (default: 8)                |
 | `--inference.committed_guard_steps`     | Old active actions retained beyond the planned takeover (default: 2)                          |
 | `--inference.max_late_steps`            | Bound used to size the guard; reserved for a future compensated-late mode (default: 2)        |
-| `--inference.context_mode`              | Live PR-1 supports `identity`; `oracle` is offline/test-only and `predicted` is not available |
+| `--inference.context_mode`              | `identity` (default), frozen-candidate `predicted`, or offline/test-only `oracle`              |
+| `--inference.future_latent_checkpoint`  | Frozen B3.3a best checkpoint; required for `predicted`, invalid with `identity` (default: None) |
 | `--inference.fallback_mode`             | On an unserviceable plan, use an identity bootstrap when empty or wait/discard                |
 
 `committed_guard_steps` must be at least `max_late_steps`; both default to 2.
@@ -331,6 +334,140 @@ not a claim that the values are final physical/executable commands.
 Predictive async currently fails fast when the policy pipeline contains a
 relative-action processor. Future-takeover anchor/rebase semantics are not yet
 defined; use `--inference.type=rtc` or an absolute-action pipeline instead.
+
+#### Frozen predicted candidate
+
+`build_rollout_context` is the supported construction path. Predicted mode
+accepts only `lerobot/smolvla_base` at revision
+`c83c3163b8ca9b7e67c509fffd9121e66cb96205` and its frozen
+`HuggingFaceTB/SmolVLM2-500M-Video-Instruct` revision
+`7b375e1b73b11138ff12fe22c8f2822d8fe03467`. It resolves both exact snapshots,
+strict-loads the policy from the resolved policy path, constructs
+policy pre/post processors from that same snapshot, and uses the resolved VLM
+snapshot for the active VLM and tokenizer. Those processor instances are reused
+by the engine, with the frozen action-stat remapping and no injected dataset
+stats. A different repo or revision, local custom policy, PEFT policy, or VLM
+override is rejected before hardware connection. Directory names alone do not
+establish source identity.
+
+The checkpoint loader accepts the frozen B3.3a `best` identity only: epoch 29,
+step 57750, `lambda_cos=0.1`, `lambda_risk=0.05`, and the exact recorded
+trainer/cache-producer SHAs, predictor config, policy/VLM/processor provenance,
+and camera order from the
+[approved M5.0 plan](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5551020517).
+It strict-loads predictor weights once before hardware
+connection and returns float32 parameters on the requested device, in eval mode
+with gradients disabled. It does not restore optimizer or RNG state. Direct
+factory or engine injection requires the internal association with that same
+policy and its processors before predictor use.
+
+The candidate's raw state/action schema comes from
+`lerobot/svla_so100_pickplace@728583b5eaf9e739a7f119e2def466fa1d552402`,
+whose `robot_type` is `so100`. Both `observation.state` and `action` have shape
+`[6]` and dtype `float32`, in the following order:
+
+| Dataset scalar name | Current runtime scalar key | Raw value convention |
+| ------------------- | -------------------------- | -------------------- |
+| `main_shoulder_pan` | `shoulder_pan.pos` | Post-#777 physical degrees |
+| `main_shoulder_lift` | `shoulder_lift.pos` | Post-#777 physical degrees |
+| `main_elbow_flex` | `elbow_flex.pos` | Post-#777 physical degrees |
+| `main_wrist_flex` | `wrist_flex.pos` | Post-#777 physical degrees |
+| `main_wrist_roll` | `wrist_roll.pos` | Post-#777 physical degrees |
+| `main_gripper` | `gripper.pos` | `MotorNormMode.RANGE_0_100` |
+
+The name mapping is positional: remove `main_` and append `.pos`. The frozen
+policy preprocessor has no `observation.state` stats. The six raw state values
+therefore remain numerically unchanged; `prepare_state()` only right-pads them
+to `[1,32]`. The predictor's actions are the six-dimensional **normalized
+policy-output** `committed_policy_actions`, before policy postprocessing.
+
+The raw cameras are exactly these two video streams, ordered as shown:
+
+| Raw camera feature | Raw shape | Policy camera feature |
+| ------------------ | --------- | --------------------- |
+| `observation.images.top` | `[480,640,3]` | `observation.images.camera1` |
+| `observation.images.wrist` | `[480,640,3]` | `observation.images.camera2` |
+
+The cameras must produce RGB (`color_mode=RGB` where configurable). The
+predictor uses `(camera1, camera2)` order. Both streams must be present in
+every planned observation; predicted mode rejects missing, extra, or reordered
+streams instead of allowing `prepare_images()` to drop a camera. Raw camera
+dictionary insertion order may differ when the mapping and token order agree.
+
+Before hardware connection, predicted configuration requires
+`robot.type="so100_follower"`, `robot.use_degrees=True`, `fps=30`,
+`interpolation_multiplier=1`, `robot.max_relative_target is None`, the scalar
+and camera schema above, and the exact rename map. `use_degrees=False` changes
+the first five joints to `RANGE_M100_100` and is incompatible. Interpolated or
+clipped goals would change the action/time prefix used to train the candidate.
+The context must create the existing default identity teleop-action,
+robot-action, and robot-observation processors; caller-supplied robot-side
+pipelines are rejected.
+
+These are the core CLI identity arguments, shown as a configuration fragment:
+
+```text
+--policy.path=lerobot/smolvla_base
+--policy.pretrained_revision=c83c3163b8ca9b7e67c509fffd9121e66cb96205
+--rename_map='{"observation.images.top":"observation.images.camera1","observation.images.wrist":"observation.images.camera2"}'
+--fps=30
+--interpolation_multiplier=1
+--robot.type=so100_follower
+--robot.use_degrees=true
+--inference.type=predictive_async
+--inference.context_mode=predicted
+--inference.future_latent_checkpoint=/home/rp/Workspace/SmolVLA_RTC/artifacts/b33a_9e618076f_lambda-risk-005_v1/best.pt
+--inference.min_prediction_delay=1
+--inference.max_prediction_delay=8
+```
+
+The fragment omits `--robot.max_relative_target`; the resulting configuration
+must retain its `None` default. Programmatic configuration must also use
+`None`. The draccus CLI spelling for an explicit `None` value has not been
+exercised in this implementation stage. Camera configuration must supply the
+two raw streams and shapes above.
+
+For `1 <= d <= 8`, the worker encodes the current cameras exactly once and
+prepares the current padded state. It passes the frozen policy-action prefix,
+its boolean contiguous-prefix mask, and `d` to the predictor. The runtime
+requires `1 <= min_prediction_delay <= max_prediction_delay <= 8`; the cap may
+be smaller than eight. Only at the predictor call are shorter plan tensors
+right-zero-padded to actions `[1,8,6]` and mask `[1,8]`, preserving the true
+prefix length `d`. A cap of six with `d=3` keeps its six-row plan and supplies
+eight rows to the predictor without truncation.
+
+Each future token stream is computed as
+`(current_tokens.float() + delta_tokens.float()).to(current_tokens.dtype)`.
+The policy receives those tokens with the original camera masks and current
+batch. Its normal postprocessing, CUDA-completion synchronization, and staging
+path then run. The worker supplies no `future_state`, `inference_delay`,
+`prev_chunk_left_over`, or `execution_horizon` arguments.
+
+A legal planned request with `d=0` bypasses the predictor and supplies the
+already encoded current tokens and masks as an exact identity override. It
+remains a planned request with the same request/reset/task epochs and takeover
+index. Early/on-time staging and whole-chunk discard for any `late_steps>0`
+remain in effect. Compile warmup covers normal RGB and identity-token override
+branches and calls the predictor zero times. Bootstrap, empty-queue and
+cap-exceeded handling, and stale reset/task rejection retain their existing
+behavior.
+
+##### Limitations
+
+This is an implementation-only candidate. Synthetic contract checks do not
+establish actual-checkpoint integration, online predicted performance, or
+robot behavior. Real checkpoint/model loading, offline integration smoke,
+online rollout, and robot connection or motion require a separate approved
+stage. The CLI fragment is not a verified robot command. The candidate's
+restrictions do not authorize disabling safety measures in a future robot
+deployment; clipped-action or feedback-aware integration requires its own
+contract.
+
+`predicted_error` is a non-control diagnostic only. It does not choose a risk
+threshold, attenuate residuals, trigger fallback, or alter actions. No risk
+gating, future-state rollout, full RTC guidance, or horizon above eight is
+implemented. Production construction does not read dataset, cache, or test
+files to establish candidate identity.
 
 #### SmolVLA future-context API contract
 

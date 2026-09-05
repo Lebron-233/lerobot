@@ -22,15 +22,21 @@ and :class:`DatasetContext` — assembled into :class:`RolloutContext`.
 from __future__ import annotations
 
 import logging
+import math
 from collections.abc import Callable
 from copy import copy
 from dataclasses import dataclass, field
+from pathlib import Path
 from threading import Event
 from typing import TYPE_CHECKING
 
 import torch
+from huggingface_hub import snapshot_download
+from safetensors.torch import load_file
 
+from lerobot.cameras.configs import ColorMode
 from lerobot.configs import FeatureType, PreTrainedConfig
+from lerobot.configs.types import PolicyFeature
 from lerobot.datasets import (
     LeRobotDataset,
     aggregate_pipeline_dataset_features,
@@ -38,6 +44,19 @@ from lerobot.datasets import (
 )
 from lerobot.policies import get_policy_class, make_pre_post_processors
 from lerobot.policies.pretrained import PreTrainedPolicy
+from lerobot.policies.smolvla.future_latent_checkpoint import (
+    CAMERA_RENAME_MAP,
+    POLICY_CAMERA_KEYS,
+    POLICY_REPO_ID,
+    POLICY_REVISION,
+    RAW_IMAGE_SHAPE,
+    RUNTIME_SCALAR_KEYS,
+    VLM_REPO_ID,
+    VLM_REVISION,
+    _bind_frozen_candidate,
+    _validate_frozen_candidate,
+    load_frozen_future_latent_predictor,
+)
 from lerobot.processor import (
     PolicyProcessorPipeline,
     RobotAction,
@@ -298,6 +317,161 @@ def _load_pretrained_policy(policy_config: PreTrainedConfig) -> PreTrainedPolicy
     )
 
 
+def _validate_frozen_rollout_config(
+    cfg: RolloutConfig,
+    teleop_action_processor,
+    robot_action_processor,
+    robot_observation_processor,
+) -> None:
+    """Reject inputs that change the frozen candidate's embodiment or coordinates."""
+    policy = cfg.policy
+    if str(policy.pretrained_path) != POLICY_REPO_ID or policy.pretrained_revision != POLICY_REVISION:
+        raise ValueError(f"predicted requires {POLICY_REPO_ID}@{POLICY_REVISION}")
+    if policy.use_peft or policy.vlm_model_name != VLM_REPO_ID:
+        raise ValueError("predicted requires the frozen VLM and does not support PEFT or VLM overrides")
+    if cfg.robot.type != "so100_follower":
+        raise ValueError("predicted requires robot.type='so100_follower'")
+    if cfg.robot.use_degrees is not True:
+        raise ValueError("predicted requires use_degrees=True (physical degrees)")
+    if not math.isclose(cfg.fps, 30.0, rel_tol=1e-9, abs_tol=1e-9):
+        raise ValueError("predicted requires fps=30 for the frozen delay-step semantics")
+    if cfg.interpolation_multiplier != 1:
+        raise ValueError("predicted requires interpolation_multiplier=1")
+    if cfg.robot.max_relative_target is not None:
+        raise ValueError("predicted requires max_relative_target=None to preserve the committed prefix")
+    if any(
+        pipeline is not None
+        for pipeline in (teleop_action_processor, robot_action_processor, robot_observation_processor)
+    ):
+        raise ValueError("predicted requires default robot-side processor pipelines")
+    if cfg.rename_map != CAMERA_RENAME_MAP:
+        raise ValueError("predicted requires the frozen top/wrist to camera1/camera2 rename_map")
+    if set(cfg.robot.cameras) != {"top", "wrist"}:
+        raise ValueError("predicted requires exactly the top and wrist cameras")
+    for camera in cfg.robot.cameras.values():
+        if (
+            (camera.height, camera.width, 3) != RAW_IMAGE_SHAPE
+            or not getattr(camera, "use_rgb", True)
+            or getattr(camera, "use_depth", False)
+            or getattr(camera, "color_mode", ColorMode.RGB) != ColorMode.RGB
+        ):
+            raise ValueError("predicted requires two RGB cameras with shape (480, 640, 3)")
+
+
+def _load_frozen_future_latent_runtime(policy_config: PreTrainedConfig, *, device: str):
+    """Construct the policy and processors from the candidate's two exact snapshots."""
+    policy_snapshot = Path(snapshot_download(repo_id=POLICY_REPO_ID, revision=POLICY_REVISION))
+    vlm_snapshot = Path(snapshot_download(repo_id=VLM_REPO_ID, revision=VLM_REVISION))
+    if policy_snapshot.name != POLICY_REVISION or vlm_snapshot.name != VLM_REVISION:
+        raise ValueError("predicted resolver returned a different policy or VLM revision")
+    config = PreTrainedConfig.from_pretrained(policy_snapshot, local_files_only=True)
+    # The CLI config was loaded before context construction. Reject semantic overrides
+    # instead of silently replacing a different model configuration with this candidate.
+    semantic_fields = (
+        "n_obs_steps",
+        "chunk_size",
+        "n_action_steps",
+        "normalization_mapping",
+        "max_state_dim",
+        "max_action_dim",
+        "resize_imgs_with_padding",
+        "empty_cameras",
+        "adapt_to_pi_aloha",
+        "use_delta_joint_actions_aloha",
+        "tokenizer_max_length",
+        "num_steps",
+        "use_cache",
+        "load_vlm_weights",
+        "add_image_special_tokens",
+        "attention_mode",
+        "prefix_length",
+        "pad_language_to",
+        "num_expert_layers",
+        "num_vlm_layers",
+        "self_attn_every_n_layers",
+        "expert_width_multiplier",
+        "min_period",
+        "max_period",
+    )
+    for name in semantic_fields:
+        if getattr(policy_config, name) != getattr(config, name):
+            raise ValueError(f"predicted does not support a policy {name} override")
+    input_features = {
+        "observation.state": PolicyFeature(type=FeatureType.STATE, shape=(6,)),
+        **{key: PolicyFeature(type=FeatureType.VISUAL, shape=(3, 480, 640)) for key in POLICY_CAMERA_KEYS},
+    }
+    output_features = {"action": PolicyFeature(type=FeatureType.ACTION, shape=(6,))}
+    for name, expected in (("input_features", input_features), ("output_features", output_features)):
+        supplied = getattr(policy_config, name)
+        supplied_items = None if supplied is None else list(supplied.items())
+        original = getattr(config, name)
+        original_items = None if original is None else list(original.items())
+        if supplied_items != original_items and supplied_items != list(expected.items()):
+            raise ValueError(f"predicted does not support a policy {name} override")
+    action_names = getattr(policy_config, "action_feature_names", None)
+    if action_names is not None and tuple(action_names) != RUNTIME_SCALAR_KEYS:
+        raise ValueError("predicted requires the frozen action_feature_names order")
+    if policy_config.rtc_config is not None and policy_config.rtc_config.enabled:
+        raise ValueError("predicted does not support full RTC guidance")
+
+    config.input_features = input_features
+    config.output_features = output_features
+    config.action_feature_names = list(RUNTIME_SCALAR_KEYS)
+    config.device = device
+    config.pretrained_path = policy_snapshot
+    config.pretrained_revision = POLICY_REVISION
+    config.vlm_model_name = str(vlm_snapshot)
+    config.compile_model = False
+    policy = get_policy_class(config.type).from_pretrained(
+        policy_snapshot, config=config, local_files_only=True, strict=True
+    )
+    policy.eval()
+    policy.requires_grad_(False)
+
+    # These are the B1/B4 checkpoint embodiment statistics, not dataset statistics.
+    stats = []
+    for filename in (
+        "policy_preprocessor_step_5_normalizer_processor.safetensors",
+        "policy_postprocessor_step_0_unnormalizer_processor.safetensors",
+    ):
+        source = load_file(str(policy_snapshot / filename), device="cpu")
+        action_stats = {name: source[f"so100.buffer.action.{name}"] for name in ("mean", "std")}
+        if any(tuple(value.shape) != (6,) for value in action_stats.values()):
+            raise ValueError("predicted requires six-dimensional so100 checkpoint action statistics")
+        stats.append({"action": action_stats})
+    preprocessor, postprocessor = make_pre_post_processors(
+        policy_cfg=config,
+        pretrained_path=str(policy_snapshot),
+        preprocessor_overrides={
+            "device_processor": {"device": device},
+            "rename_observations_processor": {"rename_map": dict(CAMERA_RENAME_MAP)},
+            "tokenizer_processor": {"tokenizer_name": str(vlm_snapshot)},
+            "normalizer_processor": {"stats": stats[0]},
+        },
+        postprocessor_overrides={"unnormalizer_processor": {"stats": stats[1]}},
+    )
+    _bind_frozen_candidate(
+        policy,
+        preprocessor,
+        postprocessor,
+        policy_revision=policy_snapshot.name,
+        vlm_revision=vlm_snapshot.name,
+    )
+    _validate_frozen_candidate(policy, preprocessor, postprocessor)
+    return policy, preprocessor, postprocessor
+
+
+def _validate_frozen_robot_features(robot) -> None:
+    """Read declared features before connection; do not remap another embodiment."""
+    observation = robot.observation_features
+    scalar_keys = tuple(key for key, value in observation.items() if value is float)
+    if scalar_keys != RUNTIME_SCALAR_KEYS or tuple(robot.action_features) != RUNTIME_SCALAR_KEYS:
+        raise ValueError("predicted requires the frozen six-joint state/action order")
+    cameras = {key: value for key, value in observation.items() if isinstance(value, tuple)}
+    if cameras != {"top": RAW_IMAGE_SHAPE, "wrist": RAW_IMAGE_SHAPE}:
+        raise ValueError("predicted requires exactly top/wrist camera streams of shape (480, 640, 3)")
+
+
 def build_rollout_context(
     cfg: RolloutConfig,
     shutdown_event: Event,
@@ -312,6 +486,8 @@ def build_rollout_context(
     """
     is_rtc = isinstance(cfg.inference, RTCInferenceConfig)
     is_predictive_async = isinstance(cfg.inference, PredictiveAsyncInferenceConfig)
+    is_predicted = is_predictive_async and cfg.inference.context_mode == "predicted"
+    future_latent_predictor = None
 
     # --- 1. Policy (heavy I/O, but no hardware yet) -------------------
     logger.info("Loading policy from '%s'...", cfg.policy.pretrained_path)
@@ -324,9 +500,9 @@ def build_rollout_context(
             )
         if cfg.inference.context_mode == "oracle":
             raise ValueError("context_mode='oracle' is offline-only and cannot be used by live rollout")
-        if cfg.inference.context_mode == "predicted":
-            raise NotImplementedError(
-                "context_mode='predicted' is implemented in the learned-predictor milestone"
+        if is_predicted:
+            _validate_frozen_rollout_config(
+                cfg, teleop_action_processor, robot_action_processor, robot_observation_processor
             )
 
     if is_rtc:
@@ -341,7 +517,18 @@ def build_rollout_context(
             "Please use `cpu` or `cuda` backend."
         )
 
-    policy = _load_pretrained_policy(policy_config)
+    if is_predicted:
+        policy, preprocessor, postprocessor = _load_frozen_future_latent_runtime(
+            policy_config, device=cfg.device
+        )
+        policy_config = policy.config
+        cfg = copy(cfg)
+        cfg.policy = policy_config
+        future_latent_predictor = load_frozen_future_latent_predictor(
+            cfg.inference.future_latent_checkpoint, device=cfg.device
+        )
+    else:
+        policy = _load_pretrained_policy(policy_config)
 
     if is_rtc:
         if not supports_rtc_inference(policy):
@@ -386,6 +573,8 @@ def build_rollout_context(
     # --- 3. Hardware (heaviest side-effect, deferred) -----------------
     logger.info("Connecting robot (%s)...", cfg.robot.type if cfg.robot else "?")
     robot = make_robot_from_config(cfg.robot)
+    if is_predicted:
+        _validate_frozen_robot_features(robot)
     robot.connect()
     logger.info("Robot connected: %s", robot.name)
 
@@ -547,23 +736,24 @@ def build_rollout_context(
         logger.info("Dataset ready: %s (%d existing episodes)", dataset.repo_id, dataset.num_episodes)
 
     # --- 6. Policy pre/post processors (needs dataset stats if any) ---
-    dataset_stats = None
-    if dataset is not None:
-        dataset_stats = rename_stats(
-            dataset.meta.stats,
-            cfg.rename_map,
-        )
+    if not is_predicted:
+        dataset_stats = None
+        if dataset is not None:
+            dataset_stats = rename_stats(
+                dataset.meta.stats,
+                cfg.rename_map,
+            )
 
-    preprocessor, postprocessor = make_pre_post_processors(
-        policy_cfg=policy_config,
-        pretrained_path=cfg.policy.pretrained_path,
-        pretrained_revision=policy_config.pretrained_revision,
-        dataset_stats=dataset_stats,
-        preprocessor_overrides={
-            "device_processor": {"device": cfg.device},
-            "rename_observations_processor": {"rename_map": cfg.rename_map},
-        },
-    )
+        preprocessor, postprocessor = make_pre_post_processors(
+            policy_cfg=policy_config,
+            pretrained_path=cfg.policy.pretrained_path,
+            pretrained_revision=policy_config.pretrained_revision,
+            dataset_stats=dataset_stats,
+            preprocessor_overrides={
+                "device_processor": {"device": cfg.device},
+                "rename_observations_processor": {"rename_map": cfg.rename_map},
+            },
+        )
 
     relative_action_step = next(
         (
@@ -615,6 +805,7 @@ def build_rollout_context(
         use_torch_compile=torch_compile_active,
         compile_warmup_inferences=cfg.compile_warmup_inferences,
         shutdown_event=shutdown_event,
+        future_latent_predictor=future_latent_predictor,
     )
 
     # --- 8. Assemble ---------------------------------------------------

@@ -26,7 +26,7 @@ import logging
 from dataclasses import dataclass, field
 from pathlib import Path
 from threading import Event
-from typing import Literal
+from typing import TYPE_CHECKING, Literal
 
 import draccus
 
@@ -40,6 +40,9 @@ from .metrics import JsonlMetricsSink
 from .predictive_async import PredictiveAsyncInferenceEngine
 from .rtc import RTCInferenceEngine
 from .sync import SyncInferenceEngine
+
+if TYPE_CHECKING:
+    from lerobot.policies.smolvla.future_latent import LightweightFutureLatentPredictor
 
 logger = logging.getLogger(__name__)
 
@@ -93,6 +96,7 @@ class PredictiveAsyncInferenceConfig(InferenceEngineConfig):
     committed_guard_steps: int = 2
     max_late_steps: int = 2
     context_mode: Literal["identity", "oracle", "predicted"] = "identity"
+    future_latent_checkpoint: Path | None = None
     fallback_mode: Literal["identity", "discard"] = "identity"
 
     def __post_init__(self) -> None:
@@ -122,6 +126,15 @@ class PredictiveAsyncInferenceConfig(InferenceEngineConfig):
             raise ValueError(
                 f"context_mode must be one of 'identity', 'oracle', or 'predicted', got {self.context_mode!r}"
             )
+        if self.context_mode == "predicted":
+            if self.future_latent_checkpoint is None:
+                raise ValueError("predicted context requires future_latent_checkpoint")
+            if not 1 <= self.min_prediction_delay <= self.max_prediction_delay <= 8:
+                raise ValueError(
+                    "predicted context requires 1 <= min_prediction_delay <= max_prediction_delay <= 8"
+                )
+        elif self.context_mode == "identity" and self.future_latent_checkpoint is not None:
+            raise ValueError("identity context does not accept future_latent_checkpoint")
         if self.fallback_mode not in ("identity", "discard"):
             raise ValueError(
                 f"fallback_mode must be one of 'identity' or 'discard', got {self.fallback_mode!r}"
@@ -149,6 +162,7 @@ def create_inference_engine(
     use_torch_compile: bool = False,
     compile_warmup_inferences: int = 2,
     shutdown_event: Event | None = None,
+    future_latent_predictor: LightweightFutureLatentPredictor | None = None,
 ) -> InferenceEngine:
     """Instantiate the appropriate inference engine from a config object."""
     logger.info("Creating inference engine: %s", config.type)
@@ -200,6 +214,7 @@ def create_inference_engine(
             committed_guard_steps=config.committed_guard_steps,
             max_late_steps=config.max_late_steps,
             context_mode=config.context_mode,
+            future_latent_predictor=future_latent_predictor,
             fallback_mode=config.fallback_mode,
             use_torch_compile=use_torch_compile,
             compile_warmup_inferences=compile_warmup_inferences,

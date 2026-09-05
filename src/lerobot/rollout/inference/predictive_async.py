@@ -17,8 +17,8 @@
 The control thread creates a request from one observation and one atomic
 scheduled-queue snapshot before it pops that tick's action.  A single worker
 then produces either a bootstrap chunk or a chunk staged for an explicit
-takeover index.  The MVP implements identity future context only: it exercises
-the timing and token-override contracts without claiming a learned prediction.
+takeover index. Identity context is the default; predicted context uses the
+frozen short-horizon future-latent candidate.
 """
 
 from __future__ import annotations
@@ -30,7 +30,7 @@ import traceback
 from copy import copy
 from dataclasses import dataclass, replace
 from threading import Event, Lock, Thread
-from typing import Any, Literal
+from typing import TYPE_CHECKING, Any, Literal
 
 import torch
 
@@ -42,6 +42,13 @@ from lerobot.policies.rtc.scheduled_action_queue import (
     StageOutcome,
     TakeoverPlan,
 )
+from lerobot.policies.smolvla.future_latent_checkpoint import (
+    POLICY_CAMERA_KEYS,
+    RAW_CAMERA_KEYS,
+    RAW_IMAGE_SHAPE,
+    RUNTIME_SCALAR_KEYS,
+    _validate_frozen_candidate,
+)
 from lerobot.policies.utils import prepare_observation_for_inference
 from lerobot.processor import PolicyProcessorPipeline, RelativeActionsProcessorStep
 from lerobot.utils.feature_utils import build_dataset_frame
@@ -49,6 +56,9 @@ from lerobot.utils.feature_utils import build_dataset_frame
 from ..robot_wrapper import ThreadSafeRobot
 from .base import InferenceEngine
 from .latency_replay import DelayPlan, compute_delay_plan, latency_to_steps
+
+if TYPE_CHECKING:
+    from lerobot.policies.smolvla.future_latent import LightweightFutureLatentPredictor
 
 logger = logging.getLogger(__name__)
 
@@ -92,9 +102,8 @@ class _InferenceRequest:
 class PredictiveAsyncInferenceEngine(InferenceEngine):
     """Single-worker predictive asynchronous backend for SmolVLA.
 
-    PR-1 supports live ``identity`` context only.  ``oracle`` is deliberately
-    offline-only, and ``predicted`` is introduced with the learned predictor in
-    a later milestone.
+    ``predicted`` accepts only the frozen candidate and its processor instances.
+    ``oracle`` is deliberately offline-only.
     """
 
     def __init__(
@@ -117,6 +126,7 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
         committed_guard_steps: int = 2,
         max_late_steps: int = 2,
         context_mode: str = "identity",
+        future_latent_predictor: LightweightFutureLatentPredictor | None = None,
         fallback_mode: str = "identity",
         use_torch_compile: bool = False,
         compile_warmup_inferences: int = 2,
@@ -137,11 +147,40 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
         if context_mode == "oracle":
             raise ValueError("context_mode='oracle' is offline-only and cannot be used by live rollout")
         if context_mode == "predicted":
-            raise NotImplementedError(
-                "context_mode='predicted' is implemented in the learned-predictor milestone"
-            )
-        if context_mode != "identity":
+            if future_latent_predictor is None:
+                raise ValueError("context_mode='predicted' requires a future_latent_predictor")
+            if not 1 <= min_prediction_delay <= max_prediction_delay <= 8:
+                raise ValueError(
+                    "predicted context requires 1 <= min_prediction_delay <= max_prediction_delay <= 8"
+                )
+            _validate_frozen_candidate(policy, preprocessor, postprocessor)
+            if not math.isclose(fps, 30.0):
+                raise ValueError("The frozen future-latent candidate requires fps=30")
+            state_feature = hw_features.get("observation.state", {})
+            if (
+                state_feature.get("dtype") != "float32"
+                or tuple(state_feature.get("shape", ())) != (6,)
+                or tuple(state_feature.get("names", ())) != RUNTIME_SCALAR_KEYS
+            ):
+                raise ValueError(
+                    "The frozen future-latent candidate requires the ordered six runtime scalar keys"
+                )
+            visual_features = {
+                key: feature
+                for key, feature in hw_features.items()
+                if key.startswith("observation.images.") or feature.get("dtype") in ("image", "video")
+            }
+            if set(visual_features) != set(RAW_CAMERA_KEYS) or any(
+                feature.get("dtype") != "video" or tuple(feature.get("shape", ())) != RAW_IMAGE_SHAPE
+                for feature in visual_features.values()
+            ):
+                raise ValueError(
+                    "The frozen future-latent candidate requires exactly top/wrist RGB cameras at 480x640"
+                )
+        elif context_mode != "identity":
             raise ValueError(f"Unsupported context_mode: {context_mode!r}")
+        elif future_latent_predictor is not None:
+            raise ValueError("future_latent_predictor is only supported with context_mode='predicted'")
         if any(
             isinstance(step, RelativeActionsProcessorStep) and step.enabled
             for step in getattr(preprocessor, "steps", ())
@@ -172,6 +211,7 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
         self._committed_guard_steps = committed_guard_steps
         self._max_late_steps = max_late_steps
         self._context_mode = context_mode
+        self._future_latent_predictor = future_latent_predictor
         self._fallback_mode = fallback_mode
         self._use_torch_compile = use_torch_compile
         # The normal RGB and token-override calls specialize different branches of
@@ -511,10 +551,49 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
             warmup_token_override = request.kind == "warmup" and self._warmup_completed > 0
             if request.kind == "planned" or warmup_token_override:
                 token_policy: Any = self._policy
+                predicted_request = request.kind == "planned" and self._context_mode == "predicted"
+                if predicted_request and {
+                    key for key in batch if key.startswith("observation.images.")
+                } != set(POLICY_CAMERA_KEYS):
+                    raise ValueError("A predicted planned observation requires exactly camera1 and camera2")
                 images, image_masks = token_policy.prepare_images(batch)
+                if predicted_request and (len(images) != 2 or len(image_masks) != 2):
+                    raise ValueError("prepare_images must preserve both frozen camera streams")
                 image_tokens, image_token_masks = token_policy.model.encode_image_tokens(images, image_masks)
+                future_tokens = image_tokens
+                if predicted_request:
+                    plan = request.plan
+                    assert plan is not None
+                    if plan.planned_delay_steps > 0:
+                        # Queue snapshots keep the configured runtime cap. Only
+                        # the frozen predictor boundary extends them to eight rows.
+                        committed_actions = torch.zeros(
+                            (1, 8, 6),
+                            dtype=plan.committed_policy_actions.dtype,
+                            device=self._device,
+                        )
+                        committed_mask = torch.zeros((1, 8), dtype=torch.bool, device=self._device)
+                        prefix_rows = plan.committed_policy_actions.shape[0]
+                        committed_actions[0, :prefix_rows].copy_(plan.committed_policy_actions)
+                        committed_mask[0, :prefix_rows].copy_(plan.committed_mask)
+                        state = token_policy.prepare_state(batch)
+                        delay_steps = torch.tensor(
+                            [plan.planned_delay_steps], dtype=torch.long, device=self._device
+                        )
+                        prediction = self._future_latent_predictor(
+                            image_tokens,
+                            image_token_masks,
+                            committed_actions,
+                            committed_mask,
+                            state,
+                            delay_steps,
+                        )
+                        future_tokens = tuple(
+                            (tokens.float() + delta.float()).to(tokens.dtype)
+                            for tokens, delta in zip(image_tokens, prediction.delta_tokens, strict=True)
+                        )
                 predict_kwargs.update(
-                    future_image_tokens=image_tokens,
+                    future_image_tokens=future_tokens,
                     future_image_token_masks=image_token_masks,
                 )
             actions = self._policy.predict_action_chunk(batch, **predict_kwargs)
