@@ -27,6 +27,8 @@ import logging
 import math
 import time
 import traceback
+from collections.abc import Iterator
+from contextlib import contextmanager
 from copy import copy
 from dataclasses import dataclass, replace
 from threading import Event, Lock, Thread
@@ -56,6 +58,7 @@ from lerobot.utils.feature_utils import build_dataset_frame
 from ..robot_wrapper import ThreadSafeRobot
 from .base import InferenceEngine
 from .latency_replay import DelayPlan, compute_delay_plan, latency_to_steps
+from .metrics import InferenceMetricsSink
 
 if TYPE_CHECKING:
     from lerobot.policies.smolvla.future_latent import LightweightFutureLatentPredictor
@@ -65,6 +68,16 @@ logger = logging.getLogger(__name__)
 _IDLE_WAIT_S = 0.005
 _JOIN_TIMEOUT_S = 3.0
 _MAX_CONSECUTIVE_ERRORS = 5
+_METRIC_PHASES = (
+    "observation_preparation",
+    "preprocessor",
+    "vision_encode",
+    "predictor_input_preparation",
+    "predictor_forward",
+    "residual_application",
+    "policy_total",
+    "postprocessor",
+)
 
 
 def _synchronize_policy_device(device: torch.device) -> None:
@@ -131,6 +144,7 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
         use_torch_compile: bool = False,
         compile_warmup_inferences: int = 2,
         shutdown_event: Event | None = None,
+        metrics_sink: InferenceMetricsSink | None = None,
     ) -> None:
         super().__init__(task=task)
         if not math.isfinite(fps) or fps <= 0:
@@ -219,6 +233,7 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
         # does not compile inside its takeover deadline or pollute the latency window.
         self._compile_warmup_inferences = max(2, compile_warmup_inferences)
         self._global_shutdown_event = shutdown_event
+        self._metrics_sink = metrics_sink
 
         self._queue = ScheduledActionQueue(reset_epoch=0, task_epoch=0)
         self._latency_tracker = LatencyTracker(maxlen=latency_window)
@@ -306,6 +321,33 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
                 return
         self._worker = None
         self._request_ready.clear()
+        self._close_metrics_sink()
+
+    def _emit_metrics(self, event: dict[str, Any]) -> None:
+        sink = self._metrics_sink
+        if sink is None:
+            return
+        try:
+            sink.emit(
+                {
+                    "schema_version": 1,
+                    "backend": "predictive_async",
+                    "context_mode": self._context_mode,
+                    **event,
+                }
+            )
+        except Exception:
+            logger.exception("Failed to write predictive async inference metrics")
+
+    def _close_metrics_sink(self) -> None:
+        sink = self._metrics_sink
+        if sink is None:
+            return
+        self._metrics_sink = None
+        try:
+            sink.close()
+        except Exception:
+            logger.exception("Failed to close predictive async inference metrics")
 
     def pause(self) -> None:
         self._policy_active.clear()
@@ -344,6 +386,7 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
         """Atomically pair this control-tick observation with a takeover plan."""
         if not self._policy_active.is_set() or self._shutdown_event.is_set():
             return
+        metrics_event = {} if self._metrics_sink is not None else None
         with self._request_lock:
             if not self._policy_active.is_set() or self._shutdown_event.is_set():
                 return
@@ -356,20 +399,28 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
                 # A newer set_task won the race after this snapshot.  The next
                 # control tick will pair its observation with the current epoch.
                 return
-            request = self._make_request_locked(copy(obs), task=task, task_epoch=task_epoch)
-            if request is None:
-                return
-            self._pending_request = request
-            self._stats = replace(
-                self._stats,
-                requests_started=self._stats.requests_started + 1,
-                bootstrap_requests=(self._stats.bootstrap_requests + (request.kind == "bootstrap")),
-                planned_requests=self._stats.planned_requests + (request.kind == "planned"),
+            request = self._make_request_locked(
+                copy(obs), task=task, task_epoch=task_epoch, metrics_event=metrics_event
             )
-            self._request_ready.set()
+            if request is not None:
+                self._pending_request = request
+                self._stats = replace(
+                    self._stats,
+                    requests_started=self._stats.requests_started + 1,
+                    bootstrap_requests=(self._stats.bootstrap_requests + (request.kind == "bootstrap")),
+                    planned_requests=self._stats.planned_requests + (request.kind == "planned"),
+                )
+                self._request_ready.set()
+        if metrics_event:
+            self._emit_metrics(metrics_event)
 
     def _make_request_locked(
-        self, observation: dict[str, Any], *, task: str, task_epoch: int
+        self,
+        observation: dict[str, Any],
+        *,
+        task: str,
+        task_epoch: int,
+        metrics_event: dict[str, Any] | None = None,
     ) -> _InferenceRequest | None:
         request_id = self._request_id
         now = time.perf_counter()
@@ -416,6 +467,26 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
         if delay_plan is None:
             return None
         self._last_delay_plan = delay_plan
+        if metrics_event is not None:
+            metrics_event.update(
+                event="planner_decision",
+                timestamp_s=time.perf_counter(),
+                reset_epoch=self._reset_epoch,
+                task_epoch=task_epoch,
+                task=task,
+                request_id=None,
+                next_action_index_snapshot=self._queue.next_action_index,
+                available_steps=available,
+                required_steps=delay_plan.planned_delay_steps + self._committed_guard_steps,
+                committed_guard_steps=self._committed_guard_steps,
+                estimated_latency_s=delay_plan.estimated_latency_s,
+                raw_required_delay_steps=delay_plan.raw_required_delay_steps,
+                planned_delay_steps=delay_plan.planned_delay_steps,
+                available_after_guard_steps=delay_plan.available_after_guard_steps,
+                prediction_cap_exceeded=delay_plan.prediction_cap_exceeded,
+                plan_outcome=None,
+                decision=None,
+            )
         if delay_plan.prediction_cap_exceeded:
             self._stats = replace(
                 self._stats,
@@ -429,8 +500,14 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
                 self._queue.next_action_index,
             )
             if available != 0 or self._fallback_mode == "discard":
+                if metrics_event is not None:
+                    metrics_event["decision"] = (
+                        "cap_discard" if self._fallback_mode == "discard" else "cap_wait"
+                    )
                 return None
             self._request_id += 1
+            if metrics_event is not None:
+                metrics_event.update(decision="bootstrap", request_id=request_id)
             return _InferenceRequest(
                 request_id=request_id,
                 kind="bootstrap",
@@ -444,8 +521,12 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
 
         if available == 0:
             if self._fallback_mode == "discard":
+                if metrics_event is not None:
+                    metrics_event["decision"] = "empty_discard"
                 return None
             self._request_id += 1
+            if metrics_event is not None:
+                metrics_event.update(decision="bootstrap", request_id=request_id)
             return _InferenceRequest(
                 request_id=request_id,
                 kind="bootstrap",
@@ -465,9 +546,18 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
             task_epoch=task_epoch,
             task=task,
         )
+        if metrics_event is not None:
+            metrics_event.update(
+                plan_outcome=creation.outcome.value,
+                available_steps=creation.available_steps,
+                required_steps=creation.required_steps,
+                decision="plan_failed" if creation.plan is None else "planned",
+            )
         if creation.plan is None:
             return None
         self._request_id += 1
+        if metrics_event is not None:
+            metrics_event["request_id"] = request_id
         return _InferenceRequest(
             request_id=request_id,
             kind="planned",
@@ -486,10 +576,21 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
         if result.post_policy_action is None:
             with self._request_lock:
                 self._stats = replace(self._stats, underflows=self._stats.underflows + 1)
-            return None
-        if result.task is None:
+        elif result.task is None:
             raise RuntimeError("ScheduledActionQueue returned an action without task provenance")
-        self._set_dispatched_task(result.task)
+        else:
+            self._set_dispatched_task(result.task)
+        if self._metrics_sink is not None:
+            self._emit_metrics(
+                {
+                    "event": "queue_get",
+                    "timestamp_s": time.perf_counter(),
+                    "outcome": result.outcome.value,
+                    "action_index": result.action_index,
+                    "task": result.task,
+                    "underflow_total": self._stats.underflows,
+                }
+            )
         return result.post_policy_action
 
     def _worker_loop(self) -> None:
@@ -539,118 +640,304 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
             self._ready_event.set()
             if self._global_shutdown_event is not None:
                 self._global_shutdown_event.set()
+        finally:
+            self._close_metrics_sink()
+
+    @contextmanager
+    def _record_metrics_phase(
+        self,
+        phase: str,
+        metrics: dict[str, Any] | None,
+        cuda_events: dict[str, tuple[Any, Any]] | None,
+    ) -> Iterator[None]:
+        if metrics is None:
+            yield
+            return
+        metrics["failed_phase"] = phase
+        started_at = None
+        start_event = end_event = None
+        try:
+            if cuda_events is not None:
+                start_event = torch.cuda.Event(enable_timing=True)
+                end_event = torch.cuda.Event(enable_timing=True)
+                start_event.record(torch.cuda.current_stream(self._device))
+            started_at = time.perf_counter()
+        except Exception:
+            logger.exception("Failed to start predictive async phase metrics: %s", phase)
+        # A public-call error propagates without completing the failed phase or
+        # reading CUDA events. Only observational setup/record failures are caught.
+        yield
+        try:
+            if started_at is not None:
+                metrics["phase_host_wall_s"][phase] = time.perf_counter() - started_at
+            if start_event is not None and end_event is not None:
+                end_event.record(torch.cuda.current_stream(self._device))
+                cuda_events[phase] = (start_event, end_event)
+        except Exception:
+            logger.exception("Failed to finish predictive async phase metrics: %s", phase)
+
+    def _finish_request_metrics(
+        self,
+        metrics: dict[str, Any] | None,
+        cuda_events: dict[str, tuple[Any, Any]] | None,
+        *,
+        latency_s: float,
+        completion_started_at: float | None,
+        outcome: str,
+        result_next_action_index: int | None = None,
+        late_steps: int | None = None,
+        consumed_steps_at_stage: int | None = None,
+    ) -> None:
+        if metrics is None:
+            return
+        # Called only after the original completion barrier, latency sample and
+        # warmup/install/stage disposition. Event inspection cannot delay takeover.
+        if cuda_events is not None:
+            for phase, (start_event, end_event) in cuda_events.items():
+                try:
+                    metrics["phase_cuda_stream_elapsed_ms"][phase] = start_event.elapsed_time(end_event)
+                except Exception:
+                    logger.exception("Failed to resolve predictive async phase metrics: %s", phase)
+        completed_at = metrics["requested_at_s"] + latency_s
+        metrics.update(
+            cuda_completed_at_s=completed_at,
+            device_completion_wait_s=completed_at - completion_started_at,
+            total_chunk_s=latency_s,
+            d_actual_wall=latency_to_steps(latency_s, self._fps),
+            outcome=outcome,
+            result_next_action_index=result_next_action_index,
+            late_steps=late_steps,
+            consumed_steps_at_stage=consumed_steps_at_stage,
+            underflow_total=self._stats.underflows,
+        )
+        metrics.pop("failed_phase")
+        self._emit_metrics(metrics)
 
     def _run_request(self, request: _InferenceRequest) -> None:
-        batch = build_dataset_frame(self._hw_features, request.observation, prefix="observation")
-        batch = prepare_observation_for_inference(batch, self._device, request.task, self._robot.robot_type)
-        batch["task"] = [request.task]
-        batch = self._preprocessor(batch)
-
-        with torch.inference_mode():
-            predict_kwargs: dict[str, Any] = {}
-            warmup_token_override = request.kind == "warmup" and self._warmup_completed > 0
-            if request.kind == "planned" or warmup_token_override:
-                token_policy: Any = self._policy
-                predicted_request = request.kind == "planned" and self._context_mode == "predicted"
-                if predicted_request and {
-                    key for key in batch if key.startswith("observation.images.")
-                } != set(POLICY_CAMERA_KEYS):
-                    raise ValueError("A predicted planned observation requires exactly camera1 and camera2")
-                images, image_masks = token_policy.prepare_images(batch)
-                if predicted_request and (len(images) != 2 or len(image_masks) != 2):
-                    raise ValueError("prepare_images must preserve both frozen camera streams")
-                image_tokens, image_token_masks = token_policy.model.encode_image_tokens(images, image_masks)
-                future_tokens = image_tokens
-                if predicted_request:
-                    plan = request.plan
-                    assert plan is not None
-                    if plan.planned_delay_steps > 0:
-                        # Queue snapshots keep the configured runtime cap. Only
-                        # the frozen predictor boundary extends them to eight rows.
-                        committed_actions = torch.zeros(
-                            (1, 8, 6),
-                            dtype=plan.committed_policy_actions.dtype,
-                            device=self._device,
-                        )
-                        committed_mask = torch.zeros((1, 8), dtype=torch.bool, device=self._device)
-                        prefix_rows = plan.committed_policy_actions.shape[0]
-                        committed_actions[0, :prefix_rows].copy_(plan.committed_policy_actions)
-                        committed_mask[0, :prefix_rows].copy_(plan.committed_mask)
-                        state = token_policy.prepare_state(batch)
-                        delay_steps = torch.tensor(
-                            [plan.planned_delay_steps], dtype=torch.long, device=self._device
-                        )
-                        prediction = self._future_latent_predictor(
-                            image_tokens,
-                            image_token_masks,
-                            committed_actions,
-                            committed_mask,
-                            state,
-                            delay_steps,
-                        )
-                        future_tokens = tuple(
-                            (tokens.float() + delta.float()).to(tokens.dtype)
-                            for tokens, delta in zip(image_tokens, prediction.delta_tokens, strict=True)
-                        )
-                predict_kwargs.update(
-                    future_image_tokens=future_tokens,
-                    future_image_token_masks=image_token_masks,
+        metrics = None
+        cuda_events = None
+        completion_started_at = None
+        if self._metrics_sink is not None:
+            started_at = time.perf_counter()
+            delay_plan = request.delay_plan
+            plan = request.plan
+            cuda_events = {} if self._device.type == "cuda" else None
+            metrics = {
+                "event": "chunk_request",
+                "request_id": request.request_id,
+                "request_kind": request.kind,
+                "reset_epoch": request.reset_epoch,
+                "task_epoch": request.task_epoch,
+                "task": request.task,
+                "requested_at_s": request.requested_at,
+                "started_at_s": started_at,
+                "cuda_completed_at_s": None,
+                "dispatch_wait_s": started_at - request.requested_at,
+                "device_completion_wait_s": None,
+                "total_chunk_s": None,
+                "d_actual_wall": None,
+                "phase_host_wall_s": dict.fromkeys(_METRIC_PHASES),
+                "phase_cuda_stream_elapsed_ms": (
+                    dict.fromkeys(_METRIC_PHASES) if cuda_events is not None else None
+                ),
+                "predictor_calls": 0,
+                "policy_includes_vision": None,
+                "estimated_latency_s": None if delay_plan is None else delay_plan.estimated_latency_s,
+                "raw_required_delay_steps": (
+                    None if delay_plan is None else delay_plan.raw_required_delay_steps
+                ),
+                "planned_delay_steps": None if plan is None else plan.planned_delay_steps,
+                "available_after_guard_steps": (
+                    None if delay_plan is None else delay_plan.available_after_guard_steps
+                ),
+                "prediction_cap_exceeded": None if delay_plan is None else delay_plan.prediction_cap_exceeded,
+                "plan_next_action_index": None if plan is None else plan.next_action_index,
+                "takeover_index": None if plan is None else plan.takeover_index,
+                "result_next_action_index": None,
+                "outcome": None,
+                "late_steps": None,
+                "consumed_steps_at_stage": None,
+                "underflow_total": self._stats.underflows,
+                "failed_phase": None,
+            }
+        try:
+            with self._record_metrics_phase("observation_preparation", metrics, cuda_events):
+                batch = build_dataset_frame(self._hw_features, request.observation, prefix="observation")
+                batch = prepare_observation_for_inference(
+                    batch, self._device, request.task, self._robot.robot_type
                 )
-            actions = self._policy.predict_action_chunk(batch, **predict_kwargs)
-        policy_actions = actions.squeeze(0).clone()
-        post_policy_actions = self._postprocessor(actions).squeeze(0)
-        # CUDA launches asynchronously.  Publish the queue entry, sample latency,
-        # and mark compile warmup ready only after the policy and postprocessor
-        # really completed; asynchronous failures then stay on the worker path.
-        _synchronize_policy_device(self._device)
-        latency_s = time.perf_counter() - request.requested_at
+                batch["task"] = [request.task]
+            with self._record_metrics_phase("preprocessor", metrics, cuda_events):
+                batch = self._preprocessor(batch)
 
-        if request.kind == "warmup":
-            with self._request_lock:
-                self._warmup_completed += 1
-                if self._warmup_completed >= self._compile_warmup_inferences:
-                    self._ready_event.set()
-            return
+            with torch.inference_mode():
+                predict_kwargs: dict[str, Any] = {}
+                warmup_token_override = request.kind == "warmup" and self._warmup_completed > 0
+                if metrics is not None:
+                    metrics["policy_includes_vision"] = not (
+                        request.kind == "planned" or warmup_token_override
+                    )
+                if request.kind == "planned" or warmup_token_override:
+                    token_policy: Any = self._policy
+                    predicted_request = request.kind == "planned" and self._context_mode == "predicted"
+                    with self._record_metrics_phase("vision_encode", metrics, cuda_events):
+                        if predicted_request and {
+                            key for key in batch if key.startswith("observation.images.")
+                        } != set(POLICY_CAMERA_KEYS):
+                            raise ValueError(
+                                "A predicted planned observation requires exactly camera1 and camera2"
+                            )
+                        images, image_masks = token_policy.prepare_images(batch)
+                        if predicted_request and (len(images) != 2 or len(image_masks) != 2):
+                            raise ValueError("prepare_images must preserve both frozen camera streams")
+                        image_tokens, image_token_masks = token_policy.model.encode_image_tokens(
+                            images, image_masks
+                        )
+                    future_tokens = image_tokens
+                    if predicted_request:
+                        plan = request.plan
+                        assert plan is not None
+                        if plan.planned_delay_steps > 0:
+                            # Queue snapshots keep the configured runtime cap. Only
+                            # the predictor boundary extends them to eight rows.
+                            with self._record_metrics_phase(
+                                "predictor_input_preparation", metrics, cuda_events
+                            ):
+                                committed_actions = torch.zeros(
+                                    (1, 8, 6),
+                                    dtype=plan.committed_policy_actions.dtype,
+                                    device=self._device,
+                                )
+                                committed_mask = torch.zeros((1, 8), dtype=torch.bool, device=self._device)
+                                prefix_rows = plan.committed_policy_actions.shape[0]
+                                committed_actions[0, :prefix_rows].copy_(plan.committed_policy_actions)
+                                committed_mask[0, :prefix_rows].copy_(plan.committed_mask)
+                                state = token_policy.prepare_state(batch)
+                                delay_steps = torch.tensor(
+                                    [plan.planned_delay_steps], dtype=torch.long, device=self._device
+                                )
+                            with self._record_metrics_phase("predictor_forward", metrics, cuda_events):
+                                if metrics is not None:
+                                    metrics["predictor_calls"] += 1
+                                prediction = self._future_latent_predictor(
+                                    image_tokens,
+                                    image_token_masks,
+                                    committed_actions,
+                                    committed_mask,
+                                    state,
+                                    delay_steps,
+                                )
+                            with self._record_metrics_phase("residual_application", metrics, cuda_events):
+                                future_tokens = tuple(
+                                    (tokens.float() + delta.float()).to(tokens.dtype)
+                                    for tokens, delta in zip(
+                                        image_tokens, prediction.delta_tokens, strict=True
+                                    )
+                                )
+                    predict_kwargs.update(
+                        future_image_tokens=future_tokens,
+                        future_image_token_masks=image_token_masks,
+                    )
+                with self._record_metrics_phase("policy_total", metrics, cuda_events):
+                    actions = self._policy.predict_action_chunk(batch, **predict_kwargs)
+            with self._record_metrics_phase("postprocessor", metrics, cuda_events):
+                policy_actions = actions.squeeze(0).clone()
+                post_policy_actions = self._postprocessor(actions).squeeze(0)
+            # Keep the original CUDA-complete sample before publication. Metrics
+            # add event records, never an extra phase synchronization.
+            if metrics is not None:
+                metrics["failed_phase"] = "device_completion"
+                completion_started_at = time.perf_counter()
+            _synchronize_policy_device(self._device)
+            latency_s = time.perf_counter() - request.requested_at
 
-        self._latency_tracker.add(latency_s)
-        if request.kind == "bootstrap":
-            installed = self._queue.install_active_chunk(
+            if metrics is not None:
+                metrics["failed_phase"] = "queue_publication"
+            if request.kind == "warmup":
+                with self._request_lock:
+                    self._warmup_completed += 1
+                    if self._warmup_completed >= self._compile_warmup_inferences:
+                        self._ready_event.set()
+                self._finish_request_metrics(
+                    metrics,
+                    cuda_events,
+                    latency_s=latency_s,
+                    completion_started_at=completion_started_at,
+                    outcome="warmup_completed",
+                )
+                return
+
+            self._latency_tracker.add(latency_s)
+            if request.kind == "bootstrap":
+                installed = self._queue.install_active_chunk(
+                    policy_actions,
+                    post_policy_actions,
+                    task=request.task,
+                    reset_epoch=request.reset_epoch,
+                    task_epoch=request.task_epoch,
+                )
+                if installed.outcome is not InstallOutcome.INSTALLED:
+                    with self._request_lock:
+                        self._stats = replace(self._stats, stale_results=self._stats.stale_results + 1)
+                self._finish_request_metrics(
+                    metrics,
+                    cuda_events,
+                    latency_s=latency_s,
+                    completion_started_at=completion_started_at,
+                    outcome=installed.outcome.value,
+                    result_next_action_index=installed.next_action_index,
+                )
+                return
+
+            staged = self._queue.stage_chunk(
                 policy_actions,
                 post_policy_actions,
-                task=request.task,
+                request_id=request.request_id,
                 reset_epoch=request.reset_epoch,
                 task_epoch=request.task_epoch,
+                task=request.task,
             )
-            if installed.outcome is not InstallOutcome.INSTALLED:
+            if staged.outcome is StageOutcome.DEADLINE_MISS:
+                with self._request_lock:
+                    self._stats = replace(self._stats, deadline_misses=self._stats.deadline_misses + 1)
+            elif staged.outcome is StageOutcome.STALE:
                 with self._request_lock:
                     self._stats = replace(self._stats, stale_results=self._stats.stale_results + 1)
-            return
 
-        staged = self._queue.stage_chunk(
-            policy_actions,
-            post_policy_actions,
-            request_id=request.request_id,
-            reset_epoch=request.reset_epoch,
-            task_epoch=request.task_epoch,
-            task=request.task,
-        )
-        if staged.outcome is StageOutcome.DEADLINE_MISS:
-            with self._request_lock:
-                self._stats = replace(self._stats, deadline_misses=self._stats.deadline_misses + 1)
-        elif staged.outcome is StageOutcome.STALE:
-            with self._request_lock:
-                self._stats = replace(self._stats, stale_results=self._stats.stale_results + 1)
-
-        measured_steps = latency_to_steps(latency_s, self._fps)
-        logger.debug(
-            "predictive_async request=%d outcome=%s raw_required=%s planned=%s "
-            "cap_exceeded=%s measured=%d late=%d next=%d",
-            request.request_id,
-            staged.outcome.value,
-            None if request.delay_plan is None else request.delay_plan.raw_required_delay_steps,
-            None if request.delay_plan is None else request.delay_plan.planned_delay_steps,
-            None if request.delay_plan is None else request.delay_plan.prediction_cap_exceeded,
-            measured_steps,
-            staged.late_steps,
-            self._queue.next_action_index,
-        )
+            measured_steps = latency_to_steps(latency_s, self._fps)
+            logger.debug(
+                "predictive_async request=%d outcome=%s raw_required=%s planned=%s "
+                "cap_exceeded=%s measured=%d late=%d next=%d",
+                request.request_id,
+                staged.outcome.value,
+                None if request.delay_plan is None else request.delay_plan.raw_required_delay_steps,
+                None if request.delay_plan is None else request.delay_plan.planned_delay_steps,
+                None if request.delay_plan is None else request.delay_plan.prediction_cap_exceeded,
+                measured_steps,
+                staged.late_steps,
+                self._queue.next_action_index,
+            )
+            self._finish_request_metrics(
+                metrics,
+                cuda_events,
+                latency_s=latency_s,
+                completion_started_at=completion_started_at,
+                outcome=staged.outcome.value,
+                result_next_action_index=staged.next_action_index,
+                late_steps=staged.late_steps,
+                consumed_steps_at_stage=(
+                    staged.next_action_index - request.plan.next_action_index
+                    if request.plan is not None and staged.outcome is not StageOutcome.STALE
+                    else None
+                ),
+            )
+        except Exception as error:
+            if metrics is not None:
+                metrics.update(
+                    event="request_error",
+                    error_type=type(error).__name__,
+                    error_message=str(error),
+                    underflow_total=self._stats.underflows,
+                )
+                self._emit_metrics(metrics)
+            raise

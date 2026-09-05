@@ -98,6 +98,7 @@ class PredictiveAsyncInferenceConfig(InferenceEngineConfig):
     context_mode: Literal["identity", "oracle", "predicted"] = "identity"
     future_latent_checkpoint: Path | None = None
     fallback_mode: Literal["identity", "discard"] = "identity"
+    metrics_path: Path | None = None
 
     def __post_init__(self) -> None:
         if self.queue_threshold < 0:
@@ -196,6 +197,7 @@ def create_inference_engine(
             metrics_sink=metrics_sink,
         )
     if isinstance(config, PredictiveAsyncInferenceConfig):
+        metrics_sink = JsonlMetricsSink(config.metrics_path) if config.metrics_path is not None else None
         return PredictiveAsyncInferenceEngine(
             policy=policy,
             preprocessor=preprocessor,
@@ -219,5 +221,6 @@ def create_inference_engine(
             use_torch_compile=use_torch_compile,
             compile_warmup_inferences=compile_warmup_inferences,
             shutdown_event=shutdown_event,
+            metrics_sink=metrics_sink,
         )
     raise ValueError(f"Unknown inference engine type: {type(config).__name__}")

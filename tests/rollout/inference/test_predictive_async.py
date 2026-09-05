@@ -14,6 +14,7 @@
 
 from __future__ import annotations
 
+import json
 import time
 from copy import deepcopy
 from threading import Event
@@ -40,6 +41,7 @@ from lerobot.policies.smolvla.future_latent_checkpoint import (
 )
 from lerobot.processor import RelativeActionsProcessorStep
 from lerobot.rollout.inference import predictive_async
+from lerobot.rollout.inference.metrics import JsonlMetricsSink
 from lerobot.rollout.inference.predictive_async import PredictiveAsyncInferenceEngine
 
 
@@ -107,6 +109,7 @@ def _make_engine(
     context_mode: str = "identity",
     fallback_mode: str = "identity",
     delay_safety_margin_steps: int = 0,
+    metrics_sink=None,
 ) -> PredictiveAsyncInferenceEngine:
     return PredictiveAsyncInferenceEngine(
         policy=policy,
@@ -135,6 +138,7 @@ def _make_engine(
         fallback_mode=fallback_mode,
         use_torch_compile=use_torch_compile,
         compile_warmup_inferences=compile_warmup_inferences,
+        metrics_sink=metrics_sink,
     )
 
 
@@ -819,3 +823,450 @@ def test_predicted_prepare_images_cannot_silently_drop_a_camera(monkeypatch) -> 
         engine._run_request(request)
     assert policy.model.encode_calls == 0
     assert arguments["future_latent_predictor"].calls == []
+
+
+_METRIC_PHASES = {
+    "observation_preparation",
+    "preprocessor",
+    "vision_encode",
+    "predictor_input_preparation",
+    "predictor_forward",
+    "residual_application",
+    "policy_total",
+    "postprocessor",
+}
+_PREDICTOR_PHASES = {"predictor_input_preparation", "predictor_forward", "residual_application"}
+
+
+class _RecordingMetrics:
+    def __init__(self) -> None:
+        self.events: list[dict] = []
+        self.close_calls = 0
+
+    def emit(self, event) -> None:
+        # Exercise the complete public JSON payload, including enums and optional values.
+        self.events.append(json.loads(json.dumps(dict(event))))
+
+    def close(self) -> None:
+        self.close_calls += 1
+
+
+def test_predictive_metrics_off_preserves_calls_and_barrier(monkeypatch) -> None:
+    arguments = _candidate_arguments()
+    engine = PredictiveAsyncInferenceEngine(**arguments)
+    request, _ = _candidate_planned_request(engine, 1)
+    calls = []
+    stage = engine.queue.stage_chunk
+
+    def clock():
+        calls.append("total_clock")
+        return request.requested_at + 0.25
+
+    def publish(*args, **kwargs):
+        calls.append("stage")
+        return stage(*args, **kwargs)
+
+    def unexpected_event(*args, **kwargs):
+        pytest.fail("metrics disabled must not create a CUDA event")
+
+    def unexpected_payload(event):
+        pytest.fail("metrics disabled must not emit an event payload")
+
+    monkeypatch.setattr(predictive_async, "time", SimpleNamespace(perf_counter=clock))
+    monkeypatch.setattr(
+        predictive_async, "_synchronize_policy_device", lambda device: calls.append("barrier")
+    )
+    monkeypatch.setattr(torch.cuda, "Event", unexpected_event)
+    monkeypatch.setattr(engine, "_emit_metrics", unexpected_payload)
+    monkeypatch.setattr(engine.queue, "stage_chunk", publish)
+    engine._run_request(request)
+    assert calls == ["barrier", "total_clock", "stage"]
+    assert arguments["policy"].prepare_image_calls == arguments["policy"].model.encode_calls == 1
+    assert len(arguments["future_latent_predictor"].calls) == len(arguments["policy"].kwargs) == 1
+    assert engine.queue.has_staged_chunk()
+    assert len(engine._latency_tracker) == 2
+
+
+@pytest.mark.parametrize(
+    "case",
+    [
+        "predicted_early",
+        "predicted_on_time",
+        "predicted_late",
+        "predicted_reset",
+        "predicted_task",
+        "predicted_d0",
+        "identity",
+        "bootstrap",
+        "bootstrap_stale",
+        "warmup_rgb",
+        "warmup_override",
+    ],
+)
+def test_predictive_metrics_request_phases_and_outcomes(case, tmp_path) -> None:
+    path = tmp_path / "events.jsonl"
+    sink = JsonlMetricsSink(path)
+    arguments = _candidate_arguments()
+    if case == "identity":
+        arguments.update(context_mode="identity", future_latent_predictor=None)
+    engine = PredictiveAsyncInferenceEngine(
+        **arguments, metrics_sink=sink, use_torch_compile=case.startswith("warmup")
+    )
+    delay = 0 if case == "predicted_d0" else 1
+    consumed = 0
+    if case.startswith("predicted") or case == "identity":
+        request, _ = _candidate_planned_request(engine, delay)
+        if case in ("predicted_on_time", "predicted_late"):
+            consumed = 1 + (case == "predicted_late")
+            for _ in range(consumed):
+                engine.get_action(None)
+        elif case == "predicted_reset":
+            engine.reset()
+        elif case == "predicted_task":
+            engine.set_task("task B")
+    else:
+        engine.resume()
+        if case == "warmup_override":
+            engine.notify_observation(_candidate_observation())
+            engine._run_request(_take_pending(engine))
+        engine.notify_observation(_candidate_observation())
+        request = _take_pending(engine)
+        if case == "bootstrap_stale":
+            engine.reset()
+    tracker_before = len(engine._latency_tracker)
+    engine._run_request(request)
+    engine.stop()
+    events = [json.loads(line) for line in path.read_text().splitlines()]
+    event = [event for event in events if event["event"] == "chunk_request"][-1]
+    assert event["schema_version"] == 1
+    assert event["backend"] == "predictive_async"
+    assert event["request_id"] == request.request_id
+    assert event["request_kind"] == request.kind
+    assert event["context_mode"] == arguments["context_mode"]
+    assert event["reset_epoch"] == request.reset_epoch
+    assert event["task_epoch"] == request.task_epoch
+    assert event["task"] == request.task
+    host = event["phase_host_wall_s"]
+    assert set(host) == _METRIC_PHASES
+    assert event["phase_cuda_stream_elapsed_ms"] is None
+    predictor_called = case.startswith("predicted") and case != "predicted_d0"
+    assert event["predictor_calls"] == int(predictor_called)
+    for key in _PREDICTOR_PHASES:
+        assert (host[key] is not None) == predictor_called
+    native_vision = case in ("bootstrap", "bootstrap_stale", "warmup_rgb")
+    assert event["policy_includes_vision"] == native_vision
+    assert (host["vision_encode"] is None) == native_vision
+    assert all(value is None or value >= 0 for value in host.values())
+    assert event["requested_at_s"] <= event["started_at_s"] <= event["cuda_completed_at_s"]
+    assert event["total_chunk_s"] == pytest.approx(event["cuda_completed_at_s"] - request.requested_at)
+    assert event["dispatch_wait_s"] == pytest.approx(event["started_at_s"] - request.requested_at)
+    assert event["device_completion_wait_s"] >= 0
+    assert event["d_actual_wall"] == predictive_async.latency_to_steps(event["total_chunk_s"], engine._fps)
+    assert len(engine._latency_tracker) == tracker_before + (request.kind != "warmup")
+    assert event["underflow_total"] == 0
+    if request.plan is None:
+        assert event["planned_delay_steps"] is None
+        assert event["plan_next_action_index"] is None
+        assert event["consumed_steps_at_stage"] is None
+        assert event["outcome"] == (
+            "warmup_completed"
+            if request.kind == "warmup"
+            else "stale"
+            if case == "bootstrap_stale"
+            else "installed"
+        )
+    else:
+        stale = case in ("predicted_reset", "predicted_task")
+        expected = (
+            "stale"
+            if stale
+            else "deadline_miss"
+            if case == "predicted_late"
+            else ("staged_on_time" if consumed == delay else "staged_early")
+        )
+        assert event["outcome"] == expected
+        assert event["planned_delay_steps"] == delay
+        assert event["plan_next_action_index"] == request.plan.next_action_index
+        assert event["result_next_action_index"] == request.plan.next_action_index + consumed
+        assert event["consumed_steps_at_stage"] == (None if stale else consumed)
+        assert event["late_steps"] == (1 if case == "predicted_late" else 0)
+        assert engine.stats.deadline_misses == (case == "predicted_late")
+        assert engine.stats.stale_results == stale
+
+
+def test_predictive_metrics_cuda_events_resolve_after_completion(monkeypatch) -> None:
+    sink = _RecordingMetrics()
+    engine = _make_engine(_ChunkPolicy(), metrics_sink=sink)
+    engine.queue.install_active_chunk(
+        torch.zeros(6, 2), torch.zeros(6, 2), task="task A", reset_epoch=0, task_epoch=0
+    )
+    engine._latency_tracker.add(0.001)
+    engine.resume()
+    engine.notify_observation(_obs())
+    request = _take_pending(engine)
+    order = []
+    stream = object()
+    stage = engine.queue.stage_chunk
+
+    class FakeEvent:
+        def __init__(self, *, enable_timing):
+            assert enable_timing
+
+        def record(self, actual_stream):
+            assert actual_stream is stream
+            assert "barrier" not in order
+            order.append("record")
+
+        def elapsed_time(self, other):
+            assert "stage" in order
+            order.append("elapsed")
+            return 2.5
+
+    def publish(*args, **kwargs):
+        assert order.count("barrier") == 1
+        result = stage(*args, **kwargs)
+        order.append("stage")
+        return result
+
+    def unexpected_sync(*args, **kwargs):
+        pytest.fail("phase timing must not add CUDA synchronization")
+
+    engine._device = torch.device("cuda")
+    monkeypatch.setattr(predictive_async, "prepare_observation_for_inference", lambda batch, *args: batch)
+    monkeypatch.setattr(torch.cuda, "Event", FakeEvent)
+    monkeypatch.setattr(torch.cuda, "current_stream", lambda device: stream)
+    monkeypatch.setattr(torch.cuda, "synchronize", unexpected_sync)
+    monkeypatch.setattr(
+        predictive_async, "_synchronize_policy_device", lambda device: order.append("barrier")
+    )
+    monkeypatch.setattr(engine.queue, "stage_chunk", publish)
+    engine._run_request(request)
+    event = sink.events[-1]
+    assert event["event"] == "chunk_request"
+    assert order.count("barrier") == 1
+    cuda = event["phase_cuda_stream_elapsed_ms"]
+    assert set(cuda) == _METRIC_PHASES
+    assert all(cuda[key] is None for key in _PREDICTOR_PHASES)
+    assert all(cuda[key] == 2.5 for key in _METRIC_PHASES - _PREDICTOR_PHASES)
+    assert order.count("record") == 10
+    assert order.count("elapsed") == 5
+    assert engine.queue.has_staged_chunk()
+
+
+@pytest.mark.parametrize("case", ["cap_wait", "cap_discard", "cap_bootstrap", "plan_failed"])
+def test_predictive_metrics_cap_decision_without_request(case, tmp_path) -> None:
+    sink = _RecordingMetrics()
+    arguments = _candidate_arguments()
+    engine = PredictiveAsyncInferenceEngine(
+        **arguments, metrics_sink=sink, fallback_mode="discard" if case == "cap_discard" else "identity"
+    )
+    if case in ("cap_wait", "plan_failed"):
+        engine.queue.install_active_chunk(
+            torch.zeros(12, 6), torch.zeros(12, 6), task="task A", reset_epoch=0, task_epoch=0
+        )
+    engine._latency_tracker.add(0.001 if case == "plan_failed" else 0.5)
+    if case == "plan_failed":
+        engine.queue.create_takeover_plan(
+            request_id=99,
+            planned_delay_steps=1,
+            max_prediction_delay=8,
+            committed_guard_steps=2,
+            reset_epoch=0,
+            task_epoch=0,
+            task="task A",
+        )
+    engine.resume()
+    engine.notify_observation(_candidate_observation())
+    if case != "cap_bootstrap":
+        engine.notify_observation(_candidate_observation())
+    events = sink.events
+    assert len(events) == (1 if case == "cap_bootstrap" else 2)
+    assert all(event["event"] == "planner_decision" for event in events)
+    for event in events:
+        assert event["request_id"] == (0 if case == "cap_bootstrap" else None)
+        assert event["decision"] == ("bootstrap" if case == "cap_bootstrap" else case)
+        assert event["prediction_cap_exceeded"] == (case != "plan_failed")
+        if case != "plan_failed":
+            assert event["raw_required_delay_steps"] == 15
+            assert event["planned_delay_steps"] == (8 if case == "cap_wait" else 0)
+        else:
+            assert event["plan_outcome"] == "plan_in_flight"
+    assert engine._request_id == (1 if case == "cap_bootstrap" else 0)
+    assert arguments["future_latent_predictor"].calls == []
+    assert arguments["policy"].kwargs == []
+    (tmp_path / "planner_events.json").write_text(json.dumps(events, indent=2))
+    engine.stop()
+
+
+def test_predictive_metrics_queue_get_preserves_underflow_and_takeover(tmp_path) -> None:
+    sink = _RecordingMetrics()
+    engine = _make_engine(_ChunkPolicy(), metrics_sink=sink)
+    assert engine.get_action(None) is None
+    assert engine.get_action(None) is None
+    engine.queue.install_active_chunk(
+        torch.zeros(6, 2), torch.ones(6, 2), task="task A", reset_epoch=0, task_epoch=0
+    )
+    assert engine.get_action(None).tolist() == [1, 1]
+    engine.set_task("task B")
+    assert engine.get_action(None).tolist() == [1, 1]
+    assert engine.dispatched_task == "task A"
+    engine.queue.create_takeover_plan(
+        request_id=0,
+        planned_delay_steps=0,
+        max_prediction_delay=8,
+        committed_guard_steps=2,
+        reset_epoch=0,
+        task_epoch=1,
+        task="task B",
+    )
+    engine.queue.stage_chunk(
+        torch.zeros(6, 2), torch.full((6, 2), 7), request_id=0, reset_epoch=0, task_epoch=1, task="task B"
+    )
+    assert engine.get_action(None).tolist() == [7, 7]
+    assert engine.dispatched_task == "task B"
+    events = sink.events
+    assert [event["event"] for event in events] == ["queue_get"] * 5
+    assert [event["outcome"] for event in events] == [
+        "underflow",
+        "underflow",
+        "action",
+        "action",
+        "takeover",
+    ]
+    assert [event["action_index"] for event in events] == [0, 0, 0, 1, 2]
+    assert [event["task"] for event in events] == [None, None, "task A", "task A", "task B"]
+    assert [event["underflow_total"] for event in events] == [1, 2, 2, 2, 2]
+    assert all("reset_epoch" not in event and "task_epoch" not in event for event in events)
+    (tmp_path / "queue_events.json").write_text(json.dumps(events, indent=2))
+    engine.stop()
+
+
+@pytest.mark.parametrize(
+    "failure", ["preprocessor", "predictor_forward", "device_completion", "worker_budget"]
+)
+def test_predictive_metrics_request_error_preserves_error_policy(failure, monkeypatch, tmp_path) -> None:
+    sink = _RecordingMetrics()
+
+    def fail(*args, **kwargs):
+        raise RuntimeError("synthetic inference failure")
+
+    if failure == "worker_budget":
+        engine = _make_engine(_ChunkPolicy(), metrics_sink=sink)
+        monkeypatch.setattr(engine._policy, "predict_action_chunk", fail)
+        engine.start()
+        engine.resume()
+        try:
+            for index in range(5):
+                engine.notify_observation(_obs())
+                assert _wait_for(
+                    lambda index=index: (
+                        len(sink.events) >= index + 1
+                        and not engine._request_in_flight
+                        and (index < 4 or engine.failed)
+                    )
+                )
+                assert engine.failed == (index == 4)
+            assert engine._failure_traceback is not None
+            assert len(engine._latency_tracker) == 0
+            assert engine.queue.qsize() == 0
+        finally:
+            engine.stop()
+        assert len(sink.events) == 5
+        assert all(event["event"] == "request_error" for event in sink.events)
+        assert all(event["failed_phase"] == "policy_total" for event in sink.events)
+    else:
+        arguments = _candidate_arguments()
+        engine = PredictiveAsyncInferenceEngine(**arguments, metrics_sink=sink)
+        request, _ = _candidate_planned_request(engine, 1)
+        tracker_before = len(engine._latency_tracker)
+        if failure == "preprocessor":
+            engine._preprocessor = fail
+        elif failure == "predictor_forward":
+            engine._future_latent_predictor = fail
+        else:
+            monkeypatch.setattr(predictive_async, "_synchronize_policy_device", fail)
+        with pytest.raises(RuntimeError, match="synthetic inference failure"):
+            engine._run_request(request)
+        event = sink.events[-1]
+        assert event["event"] == "request_error"
+        assert event["failed_phase"] == failure
+        assert event["request_id"] == request.request_id
+        assert event["phase_host_wall_s"]["observation_preparation"] is not None
+        if failure in _METRIC_PHASES:
+            assert event["phase_host_wall_s"][failure] is None
+        assert len(engine._latency_tracker) == tracker_before
+        assert not engine.queue.has_staged_chunk()
+        engine.stop()
+    errors = [event for event in sink.events if event["event"] == "request_error"]
+    for event in errors:
+        assert event["error_type"] == "RuntimeError"
+        assert event["error_message"] == "synthetic inference failure"
+        assert event["total_chunk_s"] is None
+        assert event["d_actual_wall"] is None
+        assert event["phase_cuda_stream_elapsed_ms"] is None
+    (tmp_path / "error_events.json").write_text(json.dumps(errors, indent=2))
+
+
+@pytest.mark.parametrize("failure", ["emit", "close"])
+def test_predictive_metrics_sink_failures_leave_results_unchanged(failure, caplog) -> None:
+    class FailingSink(_RecordingMetrics):
+        def emit(self, event):
+            if failure == "emit":
+                raise OSError("synthetic metrics write failure")
+            super().emit(event)
+
+        def close(self):
+            super().close()
+            if failure == "close":
+                raise OSError("synthetic metrics close failure")
+
+    sink = FailingSink()
+    policy = _ChunkPolicy()
+    engine = _make_engine(policy, metrics_sink=sink)
+    engine.start()
+    engine.resume()
+    try:
+        engine.notify_observation(_obs())
+        assert _wait_for(
+            lambda: policy.calls == 1 and not engine._request_in_flight and engine.queue.qsize() == 6
+        )
+        engine.get_action(None)
+        for count in range(2, 7):
+            engine.notify_observation(_obs())
+            assert _wait_for(lambda count=count: policy.calls == count and not engine._request_in_flight)
+            assert engine.get_action(None) is not None
+            assert engine.get_action(None).tolist() == [count * 100] * 2
+        assert not engine.failed
+        assert engine.stats.requests_started == 6
+        assert engine.stats.deadline_misses == 0
+        assert len(engine._latency_tracker) == 6
+    finally:
+        engine.stop()
+    assert sink.close_calls == 1
+    assert "synthetic metrics" in caplog.text
+    assert not any(event["event"] == "request_error" for event in sink.events)
+
+
+@pytest.mark.parametrize("lifecycle", ["never_started", "normal", "join_timeout"])
+def test_predictive_metrics_sink_closes_after_worker_finishes(lifecycle, monkeypatch) -> None:
+    sink = _RecordingMetrics()
+    policy = _ChunkPolicy(block_call=1 if lifecycle == "join_timeout" else None)
+    engine = _make_engine(policy, metrics_sink=sink)
+    if lifecycle != "never_started":
+        engine.start()
+    if lifecycle == "join_timeout":
+        engine.resume()
+        engine.notify_observation(_obs())
+        assert policy.entered.wait(timeout=2)
+        monkeypatch.setattr(predictive_async, "_JOIN_TIMEOUT_S", 0.0)
+        try:
+            engine.stop()
+            assert sink.close_calls == 0
+            assert engine._worker.is_alive()
+        finally:
+            policy.release.set()
+            assert _wait_for(lambda: sink.close_calls == 1)
+            engine._worker.join(timeout=2)
+    engine.stop()
+    assert sink.close_calls == 1
+    assert engine._worker is None

@@ -193,6 +193,67 @@ def test_draccus_predictive_defaults_leave_predictor_disabled() -> None:
     assert config.future_latent_checkpoint is None
 
 
+def test_predictive_metrics_default_off_does_not_construct_sink(monkeypatch) -> None:
+    config = draccus.parse(_CliConfig, args=["--inference.type=predictive_async"]).inference
+    sink_factory = Mock(side_effect=AssertionError("default metrics must not open a sink"))
+    engine_factory = Mock(return_value=object())
+    monkeypatch.setattr(factory, "JsonlMetricsSink", sink_factory)
+    monkeypatch.setattr(factory, "PredictiveAsyncInferenceEngine", engine_factory)
+
+    result = factory.create_inference_engine(
+        config,
+        policy=object(),
+        preprocessor=object(),
+        postprocessor=object(),
+        robot_wrapper=SimpleNamespace(robot_type="so100_follower"),
+        hw_features={},
+        dataset_features={},
+        ordered_action_keys=[],
+        task="pick",
+        fps=30.0,
+        device="cpu",
+    )
+
+    assert config.metrics_path is None
+    sink_factory.assert_not_called()
+    engine_factory.assert_called_once()
+    assert engine_factory.call_args.kwargs["metrics_sink"] is None
+    assert result is engine_factory.return_value
+
+
+def test_predictive_metrics_path_is_parsed_and_injected_once(monkeypatch, tmp_path) -> None:
+    metrics_path = tmp_path / "predictive.jsonl"
+    config = draccus.parse(
+        _CliConfig,
+        args=["--inference.type=predictive_async", f"--inference.metrics_path={metrics_path}"],
+    ).inference
+    sink = Mock(name="metrics_sink")
+    sink_factory = Mock(return_value=sink)
+    engine_factory = Mock(return_value=object())
+    monkeypatch.setattr(factory, "JsonlMetricsSink", sink_factory)
+    monkeypatch.setattr(factory, "PredictiveAsyncInferenceEngine", engine_factory)
+
+    result = factory.create_inference_engine(
+        config,
+        policy=object(),
+        preprocessor=object(),
+        postprocessor=object(),
+        robot_wrapper=SimpleNamespace(robot_type="so100_follower"),
+        hw_features={},
+        dataset_features={},
+        ordered_action_keys=[],
+        task="pick",
+        fps=30.0,
+        device="cpu",
+    )
+
+    assert config.metrics_path == metrics_path
+    sink_factory.assert_called_once_with(metrics_path)
+    engine_factory.assert_called_once()
+    assert engine_factory.call_args.kwargs["metrics_sink"] is sink
+    assert result is engine_factory.return_value
+
+
 def test_factory_forwards_same_predictor_instance_without_loading(monkeypatch) -> None:
     predictor = Mock(name="already_loaded_predictor")
     engine_factory = Mock(return_value=object())

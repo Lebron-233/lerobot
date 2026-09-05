@@ -295,8 +295,9 @@ lerobot-rollout \
 | `--inference.committed_guard_steps`     | Old active actions retained beyond the planned takeover (default: 2)                          |
 | `--inference.max_late_steps`            | Bound used to size the guard; reserved for a future compensated-late mode (default: 2)        |
 | `--inference.context_mode`              | `identity` (default), frozen-candidate `predicted`, or offline/test-only `oracle`              |
-| `--inference.future_latent_checkpoint`  | Frozen B3.3a best checkpoint; required for `predicted`, invalid with `identity` (default: None) |
+| `--inference.future_latent_checkpoint`  | Reviewed portable B3.3a runtime checkpoint; required for `predicted`, invalid with `identity` (default: None) |
 | `--inference.fallback_mode`             | On an unserviceable plan, use an identity bootstrap when empty or wait/discard                |
+| `--inference.metrics_path`              | Optional JSONL telemetry path; omitted by default (None)                                    |
 
 `committed_guard_steps` must be at least `max_late_steps`; both default to 2.
 This does **not** make a late predictive chunk acceptable. If a result arrives
@@ -416,12 +417,14 @@ These are the core CLI identity arguments, shown as a configuration fragment:
 --robot.use_degrees=true
 --inference.type=predictive_async
 --inference.context_mode=predicted
---inference.future_latent_checkpoint=/home/rp/Workspace/SmolVLA_RTC/artifacts/b33a_9e618076f_lambda-risk-005_v1/best.pt
+--inference.future_latent_checkpoint=/path/to/runtime_best.pt
 --inference.min_prediction_delay=1
 --inference.max_prediction_delay=8
 ```
 
-The fragment omits `--robot.max_relative_target`; the resulting configuration
+`runtime_best.pt` is the reviewed portable runtime artifact for the frozen
+B3.3a candidate. Set the path to that artifact. The fragment omits
+`--robot.max_relative_target`; the resulting configuration
 must retain its `None` default. Programmatic configuration must also use
 `None`. The draccus CLI spelling for an explicit `None` value has not been
 exercised in this implementation stage. Camera configuration must supply the
@@ -452,16 +455,86 @@ branches and calls the predictor zero times. Bootstrap, empty-queue and
 cap-exceeded handling, and stale reset/task rejection retain their existing
 behavior.
 
+#### Predictive telemetry
+
+Set `--inference.metrics_path=/path/to/predictive.jsonl` to use the existing
+`JsonlMetricsSink`. Constructing the engine opens and truncates that file;
+each event is written as one JSON object and flushed. Direct engine callers
+can supply `metrics_sink: InferenceMetricsSink | None` instead. With the default
+`metrics_path=None`, no sink, event payload, extra phase timer, CUDA event,
+serialization, or metrics file I/O is created. The existing request timestamps
+and final device-completion barrier remain active.
+
+All events have `schema_version=1` and `backend="predictive_async"`:
+
+| Event | Meaning |
+| ----- | ------- |
+| `planner_decision` | A computed delay plan or attempted takeover, including cap wait/discard and plan failure; `request_id=null` when no request was created |
+| `chunk_request` | Completed warmup, bootstrap, or planned computation, with its original install/stage disposition, including late or stale results |
+| `request_error` | An actual request execution failure, with request identity, failing phase, completed host phases, and error type/message |
+| `queue_get` | Every actual action get, including ACTION, TAKEOVER, and each UNDERFLOW tick, with the returned action index/task and cumulative underflows |
+
+Use request IDs, monotonic timestamps, and action indices to correlate events.
+Worker and control events can appear in either JSONL line order. Repeated
+underflow indices represent distinct get calls. Returned-action provenance
+comes from the original queue result; any engine epoch snapshot is labelled
+as a snapshot. Events contain JSON values rather than tensors or action arrays.
+
+`phase_host_wall_s` and `phase_cuda_stream_elapsed_ms` use these phase keys:
+
+```text
+observation_preparation
+preprocessor
+vision_encode
+predictor_input_preparation
+predictor_forward
+residual_application
+policy_total
+postprocessor
+```
+
+Host wall times surround the original public calls and include their host
+checks. CUDA stream intervals use events read after the existing final
+completion barrier; there are no extra phase synchronizations. CPU CUDA values
+are null. These are parallel measurements: do not add them or require their
+sum to equal the request total. `dispatch_wait_s` records request-to-worker
+wait, `device_completion_wait_s` records the final barrier wait, and
+`total_chunk_s` retains the original request-to-device-completion latency.
+Queue publication precedes CUDA-event resolution and JSON emission.
+
+Bootstrap and the first RGB warmup retain native vision inside the public
+policy call: their vision phase is null and `policy_includes_vision=true`.
+Uncalled predictor phases are null with `predictor_calls=0` for identity, d0,
+and warmup. Planned predicted requests with a positive delay call the predictor
+once. Missing plan or result fields are null.
+
+`d_actual_wall` is `latency_to_steps(total_chunk_s, fps)`.
+`consumed_steps_at_stage` is the difference between the original stage-result
+and plan action indices, and is null for stale/reset results. `late_steps`
+comes from the stage result. The raw delay requirement, planned delay, and
+cap flag remain the original planner values; wall delay minus planned delay
+does not determine an actual deadline miss.
+
+Sink write or close failures are logged and leave inference error counts and
+action results unchanged. Worker shutdown closes the sink after the worker
+finishes; stopping an engine that was never started also closes it.
+
 ##### Limitations
 
-This is an implementation-only candidate. Synthetic contract checks do not
-establish actual-checkpoint integration, online predicted performance, or
-robot behavior. Real checkpoint/model loading, offline integration smoke,
-online rollout, and robot connection or motion require a separate approved
-stage. The CLI fragment is not a verified robot command. The candidate's
+Validation has reached the M5.2 single-request integration stage. This
+telemetry increment uses CPU synthetic contract checks; threaded CUDA
+profiling, efficiency calibration, online rollout, and robot connection or
+motion require a separate approved stage. The CLI fragment is not a verified
+robot command. The candidate's
 restrictions do not authorize disabling safety measures in a future robot
 deployment; clipped-action or feedback-aware integration requires its own
 contract.
+
+Metrics event recording and JSON output add runtime overhead and can affect
+subsequent scheduling. Host phase times are not device-completion times, and
+CUDA stream intervals can include host-supply gaps. Instrumented request
+timings do not establish throughput with metrics disabled or the separate
+standalone predictor efficiency criterion.
 
 `predicted_error` is a non-control diagnostic only. It does not choose a risk
 threshold, attenuate residuals, trigger fallback, or alter actions. No risk
