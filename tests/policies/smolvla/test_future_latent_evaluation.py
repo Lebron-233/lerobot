@@ -153,7 +153,7 @@ def _frozen_checkpoint_payload(tmp_path: Path) -> dict[str, object]:
         "scheduler": None,
         "grad_clip_norm": 1.0,
         "lambda_cos": 0.1,
-        "lambda_risk": 0.1,
+        "lambda_risk": 0.05,
         "max_epochs": 30,
         "seed": 0,
         "max_optimizer_steps": None,
@@ -232,6 +232,7 @@ def test_frozen_best_loader_accepts_only_pathless_matching_identity_and_freezes_
     assert frozen.checkpoint["checkpoint_kind"] == "best"
     assert frozen.checkpoint["epoch"] == 29
     assert frozen.checkpoint["global_step"] == 57_750
+    assert frozen.checkpoint["train_config"]["lambda_risk"] == pytest.approx(0.05)
     assert frozen.predictor.loaded_strictly is True
     assert frozen.predictor.requested_device == torch.device("cpu")
     assert frozen.predictor.grad_enabled is False
@@ -295,6 +296,19 @@ def test_frozen_best_loader_rejects_requested_val_cache_identity_mismatch(
     torch.save(_frozen_checkpoint_payload(tmp_path), checkpoint)
 
     with pytest.raises(ValueError, match="requested val cache identity"):
+        evaluation.load_frozen_best_predictor(checkpoint, val_cache=tmp_path / "val", device="cpu")
+
+
+def test_frozen_best_loader_rejects_original_lambda_risk_checkpoint(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _install_synthetic_loader_dependencies(monkeypatch)
+    payload = _frozen_checkpoint_payload(tmp_path)
+    payload["train_config"]["lambda_risk"] = 0.1
+    checkpoint = tmp_path / "original-lambda-risk.pt"
+    torch.save(payload, checkpoint)
+
+    with pytest.raises(ValueError, match="train config lambda_risk"):
         evaluation.load_frozen_best_predictor(checkpoint, val_cache=tmp_path / "val", device="cpu")
 
 

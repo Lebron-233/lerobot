@@ -57,6 +57,7 @@ EXPECTED_TRAINER_SHA = "9e618076f617751c297d92626ad422dbbf30c03b"
 EXPECTED_CACHE_PRODUCER_SHA = "eff8be608c899d0841ad5967d80d5d726cbe4394"
 EXPECTED_BEST_EPOCH = 29
 EXPECTED_BEST_GLOBAL_STEP = 57_750
+EXPECTED_CANDIDATE_LAMBDA_RISK = 0.05
 
 FROZEN_DELAYS = tuple(range(1, 9))
 FROZEN_ANCHOR_COUNT = 128
@@ -424,7 +425,7 @@ def load_frozen_best_predictor(
     val_cache: Path | FutureLatentCacheDataset,
     device: torch.device | str,
 ) -> FrozenPredictor:
-    """Validate and load the one frozen B3.1 best predictor and its complete val cache."""
+    """Validate and load the one frozen B3.3a best predictor and its complete val cache."""
     val_dataset = (
         val_cache
         if isinstance(val_cache, FutureLatentCacheDataset)
@@ -474,7 +475,7 @@ def load_frozen_best_predictor(
         "scheduler": None,
         "grad_clip_norm": 1.0,
         "lambda_cos": 0.1,
-        "lambda_risk": 0.1,
+        "lambda_risk": EXPECTED_CANDIDATE_LAMBDA_RISK,
         "max_epochs": 30,
         "seed": 0,
         "max_optimizer_steps": None,
@@ -629,7 +630,7 @@ def evaluate_latent_risk(
             prediction,
             batch,
             lambda_cos=0.1,
-            lambda_risk=0.1,
+            lambda_risk=EXPECTED_CANDIDATE_LAMBDA_RISK,
         )
         identity = compute_identity_baseline_metrics(batch)
 
