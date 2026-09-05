@@ -178,8 +178,8 @@ def _validate_manifest(manifest: Any) -> dict[str, Any]:
         raise ValueError(f"cache schema_version must be {CACHE_SCHEMA_VERSION}, got {schema_version!r}")
     if manifest.get("classification") != _CLASSIFICATION:
         raise ValueError(f"cache classification must be {_CLASSIFICATION!r}")
-    if manifest.get("split") not in {"train", "val"}:
-        raise ValueError("cache split must be 'train' or 'val'")
+    if manifest.get("split") not in {"train", "val", "test"}:
+        raise ValueError("cache split must be 'train', 'val', or 'test'")
     if type(manifest.get("complete_split")) is not bool:
         raise TypeError("cache complete_split must be a boolean")
     if manifest.get("storage_device") != "cpu":

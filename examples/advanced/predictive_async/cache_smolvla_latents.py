@@ -16,10 +16,11 @@
 
 """Cache pinned SmolVLA frame-level inputs for offline future-latent learning.
 
-This producer is intentionally limited to the frozen train/validation episode
-split.  It encodes each frame once and writes one safetensors shard per episode;
-future-latent pairs are views over two frame rows in the same shard.  The cache
-is mechanism evidence, not a task-capability result or a deployable controller.
+This producer is intentionally limited to the frozen train/validation/test
+episode splits.  It encodes each frame once and writes one safetensors shard per
+episode; future-latent pairs are views over two frame rows in the same shard.
+The cache is mechanism evidence, not a task-capability result or a deployable
+controller.
 """
 
 from __future__ import annotations
@@ -96,7 +97,7 @@ def _positive_int(value: str) -> int:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", type=Path, required=True)
-    parser.add_argument("--split", choices=("train", "val"), required=True)
+    parser.add_argument("--split", choices=("train", "val", "test"), required=True)
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--batch-size", type=_positive_int, default=16)
     parser.add_argument(
@@ -114,7 +115,10 @@ def parse_args() -> argparse.Namespace:
         type=_positive_int,
         help="Cache only the first N frames of each episode (bounded smoke only).",
     )
-    return parser.parse_args()
+    args = parser.parse_args()
+    if args.split == "test" and (args.max_episodes is not None or args.max_frames_per_episode is not None):
+        parser.error("--split test does not permit --max-episodes or --max-frames-per-episode")
+    return args
 
 
 def _package_version(package: str) -> str | None:

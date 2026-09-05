@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Validation-only characterization helpers for the frozen future-latent predictor."""
+"""Offline validation and held-out helpers for the frozen future-latent predictor."""
 
 from __future__ import annotations
 
@@ -25,6 +25,7 @@ from typing import Any
 
 import torch
 from torch import Tensor
+from torch.utils.data import Dataset
 
 from lerobot.policies.smolvla.configuration_future_latent import FutureLatentConfig
 from lerobot.policies.smolvla.future_latent import LightweightFutureLatentPredictor
@@ -32,7 +33,14 @@ from lerobot.rollout.inference.oracle_evaluation import OracleAnchorCandidate, s
 from lerobot.utils.constants import OBS_LANGUAGE_ATTENTION_MASK, OBS_LANGUAGE_TOKENS, OBS_STATE
 
 if __package__:
-    from .future_latent_cache import FutureLatentPair
+    from .future_latent_cache import (
+        MAX_PREDICTION_DELAY,
+        FutureLatentPair,
+        build_future_latent_pair,
+        load_cache_manifest,
+        load_episode_cache,
+        validate_episode_cache,
+    )
     from .future_latent_training import (
         FutureLatentCacheDataset,
         collate_future_latent_pairs,
@@ -42,7 +50,14 @@ if __package__:
         move_future_latent_batch,
     )
 else:
-    from future_latent_cache import FutureLatentPair
+    from future_latent_cache import (
+        MAX_PREDICTION_DELAY,
+        FutureLatentPair,
+        build_future_latent_pair,
+        load_cache_manifest,
+        load_episode_cache,
+        validate_episode_cache,
+    )
     from future_latent_training import (
         FutureLatentCacheDataset,
         collate_future_latent_pairs,
@@ -64,6 +79,10 @@ FROZEN_ANCHOR_COUNT = 128
 FROZEN_SEED = 0
 FROZEN_VAL_EPISODES = (5, 7, 14, 39, 49)
 FROZEN_VAL_PAIR_COUNT = 14_396
+FROZEN_TEST_EPISODES = (15, 29, 31, 33, 41)
+FROZEN_TEST_FRAME_COUNT = 2_233
+FROZEN_TEST_PAIR_COUNTS = (2_228, 2_223, 2_218, 2_213, 2_208, 2_203, 2_198, 2_193)
+FROZEN_TEST_PAIR_COUNT = 17_684
 
 DATASET_REPO_ID = "lerobot/svla_so100_pickplace"
 DATASET_REVISION = "728583b5eaf9e739a7f119e2def466fa1d552402"
@@ -75,6 +94,10 @@ POLICY_CAMERA_ORDER = (
     "observation.images.camera1",
     "observation.images.camera2",
 )
+POLICY_CAMERA_MAPPING = {
+    "observation.images.top": "observation.images.camera1",
+    "observation.images.wrist": "observation.images.camera2",
+}
 POSTPROCESSOR_STATE_FILE = "policy_postprocessor_step_0_unnormalizer_processor.safetensors"
 POSTPROCESSOR_STATS_SOURCE_KEY = "so100.buffer.action"
 
@@ -115,6 +138,20 @@ class FrozenPredictor:
     predictor: LightweightFutureLatentPredictor
     checkpoint: dict[str, Any]
     val_dataset: FutureLatentCacheDataset
+
+
+@dataclass(frozen=True, slots=True)
+class FrozenTestPredictor:
+    predictor: LightweightFutureLatentPredictor
+    checkpoint: dict[str, Any]
+    test_dataset: FutureLatentTestDataset
+
+
+@dataclass(frozen=True, slots=True)
+class _TestPairSpec:
+    episode_position: int
+    frame_offset: int
+    delay_steps: int
 
 
 @dataclass(frozen=True, slots=True)
@@ -323,6 +360,212 @@ def _require_equal(actual: Any, expected: Any, *, name: str) -> None:
         raise ValueError(f"{name} must be {expected!r}, got {actual!r}")
 
 
+def _validate_test_cache_identity(
+    manifest: Mapping[str, Any], *, expected_test_cache_producer_sha: str
+) -> None:
+    if not isinstance(expected_test_cache_producer_sha, str) or not expected_test_cache_producer_sha:
+        raise ValueError("expected test cache producer SHA must be a non-empty string")
+    _require_equal(manifest.get("schema_version"), 1, name="test cache schema version")
+    _require_equal(
+        manifest.get("classification"),
+        "offline_future_latent_cache_not_task_capability",
+        name="test cache classification",
+    )
+    _require_equal(manifest.get("split"), "test", name="test cache split")
+    _require_equal(manifest.get("complete_split"), True, name="test cache completeness")
+    _require_equal(manifest.get("storage_device"), "cpu", name="test cache storage device")
+    _require_equal(
+        manifest.get("authoritative_episode_ids"),
+        list(FROZEN_TEST_EPISODES),
+        name="test episode split",
+    )
+    _require_equal(
+        manifest.get("cached_episode_ids"),
+        list(FROZEN_TEST_EPISODES),
+        name="cached test episodes",
+    )
+    _require_equal(manifest.get("episode_count"), len(FROZEN_TEST_EPISODES), name="test episode count")
+    _require_equal(manifest.get("frame_count"), FROZEN_TEST_FRAME_COUNT, name="test frame count")
+    expected_pair_counts = {
+        str(delay): FROZEN_TEST_PAIR_COUNTS[delay - 1] for delay in range(1, MAX_PREDICTION_DELAY + 1)
+    }
+    _require_equal(
+        manifest.get("valid_pair_count_by_delay"),
+        expected_pair_counts,
+        name="test valid pair counts",
+    )
+
+    producer = manifest.get("producer")
+    if not isinstance(producer, Mapping):
+        raise ValueError("test cache manifest must contain producer provenance")
+    _require_equal(
+        producer.get("git_sha"),
+        expected_test_cache_producer_sha,
+        name="test cache producer SHA",
+    )
+
+    inputs = manifest.get("inputs")
+    if not isinstance(inputs, Mapping):
+        raise ValueError("test cache manifest must contain pinned input provenance")
+    expected_inputs = {
+        "dataset": (DATASET_REPO_ID, DATASET_REVISION),
+        "checkpoint": (CHECKPOINT_REPO_ID, CHECKPOINT_REVISION),
+        "vlm": (VLM_REPO_ID, VLM_REVISION),
+    }
+    for input_name, (repo_id, revision) in expected_inputs.items():
+        entry = inputs.get(input_name)
+        if not isinstance(entry, Mapping):
+            raise ValueError(f"test cache manifest must contain {input_name} provenance")
+        _require_equal(entry.get("repo_id"), repo_id, name=f"test {input_name} repo_id")
+        _require_equal(
+            entry.get("requested_revision"),
+            revision,
+            name=f"test {input_name} requested revision",
+        )
+        _require_equal(
+            entry.get("resolved_revision"),
+            revision,
+            name=f"test {input_name} resolved revision",
+        )
+
+    _require_equal(manifest.get("camera_mapping"), POLICY_CAMERA_MAPPING, name="test camera mapping")
+    _require_equal(
+        manifest.get("policy_camera_order"),
+        list(POLICY_CAMERA_ORDER),
+        name="test camera order",
+    )
+    _require_equal(
+        manifest.get("token_scaling_convention"),
+        "native_post_sqrt_hidden_dim",
+        name="test token scaling convention",
+    )
+    semantics = manifest.get("semantics")
+    if not isinstance(semantics, Mapping):
+        raise ValueError("test cache manifest must contain state/action semantics")
+    _require_equal(
+        semantics.get("state"),
+        "model_ready_normalized_and_padded",
+        name="test state semantics",
+    )
+    _require_equal(
+        semantics.get("action"),
+        "normalized_policy_output_original_action_dim",
+        name="test action semantics",
+    )
+    _require_equal(
+        semantics.get("processor_config_source"),
+        f"{CHECKPOINT_REPO_ID}@{CHECKPOINT_REVISION}",
+        name="test processor config source",
+    )
+
+    episodes = manifest.get("episodes")
+    if not isinstance(episodes, Sequence):
+        raise ValueError("test cache manifest must contain episode entries")
+    for episode_entry in episodes:
+        if not isinstance(episode_entry, Mapping):
+            raise ValueError("test cache episode entries must be objects")
+        frame_count = episode_entry.get("frame_count")
+        metadata = episode_entry.get("tensor_metadata")
+        if type(frame_count) is not int or not isinstance(metadata, Mapping):
+            raise ValueError("test cache episode entries must contain frame tensor metadata")
+        expected_specs = {
+            "dataset_indices": ([frame_count], "int64"),
+            "frame_indices": ([frame_count], "int64"),
+            "states": ([frame_count, 32], "float32"),
+            "actions": ([frame_count, 6], "float32"),
+            "language_tokens": ([frame_count, 48], "int64"),
+            "language_attention_mask": ([frame_count, 48], "bool"),
+            "image_tokens_0": ([frame_count, 64, 960], "bfloat16"),
+            "image_token_masks_0": ([frame_count, 64], "bool"),
+            "image_tokens_1": ([frame_count, 64, 960], "bfloat16"),
+            "image_token_masks_1": ([frame_count, 64], "bool"),
+        }
+        _require_equal(set(metadata), set(expected_specs), name="test episode tensor keys")
+        for key, (shape, dtype) in expected_specs.items():
+            tensor_metadata = metadata[key]
+            if not isinstance(tensor_metadata, Mapping):
+                raise ValueError(f"test episode metadata for {key} must be an object")
+            _require_equal(tensor_metadata.get("shape"), shape, name=f"test episode tensor {key} shape")
+            _require_equal(tensor_metadata.get("dtype"), dtype, name=f"test episode tensor {key} dtype")
+            _require_equal(
+                tensor_metadata.get("storage_device"),
+                "cpu",
+                name=f"test episode tensor {key} storage device",
+            )
+
+
+class FutureLatentTestDataset(Dataset[FutureLatentPair]):
+    """Canonical pair view over the one complete, pinned held-out test cache."""
+
+    expected_split = "test"
+
+    def __init__(self, cache_dir: Path, *, expected_test_cache_producer_sha: str):
+        self.cache_dir = Path(cache_dir)
+        self.expected_test_cache_producer_sha = expected_test_cache_producer_sha
+        self.manifest = load_cache_manifest(self.cache_dir)
+        _validate_test_cache_identity(
+            self.manifest,
+            expected_test_cache_producer_sha=expected_test_cache_producer_sha,
+        )
+
+        pair_specs: list[_TestPairSpec] = []
+        indices_by_delay: dict[int, list[int]] = {delay: [] for delay in range(1, MAX_PREDICTION_DELAY + 1)}
+        for episode_position, episode_entry in enumerate(self.manifest["episodes"]):
+            frame_count = episode_entry["frame_count"]
+            for frame_offset in range(frame_count):
+                for delay_steps in range(1, MAX_PREDICTION_DELAY + 1):
+                    if frame_offset + delay_steps >= frame_count:
+                        continue
+                    pair_index = len(pair_specs)
+                    pair_specs.append(
+                        _TestPairSpec(
+                            episode_position=episode_position,
+                            frame_offset=frame_offset,
+                            delay_steps=delay_steps,
+                        )
+                    )
+                    indices_by_delay[delay_steps].append(pair_index)
+
+        _require_equal(len(pair_specs), FROZEN_TEST_PAIR_COUNT, name="test canonical pair count")
+        _require_equal(
+            tuple(len(indices_by_delay[delay]) for delay in FROZEN_DELAYS),
+            FROZEN_TEST_PAIR_COUNTS,
+            name="test canonical pair counts by delay",
+        )
+        self.pair_specs = tuple(pair_specs)
+        self._indices_by_delay = {delay: tuple(indices) for delay, indices in indices_by_delay.items()}
+        self._episode_tensors: dict[int, dict[str, Tensor]] = {}
+
+    def __len__(self) -> int:
+        return len(self.pair_specs)
+
+    def indices_for_delay(self, delay_steps: int) -> tuple[int, ...]:
+        if delay_steps not in self._indices_by_delay:
+            raise ValueError(f"delay_steps must be in [1, {MAX_PREDICTION_DELAY}]")
+        return self._indices_by_delay[delay_steps]
+
+    def _load_episode(self, episode_position: int) -> tuple[dict[str, Any], dict[str, Tensor]]:
+        episode_entry = self.manifest["episodes"][episode_position]
+        episode_index = episode_entry["episode_index"]
+        tensors = self._episode_tensors.get(episode_index)
+        if tensors is None:
+            tensors = load_episode_cache(self.cache_dir, episode_index)
+            validate_episode_cache(self.manifest, episode_entry, tensors)
+            self._episode_tensors[episode_index] = tensors
+        return episode_entry, tensors
+
+    def __getitem__(self, index: int) -> FutureLatentPair:
+        spec = self.pair_specs[index]
+        episode_entry, tensors = self._load_episode(spec.episode_position)
+        return build_future_latent_pair(
+            self.manifest,
+            episode_entry,
+            tensors,
+            frame_offset=spec.frame_offset,
+            delay_steps=spec.delay_steps,
+        )
+
+
 def _mean(values: Sequence[float]) -> float:
     if not values:
         raise ValueError("cannot compute a mean of an empty sequence")
@@ -419,21 +662,12 @@ def _production_predictor_config() -> FutureLatentConfig:
     return FutureLatentConfig(token_dim=960, action_dim=6, state_dim=32, enabled=True)
 
 
-def load_frozen_best_predictor(
+def _load_frozen_candidate_model(
     checkpoint_path: Path,
     *,
-    val_cache: Path | FutureLatentCacheDataset,
     device: torch.device | str,
-) -> FrozenPredictor:
-    """Validate and load the one frozen B3.3a best predictor and its complete val cache."""
-    val_dataset = (
-        val_cache
-        if isinstance(val_cache, FutureLatentCacheDataset)
-        else FutureLatentCacheDataset(Path(val_cache), expected_split="val")
-    )
-    if val_dataset.expected_split != "val" or len(val_dataset) != FROZEN_VAL_PAIR_COUNT:
-        raise ValueError("frozen predictor evaluation requires the complete 14,396-pair val cache")
-
+    val_dataset: FutureLatentCacheDataset | None = None,
+) -> tuple[LightweightFutureLatentPredictor, dict[str, Any]]:
     payload = torch.load(Path(checkpoint_path), map_location="cpu", weights_only=False)
     if not isinstance(payload, dict):
         raise TypeError("frozen predictor checkpoint must contain a dictionary")
@@ -500,12 +734,13 @@ def load_frozen_best_predictor(
             name=f"{split} cache provenance in checkpoint and train config",
         )
 
-    current_val_provenance = _manifest_cache_provenance(val_dataset.cache_dir, val_dataset.manifest)
-    _require_equal(
-        _pathless_cache_identity(cache_provenance["val"]),
-        _pathless_cache_identity(current_val_provenance),
-        name="checkpoint and requested val cache identity",
-    )
+    if val_dataset is not None:
+        current_val_provenance = _manifest_cache_provenance(val_dataset.cache_dir, val_dataset.manifest)
+        _require_equal(
+            _pathless_cache_identity(cache_provenance["val"]),
+            _pathless_cache_identity(current_val_provenance),
+            name="checkpoint and requested val cache identity",
+        )
     best_metrics = payload.get("best_val_metrics")
     if not isinstance(best_metrics, Mapping):
         raise ValueError("best checkpoint is missing best validation metrics")
@@ -523,7 +758,55 @@ def load_frozen_best_predictor(
     model.to(device=torch.device(device), dtype=torch.float32)
     model.requires_grad_(False)
     model.eval()
+    return model, payload
+
+
+def load_frozen_best_predictor(
+    checkpoint_path: Path,
+    *,
+    val_cache: Path | FutureLatentCacheDataset,
+    device: torch.device | str,
+) -> FrozenPredictor:
+    """Validate and load the one frozen B3.3a best predictor and its complete val cache."""
+    val_dataset = (
+        val_cache
+        if isinstance(val_cache, FutureLatentCacheDataset)
+        else FutureLatentCacheDataset(Path(val_cache), expected_split="val")
+    )
+    if val_dataset.expected_split != "val" or len(val_dataset) != FROZEN_VAL_PAIR_COUNT:
+        raise ValueError("frozen predictor evaluation requires the complete 14,396-pair val cache")
+    model, payload = _load_frozen_candidate_model(
+        checkpoint_path,
+        device=device,
+        val_dataset=val_dataset,
+    )
     return FrozenPredictor(predictor=model, checkpoint=payload, val_dataset=val_dataset)
+
+
+def load_frozen_test_predictor(
+    checkpoint_path: Path,
+    *,
+    test_cache: Path | FutureLatentTestDataset,
+    expected_test_cache_producer_sha: str,
+    device: torch.device | str,
+) -> FrozenTestPredictor:
+    """Load the frozen B3.3a best predictor for one exact complete test cache."""
+    test_dataset = (
+        test_cache
+        if isinstance(test_cache, FutureLatentTestDataset)
+        else FutureLatentTestDataset(
+            Path(test_cache),
+            expected_test_cache_producer_sha=expected_test_cache_producer_sha,
+        )
+    )
+    _validate_test_cache_identity(
+        test_dataset.manifest,
+        expected_test_cache_producer_sha=expected_test_cache_producer_sha,
+    )
+    if test_dataset.expected_split != "test" or len(test_dataset) != FROZEN_TEST_PAIR_COUNT:
+        raise ValueError("held-out evaluation requires the complete 17,684-pair test cache")
+    model, payload = _load_frozen_candidate_model(checkpoint_path, device=device)
+    return FrozenTestPredictor(predictor=model, checkpoint=payload, test_dataset=test_dataset)
 
 
 def frozen_postprocessor_provenance() -> dict[str, Any]:
@@ -680,6 +963,79 @@ def evaluate_latent_risk(
     return LatentRiskEvaluation(records=tuple(records), summary=summary)
 
 
+@torch.inference_mode()
+def evaluate_test_latent_risk(
+    predictor: LightweightFutureLatentPredictor,
+    dataset: FutureLatentTestDataset,
+    *,
+    device: torch.device | str,
+    batch_size: int = 16,
+) -> LatentRiskEvaluation:
+    """Evaluate every canonical pair in the frozen complete held-out test cache."""
+    if dataset.expected_split != "test" or len(dataset) != FROZEN_TEST_PAIR_COUNT:
+        raise ValueError("latent/risk evaluation requires the complete 17,684-pair test cache")
+    if batch_size <= 0:
+        raise ValueError("batch_size must be positive")
+    target_device = torch.device(device)
+    predictor.eval()
+    records: list[LatentRiskRecord] = []
+    for start in range(0, len(dataset), batch_size):
+        pairs = [dataset[index] for index in range(start, min(start + batch_size, len(dataset)))]
+        batch = move_future_latent_batch(collate_future_latent_pairs(pairs), target_device)
+        prediction = forward_predictor(predictor, batch)
+        objective = compute_future_latent_objective(
+            prediction,
+            batch,
+            lambda_cos=0.1,
+            lambda_risk=EXPECTED_CANDIDATE_LAMBDA_RISK,
+        )
+        identity = compute_identity_baseline_metrics(batch)
+
+        predicted_risk = prediction.predicted_error.detach().float().cpu().tolist()
+        actual_mse = objective.risk_target.detach().float().cpu().tolist()
+        predicted_smoothl1 = objective.per_sample_smoothl1.detach().float().cpu().tolist()
+        predicted_mse = objective.per_sample_mse.detach().float().cpu().tolist()
+        predicted_cosine = objective.per_sample_cosine.detach().float().cpu().tolist()
+        identity_smoothl1 = identity.smoothl1.detach().float().cpu().tolist()
+        identity_mse = identity.mse.detach().float().cpu().tolist()
+        identity_cosine = identity.cosine.detach().float().cpu().tolist()
+        for offset, pair in enumerate(pairs):
+            records.append(
+                LatentRiskRecord(
+                    episode_index=pair.episode_index,
+                    frame_index=pair.frame_index,
+                    future_frame_index=pair.future_frame_index,
+                    delay_steps=int(pair.delay_steps.item()),
+                    predicted_risk=predicted_risk[offset],
+                    actual_mse=actual_mse[offset],
+                    predicted=LatentMetrics(
+                        smoothl1=predicted_smoothl1[offset],
+                        mse=predicted_mse[offset],
+                        cosine=predicted_cosine[offset],
+                    ),
+                    identity=LatentMetrics(
+                        smoothl1=identity_smoothl1[offset],
+                        mse=identity_mse[offset],
+                        cosine=identity_cosine[offset],
+                    ),
+                )
+            )
+
+    summary = aggregate_latent_risk_records(records)
+    _require_equal(
+        tuple(entry.delay_steps for entry in summary.per_delay),
+        FROZEN_DELAYS,
+        name="test latent evaluation delays",
+    )
+    _require_equal(summary.total_record_count, FROZEN_TEST_PAIR_COUNT, name="test latent record count")
+    _require_equal(
+        tuple(entry.sample_count for entry in summary.per_delay),
+        FROZEN_TEST_PAIR_COUNTS,
+        name="test latent records by delay",
+    )
+    return LatentRiskEvaluation(records=tuple(records), summary=summary)
+
+
 def _tie_aware_ranks(values: Sequence[float]) -> tuple[float, ...]:
     indexed = sorted(enumerate(values), key=lambda item: (item[1], item[0]))
     ranks = [0.0] * len(values)
@@ -827,6 +1183,67 @@ def select_val_anchor_pairs(
     """
     if dataset.expected_split != "val":
         raise ValueError("action characterization anchors must come from a val cache")
+
+    candidates: list[OracleAnchorCandidate] = []
+    candidate_by_id: dict[int, OracleAnchorCandidate] = {}
+    pair_index_by_key: dict[tuple[int, int, int], int] = {}
+    for pair_index, spec in enumerate(dataset.pair_specs):
+        key = (spec.episode_position, spec.frame_offset, spec.delay_steps)
+        pair_index_by_key[key] = pair_index
+
+    for episode_position, episode_entry in enumerate(dataset.manifest["episodes"]):
+        frame_count = int(episode_entry["frame_count"])
+        episode_index = int(episode_entry["episode_index"])
+        _, tensors = dataset._load_episode(episode_position)
+        for frame_offset in range(frame_count):
+            candidate = OracleAnchorCandidate(
+                anchor_id=int(tensors["dataset_indices"][frame_offset].item()),
+                episode_index=episode_index,
+                frame_index=int(tensors["frame_indices"][frame_offset].item()),
+                episode_length=frame_count,
+            )
+            candidates.append(candidate)
+            candidate_by_id[candidate.anchor_id] = candidate
+
+    anchor_ids = select_common_anchor_ids(
+        candidates,
+        delays=FROZEN_DELAYS,
+        count=count,
+        seed=seed,
+    )
+    anchors: list[ValAnchor] = []
+    episode_position_by_index = {
+        int(entry["episode_index"]): position for position, entry in enumerate(dataset.manifest["episodes"])
+    }
+    for anchor_id in anchor_ids:
+        candidate = candidate_by_id[anchor_id]
+        episode_position = episode_position_by_index[candidate.episode_index]
+        pairs = tuple(
+            dataset[pair_index_by_key[(episode_position, candidate.frame_index, delay_steps)]]
+            for delay_steps in FROZEN_DELAYS
+        )
+        for pair in pairs:
+            validate_pair_language_equality(pair)
+        anchors.append(
+            ValAnchor(
+                anchor_id=anchor_id,
+                episode_index=candidate.episode_index,
+                frame_index=candidate.frame_index,
+                pairs=pairs,
+            )
+        )
+    return tuple(anchors)
+
+
+def select_test_anchor_pairs(
+    dataset: FutureLatentTestDataset,
+    *,
+    count: int = FROZEN_ANCHOR_COUNT,
+    seed: int = FROZEN_SEED,
+) -> tuple[ValAnchor, ...]:
+    """Select the frozen deterministic common-anchor cohort from test cache rows."""
+    if dataset.expected_split != "test":
+        raise ValueError("held-out action anchors must come from a test cache")
 
     candidates: list[OracleAnchorCandidate] = []
     candidate_by_id: dict[int, OracleAnchorCandidate] = {}
