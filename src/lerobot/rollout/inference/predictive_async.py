@@ -422,12 +422,12 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
         self._discard_task_change()
 
     def set_task(self, task: str) -> bool:
-        changed = super().set_task(task)
-        if not changed:
-            return False
-        _, task_epoch = self.task_snapshot
-        self._queue.invalidate_task(task_epoch)
         with self._request_lock:
+            changed = super().set_task(task)
+            if not changed:
+                return False
+            _, task_epoch = self.task_snapshot
+            self._queue.invalidate_task(task_epoch)
             interrupted, cancelled = self._interrupt_startup_locked("task change")
             pending = self._pending_request
             current_task_epoch = self._queue.task_epoch

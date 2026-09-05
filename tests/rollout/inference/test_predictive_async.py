@@ -19,7 +19,7 @@ import math
 import time
 from contextlib import contextmanager
 from copy import deepcopy
-from threading import Event
+from threading import Event, Thread, current_thread
 from types import SimpleNamespace
 
 import numpy as np
@@ -1577,6 +1577,155 @@ def test_predicted_startup_reset_and_task_boundaries(monkeypatch, tmp_path, boun
     finally:
         harness.release.set()
         dispatch.release.set()
+        engine.stop()
+
+
+def test_predicted_startup_fresh_completion_linearizes_concurrent_task_change(monkeypatch, tmp_path):
+    harness = _startup_harness(monkeypatch, sink=_RecordingMetrics())
+    engine = harness.engine
+    installed = Event()
+    release_completion = Event()
+    task_lock_attempted = Event()
+    task_finished = Event()
+    task_thread = None
+    task_results = []
+    task_errors = []
+    order = []
+    snapshots = {}
+    request_lock = engine._request_lock
+    install = engine.queue.install_active_chunk
+    set_ready = engine._ready_event.set
+
+    def snapshot():
+        task, task_epoch = engine.task_snapshot
+        return {
+            "task": task,
+            "task_epoch": task_epoch,
+            "queue_task_epoch": engine.queue.task_epoch,
+            "startup_phase": engine._startup_phase,
+            "ready": engine.ready,
+        }
+
+    class ObservedRequestLock:
+        def __enter__(self):
+            is_task_thread = current_thread() is task_thread
+            if is_task_thread:
+                order.append("task_lock_attempt")
+                task_lock_attempted.set()
+            request_lock.acquire()
+            if is_task_thread:
+                snapshots["task_lock_acquired"] = snapshot()
+                order.append("task_lock_acquired")
+            return self
+
+        def __exit__(self, exc_type, exc_value, traceback):
+            request_lock.release()
+
+    def install_before_completion(*args, **kwargs):
+        result = install(*args, **kwargs)
+        if harness.active.startup_phase == "fresh_warmed":
+            assert result.outcome is InstallOutcome.INSTALLED
+            assert request_lock.locked()
+            snapshots["fresh_installed"] = snapshot()
+            order.append("fresh_installed")
+            installed.set()
+            if not release_completion.wait(timeout=3):
+                raise RuntimeError("Synthetic fresh completion was not released")
+        return result
+
+    def commit_ready():
+        assert request_lock.locked()
+        set_ready()
+        snapshots["ready_committed"] = snapshot()
+        order.append("ready_committed")
+
+    def change_task():
+        try:
+            task_results.append(engine.set_task("task B"))
+            snapshots["task_changed"] = snapshot()
+            order.append("task_changed")
+        except Exception as error:
+            task_errors.append(error)
+        finally:
+            task_finished.set()
+
+    monkeypatch.setattr(engine, "_request_lock", ObservedRequestLock())
+    monkeypatch.setattr(engine.queue, "install_active_chunk", install_before_completion)
+    monkeypatch.setattr(engine._ready_event, "set", commit_ready)
+    engine.start()
+    engine.resume()
+    try:
+        _submit_startup(harness, 10)
+        _submit_startup(harness, 20)
+        seed = list(engine._latency_tracker._values)
+        engine.notify_observation(_startup_observation(30))
+        assert installed.wait(timeout=3)
+        assert snapshots["fresh_installed"] == {
+            "task": "task A",
+            "task_epoch": 0,
+            "queue_task_epoch": 0,
+            "startup_phase": "fresh_warmed",
+            "ready": False,
+        }
+        assert engine.queue.qsize() == 12 and engine.queue.next_action_index == 0
+        task_thread = Thread(target=change_task, name="SyntheticConcurrentTaskChange")
+        task_thread.start()
+        assert task_lock_attempted.wait(timeout=3)
+        # The old set_task mutated both identities before this observed lock
+        # attempt. The completion lock must now keep them at A until ready.
+        snapshots["task_waiting"] = snapshot()
+        assert snapshots["task_waiting"] == snapshots["fresh_installed"]
+        assert not task_finished.is_set()
+        release_completion.set()
+        assert task_finished.wait(timeout=3)
+        task_thread.join(timeout=3)
+        assert not task_thread.is_alive() and task_errors == [] and task_results == [True]
+        _wait_for(lambda: len(harness.finished) == 3 and not engine._request_in_flight)
+        completed_identity = {
+            "task": "task A",
+            "task_epoch": 0,
+            "queue_task_epoch": 0,
+            "startup_phase": "complete",
+            "ready": True,
+        }
+        assert snapshots["ready_committed"] == snapshots["task_lock_acquired"] == completed_identity
+        assert snapshots["task_changed"] == {
+            **completed_identity,
+            "task": "task B",
+            "task_epoch": 1,
+            "queue_task_epoch": 1,
+        }
+        assert order == [
+            "fresh_installed",
+            "task_lock_attempt",
+            "ready_committed",
+            "task_lock_acquired",
+            "task_changed",
+        ]
+        fresh = harness.requests[-1]
+        terminals = [event for event in harness.sink.events if event.get("request_id") == fresh.request_id]
+        assert len(terminals) == 1
+        terminal = terminals[0]
+        assert (
+            terminal["event"],
+            terminal["request_kind"],
+            terminal["startup_phase"],
+            terminal["outcome"],
+        ) == ("chunk_request", "bootstrap", "fresh_warmed", "installed")
+        assert (terminal["task"], terminal["task_epoch"], terminal["reset_epoch"]) == ("task A", 0, 1)
+        assert not terminal["latency_tracker_admitted"]
+        assert not any(event["event"] == "request_error" for event in harness.sink.events)
+        assert engine._startup_interruption_reason is None
+        assert engine.ready and not engine.failed and not harness.shutdown.is_set()
+        assert list(engine._latency_tracker._values) == seed
+        assert engine.stats.requests_started == 3 and engine.stats.bootstrap_requests == 2
+        assert engine.stats.planned_requests == 0 and harness.policy_attempts == [0, 1, 2]
+        assert engine.queue.next_action_index == 0
+        _startup_evidence(tmp_path, harness, task_completion_order=order, boundary_states=snapshots)
+    finally:
+        release_completion.set()
+        if task_thread is not None:
+            task_thread.join(timeout=3)
         engine.stop()
 
 
