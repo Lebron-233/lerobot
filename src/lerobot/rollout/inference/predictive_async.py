@@ -255,7 +255,12 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
         self._worker: Thread | None = None
         self._warmup_completed = 0
         self._startup_phase = (
-            "cold_temporary" if context_mode == "predicted" and not use_torch_compile else None
+            "cold_temporary"
+            if not use_torch_compile
+            and (
+                context_mode == "predicted" or (context_mode == "identity" and 1 <= max_prediction_delay <= 8)
+            )
+            else None
         )
         self._startup_interruption_reason: str | None = None
         self._startup_probe_record: dict[str, Any] | None = None
@@ -911,9 +916,21 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
         families = ["phase_host_wall_s"]
         if self._device.type == "cuda":
             families.append("phase_cuda_stream_elapsed_ms")
+        unused_phases = (
+            ("predictor_input_preparation", "predictor_forward", "residual_application")
+            if self._context_mode == "identity"
+            else ()
+        )
         for family in families:
             for phase in _METRIC_PHASES:
                 value = metrics[family][phase]
+                if phase in unused_phases:
+                    if value is not None:
+                        metrics["startup_gate_outcome"] = "error"
+                        raise RuntimeError(
+                            f"Identity startup probe requires unused {family}.{phase} to be null"
+                        )
+                    continue
                 if value is None:
                     metrics["startup_gate_outcome"] = "telemetry_missing"
                     raise RuntimeError(f"Startup probe requires {family}.{phase}")
@@ -1115,7 +1132,8 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
                 return
 
             admit_latency = self._startup_phase is None or (
-                request.kind == "planned" and request.plan.planned_delay_steps > 0
+                request.kind == "planned"
+                and (self._context_mode == "identity" or request.plan.planned_delay_steps > 0)
             )
             if admit_latency:
                 self._latency_tracker.add(latency_s)

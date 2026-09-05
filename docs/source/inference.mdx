@@ -258,6 +258,11 @@ offline/test provider and is rejected by live rollout. The default
 `context_mode="identity"`, `future_latent_checkpoint=None` path does not
 resolve, load, or call a future-latent predictor.
 
+With compilation disabled and `1 <= max_prediction_delay <= 8`, identity uses
+the three-request startup described below. This includes its default
+`min_prediction_delay=0, max_prediction_delay=8`; the configured runtime cap
+remains unchanged.
+
 Offline dataset replay can call `encode_oracle_future_tokens()` on a
 preprocessed temporal sample whose camera `delta_timestamps` cover `t+d`. The
 helper selects the true future frame in policy camera order and rejects any
@@ -291,7 +296,7 @@ lerobot-rollout \
 | `--inference.latency_window`            | Number of recent latency samples retained (default: 50)                                       |
 | `--inference.delay_safety_margin_steps` | Extra control ticks added to the latency estimate (default: 1)                                |
 | `--inference.min_prediction_delay`      | Lower planning bound when enough committed actions remain (default: 0)                        |
-| `--inference.max_prediction_delay`      | Runtime horizon cap; predicted mode accepts caps from 1 through 8 (default: 8)                |
+| `--inference.max_prediction_delay`      | Runtime horizon cap; 1 through 8 enables noncompile identity startup and is required for predicted mode (default: 8) |
 | `--inference.committed_guard_steps`     | Old active actions retained beyond the planned takeover (default: 2)                          |
 | `--inference.max_late_steps`            | Bound used to size the guard; reserved for a future compensated-late mode (default: 2)        |
 | `--inference.context_mode`              | `identity` (default), frozen-candidate `predicted`, or offline/test-only `oracle`              |
@@ -453,19 +458,24 @@ index. Early/on-time staging and whole-chunk discard for any `late_steps>0`
 remain in effect. Compile warmup covers normal RGB and identity-token override
 branches and calls the predictor zero times.
 
-#### Predicted startup without torch.compile
+#### Startup without torch.compile
 
-With `context_mode=predicted` and compilation disabled, readiness requires
-three startup requests, each triggered by a fresh observation:
+With compilation disabled, `predicted` and `identity` with
+`1 <= max_prediction_delay <= 8` require three startup requests, each triggered
+by a fresh observation. Identity permits its existing `min_prediction_delay=0`;
+the frozen predicted candidate retains its minimum delay of one.
 
 1. **Cold temporary bootstrap.** Observation A runs the normal RGB policy and
    installs a temporary chunk solely to supply a real policy-space prefix.
 2. **One startup probe.** A later observation B creates one takeover plan with
    internal `d=8`, the queue's actual first eight committed policy actions,
-   and an all-true eight-row mask. The worker runs the usual state preparation,
-   one vision encode, one predictor call, residual application, token-override
-   policy call, postprocessing, and final device-completion barrier. Probe
-   outputs are discarded; they are never staged or installed.
+   and an all-true eight-row mask. Both modes use the usual observation
+   preparation and preprocessor, one vision encode, one token-override public
+   policy call, postprocessing, and the original final device-completion
+   barrier. Predicted prepares its predictor input, calls the predictor once,
+   and applies the residual before the policy call. Identity passes the current
+   tokens and masks directly, calls no predictor, and adds no `prepare_state`
+   step. Probe outputs are discarded; they are never staged or installed.
 3. **Fresh warmed bootstrap.** After the probe passes, the worker advances the
    reset epoch and clears the temporary queue while preserving the tracker
    seed, model warmth, and monotonic request/action indices. It waits for a
@@ -488,22 +498,25 @@ latency_to_steps(probe_total_chunk_s, fps) + delay_safety_margin_steps
     <= max_prediction_delay
 ```
 
-Equality passes. Exceeding the cap, a non-finite action or timing, missing
-required phase telemetry, or any startup computation error fails startup on
-the first occurrence. Failure remains not-ready, sets the existing shutdown
+Equality passes. Insufficient real prefix or guard coverage, exceeding the
+cap, a non-finite probe action or timing, missing required phase telemetry, or
+any startup computation error fails startup on the first occurrence.
+Failure remains not-ready, sets the existing shutdown
 signal, and makes the strategy raise before another wait or policy get. There
 is no second probe or automatic retry. The probe's normal final barrier also
 completes its joint policy/post-policy action finite check; no extra barrier
 is added.
 
-Only the passing probe and subsequent completed positive-delay planned
-predicted computations enter the existing latency tracker on this path.
-Cold, fresh, and fallback bootstrap latencies remain visible in telemetry but
-do not enter that cohort. Legal d0 requests execute normally and do not enter
-the tracker. A positive-delay computation completed through the final barrier
-is admitted before publication, including results later classified as late
-or stale; publication errors do not remove it. The probe is a startup request,
-not a formal planned request or a later profile warmup/measurement sample.
+For predicted, the tracker admits the passing probe and subsequent completed
+positive-delay planned computations; legal d0 requests execute normally and
+do not enter that cohort. For identity on this startup path, the tracker admits
+the passing probe and all subsequent completed planned computations, including
+d0, because d0 and positive delays use the same vision/token-override path.
+Neither cohort admits cold, fresh, or fallback native-RGB bootstrap latencies.
+An eligible planned computation completed through the final barrier is admitted
+before publication, including results later classified as late or stale;
+publication errors do not remove it. The probe is a startup request, not a
+formal planned request or a later profile warmup/measurement sample.
 
 Resets and task updates before the first accepted startup request are allowed.
 After acceptance and before completion, an external reset or a changed task
@@ -515,8 +528,10 @@ reset after a passing probe is part of initialization. After completion, normal
 reset/task/fallback behavior resumes with the tracker retained and no second
 probe. `stop()` remains ordinary teardown.
 
-Identity, sync, RTC, and existing torch.compile warmup retain their readiness
-and tracker behavior. Compile warmup still performs its original one-time
+Identity with `max_prediction_delay=0` or a cap above eight retains its existing
+readiness and tracker behavior. These caps remain valid under the existing
+identity configuration rules. Sync, RTC, and compile-enabled paths also retain
+their existing behavior. Compile warmup still performs its original one-time
 flush/reset/restart/resume sequence.
 
 #### Predictive telemetry
@@ -527,13 +542,18 @@ each event is written as one JSON object and flushed. Direct engine callers
 can supply `metrics_sink: InferenceMetricsSink | None` instead. With the default
 `metrics_path=None`, ordinary requests create no sink, event payload, extra
 phase timer, CUDA event, serialization, or metrics file I/O. The single
-noncompile predicted startup probe is the exception: it records and retains
-one private terminal payload with the same primitive fields for the startup
-gate. It requires complete finite, nonnegative host phase times and, on CUDA,
-all eight CUDA phase intervals. This uses the existing phase instrumentation
-and final barrier; its overhead remains inside the probe latency. It creates
-no writer or JSON output. With a sink, that same terminal payload is also
-emitted normally. No metrics-off history is retained for other requests.
+eligible noncompile startup probe is the exception in both modes: it records
+and retains one private terminal payload with the same primitive fields for
+the gate. Predicted requires all eight host phases and, on CUDA, their eight
+CUDA intervals. Identity requires five actual phases: observation preparation,
+preprocessor, vision encode, policy total, and postprocessor. Their host times
+and CUDA intervals must be present, finite, and nonnegative. Identity's
+`predictor_input_preparation`, `predictor_forward`, and `residual_application`
+are null in both phase families; a non-null unused phase fails startup. CPU
+CUDA telemetry remains null. This uses the existing phase instrumentation and
+final barrier; its overhead remains inside the probe latency. It creates no
+writer or JSON output. With a sink, that same terminal payload is also emitted
+normally. No metrics-off history is retained for other requests.
 The existing request timestamps and final device-completion barrier remain
 active for all requests.
 
@@ -601,9 +621,10 @@ once without inventing a deadline miss.
 
 Bootstrap and the first RGB warmup retain native vision inside the public
 policy call: their vision phase is null and `policy_includes_vision=true`.
-Uncalled predictor phases are null with `predictor_calls=0` for identity, d0,
-and warmup. Planned predicted requests with a positive delay call the predictor
-once. Missing plan or result fields are null.
+Uncalled predictor phases are null with `predictor_calls=0` for identity,
+including its startup probe, and for d0 and warmup. Planned predicted requests
+with a positive delay and the predicted startup probe call the predictor once.
+Missing plan or result fields are null.
 
 `d_actual_wall` is `latency_to_steps(total_chunk_s, fps)`.
 `consumed_steps_at_stage` is the difference between the original stage-result
@@ -618,17 +639,28 @@ finishes; stopping an engine that was never started also closes it.
 
 ##### Limitations
 
-M5.2 single-request integration passed. The M5.3b-r2 threaded run reached one
-real cold bootstrap, then stopped because its raw delay requirement was 23
-against a cap of eight; no planned predictor call or identity calibration was
-reached. M5.3c implements the startup transition with CPU synthetic contract
-coverage. There is no actual warmed startup/profile PASS yet. A new actual
-profile, efficiency calibration, online rollout, and robot connection or motion
-require a separate approved stage. The CLI fragment is not a verified robot
-command. The candidate's
-restrictions do not authorize disabling safety measures in a future robot
-deployment; clipped-action or feedback-aware integration requires its own
-contract.
+M5.2 single-request integration passed. M5.3d's predicted threaded profile and
+independent strict 5% efficiency calibration were accepted: measured predicted
+P90 was approximately 150.529 ms, giving a delay requirement of six with the
+margin, within the cap of eight; the standalone predictor/full normal-RGB
+policy P90 ratio was approximately 0.012084, below 0.05. Fresh identity stopped
+at a cold-bootstrap requirement of 17 against cap eight, before its formal
+50+200 cohort. These results and their measurement boundaries are recorded in
+the [M5.3d verdict](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5553664979).
+
+The identity startup transition is an implementation increment; its new actual
+profile requires separate approval after exact-SHA review. The accepted
+predicted profile and calibration remain valid when that review confirms their
+computation and timing semantics are unchanged; they are not rerun for the
+identity increment. M5.3 remains incomplete and M5 runtime GO has not been
+granted. The cold identity result does not establish an end-to-end speed
+comparison with warmed predicted inference.
+
+These profiles use fixed synthetic inputs, metrics, and no robot. Online
+rollout and robot connection or motion require a separate approved stage.
+The CLI fragment is not a verified robot command. The candidate's restrictions
+do not authorize disabling safety measures in a future robot deployment;
+clipped-action or feedback-aware integration requires its own contract.
 
 Metrics event recording and JSON output add runtime overhead and can affect
 subsequent scheduling. Host phase times are not device-completion times, and
@@ -638,9 +670,10 @@ standalone predictor efficiency criterion.
 
 `predicted_error` is a non-control diagnostic only. It does not choose a risk
 threshold, attenuate residuals, trigger fallback, or alter actions. No risk
-gating, future-state rollout, full RTC guidance, or horizon above eight is
-implemented. Production construction does not read dataset, cache, or test
-files to establish candidate identity.
+gating, future-state rollout, or full RTC guidance is implemented. The frozen
+future-latent candidate's prediction horizon is at most eight. Production
+construction does not read dataset, cache, or test files to establish candidate
+identity.
 
 #### SmolVLA future-context API contract
 
