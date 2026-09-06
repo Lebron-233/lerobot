@@ -140,7 +140,7 @@ class IsaacEnvironment:
             camera_frames={name: int(self.env.scene[name].frame[0].item()) for name in images},
             episode_id=episode_id,
             step=step,
-            captured_at_s=time.perf_counter(),
+            snapshot_ready_at_s=time.perf_counter(),
         )
 
     def reset(self, seed: int, episode_id: int) -> dict:

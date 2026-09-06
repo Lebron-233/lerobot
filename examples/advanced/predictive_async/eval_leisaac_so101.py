@@ -239,7 +239,7 @@ def drive_episode(
             "episode_id": packet["episode_id"],
             "sim_step": packet["step"],
             "started_at_s": started,
-            "captured_at_s": packet["captured_at_s"],
+            "snapshot_ready_at_s": packet["snapshot_ready_at_s"],
             "received_at_s": packet.get("received_at_s"),
             "state": [raw[k] for k in SCALAR_KEYS],
             "camera_frames": packet["camera_frames"],

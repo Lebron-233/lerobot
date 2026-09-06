@@ -74,14 +74,14 @@ def observation_packet(
     camera_frames: Mapping[str, int],
     episode_id: int,
     step: int,
-    captured_at_s: float,
+    snapshot_ready_at_s: float,
 ) -> dict[str, Any]:
     packet = {
         "profile": PROFILE,
         "episode_id": episode_id,
         "step": step,
         "sim_time_s": step / FPS,
-        "captured_at_s": captured_at_s,
+        "snapshot_ready_at_s": snapshot_ready_at_s,
         "state_f32": struct.pack("<6f", *state_from_radians(measured, actual_names)),
         "images": dict(images),
         "image_shape": IMAGE_SHAPE,

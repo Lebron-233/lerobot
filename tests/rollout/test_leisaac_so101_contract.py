@@ -53,7 +53,7 @@ def packet(*, step=0, episode_id=1, action=None):
         camera_frames={"front": step + 1, "wrist": step + 1},
         episode_id=episode_id,
         step=step,
-        captured_at_s=time.perf_counter(),
+        snapshot_ready_at_s=time.perf_counter(),
     )
 
 
@@ -179,7 +179,7 @@ def test_dual_interpreter_client_wire_and_shutdown(tmp_path, monkeypatch):
                 return observation_packet(measured=[0.0]*6, actual_names=JOINT_NAMES,
                     images={{'front': bytes(IMAGE_BYTES), 'wrist': bytes(IMAGE_BYTES)}},
                     camera_frames={{'front': 1, 'wrist': 1}}, episode_id=episode_id,
-                    step=0, captured_at_s=time.perf_counter())
+                    step=0, snapshot_ready_at_s=time.perf_counter())
         parser = argparse.ArgumentParser()
         parser.add_argument('--fd', type=int)
         args, _ = parser.parse_known_args()

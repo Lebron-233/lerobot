@@ -91,6 +91,13 @@ quiesces the worker before resetting processors, explicitly resets the environme
 seed, and seeds the measured policy RNG **after** loading/startup in both modes.
 No runtime event file is written before worker/process shutdown.
 
+`snapshot_ready_at_s` is the host time at which the CPU observation packet is
+materialized; it is not claimed to be a camera exposure timestamp. The packet
+also records logical simulation time, actual camera frame counters and receive
+time. The current adapter does not measure exact host exposure time inside the
+renderer; packet-ready-to-consumption timing must not be presented as full
+camera-to-action latency.
+
 The targeted suite passed **16 tests** using the existing model interpreter and
 an actual Python 3.11 child interpreter. It covers units/endpoints/joint order,
 raw image transport/provenance, actual local IPC reset/step/close, failed startup
