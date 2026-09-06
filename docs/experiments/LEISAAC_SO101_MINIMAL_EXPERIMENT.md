@@ -149,3 +149,21 @@ before launch, and writes result/ticks/events/simulator output after shutdown.
 `smoke` does not load policy weights. `sync` is a capability diagnostic, not an
 async comparator. `identity` and `predicted` use the actual production engine.
 Conditional seeds, mode ordering and limits remain as specified above.
+
+## Operator license prerequisite
+
+The first actual launch stopped at NVIDIA's EULA prompt; see the
+[L2 result](LEISAAC_SO101_MINIMAL_RESULT.md). The launcher now gives its child
+non-interactive stdin. It does **not** answer the prompt, set acceptance variables,
+or edit NVIDIA's saved acceptance state.
+
+The operator must read and accept the applicable agreement before using Isaac.
+NVIDIA's [Python installation documentation](https://docs.isaacsim.omniverse.nvidia.com/5.1.0/installation/install_python.html#running-isaac-sim)
+describes an interactive first import and the `OMNI_KIT_ACCEPT_EULA` environment
+variable. Either NVIDIA's saved acceptance or an explicitly operator-supplied
+environment variable remains usable; this runner invents no separate license flag.
+The assistant has not accepted the agreement. No new environment run is queued.
+
+After operator acceptance, the next bounded attempt remains the same 30-step
+smoke with seed 20260907, using a **new** output directory and the then-current
+clean source commit. The first zero-step technical failure must remain intact.

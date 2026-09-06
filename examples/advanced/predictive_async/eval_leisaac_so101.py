@@ -71,6 +71,7 @@ class EnvClient:
                 command,
                 pass_fds=(child.fileno(),),
                 env=environment,
+                stdin=subprocess.DEVNULL,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
             )

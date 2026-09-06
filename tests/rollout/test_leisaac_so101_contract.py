@@ -189,6 +189,7 @@ def test_dual_interpreter_client_wire_and_shutdown(tmp_path, monkeypatch):
     popen = subprocess.Popen
 
     def start_peer(command, **kwargs):
+        assert kwargs["stdin"] == subprocess.DEVNULL  # A hidden license prompt must not wait for input.
         return popen([command[0], "-c", program, *command[2:]], **kwargs)
 
     monkeypatch.setattr(subprocess, "Popen", start_peer)
