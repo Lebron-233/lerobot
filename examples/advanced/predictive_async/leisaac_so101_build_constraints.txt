@@ -1,0 +1,3 @@
+# flatdict 4.0.1 imports pkg_resources during its legacy build. New setuptools removed it.
+# This constrains the isolated build tool, not Isaac/LeRobot's packaging requirement.
+setuptools==80.9.0

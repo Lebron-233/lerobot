@@ -1,0 +1,8 @@
+# Separate Python 3.11 simulator environment only; never install into the model environment.
+# Install the pinned LeIsaac checkout editable, without its optional lerobot extra.
+isaaclab[isaacsim,all]==2.3.0
+isaacsim==5.1.0.0
+torch==2.7.0+cu128
+torchvision==0.22.0+cu128
+numpy==1.26.0
+setuptools==80.9.0
