@@ -81,3 +81,27 @@ the default SO100 rejection and prior d0/late handling cases, plus a real-worker
 fixture demonstrating that a nonzero predictor residual reaches a staged chunk,
 uses normalized committed actions, and takes over at the planned index. No old
 scientific experiment or held-out cache was rerun. Formatting-only fixes followed.
+
+## Short cohort completion and longer run frozen before execution
+
+All four predeclared 600-tick trials completed under clean source
+`09b9fb3f992b9102778683819ea66153ecb150e8`. Each produced 22 planned requests;
+the two predicted trials actually invoked the L6 predictor on their planned
+requests. All report zero underflows, cap exceedances and inference deadline
+misses, with no full-slot technical termination. Individual slow work intervals
+remain in the raw telemetry; bounded timing is not zero jitter.
+
+Now freeze an extended engineering pair: environment seed 20261002, policy seed
+2003, predicted then identity, 60-second environment horizon / at most 1,800
+control ticks per mode, same configuration and unchanged weights. Each mode is
+run once. If one has a technical failure, retain it and run the other mode for
+the same diagnostic contrast; do not rerun the failed arm to obtain a pass.
+The two complete task terminal flags will be reported, but this one seed is not
+an efficacy/success-rate experiment. No result-driven tuning is included.
+
+Same-seed initial state, object locations and camera poses matched in the first
+short pair, but RGB was not bitwise identical: first-frame uint8 MAE was 0.881
+(front) / 0.986 (wrist). Its bootstrap actions already differed before any
+predicted takeover. Thus entire trajectory differences cannot be attributed
+solely to prediction; these are nominal-seed engineering pairs. We do not replace
+real observations with stored images or modify renderer settings to erase this.
