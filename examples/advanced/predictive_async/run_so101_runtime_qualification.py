@@ -15,6 +15,7 @@ from summarize_so101_runtime import summarize
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--minimum-delay", type=int, choices=(1, 7), default=1)
     args = parser.parse_args()
     repo = Path(__file__).resolve().parents[3]
     if subprocess.check_output(["git", "status", "--porcelain"], cwd=repo, text=True).strip():
@@ -22,10 +23,18 @@ def main() -> int:
     source = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo, text=True).strip()
     base = repo.parent
     orders = [("identity", "predicted"), ("predicted", "identity"), ("identity", "predicted")]
+    seed_start = 20261225 if args.minimum_delay == 7 else 20261222
+    policy_start = 2425 if args.minimum_delay == 7 else 2422
     args.output.mkdir(parents=True, exist_ok=False)
     (args.output / "manifest.json").write_text(
         json.dumps(
-            {"source_commit": source, "orders": orders, "seeds": [20261222, 20261223, 20261224]}, indent=2
+            {
+                "source_commit": source,
+                "orders": orders,
+                "seeds": list(range(seed_start, seed_start + 3)),
+                "minimum_delay": args.minimum_delay,
+            },
+            indent=2,
         )
     )
     common = {
@@ -42,6 +51,7 @@ def main() -> int:
         "camera-backend": "standard",
         "action-contract": "feasible_v1",
         "startup-profile": "warmed_v2",
+        "minimum-delay": args.minimum_delay,
     }
     runs = []
     for block, modes in enumerate(orders):
@@ -50,8 +60,8 @@ def main() -> int:
             values = {
                 **common,
                 "mode": mode,
-                "seed": 20261222 + block,
-                "policy-seed": 2422 + block,
+                "seed": seed_start + block,
+                "policy-seed": policy_start + block,
                 "output": folder,
             }
             if mode == "predicted":

@@ -403,6 +403,7 @@ def load_runtime(
     matched_snapshot: Path | None = None,
     sync_execution_steps: int = 50,
     action_contract: str = "strict",
+    minimum_delay: int = 1,
     startup_profile: str = "native",
 ):
     import torch
@@ -497,7 +498,7 @@ def load_runtime(
         latency_quantile=0.9,
         latency_window=50,
         delay_safety_margin_steps=1,
-        min_prediction_delay=1,
+        min_prediction_delay=minimum_delay,
         max_prediction_delay=8,
         committed_guard_steps=2,
         max_late_steps=2,
@@ -531,6 +532,7 @@ def main() -> int:
     parser.add_argument("--camera-backend", choices=("tiled", "standard"), default="tiled")
     parser.add_argument("--task-evidence", action="store_true")
     parser.add_argument("--gc-diagnostics", action="store_true")
+    parser.add_argument("--minimum-delay", type=int, choices=(1, 7), default=1)
     parser.add_argument("--profile-native-steps", action="store_true")
     parser.add_argument("--action-contract", choices=("strict", "feasible_v1"), default="strict")
     parser.add_argument("--stop-after-first-placement", action="store_true")
@@ -542,6 +544,10 @@ def main() -> int:
         "--sim-device", choices=("cpu", "cuda:0"), help="Simulation compute device; model device is unchanged"
     )
     args = parser.parse_args()
+    if args.minimum_delay != 1 and (
+        args.matched_snapshot is None or args.mode not in ("identity", "predicted")
+    ):
+        parser.error("The calibrated delay floor is for matched async execution only")
     if args.profile_native_steps and (args.mode != "sync" or args.max_steps > 600):
         parser.error("Native per-step profiling is a bounded synchronous diagnostic only")
     if args.startup_profile == "warmed_v2" and args.action_contract != "feasible_v1":
@@ -641,6 +647,7 @@ def main() -> int:
                 matched_snapshot=args.matched_snapshot,
                 sync_execution_steps=args.sync_execution_steps,
                 action_contract=args.action_contract,
+                minimum_delay=args.minimum_delay,
                 startup_profile=args.startup_profile,
             )
         else:

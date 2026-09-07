@@ -74,3 +74,28 @@ standard cameras, no profiler/GC callbacks. Require all six bounds (or original
 native success), clean completion, no lost slots/underflow/deadline/cap failure,
 and actual planned predictor calls. Keep every failure; no automatic retry or
 dropping a bad seed. This tests the operational change before new task outcomes.
+
+## First repeated cohort and startup delay calibration
+
+At `8bf7ce0d`, all six trials completed their1200-tick bound or native success,
+with no lost control slots, underflows or cap violations. Three native full-task
+successes occurred (predicted20261222 at1007 steps; identity20261224 at736;
+predicted20261224 at1104). These are capability observations, not paired efficacy.
+
+The deliberately strict zero-deadline qualification is5/6, **not**6/6: the
+first planned request of predicted20261223 used d5 from a132ms stationary startup
+probe, but took180.051ms concurrently. It arrived one action late and was correctly
+whole-discarded; old actions maintained control and later requests took over.
+Do not rewrite this as qualification success or a lost control slot.
+
+The independent next operating profile sets a **common minimum planned delay7**
+for identity and predicted, based on development's observed concurrent180ms
+chunk plus the existing one-step margin. This is planning233ms ahead, not slowing
+30Hz control, inserting artificial sleep, changing the late rule or enabling a
+test-derived risk threshold. Maximum remains8; min1 remains the default. A raw
+requirement>8 still fails/falls back exactly as before.
+
+Freeze a new six-trial40-second qualification with env20261225–27/policy2425–27,
+same balanced order and all prior requirements. No repeated old seed, no teacher
+or predictor changes. This tests the recorded startup calibration change, rather
+than repeatedly hoping the stationary estimate covers concurrent load.
