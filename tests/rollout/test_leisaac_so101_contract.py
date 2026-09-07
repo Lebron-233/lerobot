@@ -163,7 +163,8 @@ def test_start_failure_closes_connection(tmp_path):
     assert client.connection.closed
 
 
-def test_environment_profile_is_explicitly_nonrealtime_and_never_loads_policy(tmp_path, monkeypatch):
+@pytest.mark.parametrize("mode", ["env-profile", "smoke"])
+def test_environment_profile_is_explicitly_nonrealtime_and_never_loads_policy(tmp_path, monkeypatch, mode):
     import eval_leisaac_so101 as runner
 
     class Client:
@@ -171,6 +172,7 @@ def test_environment_profile_is_explicitly_nonrealtime_and_never_loads_policy(tm
         STARTUP_TIMEOUT_S = 600
         cleanup_error, process = None, None
         logs = []
+        step_profile = {"fixture_only": True}
 
         def __init__(self, *args):
             pass
@@ -186,7 +188,8 @@ def test_environment_profile_is_explicitly_nonrealtime_and_never_loads_policy(tm
             pass
 
     def drive(client, observation, **kwargs):
-        assert not kwargs["realtime"]
+        assert kwargs["realtime"] == (mode == "smoke")
+        assert client.profile_steps == (mode == "env-profile")
         assert kwargs["engine"] is None and kwargs["sync_action"] is None
         assert kwargs["max_steps"] == 30
         return {"status": "censored_step_limit", "success": None}
@@ -207,7 +210,7 @@ def test_environment_profile_is_explicitly_nonrealtime_and_never_loads_policy(tm
         [
             "eval_leisaac_so101.py",
             "--mode",
-            "env-profile",
+            mode,
             "--seed",
             "20260907",
             "--max-steps",
@@ -224,8 +227,27 @@ def test_environment_profile_is_explicitly_nonrealtime_and_never_loads_policy(tm
     )
     assert runner.main() == 0
     result = json.loads((output / "result.json").read_text())
-    assert result["mode"] == "env-profile" and not result["realtime_required"]
+    assert result["mode"] == mode and result["realtime_required"] == (mode == "smoke")
+    assert ("step_profile" in result) == (mode == "env-profile")
     assert result["success"] is None
+
+
+def test_step_profile_is_serializable_and_counts_native_call():
+    import cProfile
+
+    from leisaac_so101_env_server import summarize_step_profile
+
+    profiler = cProfile.Profile()
+
+    def measured_work():
+        return sum(range(100))
+
+    assert profiler.runcall(measured_work) == 4950
+    report = summarize_step_profile(profiler)
+    json.dumps(report)
+    assert report["total_self_s"] > 0
+    row = next(item for item in report["by_cumulative"] if item["function"] == "measured_work")
+    assert row["calls"] == 1 and row["cumulative_s"] >= row["self_s"]
 
 
 def test_dual_interpreter_client_wire_and_shutdown(tmp_path, monkeypatch):

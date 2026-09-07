@@ -51,6 +51,8 @@ class EnvClient:
         self.logs: list[bytes] = []
         self.metadata: dict[str, Any] = {}
         self.cleanup_error: str | None = None
+        self.profile_steps = False
+        self.step_profile: dict | None = None
 
     def start(self) -> None:
         parent, child = socket.socketpair()
@@ -70,6 +72,8 @@ class EnvClient:
             "--device",
             self.device,
         ]
+        if self.profile_steps:
+            command.append("--profile-steps")
         try:
             self.process = subprocess.Popen(
                 command,
@@ -123,7 +127,7 @@ class EnvClient:
             if self.process.poll() is None:
                 try:
                     self.connection.send({"op": "close"})
-                    self.receive()
+                    self.step_profile = self.receive().get("step_profile")
                 except (EOFError, BrokenPipeError, OSError, RuntimeError, TimeoutError) as error:
                     self.cleanup_error = str(error)
             try:
@@ -411,6 +415,7 @@ def main() -> int:
     }
     (args.output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     client = EnvClient(args.sim_python, args.assets_root, args.leisaac_root, args.device)
+    client.profile_steps = args.mode == "env-profile"
     sink, ticks, engine, result = MemoryMetrics(), [], None, {}
     try:
         client.start()
@@ -465,6 +470,8 @@ def main() -> int:
         )
         if engine is not None:
             result["engine_stats"] = asdict(engine.stats)
+        if client.profile_steps:
+            result["step_profile"] = client.step_profile
         # Control stopped, policy worker joined, sink closed, simulator exited.
         (args.output / "result.json").write_text(json.dumps(result, indent=2) + "\n")
         for name, rows in (("ticks.jsonl", ticks), ("events.jsonl", sink.events)):

@@ -7,8 +7,10 @@ The existing Gym task remains the simulator; this file is an interface adapter.
 from __future__ import annotations
 
 import argparse
+import cProfile
 import importlib.metadata
 import os
+import pstats
 import subprocess
 import sys
 import time
@@ -34,7 +36,10 @@ from leisaac_so101_contract import (
 
 
 class IsaacEnvironment:
-    def __init__(self, assets_root: Path, leisaac_root: Path, device: str) -> None:
+    def __init__(
+        self, assets_root: Path, leisaac_root: Path, device: str, *, profile_steps: bool = False
+    ) -> None:
+        self.step_profiler = cProfile.Profile() if profile_steps else None
         if sys.version_info[:2] != (3, 11):
             raise ContractError("The pinned simulator requires a separate Python 3.11 interpreter")
         for name, expected in (("isaaclab", "2.3.0"), ("isaacsim", "5.1.0.0")):
@@ -121,6 +126,17 @@ class IsaacEnvironment:
                 "physics_dt": self.env.physics_dt,
                 "step_dt": self.env.step_dt,
                 "device": str(self.env.device),
+                "step_cprofile_enabled": profile_steps,
+                "runtime_settings": {
+                    key: self.env.sim.carb_settings.get(key)
+                    for key in (
+                        "/app/runLoops/main/rateLimitEnabled",
+                        "/app/runLoops/main/rateLimitFrequency",
+                        "/isaaclab/render/active_viewport",
+                        "/rtx/ecoMode/enabled",
+                    )
+                },
+                "torch_num_threads": torch.get_num_threads(),
             }
         except BaseException:
             self.close()
@@ -158,7 +174,10 @@ class IsaacEnvironment:
             [action_to_radians(action)], dtype=self.torch.float32, device=self.env.device
         )
         target_finished = time.perf_counter()
-        obs, reward, terminated, truncated, _ = self.env.step(target)
+        if self.step_profiler is None:
+            obs, reward, terminated, truncated, _ = self.env.step(target)
+        else:
+            obs, reward, terminated, truncated, _ = self.step_profiler.runcall(self.env.step, target)
         # Copy flags before packet/next reset: returned obs may already be reset.
         success, timeout = bool(terminated[0].item()), bool(truncated[0].item())
         step_finished = time.perf_counter()
@@ -179,12 +198,40 @@ class IsaacEnvironment:
         }
         return result
 
+    def profile_report(self) -> dict | None:
+        """Materialize diagnostic host-call statistics only after control stops."""
+        if self.step_profiler is None:
+            return None
+        return summarize_step_profile(self.step_profiler)
+
     def close(self) -> None:
         try:
             if self.env is not None:
                 self.env.close()
         finally:
             self.app.close()
+
+
+def summarize_step_profile(profiler: cProfile.Profile) -> dict:
+    stats = pstats.Stats(profiler)
+    rows = [
+        {
+            "file": filename,
+            "line": line,
+            "function": name,
+            "primitive_calls": values[0],
+            "calls": values[1],
+            "self_s": values[2],
+            "cumulative_s": values[3],
+        }
+        for (filename, line, name), values in stats.stats.items()
+    ]
+    return {
+        "kind": "cProfile_host_wall_with_instrumentation_overhead",
+        "total_self_s": stats.total_tt,
+        "by_cumulative": sorted(rows, key=lambda row: row["cumulative_s"], reverse=True)[:50],
+        "by_self": sorted(rows, key=lambda row: row["self_s"], reverse=True)[:30],
+    }
 
 
 def serve(connection: Connection, env: Any) -> None:
@@ -195,7 +242,10 @@ def serve(connection: Connection, env: Any) -> None:
         request = connection.recv()
         operation = request["op"]
         if operation == "close":
-            connection.send({"closed": True})
+            response = {"closed": True}
+            if hasattr(env, "profile_report"):
+                response["step_profile"] = env.profile_report()
+            connection.send(response)
             return
         if operation == "reset":
             episode_id += 1
@@ -218,10 +268,13 @@ def main() -> int:
     parser.add_argument("--assets-root", type=Path, required=True)
     parser.add_argument("--leisaac-root", type=Path, required=True)
     parser.add_argument("--device", default="cuda:0")
+    parser.add_argument("--profile-steps", action="store_true")
     args = parser.parse_args()
     connection, env = Connection(args.fd), None
     try:
-        env = IsaacEnvironment(args.assets_root, args.leisaac_root, args.device)
+        env = IsaacEnvironment(
+            args.assets_root, args.leisaac_root, args.device, profile_steps=args.profile_steps
+        )
         serve(connection, env)
         return 0
     except Exception:
