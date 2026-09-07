@@ -16,6 +16,16 @@ def read_rows(path: Path) -> list[dict]:
     return [json.loads(line) for line in path.read_text().splitlines() if line]
 
 
+def validate_geometry_rows(recomputed: list[dict], recorded: list[dict]) -> None:
+    """Match named conditions, not their deliberately shuffled execution order."""
+    actual = {(row["block"], row["arm"]): row for row in recomputed}
+    saved = {(row["block"], row["arm"]): row for row in recorded}
+    if len(actual) != len(recomputed) or len(saved) != len(recorded):
+        raise ValueError("Duplicate physical-divergence condition")
+    if actual != saved:
+        raise ValueError("Pre-takeover physical divergence was not reported as observed")
+
+
 def information_schedule(ticks: list[dict], events: list[dict], arm: str, policy_seed: int) -> dict:
     if [row["tick"] for row in ticks] != list(range(len(ticks))):
         raise ValueError("Measurement indices skipped or repeated")
@@ -160,8 +170,7 @@ def audit(root: Path) -> dict:
         if summary[key] != value:
             raise ValueError(f"Closed statistic differs from the original outcomes: {key}")
     differences = prefix_geometry_differences(root, rebuilt)
-    if differences != summary["pre_takeover_geometry_differences"]:
-        raise ValueError("Pre-takeover physical divergence was not reported as observed")
+    validate_geometry_rows(differences, summary["pre_takeover_geometry_differences"])
     if setup_count != summary["setup_actions"]:
         raise ValueError("Shared and per-arm preparation counts do not match")
     first_target_differences = []

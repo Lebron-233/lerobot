@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "examples/advanced/predictive_async"))
-from audit_so101_privileged_reference import information_schedule  # noqa: E402
+from audit_so101_privileged_reference import information_schedule, validate_geometry_rows  # noqa: E402
 
 
 def fixture(arm="oracle_visual", count=30):
@@ -57,3 +57,17 @@ def test_privileged_calls_after_early_stop_are_not_invented():
     events[0]["generated_step"] = 27
     with pytest.raises(ValueError, match="invented"):
         information_schedule(ticks, events, "oracle_visual", 3610)
+
+
+def test_shuffled_condition_order_does_not_change_physical_divergence():
+    rows = [
+        {"block": 1, "arm": arm, "object_position_abs_max_m": 1e-6}
+        for arm in ("oracle_visual", "oracle_joint")
+    ]
+    validate_geometry_rows(rows, list(reversed(rows)))
+    altered = copy.deepcopy(rows)
+    altered[0]["object_position_abs_max_m"] = 2e-6
+    with pytest.raises(ValueError, match="not reported"):
+        validate_geometry_rows(rows, altered)
+    with pytest.raises(ValueError, match="Duplicate"):
+        validate_geometry_rows(rows, rows + rows[:1])

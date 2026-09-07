@@ -1,0 +1,88 @@
+{
+  "stage": "L15_L15b_development_and_L16_privileged_reference_closed",
+  "execution_source": "4ee3b992d69d11875e8a17b67884e43db458720c",
+  "task": "pickorange_first_settled_v1",
+  "simulated_delay_steps": 7,
+  "shared_policy_bootstrap": true,
+  "arms": ["state_only", "oracle_visual", "oracle_joint"],
+  "environment_seeds": [20270710, 20270711, 20270712, 20270713, 20270714, 20270715, 20270716, 20270717],
+  "complete": true,
+  "aggregates": {
+    "state_only": {"trials": 8, "successes": 8, "technical_failures": 0, "mean_restricted_time_s": 26.504166666666666},
+    "oracle_visual": {"trials": 8, "successes": 6, "technical_failures": 0, "mean_restricted_time_s": 39.975},
+    "oracle_joint": {"trials": 8, "successes": 6, "technical_failures": 0, "mean_restricted_time_s": 42.94583333333334}
+  },
+  "contrasts": {
+    "oracle_visual_minus_state_only": {
+      "mean_difference_s": 13.470833333333335,
+      "bootstrap_95_s": [-16.7125, 48.43437500000007],
+      "first_half_s": -10.233333333333333,
+      "second_half_s": 37.175000000000004,
+      "differences_s": [-4.833333333333333, 4.866666666666667, -34.599999999999994, -6.366666666666667, 98.93333333333334, -34.13333333333333, 83.96666666666667, -0.06666666666666643],
+      "stable_gate": false
+    },
+    "oracle_joint_minus_state_only": {
+      "mean_difference_s": 16.44166666666667,
+      "bootstrap_95_s": [-15.25, 53.425000000000004],
+      "first_half_s": 18.075000000000003,
+      "second_half_s": 14.808333333333334,
+      "differences_s": [-0.1999999999999993, 99.73333333333333, -23.63333333333333, -3.5999999999999996, 98.93333333333334, -42.43333333333334, -4.233333333333331, 6.966666666666665],
+      "stable_gate": false
+    }
+  },
+  "outcomes_by_scene": [
+    {"seed": 20270710, "state_only_s": 12.466666666666667, "oracle_visual_s": 7.633333333333334, "oracle_joint_s": 12.266666666666667, "successes": [true, true, true]},
+    {"seed": 20270711, "state_only_s": 20.266666666666666, "oracle_visual_s": 25.133333333333333, "oracle_joint_s": 120.0, "successes": [true, true, false]},
+    {"seed": 20270712, "state_only_s": 47.666666666666664, "oracle_visual_s": 13.066666666666666, "oracle_joint_s": 24.033333333333335, "successes": [true, true, true]},
+    {"seed": 20270713, "state_only_s": 13.866666666666667, "oracle_visual_s": 7.5, "oracle_joint_s": 10.266666666666667, "successes": [true, true, true]},
+    {"seed": 20270714, "state_only_s": 21.066666666666666, "oracle_visual_s": 120.0, "oracle_joint_s": 120.0, "successes": [true, false, false]},
+    {"seed": 20270715, "state_only_s": 49.233333333333334, "oracle_visual_s": 15.1, "oracle_joint_s": 6.8, "successes": [true, true, true]},
+    {"seed": 20270716, "state_only_s": 36.03333333333333, "oracle_visual_s": 120.0, "oracle_joint_s": 31.8, "successes": [true, false, true]},
+    {"seed": 20270717, "state_only_s": 11.433333333333334, "oracle_visual_s": 11.366666666666667, "oracle_joint_s": 18.4, "successes": [true, true, true]}
+  ],
+  "accounting": {
+    "conditions": 24,
+    "subgoal_endpoints": 20,
+    "timeouts": 4,
+    "technical_failures": 0,
+    "completed_actions": 26262,
+    "setup_actions": 960,
+    "takeovers": 960,
+    "privileged_generations": 729,
+    "actual_old_prefix_actions": 6735,
+    "shared_simulator_exits": 1,
+    "shared_simulator_returncode": 0,
+    "separate_smoke_actions_excluded": 60,
+    "separate_smoke_setup_actions_excluded": 60
+  },
+  "all_information_boundaries_verified": true,
+  "shared_bootstrap_prefix_actions_per_arm": 27,
+  "pre_takeover_state_abs_max": 0.0,
+  "pre_takeover_object_abs_max_m": 0.0000010132789611816406,
+  "first_takeover_pre_action_state_abs_max": 0.0,
+  "first_takeover_pre_action_object_abs_max_m": 0.00000095367431640625,
+  "reliable_state_only_reference": true,
+  "privileged_visual_reference_positive": false,
+  "learned_task_benefit": false,
+  "realtime_qualified": false,
+  "native_three_orange_benefit_tested": false,
+  "contact_release_tested": false,
+  "risk_thresholds": null,
+  "student_development": {
+    "new_development_actions": 9600,
+    "setup_actions": 240,
+    "complete_request_target_pairs": 352,
+    "training_noise_cases": 528,
+    "validation_noise_cases": 176,
+    "state_only_validation_l1": 0.07686742150690407,
+    "single_profile": {"optimizer_updates": 1600, "training_examples": 1600, "selected_update": 1600, "display_validation_l1": 0.069882075, "display_reduction_percent": 9.0875, "improved_cases": 83, "qualified": false},
+    "balanced4_profile": {"optimizer_updates": 400, "training_examples": 1600, "selected_update": 400, "display_validation_l1": 0.071438625, "display_reduction_percent": 7.0625, "improved_cases": 94, "qualified": false},
+    "required_improving_cases": 118,
+    "students_deployed": false,
+    "reserved_test_opened": false
+  },
+  "local_evidence": {
+    "cohort": "artifacts/m54l16_privileged_task_v1",
+    "closed_audit": "artifacts/m54l16_closed_reference_audit_v1.json"
+  }
+}
