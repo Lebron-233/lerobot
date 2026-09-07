@@ -44,7 +44,9 @@ class IsaacEnvironment:
         *,
         profile_steps: bool = False,
         episode_seconds: int = 25,
+        control_fps: int = 30,
     ) -> None:
+        self.control_fps = control_fps
         self.step_profiler = cProfile.Profile() if profile_steps else None
         if sys.version_info[:2] != (3, 11):
             raise ContractError("The pinned simulator requires a separate Python 3.11 interpreter")
@@ -94,7 +96,7 @@ class IsaacEnvironment:
             cfg.use_teleop_device("so101leader")
             cfg.recorders = None
             cfg.episode_length_s = episode_seconds
-            cfg.sim.dt, cfg.decimation, cfg.sim.render_interval = 1 / 60, 2, 2
+            cfg.sim.dt, cfg.decimation, cfg.sim.render_interval = 1 / 60, 60 // control_fps, 2
             for term, names in (
                 (cfg.actions.arm_action, JOINT_NAMES[:5]),
                 (cfg.actions.gripper_action, JOINT_NAMES[5:]),
@@ -113,8 +115,8 @@ class IsaacEnvironment:
                 raise ContractError(
                     "Cannot equate terminated with success for this termination configuration"
                 )
-            if abs(self.env.step_dt - 1 / FPS) > 1e-9:
-                raise ContractError("Simulator step_dt is not 1/30 s")
+            if abs(self.env.step_dt - 1 / control_fps) > 1e-9:
+                raise ContractError("Simulator step_dt differs from the selected execution time base")
             self.metadata = {
                 "profile": PROFILE,
                 "task": TASK_ID,
@@ -142,6 +144,8 @@ class IsaacEnvironment:
                 "episode_length_s": cfg.episode_length_s,
                 "physics_dt": self.env.physics_dt,
                 "step_dt": self.env.step_dt,
+                "control_fps": control_fps,
+                "timebase_profile": "native60_diagnostic" if control_fps == 60 else "transfer30",
                 "device": str(self.env.device),
                 "physics_execution": "cpu_physx_rtx_v1" if device == "cpu" else "gpu_physx_rtx_v1",
                 "physics_solver_type": cfg.sim.physx.solver_type,
@@ -180,6 +184,7 @@ class IsaacEnvironment:
             episode_id=episode_id,
             step=step,
             snapshot_ready_at_s=time.perf_counter(),
+            control_fps=self.control_fps,
         )
         packet["task_diagnostics"] = {
             "subtasks": {name: bool(value[0].item()) for name, value in obs.get("subtask_terms", {}).items()},
@@ -300,6 +305,7 @@ def main() -> int:
     parser.add_argument("--leisaac-root", type=Path, required=True)
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument("--episode-seconds", type=int, choices=(25, 60, 120), default=25)
+    parser.add_argument("--control-fps", type=int, choices=(30, 60), default=30)
     parser.add_argument("--profile-steps", action="store_true")
     args = parser.parse_args()
     connection, env = Connection(args.fd), None
@@ -310,6 +316,7 @@ def main() -> int:
             args.device,
             profile_steps=args.profile_steps,
             episode_seconds=args.episode_seconds,
+            control_fps=args.control_fps,
         )
         serve(connection, env)
         return 0

@@ -119,3 +119,25 @@ def test_matched_sync_honors_checkpoint_autocast(monkeypatch):
         "sync", "cpu", None, 1801, MemoryMetrics(), raw, matched_snapshot=Path("fixture")
     )
     assert engine is None and action(raw) == [0.0] * 6
+
+
+def test_native60_diagnostic_preserves_camera30_without_weakening_transfer30():
+    from leisaac_so101_contract import ContractError, validate_step
+
+    def observation(step, frame, fps):
+        return {
+            "episode_id": 1,
+            "step": step,
+            "sim_time_s": step / fps,
+            "control_fps": fps,
+            "camera_frames": {"front": frame, "wrist": frame},
+        }
+
+    validate_step(observation(0, 1, 60), observation(1, 1, 60), terminal=False)
+    validate_step(observation(1, 1, 60), observation(2, 2, 60), terminal=False)
+    with pytest.raises(ContractError, match="Camera did not advance"):
+        validate_step(observation(1, 1, 60), observation(2, 1, 60), terminal=False)
+    with pytest.raises(ContractError, match="Camera did not advance"):
+        validate_step(observation(0, 1, 30), observation(1, 1, 30), terminal=False)
+    with pytest.raises(ContractError, match="time base"):
+        validate_step(observation(0, 1, 30), observation(1, 1, 60), terminal=False)

@@ -178,3 +178,23 @@ own native AMP/processors, seed 20260911/policy 1801, 60 s/1800 steps. Keep
 50-step generation, action limits and success unchanged. Register this as a
 distinct development execution profile; do not silently replace the 50-step
 candidate results or count it as an identity/predicted effect.
+
+## Explicit native60 time-base diagnosis
+
+The pinned official evaluation uses `decimation=1`, default physics dt1/60 and
+`step_hz=60`; camera update remains 30 Hz. Its dataset converter labels FPS from
+the CLI (default30) and exports one row per recorded action after skipping the
+first five rows; it contains no temporal resampling. This is not conclusive proof
+of the original dataset's recording settings. Episode0's first60 adjacent wrist
+frame differences alternate strongly (mean absolute uint8 difference13.47 versus
+1.97), consistent with different image/control cadences, but compression/motion
+also affect this diagnostic.
+
+Run one native60 **synchronous-only** trial to test this plausible deployment
+mismatch: single-rank, native AMP, same seeds20260911/1801, same assets and
+CPU PhysX, physics dt1/60, decimation1, camera/render30Hz, 50 generated/executed
+actions, 60 simulated seconds/3600 control steps. Record actual per-packet
+simulation time and allow camera reuse only on the intervening60Hz step; every
+second step must update. The original30Hz camera and whole-slot tests remain
+unchanged. The CLI rejects60Hz for async/predicted/smoke modes. A native60 success
+would support a time-base investigation, **not** a30Hz async benchmark pass.

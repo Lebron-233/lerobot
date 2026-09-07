@@ -75,12 +75,16 @@ def observation_packet(
     episode_id: int,
     step: int,
     snapshot_ready_at_s: float,
+    control_fps: int = 30,
 ) -> dict[str, Any]:
+    if control_fps not in (30, 60):
+        raise ContractError("Unregistered simulator time base")
     packet = {
         "profile": PROFILE,
         "episode_id": episode_id,
         "step": step,
-        "sim_time_s": step / FPS,
+        "sim_time_s": step / control_fps,
+        "control_fps": control_fps,
         "snapshot_ready_at_s": snapshot_ready_at_s,
         "state_f32": struct.pack("<6f", *state_from_radians(measured, actual_names)),
         "images": dict(images),
@@ -112,13 +116,18 @@ def validate_observation(packet: Mapping[str, Any]) -> list[float]:
 def validate_step(previous: Mapping[str, Any], current: Mapping[str, Any], *, terminal: bool) -> None:
     if current["episode_id"] != previous["episode_id"] or current["step"] != previous["step"] + 1:
         raise ContractError("Environment observation episode/step is not aligned with one control tick")
-    if not math.isclose(current["sim_time_s"], current["step"] / FPS, abs_tol=1e-9):
-        raise ContractError("Environment time differs from the 30 Hz transfer contract")
+    fps = current.get("control_fps", 30)
+    if fps not in (30, 60) or fps != previous.get("control_fps", 30):
+        raise ContractError("Environment time base changed within an episode")
+    if not math.isclose(current["sim_time_s"], current["step"] / fps, abs_tol=1e-9):
+        raise ContractError("Environment time differs from the declared control time base")
     # Isaac returns reset observations on terminal steps. They must not be used
     # as the old episode's successor or subjected to a monotone camera test.
     if not terminal:
         for camera in ("front", "wrist"):
-            if current["camera_frames"][camera] <= previous["camera_frames"][camera]:
+            before, after = previous["camera_frames"][camera], current["camera_frames"][camera]
+            camera_due = fps == 30 or current["step"] % 2 == 0
+            if after < before or (camera_due and after <= before):
                 raise ContractError(f"Camera did not advance: {camera}")
 
 
