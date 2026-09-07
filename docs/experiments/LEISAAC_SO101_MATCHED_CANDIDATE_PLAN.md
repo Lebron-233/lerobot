@@ -129,3 +129,11 @@ success. Pin it separately as `leisaac_so101_pickorange_single_rank_v1` with its
 own weights/processors. If corrected main is still unqualified, run this one
 candidate on the same 60-second development seed pair, retaining all main results.
 Future qualification/held-out seeds must not be chosen from this development trial.
+
+The corrected main native-AMP trial also completed 1800 steps with no placement.
+Before attributing this solely to candidate quality, inspect one **training**
+episode (episode 0, frames 0/150/300) with exact dataset revision above. Compare
+decoded camera views and teacher-forced first actions through the implemented
+native processor/coordinate path. This is an input/weight sanity diagnostic,
+not a test score, not training, and not access to the previous B4 held-out cache.
+It cannot by itself prove checkpoint quality or complete simulator equivalence.
