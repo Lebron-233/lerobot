@@ -53,3 +53,24 @@ env20261221/policy2421, warmed_v2, native task witness, feasible_v1 and600 steps
 Retain the five slowest per-step profiles, not only a mean that hides isolated
 pauses. This is a changed diagnostic, not a retry of an outcome trial. No
 timing qualification can be inferred from profiler-instrumented execution.
+
+## Single-environment host tensor execution
+
+The600-step native diagnostic completed. Its largest measured env.step46.621ms
+includes17.954ms in Tensor.clone and10.021ms in camera buffer update; other slow
+steps distribute across rendering and PhysX completion. It does not reproduce
+the old140ms pause or implicate garbage collection. Concurrent vmstat sampling
+showed no swap-in/out in its sampled intervals. Do not claim a unique cause.
+
+Set simulator torch intra-op threads to1 (previously6) for this single-env
+deployment, as already done for the model. Keep Carbonite/TBB pools, physics,
+rendering and camera values unchanged; metadata records the effective value.
+This avoids a redundant CPU tensor worker pool, not a fidelity reduction.
+
+Freeze six40-second qualifications (1200 control ticks each,60-second episode
+limit): env20261222/23/24, policy2422/23/24. Orders are identity/predicted,
+predicted/identity, identity/predicted. Common warmed_v2, feasible_v1, task witness,
+standard cameras, no profiler/GC callbacks. Require all six bounds (or original
+native success), clean completion, no lost slots/underflow/deadline/cap failure,
+and actual planned predictor calls. Keep every failure; no automatic retry or
+dropping a bad seed. This tests the operational change before new task outcomes.

@@ -96,6 +96,10 @@ class IsaacEnvironment:
             from isaaclab_tasks.utils import parse_env_cfg
             from leisaac.assets.robots.lerobot import SO101_FOLLOWER_USD_JOINT_LIMLITS
 
+            # Single-env CPU tensor/image work shares this host with RTX and the
+            # policy worker. Do not fan small operations out to six extra workers.
+            torch.set_num_threads(1)
+
             source = Path(leisaac.__file__).resolve()
             if not source.is_relative_to(leisaac_root.resolve()):
                 raise ContractError("Imported LeIsaac is not the pinned local checkout")
