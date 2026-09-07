@@ -1,0 +1,49 @@
+{
+  "source_commit": "f8b230fbd2342e1dec75eca3f9e587bd593db91d",
+  "profile": "leisaac_so101_transfer_v1",
+  "mode": "env-profile",
+  "artifact_directory": "/home/rp/Workspace/SmolVLA_RTC/artifacts/m54l2_f8b230fb_env_profile_v1",
+  "environment_seed": 20260907,
+  "policy_calls": 0,
+  "realtime_required_for_this_diagnostic": false,
+  "actual_steps": 30,
+  "all_dispatches_completed": true,
+  "status": "censored_step_limit",
+  "success": null,
+  "timeout": false,
+  "reward": 0.0,
+  "simulator_exit_code": 0,
+  "metrics_closed": true,
+  "simulation_seconds": 1.0,
+  "elapsed_control_wall_s": 1.5083757670363411,
+  "observed_steps_per_wall_second": 19.888943229938018,
+  "real_time_factor": 0.6629647743312672,
+  "required_fps_for_smoke_and_pilot": 30,
+  "work_intervals_over_1_div_30_s": 30,
+  "quantile_method": "numpy.percentile, default linear, all 30 unless labelled last 20",
+  "units": "milliseconds for the following timing statistics",
+  "all_30": {
+    "work": {"mean": 50.23335742298514, "p50": 48.9641975145787, "p90": 54.93604940129444, "min": 44.83727097976953, "max": 61.56619300600141},
+    "ipc_roundtrip": {"mean": 49.961834393131234, "p90": 54.71050199121237},
+    "controller_before_step": {"mean": 0.2587696343349914, "p90": 0.3695687744766474},
+    "gripper_effort": {"mean": 1.205630674182127, "p90": 1.600405643694103},
+    "target_creation": {"mean": 0.12541475783412656, "p90": 0.18473450327292085},
+    "env_step_and_flags": {"mean": 46.082840336021036, "p90": 50.02307848772034},
+    "observation_packet": {"mean": 0.8141829787443081, "p90": 1.077854819595814},
+    "transport_and_dispatch_residual": {"mean": 1.7337656463496387, "p90": 2.225586003623903}
+  },
+  "last_20_descriptive": {
+    "work_mean": 49.799579434329644,
+    "work_p90": 53.65848179208115,
+    "env_step_and_flags_mean": 46.08065349748358,
+    "work_intervals_over_1_div_30_s": 20
+  },
+  "all_work_samples_ms_rounded_to_3_decimals": [58.323, 56.075, 48.233, 48.672, 54.809, 44.837, 51.393, 53.325, 47.199, 48.142, 53.646, 48.301, 52.192, 50.23, 46.8, 50.972, 47.146, 50.106, 47.969, 53.768, 46.703, 47.074, 48.88, 49.048, 45.742, 45.534, 47.317, 51.721, 51.276, 61.566],
+  "decision": "real-time smoke remains FAIL; no policy capability or paired pilot executed",
+  "limitations": [
+    "Host wall intervals include CUDA waits; they are not GPU kernel timings.",
+    "env.step has not been decomposed into physics, rendering and observation manager work.",
+    "Throughput diagnosis is not a real-time pass or a task success estimate.",
+    "Pinned kitchen asset collision warnings and SO100-to-SO101 transfer limitations remain."
+  ]
+}

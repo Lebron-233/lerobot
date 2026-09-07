@@ -208,3 +208,12 @@ This narrow engineering diagnostic is added in response to the observed failure;
 it is not a slower version of the identity/predicted experiment. If transport
 dominates, fix that interface; if the simulator dominates, do not build a new
 queue or silently change FPS, resolution, assets or task to produce a pass.
+
+The diagnosis has now completed: **30/30** work intervals exceeded the 33.333 ms
+budget, mean **50.233357 ms**, observed throughput **19.888943 Hz**, with
+**46.082840 ms** mean inside `env.step` plus flag copying. The last 20 samples
+still averaged 49.799579 ms overall. See the
+[continuation result](LEISAAC_SO101_CONTINUATION_RESULT.md) and its machine-readable
+summary. Real-time smoke remains FAIL; the conditional synchronous capability and
+paired pilot have not run. The next useful investigation is inside the existing
+simulator step, not a replacement IPC/queue or another unchanged smoke retry.
