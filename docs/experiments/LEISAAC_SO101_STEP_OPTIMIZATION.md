@@ -93,3 +93,32 @@ source-bound directories, same 600 s startup/30 s IPC and original lost-slot gat
 The current pinned AppLauncher explicitly keeps rendering GPU 0 for `device=cpu`;
 `parse_env_cfg` selects the simulator tensor/PhysX device. No upstream patch,
 package reinstall, model CPU fallback or new dependency is needed.
+
+## CPU execution: real-time prerequisite passes its original bounded gate
+
+Both CPU attempts ran source `630feea126ef5b7db15693f912191f93109b2b17`.
+`m54l3_630feea1_cpu_physics_profile_v1` completed 30 diagnostic steps with original
+observations and no model. Native physics steps now account for 3.147 ms per
+control step; renderer 11.313 ms and observation manager 12.293 ms. CPU tiled
+image processing is now a significant cost. These are instrumented host intervals,
+not paired kernel benchmarks or evidence of exact CPU/GPU trajectory equivalence.
+
+`m54l3_630feea1_cpu_physics_smoke_v1` then completed the separate **unprofiled**
+30-step real-time smoke, seed 20260907, with all dispatches and frame progression
+checks passing, zero full lost slots, closed telemetry, simulator exit code zero.
+Result is `censored_step_limit`, as expected for a 30-step hold-target smoke;
+this is not task success. The unchanged bounded timing gate passes.
+
+Measured full work: mean **28.595790 ms**, P90 **34.449317 ms**, maximum
+**36.796044 ms**. Four of 30 ticks exceeded 33.333 ms, but maximum accumulated
+tick-start lateness was **11.298554 ms**, below a whole 33.333 ms slot. First tick
+start to final completion was **1.005061846 s**. Do not describe this as strict
+zero-jitter timing or infer that shared-GPU model inference will also pass.
+
+This resolves the immediate environment smoke prerequisite for this named CPU
+PhysX / GPU-render execution only; prior GPU failures remain unchanged. Proceed
+to the already fixed one-episode synchronous capability diagnostic: environment
+seed 20260908, policy seed 1701, maximum 750 steps, `--sim-device cpu`, model
+`--device cuda:0`, fixed base weights and processors. A technical stop or lack of
+true task success prevents the paired pilot; no clipping or checkpoint selection
+will be introduced to obtain a favorable result.
