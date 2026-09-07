@@ -1,0 +1,122 @@
+"""Independent PickOrange candidate; never binds the frozen SO100 predictor."""
+
+from __future__ import annotations
+
+from pathlib import Path
+
+import torch
+from leisaac_so101_contract import JOINT_LIMITS_DEG
+
+CANDIDATE_ID = "leisaac_so101_pickorange_edge_v1"
+POLICY_REPO = "edge-inference/smolvla-so101-pick-orange"
+POLICY_REVISION = "71cf4a9d35ce317f6706efe1a9f9d4cbb2b8fb4d"
+VLM_REPO = "HuggingFaceTB/SmolVLM2-500M-Video-Instruct"
+VLM_REVISION = "7b375e1b73b11138ff12fe22c8f2822d8fe03467"
+TASK = "Grab orange and place into plate"
+CAMERA_KEYS = ("observation.images.front", "observation.images.wrist")
+
+
+def candidate_manifest() -> dict:
+    return {
+        "id": CANDIDATE_ID,
+        "policy_repo": POLICY_REPO,
+        "policy_revision": POLICY_REVISION,
+        "vlm_config_tokenizer_revision": VLM_REVISION,
+        "weight_source": "entire task checkpoint; no replacement VLM weights",
+        "state_action_coordinates": "LeIsaac arm motor [-100,100], gripper [0,100]",
+        "statistics": "checkpoint's own state/action mean/std",
+        "task": TASK,
+        "predictor": None,
+    }
+
+
+def _coordinates(value: torch.Tensor, *, to_motor: bool) -> torch.Tensor:
+    if value.shape[-1] != 6 or not value.is_floating_point():
+        raise ValueError("SO101 coordinates require a floating six-dimensional tensor")
+    result = value.clone()
+    low = value.new_tensor([bounds[0] for bounds in JOINT_LIMITS_DEG[:5]])
+    span = value.new_tensor([bounds[1] - bounds[0] for bounds in JOINT_LIMITS_DEG[:5]])
+    if to_motor:
+        result[..., :5] = (value[..., :5] - low) * 200 / span - 100
+    else:
+        result[..., :5] = (value[..., :5] + 100) * span / 200 + low
+    # The simulator transport and native policy both use gripper RANGE_0_100.
+    # Do not clip state or action here. The transport rejects infeasible targets.
+    return result
+
+
+def physical_to_motor(value: torch.Tensor) -> torch.Tensor:
+    return _coordinates(value, to_motor=True)
+
+
+def motor_to_physical(value: torch.Tensor) -> torch.Tensor:
+    return _coordinates(value, to_motor=False)
+
+
+class MotorStatePreprocessor:
+    """Transport physical state -> native motor coordinates -> saved processor."""
+
+    def __init__(self, processor) -> None:
+        self.processor = processor
+        self.steps = processor.steps
+
+    def reset(self) -> None:
+        self.processor.reset()
+
+    def __call__(self, batch: dict):
+        batch = dict(batch)
+        batch["observation.state"] = physical_to_motor(batch["observation.state"])
+        return self.processor(batch)
+
+
+class PhysicalActionPostprocessor:
+    """Native saved denormalizer -> motor targets -> transport physical units."""
+
+    def __init__(self, processor) -> None:
+        self.processor = processor
+        self.steps = processor.steps
+
+    def reset(self) -> None:
+        self.processor.reset()
+
+    def __call__(self, action: torch.Tensor) -> torch.Tensor:
+        return motor_to_physical(self.processor(action))
+
+
+def load_matched_runtime(snapshot: Path, *, device: str):
+    from huggingface_hub import snapshot_download
+
+    from lerobot.configs.policies import PreTrainedConfig
+    from lerobot.policies.factory import make_pre_post_processors
+    from lerobot.policies.smolvla.modeling_smolvla import SmolVLAPolicy
+
+    if snapshot.name != POLICY_REVISION:
+        raise ValueError("Use the exact task-matched HF snapshot, not a different candidate")
+    config = PreTrainedConfig.from_pretrained(snapshot, local_files_only=True)
+    if config.type != "smolvla" or tuple(config.image_features) != CAMERA_KEYS:
+        raise ValueError("Task-matched policy must preserve its native front/wrist schema")
+    if tuple(config.robot_state_feature.shape) != (6,) or tuple(config.action_feature.shape) != (6,):
+        raise ValueError("Task-matched state/action shape differs")
+    if (config.chunk_size, config.n_action_steps, config.num_steps, config.max_state_dim) != (50, 50, 10, 32):
+        raise ValueError("Task-matched inference configuration differs")
+    if config.load_vlm_weights:
+        raise ValueError("This candidate must load all weights from its task checkpoint")
+    vlm = snapshot_download(VLM_REPO, revision=VLM_REVISION, local_files_only=True)
+    config.vlm_model_name = vlm
+    config.pretrained_path = snapshot
+    config.device = device
+    config.compile_model = False
+    policy = SmolVLAPolicy.from_pretrained(snapshot, config=config, local_files_only=True, strict=True)
+    policy.to(device).eval().requires_grad_(False)
+    pre, post = make_pre_post_processors(
+        policy_cfg=config,
+        pretrained_path=str(snapshot),
+        preprocessor_overrides={
+            "device_processor": {"device": device},
+            "tokenizer_processor": {"tokenizer_name": vlm},
+            "rename_observations_processor": {
+                "rename_map": {"observation.images.top": "observation.images.front"}
+            },
+        },
+    )
+    return policy, MotorStatePreprocessor(pre), PhysicalActionPostprocessor(post)

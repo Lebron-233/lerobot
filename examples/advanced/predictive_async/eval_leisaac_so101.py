@@ -313,7 +313,14 @@ def drive_episode(
 
 
 def load_runtime(
-    mode: str, device: str, predictor_path: Path | None, seed: int, sink: MemoryMetrics, raw: dict
+    mode: str,
+    device: str,
+    predictor_path: Path | None,
+    seed: int,
+    sink: MemoryMetrics,
+    raw: dict,
+    *,
+    matched_snapshot: Path | None = None,
 ):
     import torch
     from huggingface_hub import snapshot_download
@@ -332,9 +339,18 @@ def load_runtime(
     from lerobot.utils.random_utils import set_seed
 
     set_seed(seed)
-    snapshot = snapshot_download(POLICY_REPO_ID, revision=POLICY_REVISION, local_files_only=True)
-    config = PreTrainedConfig.from_pretrained(snapshot, local_files_only=True)
-    policy, preprocessor, postprocessor = _load_frozen_future_latent_runtime(config, device=device)
+    task = TASK
+    if matched_snapshot is None:
+        snapshot = snapshot_download(POLICY_REPO_ID, revision=POLICY_REVISION, local_files_only=True)
+        config = PreTrainedConfig.from_pretrained(snapshot, local_files_only=True)
+        policy, preprocessor, postprocessor = _load_frozen_future_latent_runtime(config, device=device)
+    else:
+        from leisaac_so101_matched import TASK as MATCHED_TASK, load_matched_runtime
+
+        if mode not in ("sync", "identity"):
+            raise ValueError("Task-matched predictor has not been qualified; old predictor is incompatible")
+        task = MATCHED_TASK
+        policy, preprocessor, postprocessor = load_matched_runtime(matched_snapshot, device=device)
     policy.to(device).eval()
     robot = ThreadSafeRobot(SnapshotRobot(raw))
     features = hardware_features()
@@ -342,8 +358,8 @@ def load_runtime(
 
         def action(observation: dict) -> list[float]:
             batch = build_dataset_frame(features, observation, prefix="observation")
-            batch = prepare_observation_for_inference(batch, torch.device(device), TASK, robot.robot_type)
-            batch["task"] = [TASK]
+            batch = prepare_observation_for_inference(batch, torch.device(device), task, robot.robot_type)
+            batch["task"] = [task]
             with torch.inference_mode():
                 result = postprocessor(policy.select_action(preprocessor(batch)))
             return result.detach().cpu().reshape(-1).tolist()
@@ -358,7 +374,7 @@ def load_runtime(
         postprocessor=postprocessor,
         robot_wrapper=robot,
         hw_features=features,
-        task=TASK,
+        task=task,
         fps=FPS,
         device=device,
         queue_threshold=30,
@@ -392,6 +408,9 @@ def main() -> int:
     parser.add_argument("--predictor", type=Path)
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument(
+        "--matched-snapshot", type=Path, help="Exact independent PickOrange candidate snapshot"
+    )
+    parser.add_argument(
         "--sim-device", choices=("cpu", "cuda:0"), help="Simulation compute device; model device is unchanged"
     )
     args = parser.parse_args()
@@ -401,6 +420,8 @@ def main() -> int:
         parser.error("This minimal phase permits at most 30 environment-only / 750 episode steps")
     if args.mode == "predicted" and args.predictor is None:
         parser.error("predicted requires the frozen portable --predictor")
+    if args.matched_snapshot is not None and args.mode not in ("sync", "identity"):
+        parser.error("Task-matched candidate supports sync/identity only; no qualified predictor yet")
     root = Path(__file__).resolve().parents[3]
     commit = subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip()
     if subprocess.check_output(["git", "-C", str(root), "status", "--porcelain"], text=True).strip():
@@ -416,6 +437,10 @@ def main() -> int:
         "operator_eula_acceptance_env": os.environ.get("OMNI_KIT_ACCEPT_EULA"),
         "realtime_required": realtime,
     }
+    if args.matched_snapshot is not None:
+        from leisaac_so101_matched import candidate_manifest
+
+        manifest["candidate"] = candidate_manifest()
     (args.output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     client = EnvClient(args.sim_python, args.assets_root, args.leisaac_root, args.sim_device or args.device)
     client.profile_steps = args.mode == "env-profile"
@@ -425,7 +450,13 @@ def main() -> int:
         packet = client.reset(args.seed)
         if not environment_only:
             engine, sync_action = load_runtime(
-                args.mode, args.device, args.predictor, args.policy_seed, sink, decode_observation(packet)
+                args.mode,
+                args.device,
+                args.predictor,
+                args.policy_seed,
+                sink,
+                decode_observation(packet),
+                matched_snapshot=args.matched_snapshot,
             )
         else:
             sync_action = None
@@ -471,6 +502,8 @@ def main() -> int:
             metrics_closed=sink.closed,
             subprocess_returncode=None if client.process is None else client.process.returncode,
         )
+        if "candidate" in manifest:
+            result["candidate"] = manifest["candidate"]
         if engine is not None:
             result["engine_stats"] = asdict(engine.stats)
         if client.profile_steps:
