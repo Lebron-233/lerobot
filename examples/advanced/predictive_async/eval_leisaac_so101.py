@@ -547,7 +547,7 @@ def main() -> int:
     parser.add_argument("--predictor", type=Path)
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument("--episode-seconds", type=int, choices=(25, 60, 120), default=25)
-    parser.add_argument("--sync-execution-steps", type=int, choices=(25, 50), default=50)
+    parser.add_argument("--sync-execution-steps", type=int, choices=(10, 25, 50), default=50)
     parser.add_argument(
         "--sync-task-text",
         choices=("Grab orange and place into plate", "Pick up the orange and put it in the plate"),

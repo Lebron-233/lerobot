@@ -120,8 +120,8 @@ def load_matched_runtime(snapshot: Path, *, device: str, execution_steps: int = 
         raise ValueError("Task-matched state/action shape differs")
     if (config.chunk_size, config.n_action_steps, config.num_steps, config.max_state_dim) != (50, 50, 10, 32):
         raise ValueError("Task-matched inference configuration differs")
-    if execution_steps not in (25, 50):
-        raise ValueError("Only registered 25/50-step synchronous execution profiles are supported")
+    if execution_steps not in (10, 25, 50):
+        raise ValueError("Only registered 10/25/50-step synchronous execution profiles are supported")
     config.n_action_steps = execution_steps
     if config.load_vlm_weights != (snapshot.name == WSAGI_REVISION):
         raise ValueError("Candidate VLM initialization configuration differs from its registered snapshot")

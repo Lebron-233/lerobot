@@ -21,7 +21,7 @@ PROMPTS = {
 }
 
 
-def describe(folder: Path, prompt: str, source: str) -> dict:
+def describe(folder: Path, prompt: str, source: str, *, execution_steps: int = 50) -> dict:
     result = json.loads((folder / "result.json").read_text())
     manifest = json.loads((folder / "manifest.json").read_text())
     ticks = read_rows(folder / "ticks.jsonl")
@@ -32,7 +32,8 @@ def describe(folder: Path, prompt: str, source: str) -> dict:
         or result["candidate"]["task"] != PROMPTS[prompt]
         or result["candidate"].get("predictor") is not None
         or "engine_stats" in result
-        or manifest["args"]["sync_execution_steps"] != 50
+        or manifest["args"]["sync_execution_steps"] != execution_steps
+        or result["candidate"]["sync_executed_chunk_steps"] != execution_steps
         or manifest["args"]["stop_after_first_placement"]
     ):
         raise ValueError("The registered unaugmented synchronous candidate changed")
