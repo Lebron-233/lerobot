@@ -68,9 +68,14 @@ def decoder_context(arm: str, request: dict, future_tokens=None, future_masks=No
 
 
 @torch.no_grad()
-def generate(policy, post, projector, batch, tokens, masks, state, noise_seed):
-    generator = torch.Generator(device="cuda:0").manual_seed(noise_seed)
-    noise = torch.randn((1, 50, 32), generator=generator, device="cuda:0")
+def generate(policy, post, projector, batch, tokens, masks, state, noise_seed, *, explicit_noise=None):
+    if explicit_noise is None:
+        generator = torch.Generator(device="cuda:0").manual_seed(noise_seed)
+        noise = torch.randn((1, 50, 32), generator=generator, device="cuda:0")
+    else:
+        if explicit_noise.shape != (1, 50, 32) or not bool(torch.isfinite(explicit_noise).all()):
+            raise ValueError("Explicit flow noise requires a finite 1x50x32 action chunk")
+        noise = explicit_noise.clone()
     actions = projector(
         policy.predict_action_chunk(
             batch,
@@ -99,6 +104,8 @@ def drive(
     stop_subgoal,
     ticks,
     events,
+    *,
+    noise_provider=None,
 ):
     queue = ScheduledActionQueue(reset_epoch=0, task_epoch=0)
     installed = queue.install_active_chunk(
@@ -113,7 +120,15 @@ def drive(
             _, tokens, masks, actual_state = prepared_observation(packet, policy, pre)
             z, m, s = decoder_context(arm, pending, tokens, masks, actual_state)
             normal, physical = generate(
-                policy, post, projector, pending["batch"], z, m, s, pending["event"]["noise_seed"]
+                policy,
+                post,
+                projector,
+                pending["batch"],
+                z,
+                m,
+                s,
+                pending["event"]["noise_seed"],
+                explicit_noise=pending["noise"],
             )
             stage_at_target(queue, normal, physical, pending["plan"])
             pending["event"].update(
@@ -160,6 +175,15 @@ def drive(
                 "privileged": arm.startswith("oracle"),
             }
             events.append(event)
+            explicit_noise = None if noise_provider is None else noise_provider(step, plan.takeover_index)
+            if noise_provider is not None:
+                event.update(
+                    noise_mode="absolute_action_index",
+                    noise_window_start=plan.takeover_index,
+                    noise_first_row=explicit_noise[0, 0].detach().cpu().tolist(),
+                    noise_last_row=explicit_noise[0, -1].detach().cpu().tolist(),
+                )
+            # The noise is known at t, including in privileged visual arms.
             request = {
                 "plan": plan,
                 "batch": batch,
@@ -167,12 +191,23 @@ def drive(
                 "masks": masks,
                 "predicted_state": predicted_state,
                 "event": event,
+                "noise": explicit_noise,
             }
             if arm.startswith("oracle"):
                 pending = request
             else:
                 z, m, s = decoder_context(arm, request)
-                normal, physical = generate(policy, post, projector, batch, z, m, s, event["noise_seed"])
+                normal, physical = generate(
+                    policy,
+                    post,
+                    projector,
+                    batch,
+                    z,
+                    m,
+                    s,
+                    event["noise_seed"],
+                    explicit_noise=explicit_noise,
+                )
                 staged = queue.stage_chunk(
                     normal, physical, request_id=request_id, reset_epoch=0, task_epoch=0, task=TASK
                 )
