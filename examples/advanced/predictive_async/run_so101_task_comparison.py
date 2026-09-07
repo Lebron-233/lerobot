@@ -130,7 +130,7 @@ def comparison_summary(rows: list[dict]) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--cohort", choices=("initial", "warmed"), default="initial")
+    parser.add_argument("--cohort", choices=("initial", "warmed", "calibrated_l11"), default="initial")
     args = parser.parse_args()
     repo = Path(__file__).resolve().parents[3]
     if subprocess.check_output(["git", "status", "--porcelain"], cwd=repo, text=True).strip():
@@ -138,6 +138,12 @@ def main() -> None:
     source = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo, text=True).strip()
     base = repo.parent
     first_seed, first_policy_seed = (20261101, 2101) if args.cohort == "initial" else (20261201, 2401)
+    if args.cohort == "calibrated_l11":
+        first_seed, first_policy_seed = 20270210, 2610
+        qualification_path = base / "artifacts/m54l9_delay_floor7_qualification_v1/summary.json"
+        qualification = json.loads(qualification_path.read_text())
+        if not qualification["qualified"]:
+            parser.error("L11 requires the closed six-trial common-delay qualification")
     order = list(itertools.permutations(("sync", "identity", "predicted"))) * 2
     random.Random(2088).shuffle(order)
     args.output.mkdir(parents=True, exist_ok=False)
@@ -146,6 +152,7 @@ def main() -> None:
         "task": "pickorange_first_settled_v1",
         "orders": order,
         "cohort": args.cohort,
+        "minimum_async_delay": 7 if args.cohort == "calibrated_l11" else 1,
         "environment_seeds": list(range(first_seed, first_seed + 12)),
         "policy_seeds": list(range(first_policy_seed, first_policy_seed + 12)),
     }
@@ -182,7 +189,7 @@ def main() -> None:
         "--stop-after-first-placement",
     ]
     rows = []
-    if args.cohort == "warmed":
+    if args.cohort in ("warmed", "calibrated_l11"):
         common += ["--startup-profile", "warmed_v2"]
     for block, modes in enumerate(order):
         for mode in modes:
@@ -201,6 +208,8 @@ def main() -> None:
             ]
             if mode == "predicted":
                 command += ["--predictor", str(base / "artifacts/m54l6_predictor_training_v1/best.pt")]
+            if args.cohort == "calibrated_l11" and mode in ("identity", "predicted"):
+                command += ["--minimum-delay", "7"]
             process = subprocess.run(
                 command,
                 cwd=repo,
@@ -221,6 +230,18 @@ def main() -> None:
                 "trials": rows,
                 **comparison_summary(rows),
             }
+            if args.cohort == "calibrated_l11":
+                reference = report["aggregates"]["sync"]
+                report["reliable_reference_gate"] = bool(
+                    reference["trials"] == 12
+                    and reference["successes"] >= 10
+                    and reference["technical_failures"] == 0
+                )
+                report["benefit_on_reliable_reference"] = bool(
+                    report["complete"]
+                    and report["reliable_reference_gate"]
+                    and report.get("stable_task_benefit_gate", False)
+                )
             (args.output / "summary.json").write_text(json.dumps(report, indent=2) + "\n")
             print(
                 json.dumps(
