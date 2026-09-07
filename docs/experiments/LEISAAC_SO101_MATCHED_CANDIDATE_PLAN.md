@@ -100,3 +100,20 @@ development protocol**, same seed 20260911/policy seed 1801, maximum 1800 steps.
 This tests time budget/progress, not an outcome-selected seed. Retain the 25-second
 failure; do not relabel a 60-second success as passing the former protocol.
 No changes to limits, physics, cameras, task predicate, model or processors.
+
+## 60-second outcome and native precision correction
+
+`m54l4_edge_sync_60s_progress_v1` at `469a2b28ba5a655e4fbdf880b4559ee53fdae5d8`
+completed all 1800 actions and timed out, success=false. Native grasp-proximity
+diagnostic `pick_orange002` was true for 173 consumed observations, but every
+placement term was false. Orange002 moved at most 1.52 cm from its reset position;
+this does not support an actual completed grasp/place. Sparse images are retained.
+
+Source comparison then identified a precision mismatch: this checkpoint specifies
+`use_amp=true`; the repository's native `lerobot_eval.py` wraps evaluation in
+`torch.autocast` when that field is true. The inherited frozen-runtime runner did
+not. Preserve the first two trials as **autocast-disabled implementation variants**,
+not exact native-precision reproduction. Correct only matched synchronous execution
+to honor the saved setting. Run one new 60-second diagnostic on the same fixed
+seed pair. This is an evidenced interface correction, not a tuned action limit or
+different outcome-selected seed. Old frozen policy execution remains unchanged.

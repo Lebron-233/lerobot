@@ -2,6 +2,7 @@
 
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 import torch
@@ -69,3 +70,31 @@ def test_infeasible_motor_target_is_not_hidden_by_new_mapping():
     with pytest.raises(ValueError, match="Out-of-range shoulder_lift"):
         action_to_radians(physical.tolist())
     assert physical_to_motor(physical)[1] > 100
+
+
+def test_matched_sync_honors_checkpoint_autocast(monkeypatch):
+    import leisaac_so101_matched as matched
+    import numpy as np
+    from eval_leisaac_so101 import MemoryMetrics, load_runtime
+    from leisaac_so101_contract import SCALAR_KEYS
+
+    class Policy:
+        config = SimpleNamespace(use_amp=True)
+
+        def to(self, device):
+            return self
+
+        def eval(self):
+            return self
+
+        def select_action(self, batch):
+            assert torch.is_autocast_enabled("cpu")
+            return torch.zeros(1, 6)
+
+    monkeypatch.setattr(matched, "load_matched_runtime", lambda *a, **k: (Policy(), lambda x: x, lambda x: x))
+    raw = dict.fromkeys(SCALAR_KEYS, 0.0)
+    raw.update({name: np.zeros((480, 640, 3), dtype=np.uint8) for name in ("top", "wrist")})
+    engine, action = load_runtime(
+        "sync", "cpu", None, 1801, MemoryMetrics(), raw, matched_snapshot=Path("fixture")
+    )
+    assert engine is None and action(raw) == [0.0] * 6

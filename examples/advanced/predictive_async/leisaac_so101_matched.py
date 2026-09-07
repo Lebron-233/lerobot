@@ -27,6 +27,7 @@ def candidate_manifest() -> dict:
         "statistics": "checkpoint's own state/action mean/std",
         "task": TASK,
         "predictor": None,
+        "sync_autocast": "checkpoint use_amp=true; native torch.autocast CUDA default float16",
     }
 
 

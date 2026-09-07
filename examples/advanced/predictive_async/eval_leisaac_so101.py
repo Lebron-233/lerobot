@@ -368,7 +368,13 @@ def load_runtime(
             batch = build_dataset_frame(features, observation, prefix="observation")
             batch = prepare_observation_for_inference(batch, torch.device(device), task, robot.robot_type)
             batch["task"] = [task]
-            with torch.inference_mode():
+            with (
+                torch.inference_mode(),
+                torch.autocast(
+                    device_type=torch.device(device).type,
+                    enabled=matched_snapshot is not None and policy.config.use_amp,
+                ),
+            ):
                 result = postprocessor(policy.select_action(preprocessor(batch)))
             return result.detach().cpu().reshape(-1).tolist()
 
