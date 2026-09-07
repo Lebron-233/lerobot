@@ -122,3 +122,13 @@ seed 20260908, policy seed 1701, maximum 750 steps, `--sim-device cpu`, model
 `--device cuda:0`, fixed base weights and processors. A technical stop or lack of
 true task success prevents the paired pilot; no clipping or checkpoint selection
 will be introduced to obtain a favorable result.
+
+## Terminal milestone
+
+The synchronous attempt `m54l3_1ffda461_sync_capability_v1` loaded the frozen model
+successfully, but its first postprocessed action violated shoulder_lift, elbow
+and gripper limits. The first guard rejected shoulder_lift at 106.4734344482
+degrees before dispatch; zero task steps executed, `success=null`. No predictor
+or paired pilot ran. See the [complete milestone result](LEISAAC_SO101_MILESTONE_RESULT.md)
+for the retained action, exact attempts, real-time scope and next candidate
+authorization boundary. Do not confuse the environment gate PASS with task GO.
