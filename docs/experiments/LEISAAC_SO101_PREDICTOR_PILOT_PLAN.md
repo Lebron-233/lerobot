@@ -120,3 +120,21 @@ the interrupted validation episode with the same seed/model, followed by the
 two original test seeds. This is a logging-repair continuation, not choosing a
 different successful seed or replacing a completed test trajectory. Test remains
 unopened by training; a split with no valid samples must be reported as insufficient.
+
+## Held-out phase completed; standalone timing follow-up
+
+The frozen epoch3 predictor has273824parameters. The single held-out evaluation
+completed on source`40e00e16`:8928 causal pairs, aggregate SmoothL1 reduction
+2.275923599927998%, both held-out episodes positive at all eight delays.
+The fixed18-case visual-oracle action-consistency probe reduced aggregate
+normalized-action L1 by9.78965517312922%, with adverse individual cases retained.
+No test-derived checkpoint change, risk threshold or fallback has been introduced.
+
+Measure the unchanged selected model's compute overhead in one separate fixed-input
+standalone benchmark: original L4 WSAGI first observation and measured state,
+same policy-owned native processors, 50warmups+200measured calls of normal-RGB
+full policy and separately the predictor with d8 and eight already-generated
+normalized actions from that same observation. Use CUDA-completed host timings,
+no simulator, no telemetry I/O inside measured calls. Report all samples and
+P90 predictor/full-policy ratio. This is not a concurrent-control GO or a repeat
+of the original candidate's M5 efficiency gate, and it does not alter selection.
