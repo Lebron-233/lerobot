@@ -50,6 +50,7 @@ class IsaacEnvironment:
         initial_pose: str = "zero",
         camera_backend: str = "tiled",
         task_evidence: bool = False,
+        gc_diagnostics: bool = False,
     ) -> None:
         self.control_fps = control_fps
         self.step_profiler = cProfile.Profile() if profile_steps else None
@@ -85,6 +86,7 @@ class IsaacEnvironment:
             ),
         ).app
         self.env = None
+        self.gc_trace = None
         try:
             import gymnasium as gym
             import leisaac
@@ -126,6 +128,10 @@ class IsaacEnvironment:
                 if camera_backend == "standard":
                     camera.class_type = Camera
             self.env = gym.make(TASK_ID, cfg=cfg).unwrapped
+            if gc_diagnostics:
+                from so101_gc_timing import GcTrace
+
+                self.gc_trace = GcTrace()
             if task_evidence:
                 # Isaac managers deepcopy term configs. Read the instance that
                 # actually runs, not the pre-construction configuration object.
@@ -156,6 +162,7 @@ class IsaacEnvironment:
                 "camera_sources": {"top": "front", "wrist": "wrist"},
                 "camera_backend": camera_backend,
                 "task_evidence": task_evidence,
+                "gc_diagnostics": gc_diagnostics,
                 "front_reset_anchor": "nominal" if camera_backend == "standard" else "native_tiled",
                 "camera_config": {
                     name: {
@@ -247,6 +254,7 @@ class IsaacEnvironment:
         from leisaac.utils.env_utils import dynamic_reset_gripper_effort_limit_sim
 
         started = time.perf_counter()
+        gc_start = len(self.gc_trace.events) if self.gc_trace is not None else 0
         if self.env.cfg.dynamic_reset_gripper_effort_limit:
             dynamic_reset_gripper_effort_limit_sim(self.env, "so101leader")
         effort_finished = time.perf_counter()
@@ -280,6 +288,8 @@ class IsaacEnvironment:
             "env_step_and_flags": step_finished - target_finished,
             "observation_packet": time.perf_counter() - step_finished,
         }
+        if self.gc_trace is not None:
+            result["gc_collections"] = self.gc_trace.events[gc_start:]
         return result
 
     def profile_report(self) -> dict | None:
@@ -290,6 +300,9 @@ class IsaacEnvironment:
 
     def close(self) -> None:
         try:
+            if self.gc_trace is not None:
+                self.gc_trace.close()
+                self.gc_trace = None
             if self.env is not None:
                 self.env.close()
         finally:
@@ -358,6 +371,7 @@ def main() -> int:
     parser.add_argument("--camera-backend", choices=("tiled", "standard"), default="tiled")
     parser.add_argument("--profile-steps", action="store_true")
     parser.add_argument("--task-evidence", action="store_true")
+    parser.add_argument("--gc-diagnostics", action="store_true")
     args = parser.parse_args()
     connection, env = Connection(args.fd), None
     try:
@@ -371,6 +385,7 @@ def main() -> int:
             initial_pose=args.initial_pose,
             camera_backend=args.camera_backend,
             task_evidence=args.task_evidence,
+            gc_diagnostics=args.gc_diagnostics,
         )
         serve(connection, env)
         return 0

@@ -56,6 +56,7 @@ class EnvClient:
         self.initial_pose = "zero"
         self.camera_backend = "tiled"
         self.task_evidence = False
+        self.gc_diagnostics = False
         self.profile_steps = False
         self.step_profile: dict | None = None
 
@@ -89,6 +90,8 @@ class EnvClient:
             command.append("--profile-steps")
         if self.task_evidence:
             command.append("--task-evidence")
+        if self.gc_diagnostics:
+            command.append("--gc-diagnostics")
         try:
             self.process = subprocess.Popen(
                 command,
@@ -333,6 +336,8 @@ def drive_episode(
         row["ipc_roundtrip_s"] = time.perf_counter() - step_started
         row["controller_before_step_s"] = step_started - started
         row["server_timing_s"] = response.get("server_timing_s", {})
+        if "gc_collections" in response:
+            row["gc_collections"] = response["gc_collections"]
         if "task_transition" in response:
             row["task_transition_after_action"] = response["task_transition"]
         row.update(
@@ -525,6 +530,7 @@ def main() -> int:
     parser.add_argument("--initial-pose", choices=("zero", "rest"), default="zero")
     parser.add_argument("--camera-backend", choices=("tiled", "standard"), default="tiled")
     parser.add_argument("--task-evidence", action="store_true")
+    parser.add_argument("--gc-diagnostics", action="store_true")
     parser.add_argument("--action-contract", choices=("strict", "feasible_v1"), default="strict")
     parser.add_argument("--stop-after-first-placement", action="store_true")
     parser.add_argument("--startup-profile", choices=("native", "warmed_v2"), default="native")
@@ -612,6 +618,7 @@ def main() -> int:
     client.initial_pose = args.initial_pose
     client.camera_backend = args.camera_backend
     client.task_evidence = args.task_evidence
+    client.gc_diagnostics = args.gc_diagnostics
     sink, ticks, engine, result = MemoryMetrics(), [], None, {}
     fresh_bootstrap_wall_s = None
     sync_action = None
