@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import cProfile
 import importlib.metadata
+import math
 import os
 import pstats
 import subprocess
@@ -27,6 +28,7 @@ from leisaac_so101_contract import (
     JOINT_NAMES,
     LEISAAC_REVISION,
     PROFILE,
+    REST_POSE_DEG,
     TASK_ID,
     ContractError,
     action_to_radians,
@@ -45,6 +47,7 @@ class IsaacEnvironment:
         profile_steps: bool = False,
         episode_seconds: int = 25,
         control_fps: int = 30,
+        initial_pose: str = "zero",
     ) -> None:
         self.control_fps = control_fps
         self.step_profiler = cProfile.Profile() if profile_steps else None
@@ -94,6 +97,10 @@ class IsaacEnvironment:
                 raise ContractError("Simulator joint limits changed")
             cfg = parse_env_cfg(TASK_ID, device=device, num_envs=1)
             cfg.use_teleop_device("so101leader")
+            if initial_pose == "rest":
+                cfg.scene.robot.init_state.joint_pos = dict(
+                    zip(JOINT_NAMES, (math.radians(value) for value in REST_POSE_DEG), strict=True)
+                )
             cfg.recorders = None
             cfg.episode_length_s = episode_seconds
             cfg.sim.dt, cfg.decimation, cfg.sim.render_interval = 1 / 60, 60 // control_fps, 2
@@ -142,6 +149,8 @@ class IsaacEnvironment:
                 "reset_randomization": "pinned upstream defaults preserved",
                 "termination_terms": list(self.env.termination_manager.active_terms),
                 "episode_length_s": cfg.episode_length_s,
+                "initial_pose": initial_pose,
+                "initial_joint_positions_radians": dict(cfg.scene.robot.init_state.joint_pos),
                 "physics_dt": self.env.physics_dt,
                 "step_dt": self.env.step_dt,
                 "control_fps": control_fps,
@@ -306,6 +315,7 @@ def main() -> int:
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument("--episode-seconds", type=int, choices=(25, 60, 120), default=25)
     parser.add_argument("--control-fps", type=int, choices=(30, 60), default=30)
+    parser.add_argument("--initial-pose", choices=("zero", "rest"), default="zero")
     parser.add_argument("--profile-steps", action="store_true")
     args = parser.parse_args()
     connection, env = Connection(args.fd), None
@@ -317,6 +327,7 @@ def main() -> int:
             profile_steps=args.profile_steps,
             episode_seconds=args.episode_seconds,
             control_fps=args.control_fps,
+            initial_pose=args.initial_pose,
         )
         serve(connection, env)
         return 0

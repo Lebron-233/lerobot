@@ -53,6 +53,7 @@ class EnvClient:
         self.cleanup_error: str | None = None
         self.episode_seconds = 25
         self.control_fps = 30
+        self.initial_pose = "zero"
         self.profile_steps = False
         self.step_profile: dict | None = None
 
@@ -77,6 +78,8 @@ class EnvClient:
             str(self.episode_seconds),
             "--control-fps",
             str(self.control_fps),
+            "--initial-pose",
+            self.initial_pose,
         ]
         if self.profile_steps:
             command.append("--profile-steps")
@@ -435,6 +438,7 @@ def main() -> int:
     parser.add_argument("--episode-seconds", type=int, choices=(25, 60, 120), default=25)
     parser.add_argument("--sync-execution-steps", type=int, choices=(25, 50), default=50)
     parser.add_argument("--control-fps", type=int, choices=(30, 60), default=30)
+    parser.add_argument("--initial-pose", choices=("zero", "rest"), default="zero")
     parser.add_argument(
         "--matched-snapshot", type=Path, help="Exact independent PickOrange candidate snapshot"
     )
@@ -448,6 +452,8 @@ def main() -> int:
         parser.error("Extended development protocols are exclusive to independent matched candidates")
     if args.control_fps != 30 and (args.matched_snapshot is None or args.mode != "sync"):
         parser.error("Native60 time-base diagnostic is restricted to matched synchronous evaluation")
+    if args.initial_pose != "zero" and args.matched_snapshot is None:
+        parser.error("Rest-pose preparation is a separately recorded matched-candidate protocol")
     if not 1 <= args.max_steps <= (30 if environment_only else args.episode_seconds * args.control_fps):
         parser.error("Step bound exceeds the selected environment-only / episode protocol")
     if args.mode == "predicted" and args.predictor is None:
@@ -482,6 +488,7 @@ def main() -> int:
     client.profile_steps = args.mode == "env-profile"
     client.episode_seconds = args.episode_seconds
     client.control_fps = args.control_fps
+    client.initial_pose = args.initial_pose
     sink, ticks, engine, result = MemoryMetrics(), [], None, {}
     frames = [] if args.matched_snapshot is not None else None
     try:

@@ -141,3 +141,12 @@ def test_native60_diagnostic_preserves_camera30_without_weakening_transfer30():
         validate_step(observation(0, 1, 30), observation(1, 1, 30), terminal=False)
     with pytest.raises(ContractError, match="time base"):
         validate_step(observation(0, 1, 30), observation(1, 1, 60), terminal=False)
+
+
+def test_official_rest_pose_centers_respect_unchanged_transport_limits():
+    import math
+
+    from leisaac_so101_contract import REST_POSE_DEG
+
+    target = list(REST_POSE_DEG[:5]) + [0.0]
+    assert action_to_radians(target) == pytest.approx([math.radians(x) for x in REST_POSE_DEG])

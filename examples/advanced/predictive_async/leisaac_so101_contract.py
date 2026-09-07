@@ -20,6 +20,7 @@ FPS = 30
 JOINT_NAMES = ("shoulder_pan", "shoulder_lift", "elbow_flex", "wrist_flex", "wrist_roll", "gripper")
 SCALAR_KEYS = tuple(f"{name}.pos" for name in JOINT_NAMES)
 JOINT_LIMITS_DEG = ((-110, 110), (-100, 100), (-100, 90), (-95, 95), (-160, 160), (-10, 100))
+REST_POSE_DEG = (0.0, -100.0, 90.0, 50.0, 0.0, -10.0)
 IMAGE_SHAPE = (480, 640, 3)
 IMAGE_BYTES = math.prod(IMAGE_SHAPE)
 CAMERA_SOURCES = {"top": "front", "wrist": "wrist"}

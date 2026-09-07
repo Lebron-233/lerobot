@@ -198,3 +198,20 @@ simulation time and allow camera reuse only on the intervening60Hz step; every
 second step must update. The original30Hz camera and whole-slot tests remain
 unchanged. The CLI rejects60Hz for async/predicted/smoke modes. A native60 success
 would support a time-base investigation, **not** a30Hz async benchmark pass.
+
+## One prepared-start diagnostic
+
+The downloaded checkpoint statistics place the minimum training wrist state at
+16.117 motor units, while the upstream all-zero reset has wrist0 (and a very
+different pose from the inspected training episode's first frame). This is an
+observed distribution boundary, not proof that it caused the failures.
+
+Register one additional **prepared-rest-start** trial for the single-rank
+candidate, restoring original30Hz, 50-action execution, CPU PhysX, same seeds,
+60 s/1800 steps. Set only robot initial joints to the centers of the pinned
+official rest-pose ranges: physical degrees `[0,-100,90,50,0,-10]` (last entry
+is simulator gripper angle, transport gripper0). Do not move fruits/plate, remove
+randomization, change target checks or alter the native success rule. Absolute
+action offsets remain zero even though the initial joints are nonzero. Record
+this explicitly as a different initial-state protocol, not a pass of the earlier
+all-zero-reset qualification. It tests a plausible demonstration-start mismatch.
