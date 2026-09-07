@@ -51,6 +51,7 @@ class EnvClient:
         self.logs: list[bytes] = []
         self.metadata: dict[str, Any] = {}
         self.cleanup_error: str | None = None
+        self.episode_seconds = 25
         self.profile_steps = False
         self.step_profile: dict | None = None
 
@@ -71,6 +72,8 @@ class EnvClient:
             str(self.source),
             "--device",
             self.device,
+            "--episode-seconds",
+            str(self.episode_seconds),
         ]
         if self.profile_steps:
             command.append("--profile-steps")
@@ -227,6 +230,7 @@ def drive_episode(
     engine: Any = None,
     sync_action: Any = None,
     realtime: bool = True,
+    frames: list | None = None,
 ) -> dict:
     """One notify/get/real step per tick; underflow holds the previous sent target."""
     from lerobot.utils.cycle_timer import CycleTimer
@@ -243,6 +247,8 @@ def drive_episode(
             raise ContractError("lost_control_slot_before_tick")
         timer.tick()
         raw = decode_observation(packet)
+        if frames is not None and index % 150 == 0:
+            frames.append((index, {name: raw[name] for name in ("top", "wrist")}))
         row = {
             "tick": index,
             "episode_id": packet["episode_id"],
@@ -254,6 +260,8 @@ def drive_episode(
             "camera_frames": packet["camera_frames"],
             "dispatch": "not_sent",
         }
+        if "task_diagnostics" in packet:
+            row["task_diagnostics_before_action"] = packet["task_diagnostics"]
         ticks.append(row)
         hold = True
         if engine is not None:
@@ -407,6 +415,7 @@ def main() -> int:
     parser.add_argument("--max-steps", type=int, required=True)
     parser.add_argument("--predictor", type=Path)
     parser.add_argument("--device", default="cuda:0")
+    parser.add_argument("--episode-seconds", type=int, choices=(25, 60), default=25)
     parser.add_argument(
         "--matched-snapshot", type=Path, help="Exact independent PickOrange candidate snapshot"
     )
@@ -416,8 +425,10 @@ def main() -> int:
     args = parser.parse_args()
     environment_only = args.mode in ("smoke", "env-profile")
     realtime = args.mode not in ("sync", "env-profile")
-    if not 1 <= args.max_steps <= (30 if environment_only else 750):
-        parser.error("This minimal phase permits at most 30 environment-only / 750 episode steps")
+    if args.episode_seconds != 25 and args.matched_snapshot is None:
+        parser.error("The 60-second development protocol is exclusive to the independent matched candidate")
+    if not 1 <= args.max_steps <= (30 if environment_only else args.episode_seconds * int(FPS)):
+        parser.error("Step bound exceeds the selected environment-only / episode protocol")
     if args.mode == "predicted" and args.predictor is None:
         parser.error("predicted requires the frozen portable --predictor")
     if args.matched_snapshot is not None and args.mode not in ("sync", "identity"):
@@ -444,7 +455,9 @@ def main() -> int:
     (args.output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     client = EnvClient(args.sim_python, args.assets_root, args.leisaac_root, args.sim_device or args.device)
     client.profile_steps = args.mode == "env-profile"
+    client.episode_seconds = args.episode_seconds
     sink, ticks, engine, result = MemoryMetrics(), [], None, {}
+    frames = [] if args.matched_snapshot is not None else None
     try:
         client.start()
         packet = client.reset(args.seed)
@@ -479,6 +492,7 @@ def main() -> int:
             engine=engine,
             sync_action=sync_action,
             realtime=realtime,
+            frames=frames,
         )
     except Exception:
         result = {"status": "technical_failure", "error": traceback.format_exc(), "success": None}
@@ -513,6 +527,14 @@ def main() -> int:
         for name, rows in (("ticks.jsonl", ticks), ("events.jsonl", sink.events)):
             (args.output / name).write_text("".join(json.dumps(row) + "\n" for row in rows))
         (args.output / "simulator.log").write_bytes(b"".join(client.logs))
+        if frames:
+            from PIL import Image
+
+            folder = args.output / "observations"
+            folder.mkdir()
+            for index, cameras in frames:
+                for name, image in cameras.items():
+                    Image.fromarray(image).save(folder / f"step_{index:05d}_{name}.png")
     print(json.dumps(result, indent=2))
     return 1 if result["status"] == "technical_failure" else 0
 

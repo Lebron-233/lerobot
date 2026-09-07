@@ -37,7 +37,13 @@ from leisaac_so101_contract import (
 
 class IsaacEnvironment:
     def __init__(
-        self, assets_root: Path, leisaac_root: Path, device: str, *, profile_steps: bool = False
+        self,
+        assets_root: Path,
+        leisaac_root: Path,
+        device: str,
+        *,
+        profile_steps: bool = False,
+        episode_seconds: int = 25,
     ) -> None:
         self.step_profiler = cProfile.Profile() if profile_steps else None
         if sys.version_info[:2] != (3, 11):
@@ -87,6 +93,7 @@ class IsaacEnvironment:
             cfg = parse_env_cfg(TASK_ID, device=device, num_envs=1)
             cfg.use_teleop_device("so101leader")
             cfg.recorders = None
+            cfg.episode_length_s = episode_seconds
             cfg.sim.dt, cfg.decimation, cfg.sim.render_interval = 1 / 60, 2, 2
             for term, names in (
                 (cfg.actions.arm_action, JOINT_NAMES[:5]),
@@ -165,7 +172,7 @@ class IsaacEnvironment:
             if tuple(image.shape) != (1, *IMAGE_SHAPE) or image.dtype != self.torch.uint8:
                 raise ContractError(f"Actual {name} RGB has shape/dtype {image.shape}/{image.dtype}")
             images[name] = image[0].detach().cpu().contiguous().numpy().tobytes()
-        return observation_packet(
+        packet = observation_packet(
             measured=obs["policy"]["joint_pos"][0].detach().cpu().tolist(),
             actual_names=self.joint_names,
             images=images,
@@ -174,6 +181,14 @@ class IsaacEnvironment:
             step=step,
             snapshot_ready_at_s=time.perf_counter(),
         )
+        packet["task_diagnostics"] = {
+            "subtasks": {name: bool(value[0].item()) for name, value in obs.get("subtask_terms", {}).items()},
+            "object_positions_world": {
+                name: self.env.scene[name].data.root_pos_w[0].detach().cpu().tolist()
+                for name in ("Orange001", "Orange002", "Orange003", "Plate")
+            },
+        }
+        return packet
 
     def reset(self, seed: int, episode_id: int) -> dict:
         obs, _ = self.env.reset(seed=seed)
@@ -284,12 +299,17 @@ def main() -> int:
     parser.add_argument("--assets-root", type=Path, required=True)
     parser.add_argument("--leisaac-root", type=Path, required=True)
     parser.add_argument("--device", default="cuda:0")
+    parser.add_argument("--episode-seconds", type=int, choices=(25, 60), default=25)
     parser.add_argument("--profile-steps", action="store_true")
     args = parser.parse_args()
     connection, env = Connection(args.fd), None
     try:
         env = IsaacEnvironment(
-            args.assets_root, args.leisaac_root, args.device, profile_steps=args.profile_steps
+            args.assets_root,
+            args.leisaac_root,
+            args.device,
+            profile_steps=args.profile_steps,
+            episode_seconds=args.episode_seconds,
         )
         serve(connection, env)
         return 0

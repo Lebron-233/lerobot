@@ -78,3 +78,25 @@ contract. Six new CPU tests passed for batched/chunk coordinate conversion,
 native-statistics ordering, policy-space preservation and unchanged range failure.
 The new candidate's state is normalized by its own processor then padded by
 SmolVLA; the old predictor's raw-state contract therefore does not carry over.
+
+## First actual result and the next diagnostic
+
+`m54l4_55af2294_edge_sync_capability_v1`, source
+`55af2294cc2d2e1924eba07a298a797056377667`, completed **750/750 dispatches**
+without clipping or range failure. It reached the actual 25-second timeout,
+success=false. This is a genuine task trial, unlike the old zero-dispatch failure.
+No identity/predicted comparison has run. The exact dataset metadata revision is
+`fa6e0625d814352b8e6ee1c6d2482194e4da8ed3`; only info/tasks were fetched.
+
+Before another run, add observational native subtask/object-position diagnostics
+and sparse RGB snapshots (every 150 steps, only saved after shutdown). Never use
+post-auto-reset observation to infer terminal progress. Record pre-action
+diagnostics from each consumed observation instead.
+
+The task-matched checkpoint's saved training statistics include episodes up to
+35.067 seconds; the pinned official `scripts/evaluation/policy_inference.py`
+defaults to a 60-second episode. Therefore register a **separate 60-second
+development protocol**, same seed 20260911/policy seed 1801, maximum 1800 steps.
+This tests time budget/progress, not an outcome-selected seed. Retain the 25-second
+failure; do not relabel a 60-second success as passing the former protocol.
+No changes to limits, physics, cameras, task predicate, model or processors.
