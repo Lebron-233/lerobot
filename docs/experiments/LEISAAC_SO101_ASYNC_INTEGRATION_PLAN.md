@@ -56,3 +56,22 @@ A hardware/control failure stops this engineering trial and remains reported;
 it is not permission to increase cap, hide dropped slots or call a virtual-clock
 experiment real-time. A successful engineering run demonstrates real queue/env
 coupling, **not** improved task success or a trained future-latent predictor.
+
+## Initial engineering result
+
+At `29a9a25a`, the tiled-camera three-reset check returned identical actual poses
+and object positions. No reset fix was made on that evidence. The standard-camera
+30-step environment smoke passed the existing full-slot criterion, without an
+inference worker.
+
+The first real identity episode reached actual production startup: its calibrated
+probe was150.75ms /6 required steps, under cap8. The measured section then completed
+two hold-target steps (65.77ms and40.57ms) before the unchanged full-slot gate
+stopped it. No planned takeover occurred; four requests have actual terminals,
+including the stopped section's bootstrap. This is not a real-time or task PASS.
+
+Follow-up is limited to actual concurrent-load preparation and the selected
+standard-camera reset seam. The first reset test covered tiled cameras only;
+`Camera.reset` refreshes pose data unlike `TiledCamera.reset`, so the original
+same-seed evidence must not be generalized across the two backends. Run the
+same three-reset diagnostic with standard cameras before any remedy.

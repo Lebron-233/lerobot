@@ -19,11 +19,13 @@ def main() -> int:
     parser.add_argument("--leisaac-root", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--seed", type=int, default=20260911)
+    parser.add_argument("--camera-backend", choices=("tiled", "standard"), default="tiled")
     args = parser.parse_args()
     source = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
     if subprocess.check_output(["git", "status", "--porcelain"], text=True).strip():
         parser.error("Commit source before real reset diagnosis")
     client = EnvClient(args.sim_python, args.assets_root, args.leisaac_root, "cpu")
+    client.camera_backend = args.camera_backend
     packets, error = [], None
     try:
         client.start()
