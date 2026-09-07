@@ -126,6 +126,10 @@ class IsaacEnvironment:
                 if camera_backend == "standard":
                     camera.class_type = Camera
             self.env = gym.make(TASK_ID, cfg=cfg).unwrapped
+            if task_evidence:
+                # Isaac managers deepcopy term configs. Read the instance that
+                # actually runs, not the pre-construction configuration object.
+                self.task_witness = self.env.termination_manager.get_term_cfg("success").func
             self.torch = torch
             self.front_reset_anchor = None
             if camera_backend == "standard":
@@ -265,6 +269,8 @@ class IsaacEnvironment:
             "post_reset_observation": success or timeout,
         }
         if self.task_witness is not None:
+            if self.task_witness.latest is None:
+                raise ContractError("Native pre-reset task evidence was not captured")
             result["task_transition"] = self.task_witness.latest
         # Host wall intervals, including any CUDA waits at these boundaries;
         # not claimed to be kernel-only physics/render durations.

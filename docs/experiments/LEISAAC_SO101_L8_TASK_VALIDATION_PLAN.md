@@ -62,3 +62,13 @@ Test native-boolean preservation, pre-reset provenance and consecutive placement
 counting before actual runs. No new model training is part of Phase A. Broader
 project authorization remains in force, but any new candidate/training/benchmark
 identity is written down before execution. No external Pro review is required.
+
+## First-run instrumentation correction
+
+The first seed20261010 execution completed 3600 actions and native timeout, but
+the new witness was null: Isaac's manager deepcopies configuration callables.
+The server held the construction-time object instead of the live manager term.
+Bind the actual success callable via `termination_manager.get_term_cfg` after
+construction and reject missing evidence. Keep the first outcome as a timeout
+with unavailable settled-placement evidence. Do not rerun its policy. Continue
+the three remaining predeclared seeds; the missing secondary metric is not a PASS.
