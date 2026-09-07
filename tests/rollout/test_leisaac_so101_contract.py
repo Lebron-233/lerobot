@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import math
 import multiprocessing
 import os
@@ -160,6 +161,71 @@ def test_start_failure_closes_connection(tmp_path):
         client.start()
     client.close()
     assert client.connection.closed
+
+
+def test_environment_profile_is_explicitly_nonrealtime_and_never_loads_policy(tmp_path, monkeypatch):
+    import eval_leisaac_so101 as runner
+
+    class Client:
+        metadata = {"fixture_only": True}
+        STARTUP_TIMEOUT_S = 600
+        cleanup_error, process = None, None
+        logs = []
+
+        def __init__(self, *args):
+            pass
+
+        def start(self):
+            pass
+
+        def reset(self, seed):
+            assert seed == 20260907
+            return packet()
+
+        def close(self):
+            pass
+
+    def drive(client, observation, **kwargs):
+        assert not kwargs["realtime"]
+        assert kwargs["engine"] is None and kwargs["sync_action"] is None
+        assert kwargs["max_steps"] == 30
+        return {"status": "censored_step_limit", "success": None}
+
+    def forbidden(*args, **kwargs):
+        pytest.fail("environment profiling must not load a model")
+
+    output = tmp_path / "profile"
+    monkeypatch.setattr(runner, "EnvClient", Client)
+    monkeypatch.setattr(runner, "drive_episode", drive)
+    monkeypatch.setattr(runner, "load_runtime", forbidden)
+    monkeypatch.setattr(
+        subprocess, "check_output", lambda cmd, **kw: "fixture\n" if "rev-parse" in cmd else ""
+    )
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "eval_leisaac_so101.py",
+            "--mode",
+            "env-profile",
+            "--seed",
+            "20260907",
+            "--max-steps",
+            "30",
+            "--sim-python",
+            sys.executable,
+            "--assets-root",
+            str(tmp_path),
+            "--leisaac-root",
+            str(tmp_path),
+            "--output",
+            str(output),
+        ],
+    )
+    assert runner.main() == 0
+    result = json.loads((output / "result.json").read_text())
+    assert result["mode"] == "env-profile" and not result["realtime_required"]
+    assert result["success"] is None
 
 
 def test_dual_interpreter_client_wire_and_shutdown(tmp_path, monkeypatch):

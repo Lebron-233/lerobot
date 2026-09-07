@@ -188,3 +188,23 @@ now recorded in the manifest. Reset/step/close IPC stays at 30 s. Seed 20260907,
 30 measured steps, resolution, physics, task, action semantics and lost-slot
 failure criteria are unchanged. This explicitly supersedes step 4's original
 180-second startup limit without reclassifying the original attempt as passing.
+
+### Bounded diagnosis of the failed real-time smoke
+
+The next acceptance-enabled smoke (`fe9119c0`) constructed the real task and
+returned valid RGB/state, but lost a complete control slot after two steps
+(61.492 and 55.808 ms of loop work). Preserve this as **real-time smoke FAIL**.
+
+Before changing deployment or running any model, run one explicitly non-real-time
+`env-profile` diagnostic: seed 20260907, at most 30 environment steps, hold the
+initial measured target, same assets/physics/cameras, no warmup exclusions. Keep
+reset/step/close IPC bounded at 30 s. Record host wall intervals for gripper effort,
+target creation, `env.step` plus outcome copying, observation packet creation,
+client round trip and controller work. These intervals include CUDA waits and are
+not GPU-kernel timing. Report all 30 samples and the later 20 descriptively;
+profiling completion does not pass the real-time gate or authorize the policy.
+
+This narrow engineering diagnostic is added in response to the observed failure;
+it is not a slower version of the identity/predicted experiment. If transport
+dominates, fix that interface; if the simulator dominates, do not build a new
+queue or silently change FPS, resolution, assets or task to produce a pass.

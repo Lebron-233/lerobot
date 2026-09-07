@@ -266,7 +266,11 @@ def drive_episode(
         row.update(action=list(last_action), underflow_hold=hold and engine is not None)
         action_to_radians(last_action)  # Fail before dispatch; never silently clip.
         row["dispatch"] = "sent_result_unknown"
+        step_started = time.perf_counter()
         response = client.step(packet, last_action)
+        row["ipc_roundtrip_s"] = time.perf_counter() - step_started
+        row["controller_before_step_s"] = step_started - started
+        row["server_timing_s"] = response.get("server_timing_s", {})
         row.update(
             dispatch="completed",
             reward=float(response["reward"]),
@@ -371,7 +375,9 @@ def load_runtime(
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--mode", choices=("smoke", "sync", "identity", "predicted"), required=True)
+    parser.add_argument(
+        "--mode", choices=("smoke", "env-profile", "sync", "identity", "predicted"), required=True
+    )
     parser.add_argument("--sim-python", type=Path, required=True)
     parser.add_argument("--assets-root", type=Path, required=True)
     parser.add_argument("--leisaac-root", type=Path, required=True)
@@ -382,8 +388,10 @@ def main() -> int:
     parser.add_argument("--predictor", type=Path)
     parser.add_argument("--device", default="cuda:0")
     args = parser.parse_args()
-    if not 1 <= args.max_steps <= (30 if args.mode == "smoke" else 750):
-        parser.error("This minimal phase permits at most 30 smoke / 750 episode steps")
+    environment_only = args.mode in ("smoke", "env-profile")
+    realtime = args.mode not in ("sync", "env-profile")
+    if not 1 <= args.max_steps <= (30 if environment_only else 750):
+        parser.error("This minimal phase permits at most 30 environment-only / 750 episode steps")
     if args.mode == "predicted" and args.predictor is None:
         parser.error("predicted requires the frozen portable --predictor")
     root = Path(__file__).resolve().parents[3]
@@ -399,6 +407,7 @@ def main() -> int:
         "simulator_startup_timeout_s": EnvClient.STARTUP_TIMEOUT_S,
         "ipc_timeout_s": 30,
         "operator_eula_acceptance_env": os.environ.get("OMNI_KIT_ACCEPT_EULA"),
+        "realtime_required": realtime,
     }
     (args.output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     client = EnvClient(args.sim_python, args.assets_root, args.leisaac_root, args.device)
@@ -406,7 +415,7 @@ def main() -> int:
     try:
         client.start()
         packet = client.reset(args.seed)
-        if args.mode != "smoke":
+        if not environment_only:
             engine, sync_action = load_runtime(
                 args.mode, args.device, args.predictor, args.policy_seed, sink, decode_observation(packet)
             )
@@ -415,7 +424,7 @@ def main() -> int:
         if engine is not None:
             prepare_engine(engine, decode_observation(packet))
             packet = client.reset(args.seed)
-        if args.mode != "smoke":
+        if not environment_only:
             from lerobot.utils.random_utils import set_seed
 
             # Predictor construction and startup consume RNG differently by
@@ -430,7 +439,7 @@ def main() -> int:
             ticks=ticks,
             engine=engine,
             sync_action=sync_action,
-            realtime=args.mode != "sync",
+            realtime=realtime,
         )
     except Exception:
         result = {"status": "technical_failure", "error": traceback.format_exc(), "success": None}
@@ -449,6 +458,8 @@ def main() -> int:
             ticks=len(ticks),
             source_commit=commit,
             profile=PROFILE,
+            mode=args.mode,
+            realtime_required=realtime,
             metrics_closed=sink.closed,
             subprocess_returncode=None if client.process is None else client.process.returncode,
         )

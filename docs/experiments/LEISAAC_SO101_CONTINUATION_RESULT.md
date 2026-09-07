@@ -40,5 +40,33 @@ The first resumed attempt contains `manifest.json`, `result.json`, `ticks.jsonl`
 `events.jsonl` and `simulator.log`, written by the existing runner after cleanup.
 Previous M3/M5 and the earlier EULA-blocked attempt are unchanged.
 
-Further observed outcomes will be appended here; no capability or paired-pilot
-result is claimed by this preparatory correction.
+## Real environment smoke: initialization resolved, cadence FAIL
+
+`m54l2_fe9119c0_env_smoke_eula_v2`, source
+`fe9119c063ce7844b2214f0857cbb0873ab465ad`, reached the real environment. Actual
+joint order matched all six names. Both cameras returned uint8 `(1,480,640,3)`
+and their frame counters advanced from 1 to 2 before the second consumed action.
+The real configuration reported physics dt 1/60, step dt 1/30, and only
+`time_out`/`success` termination terms.
+
+Two actual hold-target steps completed, with work times **61.491946 ms** and
+**55.807602 ms**. The unchanged accumulated lost-slot check rejected the second
+tick. Result: **technical_failure / lost_control_slot_during_tick**, success null,
+zero model calls, sink closed and simulator exit code 0. This is not 0% task
+success and is not a failed predictor experiment.
+
+### Diagnostic scope before further deployment decisions
+
+Add host phase timings and run one separately labelled `env-profile` with the
+same seed, at most 30 steps and no model. This is unpaced throughput diagnosis,
+not real-time evidence; no hidden warmup removal or permissive smoke flag is used.
+The original real-time requirement and conditional capability/pilot gates remain.
+
+### Native asset warnings
+
+The pinned kitchen also emits PhysX warnings/errors: some dynamic triangle mesh
+colliders fall back to convex hulls, some cabinet posts fail mesh cooking, some
+outlet/light-switch shapes fail creation, and static-body joints cannot be created.
+The real task still constructed and stepped. These warnings are retained in the
+native log; their effect on task fidelity or runtime is not established. No meshes,
+colliders or success conditions were edited to suppress them.

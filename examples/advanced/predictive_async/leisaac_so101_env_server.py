@@ -150,21 +150,34 @@ class IsaacEnvironment:
     def step(self, action: list[float], episode_id: int, step: int) -> dict:
         from leisaac.utils.env_utils import dynamic_reset_gripper_effort_limit_sim
 
+        started = time.perf_counter()
         if self.env.cfg.dynamic_reset_gripper_effort_limit:
             dynamic_reset_gripper_effort_limit_sim(self.env, "so101leader")
+        effort_finished = time.perf_counter()
         target = self.torch.tensor(
             [action_to_radians(action)], dtype=self.torch.float32, device=self.env.device
         )
+        target_finished = time.perf_counter()
         obs, reward, terminated, truncated, _ = self.env.step(target)
         # Copy flags before packet/next reset: returned obs may already be reset.
         success, timeout = bool(terminated[0].item()), bool(truncated[0].item())
-        return {
+        step_finished = time.perf_counter()
+        result = {
             "observation": self.packet(obs, episode_id, step),
             "reward": float(reward[0].item()),
             "terminated": success,
             "truncated": timeout,
             "post_reset_observation": success or timeout,
         }
+        # Host wall intervals, including any CUDA waits at these boundaries;
+        # not claimed to be kernel-only physics/render durations.
+        result["server_timing_s"] = {
+            "gripper_effort": effort_finished - started,
+            "target_creation": target_finished - effort_finished,
+            "env_step_and_flags": step_finished - target_finished,
+            "observation_packet": time.perf_counter() - step_finished,
+        }
+        return result
 
     def close(self) -> None:
         try:
