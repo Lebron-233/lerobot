@@ -329,6 +329,7 @@ def load_runtime(
     raw: dict,
     *,
     matched_snapshot: Path | None = None,
+    sync_execution_steps: int = 50,
 ):
     import torch
     from huggingface_hub import snapshot_download
@@ -358,7 +359,9 @@ def load_runtime(
         if mode not in ("sync", "identity"):
             raise ValueError("Task-matched predictor has not been qualified; old predictor is incompatible")
         task = MATCHED_TASK
-        policy, preprocessor, postprocessor = load_matched_runtime(matched_snapshot, device=device)
+        policy, preprocessor, postprocessor = load_matched_runtime(
+            matched_snapshot, device=device, execution_steps=sync_execution_steps
+        )
     policy.to(device).eval()
     robot = ThreadSafeRobot(SnapshotRobot(raw))
     features = hardware_features()
@@ -422,6 +425,7 @@ def main() -> int:
     parser.add_argument("--predictor", type=Path)
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument("--episode-seconds", type=int, choices=(25, 60, 120), default=25)
+    parser.add_argument("--sync-execution-steps", type=int, choices=(25, 50), default=50)
     parser.add_argument(
         "--matched-snapshot", type=Path, help="Exact independent PickOrange candidate snapshot"
     )
@@ -439,6 +443,8 @@ def main() -> int:
         parser.error("predicted requires the frozen portable --predictor")
     if args.matched_snapshot is not None and args.mode not in ("sync", "identity"):
         parser.error("Task-matched candidate supports sync/identity only; no qualified predictor yet")
+    if args.sync_execution_steps != 50 and (args.matched_snapshot is None or args.mode != "sync"):
+        parser.error("Shortened synchronous execution is a matched-candidate development protocol only")
     root = Path(__file__).resolve().parents[3]
     commit = subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip()
     if subprocess.check_output(["git", "-C", str(root), "status", "--porcelain"], text=True).strip():
@@ -457,7 +463,9 @@ def main() -> int:
     if args.matched_snapshot is not None:
         from leisaac_so101_matched import candidate_manifest
 
-        manifest["candidate"] = candidate_manifest(args.matched_snapshot)
+        manifest["candidate"] = candidate_manifest(
+            args.matched_snapshot, execution_steps=args.sync_execution_steps
+        )
     (args.output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     client = EnvClient(args.sim_python, args.assets_root, args.leisaac_root, args.sim_device or args.device)
     client.profile_steps = args.mode == "env-profile"
@@ -476,6 +484,7 @@ def main() -> int:
                 sink,
                 decode_observation(packet),
                 matched_snapshot=args.matched_snapshot,
+                sync_execution_steps=args.sync_execution_steps,
             )
         else:
             sync_action = None

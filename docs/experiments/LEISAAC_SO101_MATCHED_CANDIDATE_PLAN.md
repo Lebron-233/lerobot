@@ -156,3 +156,25 @@ with training's original task text. This is not a comparison of equal-duration
 success rates against the 60-second edge runs, nor a replication of the publisher's
 different prompts/benchmark. No fourth published checkpoint will be selected in
 this qualification: subsequent work follows concrete interface/dynamics evidence.
+
+## Controlled feedback-frequency diagnostic
+
+The single-rank GPU-PhysX control also timed out at 1800 steps. Orange002 moved
+18 cm (versus <1 cm in the CPU trial), so physics execution affects the trajectory,
+but neither arm reached a placement/full success. This does not establish CPU/GPU
+equivalence or identify the sole cause of failure. The third candidate completed
+3600 actions and timed out under its registered 120-second budget.
+
+Next change **only synchronous action consumption length** for the single-rank
+candidate: generate the same 50-step chunk but execute 25 steps before observing
+and replanning, rather than remaining open-loop for 50. At 30 Hz the feedback
+interval changes from 1.667 s to 0.833 s. Native LeIsaac's documented controller
+defaults to 60 Hz, where 50 actions span 0.833 s; the dataset nominal FPS alone
+does not establish its original physics time base. This motivates a diagnostic,
+not a claim that the training data are incorrectly labelled.
+
+Freeze CPU PhysX, original 30 Hz/dt/cameras/randomization, single-rank weights,
+own native AMP/processors, seed 20260911/policy 1801, 60 s/1800 steps. Keep
+50-step generation, action limits and success unchanged. Register this as a
+distinct development execution profile; do not silently replace the 50-step
+candidate results or count it as an identity/predicted effect.

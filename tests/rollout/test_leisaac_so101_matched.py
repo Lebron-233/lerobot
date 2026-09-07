@@ -33,6 +33,8 @@ def test_candidate_variants_have_distinct_exact_manifest_identities():
     assert wsagi["policy_repo"] == "wsagi/SmolVLA-PickOrange"
     assert wsagi["sync_autocast"]["enabled"] is False
     assert main["sync_autocast"]["enabled"] is True
+    short = candidate_manifest(Path(SINGLE_RANK_REVISION), execution_steps=25)
+    assert short["generated_chunk_steps"] == 50 and short["sync_executed_chunk_steps"] == 25
     with pytest.raises(ValueError, match="Unknown"):
         candidate_manifest(Path("not-registered"))
 

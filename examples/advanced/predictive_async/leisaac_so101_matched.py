@@ -23,7 +23,7 @@ TASK = "Grab orange and place into plate"
 CAMERA_KEYS = ("observation.images.front", "observation.images.wrist")
 
 
-def candidate_manifest(snapshot: Path | None = None) -> dict:
+def candidate_manifest(snapshot: Path | None = None, *, execution_steps: int = 50) -> dict:
     revision = snapshot.name if snapshot is not None else POLICY_REVISION
     if revision not in CANDIDATES:
         raise ValueError("Unknown task-matched candidate revision")
@@ -37,6 +37,8 @@ def candidate_manifest(snapshot: Path | None = None) -> dict:
         "statistics": "checkpoint's own state/action mean/std",
         "task": TASK,
         "predictor": None,
+        "generated_chunk_steps": 50,
+        "sync_executed_chunk_steps": execution_steps,
         "sync_autocast": {
             "enabled": revision != WSAGI_REVISION,
             "cuda_dtype": "float16" if revision != WSAGI_REVISION else None,
@@ -97,7 +99,7 @@ class PhysicalActionPostprocessor:
         return motor_to_physical(self.processor(action))
 
 
-def load_matched_runtime(snapshot: Path, *, device: str):
+def load_matched_runtime(snapshot: Path, *, device: str, execution_steps: int = 50):
     from huggingface_hub import snapshot_download
 
     from lerobot.configs.policies import PreTrainedConfig
@@ -113,6 +115,9 @@ def load_matched_runtime(snapshot: Path, *, device: str):
         raise ValueError("Task-matched state/action shape differs")
     if (config.chunk_size, config.n_action_steps, config.num_steps, config.max_state_dim) != (50, 50, 10, 32):
         raise ValueError("Task-matched inference configuration differs")
+    if execution_steps not in (25, 50):
+        raise ValueError("Only registered 25/50-step synchronous execution profiles are supported")
+    config.n_action_steps = execution_steps
     if config.load_vlm_weights != (snapshot.name == WSAGI_REVISION):
         raise ValueError("Candidate VLM initialization configuration differs from its registered snapshot")
     if config.use_amp != (snapshot.name != WSAGI_REVISION):
