@@ -1,0 +1,91 @@
+{
+  "kind": "closed_L17_noise_information_factorial_with_native_task_followthrough",
+  "execution_source": "96a14379e57a0fac36d91219582b2c598a5f518c",
+  "scene_seeds": [20270810, 20270811, 20270812, 20270813, 20270814, 20270815, 20270816, 20270817],
+  "policy_seeds": [3710, 3711, 3712, 3713, 3714, 3715, 3716, 3717],
+  "conditions": 32,
+  "simulated_delay_steps": 7,
+  "primary_endpoint": "first_ten_tick_low_speed_plate_region_occupancy",
+  "secondary_endpoint": "native_three_oranges_plus_rest",
+  "time_unit": "simulated_seconds",
+  "followthrough_limit_s": 120,
+  "training": false,
+  "shared_real_policy_bootstrap": true,
+  "risk_thresholds": null,
+  "aggregates": {
+    "fresh_state": {"trials": 8, "subgoal_successes": 5, "native_successes": 0, "technical_failures": 0, "mean_subgoal_time_s": 64.675, "mean_native_time_s": 120.0},
+    "fresh_oracle": {"trials": 8, "subgoal_successes": 5, "native_successes": 0, "technical_failures": 0, "mean_subgoal_time_s": 62.19583333333333, "mean_native_time_s": 120.0},
+    "coupled_state": {"trials": 8, "subgoal_successes": 5, "native_successes": 0, "technical_failures": 0, "mean_subgoal_time_s": 71.15416666666667, "mean_native_time_s": 120.0},
+    "coupled_oracle": {"trials": 8, "subgoal_successes": 5, "native_successes": 1, "technical_failures": 0, "mean_subgoal_time_s": 53.85, "mean_native_time_s": 114.37916666666666}
+  },
+  "primary_contrast": {
+    "name": "coupled_oracle_minus_coupled_state",
+    "mean_s": -17.304166666666667,
+    "bootstrap_95_s": [-66.77916666666667, 35.485625000000134],
+    "first_half_s": -23.475,
+    "second_half_s": -11.133333333333333,
+    "matched_pairs": 8,
+    "consistent_negative": false
+  },
+  "secondary_contrasts": {
+    "fresh_oracle_minus_fresh_state": {"mean_s": -2.479166666666668, "bootstrap_95_s": [-34.366666666666674, 33.30416666666666], "first_half_s": 19.124999999999996, "second_half_s": -24.083333333333332},
+    "coupled_state_minus_fresh_state": {"mean_s": 6.479166666666666, "bootstrap_95_s": [-51.8878125, 61.65833333333333], "first_half_s": 31.133333333333333, "second_half_s": -18.175},
+    "coupled_oracle_minus_fresh_oracle": {"mean_s": -8.345833333333331, "bootstrap_95_s": [-26.391666666666666, 4.126041666667212], "first_half_s": -11.466666666666665, "second_half_s": -5.225}
+  },
+  "noise_by_information_interaction": {
+    "mean_s": -14.825,
+    "bootstrap_95_s": [-63.449999999999996, 37.50833333333334],
+    "first_half_s": -42.6,
+    "second_half_s": 12.950000000000003
+  },
+  "native_success": {
+    "arm": "coupled_oracle",
+    "scene_seed": 20270812,
+    "completed_actions": 2251,
+    "simulated_seconds": 75.03333333333333,
+    "uses_privileged_visual_information": true,
+    "is_learned_visual_success": false
+  },
+  "native_component_diagnostics_not_new_endpoints": {
+    "maximum_simultaneous_box_occupancy_distribution": {
+      "fresh_state": {"0": 3, "1": 0, "2": 5, "3": 0},
+      "fresh_oracle": {"0": 2, "1": 2, "2": 4, "3": 0},
+      "coupled_state": {"0": 3, "1": 2, "2": 3, "3": 0},
+      "coupled_oracle": {"0": 3, "1": 0, "2": 4, "3": 1}
+    },
+    "native_failed_runs_never_reaching_three_simultaneous_boxes": 31
+  },
+  "mean_episode_takeover_command_jump_range_normalized_l2": {
+    "fresh_state": 0.05282632279013974,
+    "fresh_oracle": 0.05423682551691503,
+    "coupled_state": 0.08141415625777218,
+    "coupled_oracle": 0.11165354481425056
+  },
+  "accounting": {
+    "completed_actions": 113851,
+    "setup_actions": 1200,
+    "takeovers": 4206,
+    "actual_old_prefix_actions": 29442,
+    "privileged_generations": 2078,
+    "native_successes": 1,
+    "native_timeouts": 31,
+    "technical_failures": 0,
+    "native_rule_mismatches": 0,
+    "shared_simulator_exits": 1,
+    "simulator_returncode": 0,
+    "shared_cleanup_complete": true
+  },
+  "pre_first_takeover_including_target_observation": {
+    "shared_initial_action_count": 27,
+    "max_state_abs_difference": 0.0,
+    "max_object_coordinate_difference_m": 0.000001430511474609375,
+    "pixel_identity_claimed": false
+  },
+  "reference_eligible": false,
+  "privileged_visual_value_pass": false,
+  "learned_visual_benefit": false,
+  "realtime_qualified": false,
+  "unopened_student_tests": ["L10", "L15"],
+  "raw_artifact_directory": "m54l17_noise_reference_v1",
+  "closed_audit": "m54l17_closed_noise_audit_v1.json"
+}
