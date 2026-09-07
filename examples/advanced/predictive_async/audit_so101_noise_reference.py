@@ -13,18 +13,24 @@ from audit_so101_privileged_reference import information_schedule, read_rows
 from run_so101_noise_reference import ARMS, outcomes, summarize
 
 
-def native_predicate(witness: dict) -> bool:
-    """Recompute the pinned PickOrange box+rest rule, not a release criterion."""
+def native_components(witness: dict) -> tuple[int, bool]:
+    """Describe the original box/rest components; no new success definition."""
     plate = torch.tensor(witness["plate_position"], dtype=torch.float32)
+    count = 0
     for name in ("Orange001", "Orange002", "Orange003"):
         orange = torch.tensor(witness["oranges"][name]["position"], dtype=torch.float32)
         bounds = plate.new_tensor([0.10, 0.10, 0.07])
-        if not bool(((orange > plate - bounds) & (orange < plate + bounds)).all()):
-            return False
+        count += int(((orange > plate - bounds) & (orange < plate + bounds)).all())
     degrees = torch.tensor(witness["joint_positions_radians"], dtype=torch.float32) / torch.pi * 180
     low = degrees.new_tensor([-30, -130, 60, 20, -30, -40])
     high = degrees.new_tensor([30, -70, 120, 80, 30, 20])
-    return bool(((degrees > low) & (degrees < high)).all())
+    return count, bool(((degrees > low) & (degrees < high)).all())
+
+
+def native_predicate(witness: dict) -> bool:
+    """Recompute the pinned PickOrange box+rest rule, not a release criterion."""
+    count, rest = native_components(witness)
+    return count == 3 and rest
 
 
 def audit(root: Path) -> dict:
@@ -75,9 +81,14 @@ def audit(root: Path) -> dict:
                         raise ValueError("Recorded coupled noise differs from the fixed action-time field")
                 elif any(k in event for k in ("noise_mode", "noise_window_start", "noise_first_row")):
                     raise ValueError("Fresh control silently used coupled noise")
+            max_boxes, first_all_boxes, last_boxes, last_rest = 0, None, 0, False
             for tick in ticks:
                 witness = tick["task_transition_after_action"]
-                if native_predicate(witness) != tick["terminated"]:
+                last_boxes, last_rest = native_components(witness)
+                max_boxes = max(max_boxes, last_boxes)
+                if last_boxes == 3 and first_all_boxes is None:
+                    first_all_boxes = tick["tick"]
+                if (last_boxes == 3 and last_rest) != tick["terminated"]:
                     mismatches.append({"block": block, "arm": arm, "tick": tick["tick"]})
             if row["native_success"]:
                 native_witnesses.append(
@@ -102,6 +113,12 @@ def audit(root: Path) -> dict:
                     **measured,
                     **schedule,
                     "takeover_jump_mean_range_normalized_l2": row["takeover_jump_mean_range_normalized_l2"],
+                    "native_component_diagnostics_not_new_endpoints": {
+                        "max_simultaneous_box_occupancy": max_boxes,
+                        "first_all_three_boxes_step": first_all_boxes,
+                        "final_box_occupancy": last_boxes,
+                        "final_rest_predicate": last_rest,
+                    },
                 }
             )
     recomputed = summarize(reconstructed)
