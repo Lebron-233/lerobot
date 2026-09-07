@@ -99,6 +99,7 @@ def audit(root: Path) -> dict:
     if not summary["shared_simulator_cleanup_complete"] or summary["shared_simulator_returncode"] != 0:
         raise ValueError("The actual shared simulator did not close normally")
     rebuilt, rows, setup_count = [], [], 0
+    first_target_states = {}
     for block in range(8):
         bootstrap_dir = root / f"block{block:02d}_bootstrap"
         saved = torch.load(bootstrap_dir / "bootstrap.pt", map_location="cpu", weights_only=True)
@@ -115,6 +116,11 @@ def audit(root: Path) -> dict:
             if trial != recorded:
                 raise ValueError("Per-arm terminal data and closed global report disagree")
             ticks, events = read_rows(folder / "ticks.jsonl"), read_rows(folder / "events.jsonl")
+            if len(ticks) > 27:
+                first_target_states[(block, arm)] = {
+                    "state": ticks[27]["state"],
+                    "objects": ticks[27]["objects_before"],
+                }
             preparation = read_rows(folder / "setup_ticks.jsonl")
             if len(preparation) != 30 or any(row["dispatch"] != "completed" for row in preparation):
                 raise ValueError("Per-arm preparation is incomplete")
@@ -158,6 +164,26 @@ def audit(root: Path) -> dict:
         raise ValueError("Pre-takeover physical divergence was not reported as observed")
     if setup_count != summary["setup_actions"]:
         raise ValueError("Shared and per-arm preparation counts do not match")
+    first_target_differences = []
+    for (block, arm), target in first_target_states.items():
+        baseline = first_target_states.get((block, "state_only"))
+        if arm == "state_only" or baseline is None:
+            continue
+        first_target_differences.append(
+            {
+                "block": block,
+                "arm": arm,
+                "observation_step": 27,
+                "state_abs_difference_by_coordinate": [
+                    abs(a - b) for a, b in zip(target["state"], baseline["state"], strict=True)
+                ],
+                "object_abs_max_m": max(
+                    abs(target["objects"][name][i] - baseline["objects"][name][i])
+                    for name in target["objects"]
+                    for i in range(3)
+                ),
+            }
+        )
     return {
         "kind": "closed_L16_privileged_information_and_physical_commitment_audit",
         "execution_source": summary["source_commit"],
@@ -173,6 +199,7 @@ def audit(root: Path) -> dict:
         "status_counts": dict(Counter(row["status"] for row in rebuilt)),
         "all_information_boundaries_verified": True,
         "pre_takeover_geometry_differences": differences,
+        "first_target_before_new_action_differences": first_target_differences,
         "not_full_three_orange_task": True,
     }
 
