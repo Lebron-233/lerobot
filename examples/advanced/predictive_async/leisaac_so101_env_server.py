@@ -60,7 +60,17 @@ class IsaacEnvironment:
         # Isaac requires AppLauncher before imports of environment/render modules.
         from isaaclab.app import AppLauncher
 
-        self.app = AppLauncher(headless=True, enable_cameras=True, device=device).app
+        # This machine has six physical cores. Limit host worker oversubscription;
+        # keep the same GPU physics, rendering, sensors and step sizes.
+        self.app = AppLauncher(
+            headless=True,
+            enable_cameras=True,
+            device=device,
+            kit_args=(
+                "--/plugins/carb.tasking.plugin/threadCount=6 "
+                "--/plugins/omni.tbb.globalcontrol/maxThreadCount=6"
+            ),
+        ).app
         self.env = None
         try:
             import gymnasium as gym
@@ -134,6 +144,9 @@ class IsaacEnvironment:
                         "/app/runLoops/main/rateLimitFrequency",
                         "/isaaclab/render/active_viewport",
                         "/rtx/ecoMode/enabled",
+                        "/plugins/carb.tasking.plugin/threadCount",
+                        "/plugins/omni.tbb.globalcontrol/maxThreadCount",
+                        "/persistent/physics/numThreads",
                     )
                 },
                 "torch_num_threads": torch.get_num_threads(),

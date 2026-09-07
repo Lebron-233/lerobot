@@ -47,3 +47,25 @@ into a timed smoke or losing statistics on shutdown; fix those interfaces before
 running. Do not repeat unchanged queue/science tests.
 
 Results and exact source/run identities are appended as they occur.
+
+## Native profile and first bounded correction
+
+`m54l3_60b35786_native_step_profile_v1` completed 30 real steps, no policy,
+source `60b357866ddbe6664e9decc97498c7ea12116d1a`, with normal cleanup.
+Host cumulative times per control step: native environment 38.309 ms;
+two physics steps 18.813 ms (including PhysX `fetch_results` 17.927 ms);
+render 11.431 ms (Kit update 10.884 ms); observation manager 3.978 ms.
+These include profiling overhead and are not compared as a performance gain
+against the previous run. Inclusive child times must not be added to parents.
+The live settings confirmed rate limiting, viewport and eco mode were already
+disabled. Do not propose disabling them again as an optimization.
+
+The host has six physical / twelve logical cores. The installed SimulationApp
+defaults to min(32, os.cpu_count()) host workers, hence twelve here. The
+[NVIDIA 5.1 performance handbook](https://docs.isaacsim.omniverse.nvidia.com/5.1.0/reference_material/sim_performance_optimization_handbook.html#cpu-thread-count-optimizations)
+documents limiting Carbonite/TBB worker counts to avoid CPU oversubscription.
+Test six workers for those two pools through the existing AppLauncher `kit_args`
+interface (this pinned AppLauncher does not forward `limit_cpu_threads`).
+Record the effective counts. This is a hypothesis-driven host execution change,
+not an established fix; physics device, solver, dt, assets and render fidelity
+stay unchanged. Next: one unprofiled real-time smoke, same seed and 30-step cap.
