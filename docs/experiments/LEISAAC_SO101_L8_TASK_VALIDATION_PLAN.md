@@ -72,3 +72,33 @@ Bind the actual success callable via `termination_manager.get_term_cfg` after
 construction and reject missing evidence. Keep the first outcome as a timeout
 with unavailable settled-placement evidence. Do not rerun its policy. Continue
 the three remaining predeclared seeds; the missing secondary metric is not a PASS.
+
+## Phase A result and independently named feasible-action successor
+
+The first complete native task success is now observed: seed20261011 finished at
+1008 actions, all three oranges simultaneously settled for the preceding ten
+steps, with a pre-reset native-success witness. Seed20261010 timed out; 20261012
+stopped after 28 actions on shoulder_lift=-101.7171 degrees; 20261013 stopped
+after 2058 actions on wrist_flex=95.0372 degrees (one orange already settled).
+Thus the original Phase A reliability gate is NOT met. These outcomes are fixed.
+
+The next concrete intervention is **so101_feasible_actions_v1**, not a predictor
+benefit claim. The old strict transport and all L7 results stay unchanged. The new
+contract projects native motor targets into the existing physical feasible set
+BEFORE queue commitment, and inverse-normalizes the projected targets using the
+same checkpoint action mean/std. The queue stores both projected normalized and
+physical actions, so the predictor sees the prefix actually committed to execute.
+Post-dispatch clipping, changing joint limits, and preserving an unprojected
+predictor prefix would be incorrect. Both comparison arms must share projection.
+Unmodified in-range normalized values are preserved exactly. Projection counts
+and magnitudes are recorded and reported separately from task/predictor effects.
+
+Qualify this independent execution contract with six fresh synchronous baseline
+episodes: environment seeds20261014–20261019, policy seeds2014–2019, same120s,
+same model/environment settings and pre-reset task evidence. No model or predictor
+training. The usable single-placement baseline gate is >=4/6 episodes reaching
+settled placement without technical failure; full three-orange+rest outcomes are
+reported independently. This is development qualification, not held-out efficacy.
+Only then freeze new independent comparison seeds and trial order. This change
+is covered by the user's explicit project-wide authorization; no further approval
+loop is introduced.

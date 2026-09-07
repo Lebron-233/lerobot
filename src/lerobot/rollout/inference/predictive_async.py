@@ -279,6 +279,10 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
         _validate_frozen_candidate(policy, preprocessor, postprocessor)
         return POLICY_CAMERA_KEYS
 
+    def _prepare_queue_actions(self, actions: torch.Tensor, metrics: dict):
+        """Pair the policy-space commitment with its executable representation."""
+        return actions.squeeze(0).clone(), self._postprocessor(actions).squeeze(0)
+
     @property
     def queue(self) -> ScheduledActionQueue:
         """Expose the scheduled queue for diagnostics and deterministic tests."""
@@ -1061,8 +1065,7 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
                 with self._record_metrics_phase("policy_total", metrics, cuda_events):
                     actions = self._policy.predict_action_chunk(batch, **predict_kwargs)
             with self._record_metrics_phase("postprocessor", metrics, cuda_events):
-                policy_actions = actions.squeeze(0).clone()
-                post_policy_actions = self._postprocessor(actions).squeeze(0)
+                policy_actions, post_policy_actions = self._prepare_queue_actions(actions, metrics)
                 if request.kind == "startup_probe":
                     probe_actions_finite = (
                         torch.isfinite(policy_actions).all() & torch.isfinite(post_policy_actions).all()

@@ -376,6 +376,7 @@ def load_runtime(
     *,
     matched_snapshot: Path | None = None,
     sync_execution_steps: int = 50,
+    action_contract: str = "strict",
 ):
     import torch
     from huggingface_hub import snapshot_download
@@ -409,6 +410,11 @@ def load_runtime(
             matched_snapshot, device=device, execution_steps=sync_execution_steps
         )
     policy.to(device).eval()
+    projector = None
+    if action_contract == "feasible_v1":
+        from so101_feasible_actions import FeasibleActionProjector
+
+        projector = FeasibleActionProjector.from_snapshot(matched_snapshot, device)
     robot = ThreadSafeRobot(SnapshotRobot(raw))
     features = hardware_features()
     if mode == "sync":
@@ -424,9 +430,11 @@ def load_runtime(
                     enabled=matched_snapshot is not None and policy.config.use_amp,
                 ),
             ):
-                result = postprocessor(policy.select_action(preprocessor(batch)))
+                selected = policy.select_action(preprocessor(batch))
+                result = postprocessor(projector(selected) if projector is not None else selected)
             return result.detach().cpu().reshape(-1).tolist()
 
+        action.action_projector = projector
         return None, action
     engine_class = PredictiveAsyncInferenceEngine
     predictor = None
@@ -437,7 +445,14 @@ def load_runtime(
         engine_class = SO101PredictiveAsyncInferenceEngine
     elif mode == "predicted":
         predictor = load_frozen_future_latent_predictor(predictor_path, device=device)
+    projection_arguments = {}
+    if projector is not None:
+        from so101_feasible_actions import SO101FeasibleAsyncEngine
+
+        engine_class = SO101FeasibleAsyncEngine
+        projection_arguments["action_projector"] = projector
     engine = engine_class(
+        **projection_arguments,
         policy=policy,
         preprocessor=preprocessor,
         postprocessor=postprocessor,
@@ -482,6 +497,7 @@ def main() -> int:
     parser.add_argument("--initial-pose", choices=("zero", "rest"), default="zero")
     parser.add_argument("--camera-backend", choices=("tiled", "standard"), default="tiled")
     parser.add_argument("--task-evidence", action="store_true")
+    parser.add_argument("--action-contract", choices=("strict", "feasible_v1"), default="strict")
     parser.add_argument(
         "--matched-snapshot", type=Path, help="Exact independent PickOrange candidate snapshot"
     )
@@ -489,6 +505,11 @@ def main() -> int:
         "--sim-device", choices=("cpu", "cuda:0"), help="Simulation compute device; model device is unchanged"
     )
     args = parser.parse_args()
+    if args.action_contract != "strict":
+        from leisaac_so101_matched import WSAGI_REVISION
+
+        if args.matched_snapshot is None or args.matched_snapshot.name != WSAGI_REVISION:
+            parser.error("Feasible-action execution is an independent WSAGI-only contract")
     environment_only = args.mode in ("smoke", "env-profile")
     realtime = args.mode not in ("sync", "env-profile")
     if args.episode_seconds != 25 and args.matched_snapshot is None:
@@ -557,6 +578,7 @@ def main() -> int:
     client.task_evidence = args.task_evidence
     sink, ticks, engine, result = MemoryMetrics(), [], None, {}
     fresh_bootstrap_wall_s = None
+    sync_action = None
     frames = [] if args.matched_snapshot is not None else None
     try:
         client.start()
@@ -571,6 +593,7 @@ def main() -> int:
                 decode_observation(packet),
                 matched_snapshot=args.matched_snapshot,
                 sync_execution_steps=args.sync_execution_steps,
+                action_contract=args.action_contract,
             )
         else:
             sync_action = None
@@ -622,6 +645,10 @@ def main() -> int:
         )
         if "candidate" in manifest:
             result["candidate"] = manifest["candidate"]
+        result["action_execution_contract"] = args.action_contract
+        projector = getattr(engine if engine is not None else sync_action, "action_projector", None)
+        if projector is not None:
+            result["projection_records"] = projector.records
         if engine is not None:
             result["engine_stats"] = asdict(engine.stats)
             if args.matched_snapshot is not None and args.mode == "predicted":
