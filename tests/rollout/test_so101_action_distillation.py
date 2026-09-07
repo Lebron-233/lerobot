@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 from types import SimpleNamespace
 
+import pytest
 import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "examples/advanced/predictive_async"))
@@ -38,7 +39,8 @@ def test_query_uses_current_state_and_exact_already_committed_prefix():
     torch.testing.assert_close(query["actions"][0], data["actions"][25:33])
 
 
-def test_action_loss_backpropagates_only_to_predictor_with_current_state():
+@pytest.mark.parametrize("objective", ["absolute", "balanced_v2"])
+def test_action_loss_backpropagates_only_to_predictor_with_current_state(objective):
     states_seen = []
 
     class FrozenDecoder(torch.nn.Module):
@@ -74,8 +76,11 @@ def test_action_loss_backpropagates_only_to_predictor_with_current_state():
             OBS_LANGUAGE_ATTENTION_MASK: torch.ones(1, 2, dtype=torch.bool),
         },
     }
-    loss, _ = training_loss(SimpleNamespace(model=decoder), lambda x: x, predictor, query)
+    loss, _ = training_loss(
+        SimpleNamespace(model=decoder), lambda x: x, predictor, query, objective=objective
+    )
     loss.backward()
     assert torch.isfinite(predictor.delta.grad).all() and predictor.delta.grad.norm() > 0
     assert all(p.grad is None and not p.requires_grad for p in decoder.parameters())
-    assert len(states_seen) == 2 and all(state is query["state"] for state in states_seen)
+    assert len(states_seen) == (3 if objective == "balanced_v2" else 2)
+    assert all(state is query["state"] for state in states_seen)

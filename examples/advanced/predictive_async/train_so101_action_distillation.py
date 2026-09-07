@@ -87,16 +87,23 @@ def action_outputs(policy, projector, query: dict, tokens: torch.Tensor) -> torc
     return projector(outputs).float()
 
 
-def training_loss(policy, projector, predictor, query: dict) -> tuple[torch.Tensor, dict]:
+def training_loss(
+    policy, projector, predictor, query: dict, *, objective: str = "absolute"
+) -> tuple[torch.Tensor, dict]:
     # no_grad rather than inference_mode: the fixed teacher is a normal tensor
     # saved by the differentiable loss, but it has no backward graph of its own.
     with torch.no_grad():
         teacher = action_outputs(policy, projector, query, query["future"])
+        identity_loss = None
+        if objective == "balanced_v2":
+            identity = action_outputs(policy, projector, query, query["z"])
+            identity_loss = (identity[:, :25] - teacher[:, :25]).abs().mean()
     predicted = forecast(predictor, query)
     student = action_outputs(policy, projector, query, predicted)
     action_loss = (student[:, :25] - teacher[:, :25]).abs().mean()
     latent, cosine = per_sample_errors(predicted, query["future"], query["masks"])
-    loss = action_loss + 0.001 * latent.mean() + 0.01 * cosine.mean()
+    action_objective = action_loss if identity_loss is None else action_loss / (identity_loss + 0.02)
+    loss = action_objective + 0.001 * latent.mean() + 0.01 * cosine.mean()
     return loss, {"action_loss": float(action_loss.detach()), "latent_loss": float(latent.detach().mean())}
 
 
@@ -196,6 +203,7 @@ def main() -> int:
     parser.add_argument("--phase", choices=("train", "test"), required=True)
     parser.add_argument("--cache", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--objective", choices=("absolute", "balanced_v2"), default="absolute")
     args = parser.parse_args()
     repo = Path(__file__).resolve().parents[3]
     if subprocess.check_output(["git", "status", "--porcelain"], cwd=repo, text=True).strip():
@@ -239,14 +247,18 @@ def main() -> int:
             rng = random.Random(2500)
             optimizer = torch.optim.AdamW(predictor.parameters(), lr=1e-4, weight_decay=1e-4)
             history, best, selected_update, selected_metric = [], float("inf"), None, None
+            selected_eligible = False
+            updates = 800 if args.objective == "balanced_v2" else 400
             gradient_proof = None
-            for update in range(401):
+            for update in range(updates + 1):
                 if update:
                     predictor.train()
                     e, t, d = specs[rng.randrange(len(specs))]
                     query = query_from_data(data[e], t, d, noise_seed=280000 + update)
                     optimizer.zero_grad(set_to_none=True)
-                    loss, losses = training_loss(policy, projector, predictor, query)
+                    loss, losses = training_loss(
+                        policy, projector, predictor, query, objective=args.objective
+                    )
                     loss.backward()
                     norm = torch.nn.utils.clip_grad_norm_(
                         predictor.parameters(), 1.0, error_if_nonfinite=True
@@ -271,11 +283,25 @@ def main() -> int:
                 if update % 100 == 0:
                     metric = evaluate(policy, projector, predictor, references)
                     score = metric["predicted_l1_25"]
-                    if score < best:
+                    eligible = bool(
+                        update > 0
+                        and score < min(metric["identity_l1_25"], metric["parent_l1_25"])
+                        and metric["improved_cases"] >= 48
+                    )
+                    select = score < best
+                    if args.objective == "balanced_v2":
+                        select = (
+                            update == 0
+                            or (eligible and not selected_eligible)
+                            or (eligible == selected_eligible and score < best)
+                        )
+                    if select:
                         best, selected_update, selected_metric = score, update, metric
+                        selected_eligible = eligible
                         torch.save(
                             {
                                 "kind": "so101_action_distilled_v1",
+                                "objective": args.objective,
                                 "state_dict": predictor.state_dict(),
                                 "config": asdict(predictor.config),
                                 "source_commit": source,
@@ -307,14 +333,17 @@ def main() -> int:
                 and best < min(selected_metric["identity_l1_25"], selected_metric["parent_l1_25"])
                 and selected_metric["improved_cases"] > 36
             )
+            if args.objective == "balanced_v2":
+                qualified = selected_eligible
             selection = {
                 "source_commit": source,
+                "objective": args.objective,
                 "selected_update": selected_update,
                 "validation_qualified": qualified,
                 "selected_validation": selected_metric,
                 "gradient_proof": gradient_proof,
                 "training_cases": len(specs),
-                "updates": 400,
+                "updates": updates,
                 "test_opened": False,
                 "wall_s": time.perf_counter() - started,
                 "peak_cuda_allocated_bytes": torch.cuda.max_memory_allocated(),
@@ -334,6 +363,7 @@ def main() -> int:
                 references = reference_cases(policy, projector, parent, data, seed_base=290000)
                 report = {
                     "source_commit": source,
+                    "objective": checkpoint.get("objective", "absolute"),
                     "selected_update": checkpoint["selected_update"],
                     "future_state_used": False,
                     **independent_summary(evaluate(policy, projector, predictor, references)),
