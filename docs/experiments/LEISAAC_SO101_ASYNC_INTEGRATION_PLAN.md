@@ -103,3 +103,11 @@ Next run is a bounded **600 measured ticks** engineering check under these
 explicit startup/runtime changes, same L5 seed pair and original timing/cap/
 whole-discard rules. It is not a completed120-second task episode; a step-limit
 finish remains censored. Keep the first two-tick failure unchanged.
+
+The repaired standard-camera three-reset run at `3587d036` returned exactly
+identical measured camera positions/quaternions and object positions (zero
+measured displacement). The fix is verified for this bounded same-seed case.
+Actual camera world-transform reads are now limited to reset packets, where
+they are needed; full-rate images, frame counters, measured state and task
+diagnostics remain. This removes diagnostic USD readback from the control hot
+path, not image observations or timing checks.

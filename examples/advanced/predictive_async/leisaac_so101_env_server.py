@@ -213,13 +213,16 @@ class IsaacEnvironment:
                 for name in ("Orange001", "Orange002", "Orange003", "Plate")
             },
         }
-        packet["camera_world_poses_opengl"] = {}
-        for name in ("front", "wrist"):
-            position, quaternion = self.env.scene[name]._view.get_world_poses()
-            packet["camera_world_poses_opengl"][name] = {
-                "position": position[0].detach().cpu().tolist(),
-                "quaternion_wxyz": quaternion[0].detach().cpu().tolist(),
-            }
+        # World-transform reads diagnose reset identity, not each control tick.
+        # Keep images/frame counters/state at full rate without this USD readback.
+        if step == 0:
+            packet["camera_world_poses_opengl"] = {}
+            for name in ("front", "wrist"):
+                position, quaternion = self.env.scene[name]._view.get_world_poses()
+                packet["camera_world_poses_opengl"][name] = {
+                    "position": position[0].detach().cpu().tolist(),
+                    "quaternion_wxyz": quaternion[0].detach().cpu().tolist(),
+                }
         return packet
 
     def reset(self, seed: int, episode_id: int) -> dict:
