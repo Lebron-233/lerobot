@@ -54,6 +54,7 @@ class IsaacEnvironment:
     ) -> None:
         self.control_fps = control_fps
         self.step_profiler = cProfile.Profile() if profile_steps else None
+        self.slowest_step_profiles: list[dict] = []
         if sys.version_info[:2] != (3, 11):
             raise ContractError("The pinned simulator requires a separate Python 3.11 interpreter")
         for name, expected in (("isaaclab", "2.3.0"), ("isaacsim", "5.1.0.0")):
@@ -265,10 +266,19 @@ class IsaacEnvironment:
         if self.step_profiler is None:
             obs, reward, terminated, truncated, _ = self.env.step(target)
         else:
+            self.step_profiler = cProfile.Profile()
             obs, reward, terminated, truncated, _ = self.step_profiler.runcall(self.env.step, target)
         # Copy flags before packet/next reset: returned obs may already be reset.
         success, timeout = bool(terminated[0].item()), bool(truncated[0].item())
         step_finished = time.perf_counter()
+        if self.step_profiler is not None:
+            duration = step_finished - target_finished
+            if len(self.slowest_step_profiles) < 5 or duration > self.slowest_step_profiles[-1]["wall_s"]:
+                self.slowest_step_profiles.append(
+                    {"step": step, "wall_s": duration, **summarize_step_profile(self.step_profiler)}
+                )
+                self.slowest_step_profiles.sort(key=lambda row: row["wall_s"], reverse=True)
+                del self.slowest_step_profiles[5:]
         result = {
             "observation": self.packet(obs, episode_id, step),
             "reward": float(reward[0].item()),
@@ -296,7 +306,7 @@ class IsaacEnvironment:
         """Materialize diagnostic host-call statistics only after control stops."""
         if self.step_profiler is None:
             return None
-        return summarize_step_profile(self.step_profiler)
+        return {"kind": "slowest_five_instrumented_steps", "steps": self.slowest_step_profiles}
 
     def close(self) -> None:
         try:

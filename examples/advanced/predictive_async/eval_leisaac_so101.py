@@ -531,6 +531,7 @@ def main() -> int:
     parser.add_argument("--camera-backend", choices=("tiled", "standard"), default="tiled")
     parser.add_argument("--task-evidence", action="store_true")
     parser.add_argument("--gc-diagnostics", action="store_true")
+    parser.add_argument("--profile-native-steps", action="store_true")
     parser.add_argument("--action-contract", choices=("strict", "feasible_v1"), default="strict")
     parser.add_argument("--stop-after-first-placement", action="store_true")
     parser.add_argument("--startup-profile", choices=("native", "warmed_v2"), default="native")
@@ -541,6 +542,8 @@ def main() -> int:
         "--sim-device", choices=("cpu", "cuda:0"), help="Simulation compute device; model device is unchanged"
     )
     args = parser.parse_args()
+    if args.profile_native_steps and (args.mode != "sync" or args.max_steps > 600):
+        parser.error("Native per-step profiling is a bounded synchronous diagnostic only")
     if args.startup_profile == "warmed_v2" and args.action_contract != "feasible_v1":
         parser.error("Warmed-v2 is exclusive to the independently registered feasible-action protocol")
     if args.stop_after_first_placement and (
@@ -612,7 +615,7 @@ def main() -> int:
     manifest["pacing"] = "absolute_CycleTimer_deadline_same_origin_as_lost_slot_checks"
     (args.output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     client = EnvClient(args.sim_python, args.assets_root, args.leisaac_root, args.sim_device or args.device)
-    client.profile_steps = args.mode == "env-profile"
+    client.profile_steps = args.mode == "env-profile" or args.profile_native_steps
     client.episode_seconds = args.episode_seconds
     client.control_fps = args.control_fps
     client.initial_pose = args.initial_pose

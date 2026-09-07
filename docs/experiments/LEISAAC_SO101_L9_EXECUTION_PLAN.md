@@ -39,3 +39,17 @@ feasible_v1 prefix semantics and late whole-discard rules remain unchanged durin
 this investigation. No external Pro review, new installation or new license
 acceptance is needed. New learning would require a separately frozen train/val/
 test protocol using new development trajectories, not either prior opened test.
+
+## First diagnostic outcome and narrower next measurement
+
+`m54l9_gc_trace_identity_v1` at `2a9f6dbb` completed600 steps, but recorded zero
+GC callbacks during control. Its longest tick59.260ms contained56.636ms in
+env.step with no collection. This does **not** support disabling GC. The command
+initially used a wrong option name and exited at argparse without constructing
+an environment; the corrected invocation is the sole physical run.
+
+Next: a non-real-time native-call profile with the same development
+env20261221/policy2421, warmed_v2, native task witness, feasible_v1 and600 steps.
+Retain the five slowest per-step profiles, not only a mean that hides isolated
+pauses. This is a changed diagnostic, not a retry of an outcome trial. No
+timing qualification can be inferred from profiler-instrumented execution.
