@@ -37,6 +37,10 @@ from leisaac_so101_contract import (
 class EnvClient:
     """An inherited local socket: primitive dictionaries/bytes, no ndarray pickle."""
 
+    # First RTX shader/material compilation can exceed the original 180 s.
+    # This budget is outside the measured control clock; step IPC remains 30 s.
+    STARTUP_TIMEOUT_S = 600
+
     def __init__(self, python: Path, assets: Path, source: Path, device: str) -> None:
         # Keep the venv executable path (do not resolve its interpreter symlink).
         self.python = python.absolute()
@@ -84,7 +88,7 @@ class EnvClient:
 
         self.log_reader = Thread(target=drain, name="LeIsaacLogReader")
         self.log_reader.start()
-        self.metadata = self.receive(180)["metadata"]
+        self.metadata = self.receive(self.STARTUP_TIMEOUT_S)["metadata"]
         if self.metadata["profile"] != PROFILE:
             raise ContractError("Unexpected environment profile")
 
@@ -392,6 +396,9 @@ def main() -> int:
         "source_commit": commit,
         "args": {key: str(value) if isinstance(value, Path) else value for key, value in vars(args).items()},
         "risk_thresholds": None,
+        "simulator_startup_timeout_s": EnvClient.STARTUP_TIMEOUT_S,
+        "ipc_timeout_s": 30,
+        "operator_eula_acceptance_env": os.environ.get("OMNI_KIT_ACCEPT_EULA"),
     }
     (args.output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     client = EnvClient(args.sim_python, args.assets_root, args.leisaac_root, args.device)

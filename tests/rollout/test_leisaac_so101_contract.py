@@ -165,6 +165,7 @@ def test_start_failure_closes_connection(tmp_path):
 def test_dual_interpreter_client_wire_and_shutdown(tmp_path, monkeypatch):
     # This peer is a transport fixture, not an alternative research simulator.
     # Set LEISAAC_TEST_PYTHON to exercise an actual 3.11 child from 3.12 pytest.
+    monkeypatch.setenv("OMNI_KIT_ACCEPT_EULA", "YES")
     interpreter = Path(os.environ.get("LEISAAC_TEST_PYTHON", sys.executable))
     folder = str(Path(__file__).resolve().parents[2] / "examples/advanced/predictive_async")
     program = textwrap.dedent(f"""
@@ -190,10 +191,18 @@ def test_dual_interpreter_client_wire_and_shutdown(tmp_path, monkeypatch):
 
     def start_peer(command, **kwargs):
         assert kwargs["stdin"] == subprocess.DEVNULL  # A hidden license prompt must not wait for input.
+        assert kwargs["env"]["OMNI_KIT_ACCEPT_EULA"] == "YES"
         return popen([command[0], "-c", program, *command[2:]], **kwargs)
 
     monkeypatch.setattr(subprocess, "Popen", start_peer)
     client = EnvClient(interpreter, tmp_path, tmp_path, "cpu")
+    receive, budgets = client.receive, []
+
+    def record_receive(timeout=30):
+        budgets.append(timeout)
+        return receive(timeout)
+
+    monkeypatch.setattr(client, "receive", record_receive)
     try:
         client.start()
         assert client.metadata["fixture_only"]
@@ -205,6 +214,7 @@ def test_dual_interpreter_client_wire_and_shutdown(tmp_path, monkeypatch):
     assert client.process.returncode == 0 and client.cleanup_error is None
     assert not client.log_reader.is_alive()
     assert b"transport fixture only" in b"".join(client.logs)
+    assert budgets == [600, 30, 30]  # Cold startup must not change reset/step/close IPC budgets.
 
 
 def test_control_order_underflow_and_terminal_observation_not_reused():

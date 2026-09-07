@@ -162,8 +162,29 @@ NVIDIA's [Python installation documentation](https://docs.isaacsim.omniverse.nvi
 describes an interactive first import and the `OMNI_KIT_ACCEPT_EULA` environment
 variable. Either NVIDIA's saved acceptance or an explicitly operator-supplied
 environment variable remains usable; this runner invents no separate license flag.
-The assistant has not accepted the agreement. No new environment run is queued.
+The first launch did not supply acceptance and remains recorded as a zero-step
+technical failure. On 2026-09-07 the operator explicitly confirmed acceptance
+and requested continuation. Subsequent invocations in this session supply
+`OMNI_KIT_ACCEPT_EULA=YES` in their process environment only, without changing
+global shell settings. The acceptance and exact resumed scope are recorded in
+[Issue #1](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5563844750).
 
-After operator acceptance, the next bounded attempt remains the same 30-step
-smoke with seed 20260907, using a **new** output directory and the then-current
-clean source commit. The first zero-step technical failure must remain intact.
+The acceptance-enabled attempt uses clean source
+`007696a900220c5d00d552aea1300929282747a2`, seed 20260907 and at most 30 steps,
+with output `../artifacts/m54l2_007696a9_env_smoke_eula_v1`. It retains the original
+180-second startup and 30-second IPC limits. The first zero-step technical failure
+remains intact; an invocation is not evidence that environment validation passed.
+
+### Cold-start budget correction (2026-09-07)
+
+The acceptance-enabled attempt ended with a 180-second startup timeout and zero
+control ticks. The Kit log records `Simulation App Startup Complete` at 173.528 s,
+followed by creation of the real PickOrange environment. The simulator eventually
+exited normally (code 0) after the controller's close request; this was not another
+license prompt. NVIDIA also documents first-launch shader cache warmup.
+
+The next attempt increases only the **simulator initialization** budget to 600 s,
+now recorded in the manifest. Reset/step/close IPC stays at 30 s. Seed 20260907,
+30 measured steps, resolution, physics, task, action semantics and lost-slot
+failure criteria are unchanged. This explicitly supersedes step 4's original
+180-second startup limit without reclassifying the original attempt as passing.
