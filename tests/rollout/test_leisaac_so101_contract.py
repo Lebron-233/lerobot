@@ -175,7 +175,7 @@ def test_environment_profile_is_explicitly_nonrealtime_and_never_loads_policy(tm
         step_profile = {"fixture_only": True}
 
         def __init__(self, *args):
-            pass
+            assert args[-1] == "cpu"  # Independent of the model's cuda:0 default.
 
         def start(self):
             pass
@@ -215,6 +215,8 @@ def test_environment_profile_is_explicitly_nonrealtime_and_never_loads_policy(tm
             "20260907",
             "--max-steps",
             "30",
+            "--sim-device",
+            "cpu",
             "--sim-python",
             sys.executable,
             "--assets-root",

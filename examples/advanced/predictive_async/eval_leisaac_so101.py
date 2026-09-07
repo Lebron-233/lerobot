@@ -391,6 +391,9 @@ def main() -> int:
     parser.add_argument("--max-steps", type=int, required=True)
     parser.add_argument("--predictor", type=Path)
     parser.add_argument("--device", default="cuda:0")
+    parser.add_argument(
+        "--sim-device", choices=("cpu", "cuda:0"), help="Simulation compute device; model device is unchanged"
+    )
     args = parser.parse_args()
     environment_only = args.mode in ("smoke", "env-profile")
     realtime = args.mode not in ("sync", "env-profile")
@@ -414,7 +417,7 @@ def main() -> int:
         "realtime_required": realtime,
     }
     (args.output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
-    client = EnvClient(args.sim_python, args.assets_root, args.leisaac_root, args.device)
+    client = EnvClient(args.sim_python, args.assets_root, args.leisaac_root, args.sim_device or args.device)
     client.profile_steps = args.mode == "env-profile"
     sink, ticks, engine, result = MemoryMetrics(), [], None, {}
     try:

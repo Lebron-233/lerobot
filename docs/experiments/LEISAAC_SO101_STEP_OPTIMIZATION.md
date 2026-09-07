@@ -69,3 +69,27 @@ interface (this pinned AppLauncher does not forward `limit_cpu_threads`).
 Record the effective counts. This is a hypothesis-driven host execution change,
 not an established fix; physics device, solver, dt, assets and render fidelity
 stay unchanged. Next: one unprofiled real-time smoke, same seed and 30-step cap.
+
+### Six-worker result and independent simulation device
+
+`m54l3_a9ce5651_six_threads_smoke_v1` reached two real steps, then failed the
+unchanged lost-slot check. Effective Carbonite/TBB counts were both six;
+PhysX worker setting was eight. The profiler was disabled. This is not a fix or
+a smoke PASS. No model loaded; the simulator exited normally.
+
+The largest measured native interval remains the GPU PhysX completion wait.
+For this single environment, next test the supported CPU PhysX compute device
+while retaining RTX cameras on GPU 0. Add an explicit `--sim-device` distinct
+from the model's `--device`, preserving the default GPU path. Record a named
+`cpu_physx_rtx_v1` execution subprofile and the unchanged solver type. This is a
+deployment decision under the user's continued execution instruction: not a new
+simulator, different timestep, asset simplification, changed renderer fidelity,
+or changed task. CPU/GPU floating-point trajectories are not asserted identical;
+future paired comparisons must use one frozen execution subprofile throughout.
+
+Run a 30-step native profile on CPU first, then one unprofiled real-time smoke
+only if its observations/actions/physics remain valid. Use seed 20260907, new
+source-bound directories, same 600 s startup/30 s IPC and original lost-slot gate.
+The current pinned AppLauncher explicitly keeps rendering GPU 0 for `device=cpu`;
+`parse_env_cfg` selects the simulator tensor/PhysX device. No upstream patch,
+package reinstall, model CPU fallback or new dependency is needed.

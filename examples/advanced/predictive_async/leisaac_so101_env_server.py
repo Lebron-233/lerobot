@@ -136,6 +136,9 @@ class IsaacEnvironment:
                 "physics_dt": self.env.physics_dt,
                 "step_dt": self.env.step_dt,
                 "device": str(self.env.device),
+                "physics_execution": "cpu_physx_rtx_v1" if device == "cpu" else "gpu_physx_rtx_v1",
+                "physics_solver_type": cfg.sim.physx.solver_type,
+                "renderer_device": "cuda:0",
                 "step_cprofile_enabled": profile_steps,
                 "runtime_settings": {
                     key: self.env.sim.carb_settings.get(key)
