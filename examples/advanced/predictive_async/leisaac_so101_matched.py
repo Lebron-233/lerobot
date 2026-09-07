@@ -10,17 +10,25 @@ from leisaac_so101_contract import JOINT_LIMITS_DEG
 CANDIDATE_ID = "leisaac_so101_pickorange_edge_v1"
 POLICY_REPO = "edge-inference/smolvla-so101-pick-orange"
 POLICY_REVISION = "71cf4a9d35ce317f6706efe1a9f9d4cbb2b8fb4d"
+SINGLE_RANK_REVISION = "7f19c683128ed07c31240ea2b29fe61afcb1755b"
+CANDIDATES = {
+    POLICY_REVISION: CANDIDATE_ID,
+    SINGLE_RANK_REVISION: "leisaac_so101_pickorange_single_rank_v1",
+}
 VLM_REPO = "HuggingFaceTB/SmolVLM2-500M-Video-Instruct"
 VLM_REVISION = "7b375e1b73b11138ff12fe22c8f2822d8fe03467"
 TASK = "Grab orange and place into plate"
 CAMERA_KEYS = ("observation.images.front", "observation.images.wrist")
 
 
-def candidate_manifest() -> dict:
+def candidate_manifest(snapshot: Path | None = None) -> dict:
+    revision = snapshot.name if snapshot is not None else POLICY_REVISION
+    if revision not in CANDIDATES:
+        raise ValueError("Unknown task-matched candidate revision")
     return {
-        "id": CANDIDATE_ID,
+        "id": CANDIDATES[revision],
         "policy_repo": POLICY_REPO,
-        "policy_revision": POLICY_REVISION,
+        "policy_revision": revision,
         "vlm_config_tokenizer_revision": VLM_REVISION,
         "weight_source": "entire task checkpoint; no replacement VLM weights",
         "state_action_coordinates": "LeIsaac arm motor [-100,100], gripper [0,100]",
@@ -91,7 +99,7 @@ def load_matched_runtime(snapshot: Path, *, device: str):
     from lerobot.policies.factory import make_pre_post_processors
     from lerobot.policies.smolvla.modeling_smolvla import SmolVLAPolicy
 
-    if snapshot.name != POLICY_REVISION:
+    if snapshot.name not in CANDIDATES:
         raise ValueError("Use the exact task-matched HF snapshot, not a different candidate")
     config = PreTrainedConfig.from_pretrained(snapshot, local_files_only=True)
     if config.type != "smolvla" or tuple(config.image_features) != CAMERA_KEYS:

@@ -11,11 +11,25 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "examples/advanced/
 
 from leisaac_so101_contract import action_to_radians
 from leisaac_so101_matched import (
+    POLICY_REVISION,
+    SINGLE_RANK_REVISION,
     MotorStatePreprocessor,
     PhysicalActionPostprocessor,
+    candidate_manifest,
     motor_to_physical,
     physical_to_motor,
 )
+
+
+def test_candidate_variants_have_distinct_exact_manifest_identities():
+    main = candidate_manifest(Path(POLICY_REVISION))
+    single = candidate_manifest(Path(SINGLE_RANK_REVISION))
+    assert main["id"] != single["id"]
+    assert main["policy_revision"] == POLICY_REVISION
+    assert single["policy_revision"] == SINGLE_RANK_REVISION
+    assert main["predictor"] is None and single["predictor"] is None
+    with pytest.raises(ValueError, match="Unknown"):
+        candidate_manifest(Path("not-registered"))
 
 
 @pytest.mark.parametrize("shape", [(6,), (1, 6), (1, 50, 6)])

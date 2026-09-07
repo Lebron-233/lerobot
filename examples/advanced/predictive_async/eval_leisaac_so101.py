@@ -457,7 +457,7 @@ def main() -> int:
     if args.matched_snapshot is not None:
         from leisaac_so101_matched import candidate_manifest
 
-        manifest["candidate"] = candidate_manifest()
+        manifest["candidate"] = candidate_manifest(args.matched_snapshot)
     (args.output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     client = EnvClient(args.sim_python, args.assets_root, args.leisaac_root, args.sim_device or args.device)
     client.profile_steps = args.mode == "env-profile"

@@ -117,3 +117,15 @@ not exact native-precision reproduction. Correct only matched synchronous execut
 to honor the saved setting. Run one new 60-second diagnostic on the same fixed
 seed pair. This is an evidenced interface correction, not a tuned action limit or
 different outcome-selected seed. Old frozen policy execution remains unchanged.
+
+## Registered development alternative
+
+The publisher's documented `single-rank` branch resolves to
+`7f19c683128ed07c31240ea2b29fe61afcb1755b`. Its config has the same six-dimensional
+motor state/action schema, front/wrist cameras, chunk 50, ten flow steps,
+use_amp=true and load_vlm_weights=false. The publisher reports lower training
+loss, which motivates a bounded alternative but is not evidence of our task
+success. Pin it separately as `leisaac_so101_pickorange_single_rank_v1` with its
+own weights/processors. If corrected main is still unqualified, run this one
+candidate on the same 60-second development seed pair, retaining all main results.
+Future qualification/held-out seeds must not be chosen from this development trial.
