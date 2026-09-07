@@ -407,7 +407,10 @@ def load_runtime(
     startup_profile: str = "native",
     context_variant: str = "visual_only",
     future_state_path: Path | None = None,
+    sync_task_text: str | None = None,
 ):
+    if sync_task_text is not None and (mode != "sync" or matched_snapshot is None):
+        raise ValueError("Task-text diagnostics require the matched synchronous candidate")
     import torch
     from huggingface_hub import snapshot_download
 
@@ -436,6 +439,8 @@ def load_runtime(
         if mode not in ("sync", "identity", "predicted"):
             raise ValueError("Unsupported task-matched inference mode")
         task = MATCHED_TASK
+        if sync_task_text is not None:
+            task = sync_task_text
         policy, preprocessor, postprocessor = load_matched_runtime(
             matched_snapshot, device=device, execution_steps=sync_execution_steps
         )
@@ -543,6 +548,11 @@ def main() -> int:
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument("--episode-seconds", type=int, choices=(25, 60, 120), default=25)
     parser.add_argument("--sync-execution-steps", type=int, choices=(25, 50), default=50)
+    parser.add_argument(
+        "--sync-task-text",
+        choices=("Grab orange and place into plate", "Pick up the orange and put it in the plate"),
+        help="Explicit task-text diagnostic for the matched synchronous candidate only",
+    )
     parser.add_argument("--control-fps", type=int, choices=(30, 60), default=30)
     parser.add_argument("--initial-pose", choices=("zero", "rest"), default="zero")
     parser.add_argument("--camera-backend", choices=("tiled", "standard"), default="tiled")
@@ -564,6 +574,8 @@ def main() -> int:
         "--sim-device", choices=("cpu", "cuda:0"), help="Simulation compute device; model device is unchanged"
     )
     args = parser.parse_args()
+    if args.sync_task_text is not None and (args.mode != "sync" or args.matched_snapshot is None):
+        parser.error("Task-text diagnostics require matched synchronous inference")
     if args.context_variant != "visual_only":
         if (
             args.mode != "predicted"
@@ -640,6 +652,9 @@ def main() -> int:
         manifest["candidate"] = candidate_manifest(
             args.matched_snapshot, execution_steps=args.sync_execution_steps
         )
+        if args.sync_task_text is not None:
+            manifest["candidate"]["task"] = args.sync_task_text
+            manifest["candidate"]["task_text_diagnostic"] = True
         if args.mode == "predicted":
             from leisaac_so101_predicted import PREDICTOR_ID, SELECTED_EPOCH, TRAINING_SOURCE
 
@@ -694,6 +709,7 @@ def main() -> int:
                 startup_profile=args.startup_profile,
                 context_variant=args.context_variant,
                 future_state_path=args.future_state_checkpoint,
+                sync_task_text=args.sync_task_text,
             )
         else:
             sync_action = None
