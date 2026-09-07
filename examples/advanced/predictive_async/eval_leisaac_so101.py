@@ -405,6 +405,8 @@ def load_runtime(
     action_contract: str = "strict",
     minimum_delay: int = 1,
     startup_profile: str = "native",
+    context_variant: str = "visual_only",
+    future_state_path: Path | None = None,
 ):
     import torch
     from huggingface_hub import snapshot_download
@@ -473,6 +475,16 @@ def load_runtime(
         engine_class = SO101PredictiveAsyncInferenceEngine
     elif mode == "predicted":
         predictor = load_frozen_future_latent_predictor(predictor_path, device=device)
+    if context_variant != "visual_only":
+        from so101_joint_runtime import JointContextPredictor, load_future_state
+
+        if mode != "predicted" or matched_snapshot is None or projector is None or future_state_path is None:
+            raise ValueError("Joint context is restricted to the explicit matched feasible simulation")
+        predictor = (
+            JointContextPredictor(predictor, load_future_state(future_state_path, device), context_variant)
+            .eval()
+            .requires_grad_(False)
+        )
     predictor_warmup = None
     if startup_profile == "warmed_v2" and predictor is not None:
         from so101_startup_preparation import warm_predictor_once
@@ -484,6 +496,10 @@ def load_runtime(
 
         engine_class = SO101FeasibleAsyncEngine
         projection_arguments["action_projector"] = projector
+    if context_variant != "visual_only":
+        from so101_joint_runtime import SO101JointAsyncEngine
+
+        engine_class = SO101JointAsyncEngine
     engine = engine_class(
         **projection_arguments,
         policy=policy,
@@ -538,12 +554,27 @@ def main() -> int:
     parser.add_argument("--stop-after-first-placement", action="store_true")
     parser.add_argument("--startup-profile", choices=("native", "warmed_v2"), default="native")
     parser.add_argument(
+        "--context-variant", choices=("visual_only", "state_only", "joint"), default="visual_only"
+    )
+    parser.add_argument("--future-state-checkpoint", type=Path)
+    parser.add_argument(
         "--matched-snapshot", type=Path, help="Exact independent PickOrange candidate snapshot"
     )
     parser.add_argument(
         "--sim-device", choices=("cpu", "cuda:0"), help="Simulation compute device; model device is unchanged"
     )
     args = parser.parse_args()
+    if args.context_variant != "visual_only":
+        if (
+            args.mode != "predicted"
+            or args.future_state_checkpoint is None
+            or args.action_contract != "feasible_v1"
+            or args.startup_profile != "warmed_v2"
+            or args.minimum_delay != 7
+        ):
+            parser.error("L13 joint/state-only requires its causal checkpoint and calibrated warmed profile")
+    elif args.future_state_checkpoint is not None:
+        parser.error("A future-state checkpoint requires an explicit joint/state-only variant")
     if args.minimum_delay != 1 and (
         args.matched_snapshot is None or args.mode not in ("identity", "predicted")
     ):
@@ -618,6 +649,18 @@ def main() -> int:
                 "training_source": TRAINING_SOURCE,
                 "selected_epoch": SELECTED_EPOCH,
             }
+            if args.context_variant != "visual_only":
+                from so101_joint_runtime import STATE_EPOCH, STATE_SOURCE
+
+                visual_parent = manifest["candidate"]["predictor"]
+                manifest["candidate"]["predictor"] = {
+                    "id": "so101_l13_" + args.context_variant,
+                    "visual_parent": visual_parent,
+                    "visual_forecasting_active": args.context_variant == "joint",
+                    "state_path": str(args.future_state_checkpoint),
+                    "state_source": STATE_SOURCE,
+                    "state_epoch": STATE_EPOCH,
+                }
     manifest["pacing"] = "absolute_CycleTimer_deadline_same_origin_as_lost_slot_checks"
     (args.output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     client = EnvClient(args.sim_python, args.assets_root, args.leisaac_root, args.sim_device or args.device)
@@ -649,6 +692,8 @@ def main() -> int:
                 action_contract=args.action_contract,
                 minimum_delay=args.minimum_delay,
                 startup_profile=args.startup_profile,
+                context_variant=args.context_variant,
+                future_state_path=args.future_state_checkpoint,
             )
         else:
             sync_action = None
@@ -708,6 +753,7 @@ def main() -> int:
             result["candidate"] = manifest["candidate"]
         result["action_execution_contract"] = args.action_contract
         result["startup_profile"] = args.startup_profile
+        result["context_variant"] = args.context_variant if args.mode == "predicted" else args.mode
         result["setup_physics_steps"] = sum(row["dispatch"] == "completed" for row in setup_rows)
         result["predictor_kernel_warmup"] = getattr(engine, "predictor_warmup", None)
         result["task_contract"] = (
@@ -719,7 +765,12 @@ def main() -> int:
         if engine is not None:
             result["engine_stats"] = asdict(engine.stats)
             if args.matched_snapshot is not None and args.mode == "predicted":
-                result["loaded_predictor"] = engine._future_latent_predictor._so101_l6_binding
+                predictor = engine._future_latent_predictor
+                result["loaded_predictor"] = (
+                    predictor._so101_joint_binding
+                    if args.context_variant != "visual_only"
+                    else predictor._so101_l6_binding
+                )
         if client.profile_steps:
             result["step_profile"] = client.step_profile
         # Control stopped, policy worker joined, sink closed, simulator exited.

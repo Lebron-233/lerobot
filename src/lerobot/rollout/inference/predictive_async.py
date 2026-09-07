@@ -283,6 +283,10 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
         """Pair the policy-space commitment with its executable representation."""
         return actions.squeeze(0).clone(), self._postprocessor(actions).squeeze(0)
 
+    def _future_state_override(self, prediction: Any, metrics: dict | None) -> torch.Tensor | None:
+        """Default visual-only deployments never replace the current model-ready state."""
+        return None
+
     @property
     def queue(self) -> ScheduledActionQueue:
         """Expose the scheduled queue for diagnostics and deterministic tests."""
@@ -1058,6 +1062,9 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
                                         image_tokens, prediction.delta_tokens, strict=True
                                     )
                                 )
+                                future_state = self._future_state_override(prediction, metrics)
+                                if future_state is not None:
+                                    predict_kwargs["future_state"] = future_state
                     predict_kwargs.update(
                         future_image_tokens=future_tokens,
                         future_image_token_masks=image_token_masks,
