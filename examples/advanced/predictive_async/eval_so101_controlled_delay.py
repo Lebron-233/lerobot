@@ -75,6 +75,7 @@ def run_episode(
     events,
     frames,
     stop_subgoal,
+    recorder=None,
 ):
     queue = ScheduledActionQueue(reset_epoch=0, task_epoch=0)
     context = (
@@ -84,6 +85,8 @@ def run_episode(
     request_id = 0
     for step in range(max_steps):
         started = time.perf_counter()
+        if recorder is not None:
+            recorder.observe(packet, step, policy, pre)
         raw = decode_observation(packet)
         if step % 150 == 0:
             frames.append((step, {name: raw[name] for name in ("top", "wrist")}))
@@ -144,6 +147,8 @@ def run_episode(
                 actions = projector(policy.predict_action_chunk(batch, noise=noise, **kwargs))
                 normalized = actions.squeeze(0).detach().cpu()
                 physical = post(actions).squeeze(0).detach().cpu()
+            if recorder is not None and plan is not None:
+                recorder.request(step, plan, batch, tokens, masks, state, kwargs.get("future_state"))
             install_or_stage(queue, normalized, physical, plan, request_id)
             event.update(
                 outcome="installed" if plan is None else "staged_for_future_index",
