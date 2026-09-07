@@ -127,6 +127,12 @@ def comparison_summary(rows: list[dict]) -> dict:
     return summary
 
 
+def reliable_reference_qualified(reference: dict) -> bool:
+    return bool(
+        reference["trials"] == 12 and reference["successes"] >= 10 and reference["technical_failures"] == 0
+    )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
@@ -232,11 +238,7 @@ def main() -> None:
             }
             if args.cohort == "calibrated_l11":
                 reference = report["aggregates"]["sync"]
-                report["reliable_reference_gate"] = bool(
-                    reference["trials"] == 12
-                    and reference["successes"] >= 10
-                    and reference["technical_failures"] == 0
-                )
+                report["reliable_reference_gate"] = reliable_reference_qualified(reference)
                 report["benefit_on_reliable_reference"] = bool(
                     report["complete"]
                     and report["reliable_reference_gate"]

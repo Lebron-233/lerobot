@@ -4,7 +4,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "examples/advanced/predictive_async"))
 
 from audit_so101_action_benefit import summarize_cases
-from run_so101_task_comparison import comparison_summary
+from run_so101_task_comparison import comparison_summary, reliable_reference_qualified
 
 
 def test_task_gate_requires_both_halves_and_no_added_technical_failures():
@@ -39,3 +39,10 @@ def test_action_gate_uses_episodes_and_predeclared_case_completeness():
     for row in rows:
         row["identity_l1_25"] = 0.0
     assert not summarize_cases(rows, [])["stable_action_gate"]
+
+
+def test_reference_qualification_requires_complete_high_success_and_no_technical_failures():
+    assert reliable_reference_qualified({"trials": 12, "successes": 10, "technical_failures": 0})
+    assert not reliable_reference_qualified({"trials": 12, "successes": 9, "technical_failures": 0})
+    assert not reliable_reference_qualified({"trials": 12, "successes": 10, "technical_failures": 1})
+    assert not reliable_reference_qualified({"trials": 10, "successes": 10, "technical_failures": 0})
