@@ -48,6 +48,7 @@ class IsaacEnvironment:
         episode_seconds: int = 25,
         control_fps: int = 30,
         initial_pose: str = "zero",
+        camera_backend: str = "tiled",
     ) -> None:
         self.control_fps = control_fps
         self.step_profiler = cProfile.Profile() if profile_steps else None
@@ -87,6 +88,7 @@ class IsaacEnvironment:
             import gymnasium as gym
             import leisaac
             import torch
+            from isaaclab.sensors import Camera
             from isaaclab_tasks.utils import parse_env_cfg
             from leisaac.assets.robots.lerobot import SO101_FOLLOWER_USD_JOINT_LIMLITS
 
@@ -114,6 +116,8 @@ class IsaacEnvironment:
                 term.scale, term.offset = 1.0, 0.0
             for camera in (cfg.scene.front, cfg.scene.wrist):
                 camera.update_period = 1 / FPS
+                if camera_backend == "standard":
+                    camera.class_type = Camera
             self.env = gym.make(TASK_ID, cfg=cfg).unwrapped
             self.torch = torch
             self.joint_names = list(self.env.scene["robot"].data.joint_names)
@@ -134,6 +138,7 @@ class IsaacEnvironment:
                 "python": sys.version,
                 "joint_names": self.joint_names,
                 "camera_sources": {"top": "front", "wrist": "wrist"},
+                "camera_backend": camera_backend,
                 "camera_config": {
                     name: {
                         "prim_path": getattr(cfg.scene, name).prim_path,
@@ -202,6 +207,13 @@ class IsaacEnvironment:
                 for name in ("Orange001", "Orange002", "Orange003", "Plate")
             },
         }
+        packet["camera_world_poses_opengl"] = {}
+        for name in ("front", "wrist"):
+            position, quaternion = self.env.scene[name]._view.get_world_poses()
+            packet["camera_world_poses_opengl"][name] = {
+                "position": position[0].detach().cpu().tolist(),
+                "quaternion_wxyz": quaternion[0].detach().cpu().tolist(),
+            }
         return packet
 
     def reset(self, seed: int, episode_id: int) -> dict:
@@ -316,6 +328,7 @@ def main() -> int:
     parser.add_argument("--episode-seconds", type=int, choices=(25, 60, 120), default=25)
     parser.add_argument("--control-fps", type=int, choices=(30, 60), default=30)
     parser.add_argument("--initial-pose", choices=("zero", "rest"), default="zero")
+    parser.add_argument("--camera-backend", choices=("tiled", "standard"), default="tiled")
     parser.add_argument("--profile-steps", action="store_true")
     args = parser.parse_args()
     connection, env = Connection(args.fd), None
@@ -328,6 +341,7 @@ def main() -> int:
             episode_seconds=args.episode_seconds,
             control_fps=args.control_fps,
             initial_pose=args.initial_pose,
+            camera_backend=args.camera_backend,
         )
         serve(connection, env)
         return 0

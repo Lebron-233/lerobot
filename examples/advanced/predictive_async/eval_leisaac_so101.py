@@ -54,6 +54,7 @@ class EnvClient:
         self.episode_seconds = 25
         self.control_fps = 30
         self.initial_pose = "zero"
+        self.camera_backend = "tiled"
         self.profile_steps = False
         self.step_profile: dict | None = None
 
@@ -80,6 +81,8 @@ class EnvClient:
             str(self.control_fps),
             "--initial-pose",
             self.initial_pose,
+            "--camera-backend",
+            self.camera_backend,
         ]
         if self.profile_steps:
             command.append("--profile-steps")
@@ -273,6 +276,8 @@ def drive_episode(
         }
         if "task_diagnostics" in packet:
             row["task_diagnostics_before_action"] = packet["task_diagnostics"]
+        if "camera_world_poses_opengl" in packet:
+            row["camera_world_poses_opengl"] = packet["camera_world_poses_opengl"]
         ticks.append(row)
         hold = True
         if engine is not None:
@@ -439,6 +444,7 @@ def main() -> int:
     parser.add_argument("--sync-execution-steps", type=int, choices=(25, 50), default=50)
     parser.add_argument("--control-fps", type=int, choices=(30, 60), default=30)
     parser.add_argument("--initial-pose", choices=("zero", "rest"), default="zero")
+    parser.add_argument("--camera-backend", choices=("tiled", "standard"), default="tiled")
     parser.add_argument(
         "--matched-snapshot", type=Path, help="Exact independent PickOrange candidate snapshot"
     )
@@ -489,6 +495,7 @@ def main() -> int:
     client.episode_seconds = args.episode_seconds
     client.control_fps = args.control_fps
     client.initial_pose = args.initial_pose
+    client.camera_backend = args.camera_backend
     sink, ticks, engine, result = MemoryMetrics(), [], None, {}
     frames = [] if args.matched_snapshot is not None else None
     try:
