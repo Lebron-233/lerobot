@@ -214,7 +214,13 @@ def main() -> int:
         data = {e: data[e] for e in (6, 7)}
     else:
         selected = torch.load(args.selection.parent / "state_best.pt", map_location="cpu", weights_only=True)
-        if selected["kind"] != "so101_future_state_l12_v1":
+        if (
+            selected["kind"] != "so101_future_state_l12_v1"
+            or selected["epoch"] != selection["state_epoch"]
+            or selected["source_commit"] != selection["source_commit"]
+            or selected["epoch"] != 29
+            or selected["source_commit"] != "bf4e025dbf0cacf4777289b90498a8b70d4974fa"
+        ):
             raise ValueError("Wrong state predictor identity")
         state_model = FutureStateResidual().to("cuda:0").eval().requires_grad_(False)
         state_model.load_state_dict(selected["state_dict"], strict=True)

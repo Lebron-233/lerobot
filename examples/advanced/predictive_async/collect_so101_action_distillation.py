@@ -26,6 +26,7 @@ def main() -> int:
     parser.add_argument("--split", choices=("development", "test"), required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--selection", type=Path)
+    parser.add_argument("--protocol", choices=("l10", "l12_joint"), default="l10")
     args = parser.parse_args()
     repo = Path(__file__).resolve().parents[3]
     if subprocess.check_output(["git", "status", "--porcelain"], cwd=repo, text=True).strip():
@@ -36,6 +37,15 @@ def main() -> int:
         selected = json.loads(args.selection.read_text())
         if not selected["validation_qualified"]:
             parser.error("Development did not qualify; leave the test split unopened")
+    if args.protocol == "l12_joint":
+        if args.split != "test":
+            parser.error("L12 reuses designated development only; this collector opens its new test")
+        if (
+            selected.get("state_epoch") != 29
+            or selected.get("source_commit") != "bf4e025dbf0cacf4777289b90498a8b70d4974fa"
+            or selected.get("teacher") != "future_visual_and_future_model_ready_state"
+        ):
+            parser.error("L12 requires its frozen state-only-selected epoch29 qualification")
     source = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo, text=True).strip()
     base = repo.parent
     snapshot = (
@@ -45,9 +55,14 @@ def main() -> int:
     count, first_seed, first_policy = (
         (8, 20270110, 2510) if args.split == "development" else (6, 20270130, 2530)
     )
+    if args.protocol == "l12_joint":
+        count, first_seed, first_policy = 6, 20270320, 3120
     args.output.mkdir(parents=True, exist_ok=False)
     manifest = {
-        "kind": "L10_new_action_distillation_collection",
+        "kind": "L12_joint_context_collection"
+        if args.protocol == "l12_joint"
+        else "L10_new_action_distillation_collection",
+        "protocol": args.protocol,
         "source_commit": source,
         "candidate": candidate_manifest(snapshot),
         "split": args.split,
