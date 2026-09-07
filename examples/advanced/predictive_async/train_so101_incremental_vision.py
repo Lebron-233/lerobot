@@ -146,12 +146,18 @@ def train_loss(policy, projector, student, ref: dict):
     return loss, {"action_mae": float(error.detach()), "baseline_mae": base_error}
 
 
+def training_batch(groups: dict, rng: random.Random, profile: str) -> list[dict]:
+    episodes = [rng.randrange(6)] if profile == "single" else rng.sample(range(6), 4)
+    return [groups[e][rng.randrange(len(groups[e]))] for e in episodes]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--phase", choices=("train", "test"), required=True)
     parser.add_argument("--cache", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--model-folder", type=Path)
+    parser.add_argument("--profile", choices=("single", "balanced4"), default="single")
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[3]
     if subprocess.check_output(["git", "status", "--porcelain"], cwd=root, text=True).strip():
@@ -169,6 +175,11 @@ def main() -> int:
         or collection["subprocess_returncode"] != 0
     ):
         parser.error("Wrong data split or incomplete native collection")
+    if training and args.profile == "balanced4":
+        previous_path = root.parent / "artifacts/m54l15_visual_increment_training_v1/selection.json"
+        previous = json.loads(previous_path.read_text())
+        if previous["updates_complete"] != 1600 or previous["qualified"]:
+            parser.error("L15b is conditional on a closed, ineligible original L15 fit")
     if not training:
         if args.model_folder is None:
             parser.error("Test requires the frozen selected student")
@@ -177,9 +188,14 @@ def main() -> int:
             parser.error("Do not open a test for an ineligible student")
         if Path(manifest["selection"]).resolve() != (args.model_folder / "selection.json").resolve():
             parser.error("Collection was authorized for a different selection")
+    profile = args.profile if training else selection.get("profile", "single")
     args.output.mkdir(parents=True, exist_ok=False)
     (args.output / "manifest.json").write_text(
-        json.dumps({"source_commit": source, "phase": args.phase, "data_manifest": manifest}, indent=2) + "\n"
+        json.dumps(
+            {"source_commit": source, "phase": args.phase, "profile": profile, "data_manifest": manifest},
+            indent=2,
+        )
+        + "\n"
     )
     torch.set_num_threads(1)
     torch.manual_seed(3500)
@@ -223,14 +239,20 @@ def main() -> int:
             optimizer = torch.optim.AdamW(student.parameters(), lr=1e-4, weight_decay=1e-4)
             history, selected, eligible_selected = [], None, False
             best, gradient_proof = float("inf"), None
-            for update in range(1601):
+            updates = 1600 if args.profile == "single" else 400
+            interval = 200 if args.profile == "single" else 50
+            for update in range(updates + 1):
                 if update:
                     student.train()
-                    group = groups[rng.randrange(6)]
-                    ref = group[rng.randrange(len(group))]
+                    batch = training_batch(groups, rng, args.profile)
                     optimizer.zero_grad(set_to_none=True)
-                    loss, detail = train_loss(policy, projector, student, ref)
-                    loss.backward()
+                    total_loss, action_mae, baseline_mae = 0.0, 0.0, 0.0
+                    for ref in batch:
+                        loss, detail = train_loss(policy, projector, student, ref)
+                        (loss / len(batch)).backward()
+                        total_loss += float(loss.detach()) / len(batch)
+                        action_mae += detail["action_mae"] / len(batch)
+                        baseline_mae += detail["baseline_mae"] / len(batch)
                     norm = torch.nn.utils.clip_grad_norm_(student.parameters(), 1.0, error_if_nonfinite=True)
                     if update == 1:
                         if not norm > 0 or any(
@@ -242,12 +264,16 @@ def main() -> int:
                     history.append(
                         {
                             "update": update,
-                            "loss": float(loss.detach()),
+                            "loss": total_loss,
                             "gradient_norm": float(norm),
-                            **detail,
+                            "action_mae": action_mae,
+                            "baseline_mae": baseline_mae,
+                            "batch_cases": [
+                                [ref["episode"], ref["query_index"], ref["noise_index"]] for ref in batch
+                            ],
                         }
                     )
-                if update % 200 == 0:
+                if update % interval == 0:
                     metric = evaluate(policy, projector, student, val_refs)
                     eligible = bool(update > 0 and metric["validation_eligible"])
                     score = metric["equal_episode_means"]["student_l1"]
@@ -260,6 +286,7 @@ def main() -> int:
                         torch.save(
                             {
                                 "kind": "l15_state_conditional_visual_v1",
+                                "profile": args.profile,
                                 "source_commit": source,
                                 "selected_update": update,
                                 "state_dict": student.state_dict(),
@@ -289,10 +316,12 @@ def main() -> int:
             saved = torch.load(args.output / "best.pt", map_location="cpu", weights_only=True)
             result = {
                 "kind": "l15_incremental_visual_selection",
+                "profile": args.profile,
                 "source_commit": source,
                 "qualified": eligible_selected,
                 "selected_update": selected,
-                "updates_complete": 1600,
+                "updates_complete": updates,
+                "training_example_visits": 1600,
                 "parameters": sum(p.numel() for p in student.parameters()),
                 "zero_residual_max_action_difference": zero_error,
                 "gradient_proof": gradient_proof,
@@ -318,6 +347,7 @@ def main() -> int:
                 "source_commit": source,
                 "selected_update": saved["selected_update"],
                 "training_source": saved["source_commit"],
+                "profile": saved.get("profile", "single"),
                 "teacher": "actual_future_visual_with_same_causal_predicted_state",
                 "task_benefit_established": False,
                 "realtime_qualified": False,

@@ -98,10 +98,14 @@ def main() -> None:
     data = audit_data(args.cache)
     selection = json.loads((args.training / "selection.json").read_text())
     history = json.loads((args.training / "training.json").read_text())
-    if [row["update"] for row in history] != list(range(1, 1601)):
+    balanced = selection.get("profile", "single") == "balanced4"
+    updates, interval = (400, 50) if balanced else (1600, 200)
+    if [row["update"] for row in history] != list(range(1, updates + 1)):
         raise ValueError("The fixed training budget did not complete exactly once")
+    if balanced and any(len({case[0] for case in row["batch_cases"]}) != 4 for row in history):
+        raise ValueError("Balanced updates did not combine four distinct training episodes")
     candidates = []
-    for update in range(0, 1601, 200):
+    for update in range(0, updates + 1, interval):
         metric = json.loads((args.training / f"validation_{update:04d}.json").read_text())
         check_case_grid(metric["cases"], {row["episode"]: row["pairs"] for row in data["rows"][6:]})
         if summarize(metric["cases"]) != metric:
@@ -115,6 +119,7 @@ def main() -> None:
         "kind": "l15_no_inference_closed_selection_audit",
         "development": data,
         "selected_update": selection["selected_update"],
+        "profile": selection.get("profile", "single"),
         "qualified": selection["qualified"],
         "selection_matches_registered_rule": True,
         "zero_residual_action_difference": selection["zero_residual_max_action_difference"],
