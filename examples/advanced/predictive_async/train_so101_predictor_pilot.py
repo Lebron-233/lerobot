@@ -27,9 +27,14 @@ def valid_pairs(observations: int, chunk_ids: torch.Tensor) -> list[tuple[int, i
     ]
 
 
+def episode_file(root: Path, episode: int) -> Path:
+    manifest = json.loads((root / "manifest.json").read_text())
+    return Path(manifest.get("episode_files", {}).get(str(episode), root / f"episode_{episode:02d}.pt"))
+
+
 class ForecastPairs(Dataset):
     def __init__(self, root: Path, episodes: list[int]) -> None:
-        self.episodes = [torch.load(root / f"episode_{i:02d}.pt", weights_only=True) for i in episodes]
+        self.episodes = [torch.load(episode_file(root, i), weights_only=True) for i in episodes]
         self.index = [
             (e, t, d)
             for e, episode in enumerate(self.episodes)
@@ -74,7 +79,7 @@ def forward_batch(model, batch):
     prediction = model(
         tuple(z[:, c] for c in range(2)), tuple(masks[:, c] for c in range(2)), actions, prefix, state, delay
     )
-    predicted = z.float() + torch.stack(prediction.delta_tokens, dim=1).float()
+    predicted = (z.float() + torch.stack(prediction.delta_tokens, dim=1).float()).to(z.dtype).float()
     return z, predicted, target, masks, delay
 
 
@@ -118,7 +123,12 @@ def main() -> int:
     parser.add_argument("--cache", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--phase", choices=("train", "test"), required=True)
+    parser.add_argument(
+        "--policy-snapshot", type=Path, help="Frozen WSAGI snapshot for the pre-registered test action probe"
+    )
     args = parser.parse_args()
+    if args.phase == "test" and args.policy_snapshot is None:
+        parser.error("The held-out phase includes the pre-registered frozen-policy action probe")
     if subprocess.check_output(["git", "status", "--porcelain"], text=True).strip():
         parser.error("Commit source before training or test evaluation")
     source = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
@@ -199,9 +209,12 @@ def main() -> int:
         }
         (args.output / "selection.json").write_text(json.dumps(result, indent=2) + "\n")
     else:
+        selection = json.loads((args.output / "selection.json").read_text())
         # Exclusive report path prevents accidental test reruns through this entry.
         with (args.output / "test_report.json").open("x") as report:
             checkpoint = torch.load(args.output / "best.pt", weights_only=True, map_location="cuda:0")
+            if selection["selected_epoch"] != checkpoint["epoch"]:
+                raise ValueError("The selected checkpoint no longer matches its frozen validation selection")
             model = LightweightFutureLatentPredictor(FutureLatentConfig(**checkpoint["config"])).to("cuda:0")
             model.load_state_dict(checkpoint["state_dict"], strict=True)
             episodes = {str(e): evaluate(model, ForecastPairs(args.cache, [e])) for e in [5, 6]}
@@ -230,6 +243,15 @@ def main() -> int:
                 "runtime_application_tested": False,
                 "risk_thresholds": None,
             }
+            # Preserve already-evaluated latent results if the separate frozen
+            # action-expert probe encounters an interface/runtime error.
+            report.write(json.dumps(result, indent=2) + "\n")
+            report.flush()
+            from probe_so101_predictor_actions import action_consistency_probe
+
+            result["action_consistency"] = action_consistency_probe(model, args.cache, args.policy_snapshot)
+            report.seek(0)
+            report.truncate()
             report.write(json.dumps(result, indent=2) + "\n")
         print(json.dumps(result, indent=2))
     return 0

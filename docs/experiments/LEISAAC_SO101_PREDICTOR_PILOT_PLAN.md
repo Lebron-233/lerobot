@@ -78,3 +78,45 @@ keep large latent caches and model artifacts locally. Do not push model weights
 or trajectories to a public dataset repository. Old candidate validators stay
 unchanged; production `predicted` remains disabled for this new candidate until
 a separate explicit runtime binding and relevant validation are implemented.
+
+## Pre-test action-consistency probe (fixed before fitting)
+
+Also measure whether latent improvements survive the **frozen action expert**,
+without asserting task success. On each held-out episode use anchors t=0,200,400
+and d=1,4,8 only, provided the causal sample is valid. Keep language and current
+model-ready state fixed. With identical flow noise compare50-action chunks from:
+(a) current visual tokens, (b) predicted future tokens, and (c) actual future
+visual tokens. The third is an offline visual-oracle reference, not executable
+online and not a future-state oracle. Report normalized-action L1 errors against
+that reference, paired per-anchor/delay/episode and aggregate. All cases and
+negative changes remain; no selection follows this diagnostic.
+
+Residual application follows the production numeric path: float32 addition,
+cast back to the observed native token dtype, then score in float32 / pass native
+tokens to the action expert. This is fixed before training starts. The probe
+uses no future state and no reference action generated from a future observation
+as predictor input. It is part of the single frozen held-out evaluation phase,
+not a second model-selection opportunity.
+
+## Actual collection interruption and continuation, before fitting
+
+Collectionv1 at `cf0734b1` completed the four600-action training episodes, with
+native `[2,64,960]` bfloat16 tokens and exact zero same-noise RGB/override action
+difference. On the fixed validation seed20260924 it encountered an out-of-range
+wrist target96.4203338623degrees (limit95). The simulator refused that target.
+No model fitting or held-out evaluation has occurred.
+
+The first collector only saved at a normal episode end, so its interrupted
+validation prefix was not persisted. Correct that concrete logging defect:
+check the unchanged physical target limits before IPC, end that episode as
+`technical_action_limit`, save all preceding valid observations/actions and the
+unsent invalid target, and continue to the next **already specified** seed.
+Never clip or pretend that the invalid action executed. Valid prefixes remain
+forecast samples; report truncated lengths and missing data explicitly.
+
+Keep the original failure/result and four completed training caches unchanged.
+A new collection namespace references those four exact files and restarts only
+the interrupted validation episode with the same seed/model, followed by the
+two original test seeds. This is a logging-repair continuation, not choosing a
+different successful seed or replacing a completed test trajectory. Test remains
+unopened by training; a split with no valid samples must be reported as insufficient.

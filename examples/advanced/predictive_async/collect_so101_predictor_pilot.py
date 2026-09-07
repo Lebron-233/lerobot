@@ -11,7 +11,7 @@ from pathlib import Path
 
 import torch
 from eval_leisaac_so101 import EnvClient, decode_observation
-from leisaac_so101_contract import hardware_features, validate_step
+from leisaac_so101_contract import ContractError, action_to_radians, hardware_features, validate_step
 from leisaac_so101_matched import (
     TASK,
     WSAGI_REVISION,
@@ -44,6 +44,9 @@ def main() -> int:
     parser.add_argument("--assets-root", type=Path, required=True)
     parser.add_argument("--leisaac-root", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--continue-from", type=Path, help="Keep completed episodes from the preceding interrupted collection"
+    )
     args = parser.parse_args()
     if args.snapshot.name != WSAGI_REVISION:
         parser.error("L6 collection is frozen to the WSAGI candidate")
@@ -64,14 +67,31 @@ def main() -> int:
         "physics": "cpu_physx_rtx_v1",
         "prefix_rule": "all actions from same chunk already committed at t",
     }
+    results = []
+    manifest["episode_files"] = {
+        str(i): str((args.output / f"episode_{i:02d}.pt").resolve()) for i in range(7)
+    }
+    if args.continue_from is not None:
+        previous = json.loads((args.continue_from / "result.json").read_text())
+        previous_manifest = json.loads((args.continue_from / "manifest.json").read_text())
+        if previous_manifest["candidate"]["policy_revision"] != WSAGI_REVISION:
+            raise ValueError("Preceding collection has a different frozen candidate")
+        results = previous["episodes"]
+        if [r["episode"] for r in results] != list(range(len(results))) or not 0 < len(results) < 7:
+            raise ValueError("Continuation requires an ordered completed prefix of collection episodes")
+        for r in results:
+            i = r["episode"]
+            manifest["episode_files"][str(i)] = str((args.continue_from / f"episode_{i:02d}.pt").resolve())
+        manifest["previous_collection"] = str(args.continue_from.resolve())
+        manifest["previous_source_commit"] = previous_manifest["source_commit"]
     (args.output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     client = EnvClient(args.sim_python, args.assets_root, args.leisaac_root, "cpu")
     client.camera_backend = "standard"
-    results, error = [], None
+    error = None
     try:
         client.start()
         policy, pre, post = load_matched_runtime(args.snapshot, device="cuda:0")
-        for episode in range(7):
+        for episode in range(len(results), 7):
             packet = client.reset(20260920 + episode)
             policy.reset()
             pre.reset()
@@ -79,6 +99,7 @@ def main() -> int:
             set_seed(1900 + episode)
             latents, masks_list, states, actions, chunks, ticks = [], [], [], [], [], []
             chunk, terminal, equivalence_max_abs = None, False, None
+            action_limit_error = None
             started = time.perf_counter()
             for step in range(601):
                 batch, tokens, token_masks, state = prepared_observation(packet, policy, pre)
@@ -112,10 +133,17 @@ def main() -> int:
                 row = {
                     "step": step,
                     "chunk_id": step // 50,
-                    "dispatch": "sent_result_unknown",
+                    "dispatch": "not_sent",
                     "action": physical,
                 }
                 ticks.append(row)
+                try:
+                    action_to_radians(physical)
+                except ContractError as exc:
+                    action_limit_error = str(exc)
+                    row["technical_error"] = action_limit_error
+                    break
+                row["dispatch"] = "sent_result_unknown"
                 response = client.step(packet, physical)
                 row.update(
                     dispatch="completed", terminated=response["terminated"], truncated=response["truncated"]
@@ -136,7 +164,10 @@ def main() -> int:
                 "terminal": terminal,
                 "success": bool(ticks[-1]["terminated"]) if terminal else None,
                 "timeout": bool(ticks[-1]["truncated"]) if terminal else False,
-                "status": "terminal" if terminal else "censored_collection_bound",
+                "status": "technical_action_limit"
+                if action_limit_error
+                else ("terminal" if terminal else "censored_collection_bound"),
+                "action_limit_error": action_limit_error,
                 "wall_s": time.perf_counter() - started,
                 "rgb_token_override_max_abs": equivalence_max_abs,
                 "token_shape_per_observation": list(latents[0].shape),
@@ -148,8 +179,8 @@ def main() -> int:
                     "tokens": torch.stack(latents),
                     "masks": torch.stack(masks_list),
                     "states": torch.stack(states),
-                    "actions": torch.stack(actions),
-                    "chunk_ids": torch.tensor(chunks),
+                    "actions": torch.stack(actions) if actions else torch.empty(0, 6),
+                    "chunk_ids": torch.tensor(chunks, dtype=torch.long),
                     "metadata": episode_result,
                 },
                 args.output / f"episode_{episode:02d}.pt",
