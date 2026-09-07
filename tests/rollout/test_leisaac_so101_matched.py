@@ -162,6 +162,7 @@ def test_standard_camera_reset_restores_nominal_pose_before_upstream_randomizati
 
     camera = Camera()
     env = IsaacEnvironment.__new__(IsaacEnvironment)
+    env.initial_pose = "zero"
     env.front_reset_anchor = (torch.zeros(1, 3), torch.tensor([[1.0, 0, 0, 0]]))
 
     class NativeEnv:

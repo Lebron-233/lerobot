@@ -554,7 +554,7 @@ def main() -> int:
         help="Explicit task-text diagnostic for the matched synchronous candidate only",
     )
     parser.add_argument("--control-fps", type=int, choices=(30, 60), default=30)
-    parser.add_argument("--initial-pose", choices=("zero", "rest"), default="zero")
+    parser.add_argument("--initial-pose", choices=("zero", "rest", "training_medoid_v1"), default="zero")
     parser.add_argument("--camera-backend", choices=("tiled", "standard"), default="tiled")
     parser.add_argument("--task-evidence", action="store_true")
     parser.add_argument("--gc-diagnostics", action="store_true")
@@ -612,6 +612,19 @@ def main() -> int:
         parser.error("Native60 time-base diagnostic is restricted to matched synchronous evaluation")
     if args.initial_pose != "zero" and args.matched_snapshot is None:
         parser.error("Rest-pose preparation is a separately recorded matched-candidate protocol")
+    if args.initial_pose == "training_medoid_v1":
+        from leisaac_so101_matched import WSAGI_REVISION
+
+        if (
+            args.mode != "sync"
+            or args.matched_snapshot.name != WSAGI_REVISION
+            or args.action_contract != "feasible_v1"
+            or args.startup_profile != "warmed_v2"
+            or args.control_fps != 30
+            or args.sim_device != "cpu"
+            or args.camera_backend != "standard"
+        ):
+            parser.error("Training-medoid preparation is a registered WSAGI synchronous diagnostic only")
     if not 1 <= args.max_steps <= (30 if environment_only else args.episode_seconds * args.control_fps):
         parser.error("Step bound exceeds the selected environment-only / episode protocol")
     if args.mode == "predicted" and args.predictor is None:

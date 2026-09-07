@@ -111,6 +111,13 @@ class IsaacEnvironment:
                 cfg.scene.robot.init_state.joint_pos = dict(
                     zip(JOINT_NAMES, (math.radians(value) for value in REST_POSE_DEG), strict=True)
                 )
+            elif initial_pose == "training_medoid_v1":
+                from so101_prepared_start import prepared_joints
+
+                cfg.scene.robot.init_state.joint_pos = prepared_joints()
+            elif initial_pose != "zero":
+                raise ContractError("Unregistered initial pose")
+            self.initial_pose = initial_pose
             cfg.recorders = None
             cfg.episode_length_s = episode_seconds
             self.task_witness = None
@@ -209,6 +216,10 @@ class IsaacEnvironment:
                 },
                 "torch_num_threads": torch.get_num_threads(),
             }
+            if initial_pose == "training_medoid_v1":
+                from so101_prepared_start import provenance
+
+                self.metadata["prepared_start"] = provenance()
         except BaseException:
             self.close()
             raise
@@ -253,6 +264,10 @@ class IsaacEnvironment:
         if self.front_reset_anchor is not None:
             self.env.scene["front"].set_world_poses(*self.front_reset_anchor, convention="opengl")
         obs, _ = self.env.reset(seed=seed)
+        if self.initial_pose == "training_medoid_v1":
+            from so101_prepared_start import verify_reset
+
+            verify_reset(obs["policy"]["joint_pos"][0].detach().cpu().tolist(), self.joint_names)
         return self.packet(obs, episode_id, 0)
 
     def step(self, action: list[float], episode_id: int, step: int) -> dict:
@@ -381,7 +396,7 @@ def main() -> int:
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument("--episode-seconds", type=int, choices=(25, 60, 120), default=25)
     parser.add_argument("--control-fps", type=int, choices=(30, 60), default=30)
-    parser.add_argument("--initial-pose", choices=("zero", "rest"), default="zero")
+    parser.add_argument("--initial-pose", choices=("zero", "rest", "training_medoid_v1"), default="zero")
     parser.add_argument("--camera-backend", choices=("tiled", "standard"), default="tiled")
     parser.add_argument("--profile-steps", action="store_true")
     parser.add_argument("--task-evidence", action="store_true")
