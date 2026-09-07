@@ -55,6 +55,7 @@ class EnvClient:
         self.control_fps = 30
         self.initial_pose = "zero"
         self.camera_backend = "tiled"
+        self.task_evidence = False
         self.profile_steps = False
         self.step_profile: dict | None = None
 
@@ -86,6 +87,8 @@ class EnvClient:
         ]
         if self.profile_steps:
             command.append("--profile-steps")
+        if self.task_evidence:
+            command.append("--task-evidence")
         try:
             self.process = subprocess.Popen(
                 command,
@@ -324,6 +327,8 @@ def drive_episode(
         row["ipc_roundtrip_s"] = time.perf_counter() - step_started
         row["controller_before_step_s"] = step_started - started
         row["server_timing_s"] = response.get("server_timing_s", {})
+        if "task_transition" in response:
+            row["task_transition_after_action"] = response["task_transition"]
         row.update(
             dispatch="completed",
             reward=float(response["reward"]),
@@ -476,6 +481,7 @@ def main() -> int:
     parser.add_argument("--control-fps", type=int, choices=(30, 60), default=30)
     parser.add_argument("--initial-pose", choices=("zero", "rest"), default="zero")
     parser.add_argument("--camera-backend", choices=("tiled", "standard"), default="tiled")
+    parser.add_argument("--task-evidence", action="store_true")
     parser.add_argument(
         "--matched-snapshot", type=Path, help="Exact independent PickOrange candidate snapshot"
     )
@@ -548,6 +554,7 @@ def main() -> int:
     client.control_fps = args.control_fps
     client.initial_pose = args.initial_pose
     client.camera_backend = args.camera_backend
+    client.task_evidence = args.task_evidence
     sink, ticks, engine, result = MemoryMetrics(), [], None, {}
     fresh_bootstrap_wall_s = None
     frames = [] if args.matched_snapshot is not None else None

@@ -49,6 +49,7 @@ class IsaacEnvironment:
         control_fps: int = 30,
         initial_pose: str = "zero",
         camera_backend: str = "tiled",
+        task_evidence: bool = False,
     ) -> None:
         self.control_fps = control_fps
         self.step_profiler = cProfile.Profile() if profile_steps else None
@@ -105,6 +106,12 @@ class IsaacEnvironment:
                 )
             cfg.recorders = None
             cfg.episode_length_s = episode_seconds
+            self.task_witness = None
+            if task_evidence:
+                from so101_task_evidence import NativeTaskWitness
+
+                self.task_witness = NativeTaskWitness(cfg.terminations.success.func)
+                cfg.terminations.success.func = self.task_witness
             cfg.sim.dt, cfg.decimation, cfg.sim.render_interval = 1 / 60, 60 // control_fps, 2
             for term, names in (
                 (cfg.actions.arm_action, JOINT_NAMES[:5]),
@@ -144,6 +151,7 @@ class IsaacEnvironment:
                 "joint_names": self.joint_names,
                 "camera_sources": {"top": "front", "wrist": "wrist"},
                 "camera_backend": camera_backend,
+                "task_evidence": task_evidence,
                 "front_reset_anchor": "nominal" if camera_backend == "standard" else "native_tiled",
                 "camera_config": {
                     name: {
@@ -256,6 +264,8 @@ class IsaacEnvironment:
             "truncated": timeout,
             "post_reset_observation": success or timeout,
         }
+        if self.task_witness is not None:
+            result["task_transition"] = self.task_witness.latest
         # Host wall intervals, including any CUDA waits at these boundaries;
         # not claimed to be kernel-only physics/render durations.
         result["server_timing_s"] = {
@@ -341,6 +351,7 @@ def main() -> int:
     parser.add_argument("--initial-pose", choices=("zero", "rest"), default="zero")
     parser.add_argument("--camera-backend", choices=("tiled", "standard"), default="tiled")
     parser.add_argument("--profile-steps", action="store_true")
+    parser.add_argument("--task-evidence", action="store_true")
     args = parser.parse_args()
     connection, env = Connection(args.fd), None
     try:
@@ -353,6 +364,7 @@ def main() -> int:
             control_fps=args.control_fps,
             initial_pose=args.initial_pose,
             camera_backend=args.camera_backend,
+            task_evidence=args.task_evidence,
         )
         serve(connection, env)
         return 0
