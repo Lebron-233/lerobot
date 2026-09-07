@@ -1,0 +1,100 @@
+{
+  "kind": "closed_L18_zero_added_inference_delay_full_task_development",
+  "execution_source": "40634caa63078318d06b680d7b16177daf47206a",
+  "conditions": 16,
+  "scene_seeds": [20270910, 20270911, 20270912, 20270913, 20270914, 20270915, 20270916, 20270917],
+  "policy_seeds": [3810, 3811, 3812, 3813, 3814, 3815, 3816, 3817],
+  "prompts": {
+    "existing_literal": "Grab orange and place into plate",
+    "model_card_literal": "Pick up the orange and put it in the plate"
+  },
+  "primary_endpoint": "native_three_simultaneous_oranges_plus_rest",
+  "secondary_endpoint": "first_ten_tick_slow_plate_region_occupancy",
+  "time_unit": "simulated_seconds",
+  "episode_bound_s": 120,
+  "generated_actions_per_chunk": 50,
+  "executed_actions_before_replanning": 50,
+  "initial_pose": "zero",
+  "action_contract": "feasible_v1",
+  "startup_profile": "warmed_v2",
+  "mode": "sync",
+  "forecasting": false,
+  "training": false,
+  "oracle_information": false,
+  "noise_coupling": false,
+  "realtime_qualified": false,
+  "aggregates": {
+    "existing_literal": {
+      "trials": 8,
+      "native_successes": 1,
+      "subgoal_successes": 6,
+      "technical_failures": 0,
+      "mean_restricted_native_time_s": 115.51666666666667,
+      "qualified_development": false
+    },
+    "model_card_literal": {
+      "trials": 8,
+      "native_successes": 0,
+      "subgoal_successes": 5,
+      "technical_failures": 0,
+      "mean_restricted_native_time_s": 120.0,
+      "qualified_development": false
+    }
+  },
+  "qualification_requires_native_successes": 7,
+  "qualification_requires_technical_failures": 0,
+  "qualified_profiles": [],
+  "native_successful_trial": {
+    "scene_seed": 20270915,
+    "profile": "existing_literal",
+    "completed_actions": 2524,
+    "simulated_seconds": 84.13333333333334
+  },
+  "native_box_diagnostics_not_new_endpoints": {
+    "maximum_simultaneous_occupancy_distribution": {
+      "existing_literal": {"0": 2, "1": 3, "2": 1, "3": 2},
+      "model_card_literal": {"0": 3, "1": 2, "2": 3, "3": 0}
+    },
+    "failed_native_trials_never_reaching_three_boxes": 14,
+    "failed_trial_reaching_three_boxes_earlier": {
+      "scene_seed": 20270914,
+      "profile": "existing_literal",
+      "final_box_occupancy": 2,
+      "final_rest_predicate": true
+    }
+  },
+  "accounting": {
+    "completed_conditions": 16,
+    "completed_actions": 56524,
+    "setup_actions": 480,
+    "native_successes": 1,
+    "native_timeouts": 15,
+    "technical_failures": 0,
+    "native_rule_mismatches": 0,
+    "separate_simulator_exits": 16,
+    "all_simulator_returncodes_zero": true,
+    "all_cleanup_complete": true,
+    "matched_initial_geometry_pairs": 8
+  },
+  "published_training_source_inspection": {
+    "dataset": "LightwheelAI/leisaac-pick-orange",
+    "dataset_revision": "fa6e0625d814352b8e6ee1c6d2482194e4da8ed3",
+    "checkpoint_declared_training_revision": null,
+    "exact_training_revision_identity_proven": false,
+    "episodes_read": 60,
+    "frames": 36293,
+    "first_state_median_motor": [-10.980602264404297, -47.54809379577637, 55.02510070800781, 50.07750701904297, 1.6822471618652344, 7.572469711303711],
+    "first_wrist_flex_motor_min": 43.21327209472656,
+    "first_wrist_flex_motor_max": 50.12705993652344,
+    "evaluated_zero_pose_wrist_flex_motor": 0.0,
+    "observed_first_state_medoid_episode": 9,
+    "medoid_motor_state": [-11.096244812011719, -47.54875946044922, 55.004150390625, 50.10224914550781, 0.10279083251953125, 8.447356224060059],
+    "medoid_physical_joint_degrees": [-12.2058692932129, -47.54875946044922, 47.253942871093756, 47.59713668823241, 0.16446533203125568, -0.7079081535339355],
+    "prepared_start_experiment_run": false,
+    "checkpoint_global_statistics_comparison": "tool_blocked_not_executed_not_retried"
+  },
+  "predictor_benefit_tested": false,
+  "risk_thresholds": null,
+  "unopened_student_tests": ["L10", "L15"],
+  "raw_artifact_directory": "m54l18_sync_native_capability_v1"
+}
