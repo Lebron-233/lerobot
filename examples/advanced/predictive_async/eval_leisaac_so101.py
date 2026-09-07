@@ -220,6 +220,29 @@ def prepare_engine(engine: Any, observation: dict, *, timeout: float = 180) -> N
     engine.reset()
 
 
+def prime_episode_engine(engine: Any, observation: dict, *, timeout: float = 180) -> None:
+    """Compute a fresh initial chunk at reset state before the control clock starts.
+
+    No environment step, action get, manual queue insertion or future observation
+    occurs here. The normal production worker owns this bootstrap and its metrics.
+    """
+    if engine.queue.qsize():
+        raise RuntimeError("Fresh episode priming requires an empty reset queue")
+    engine.resume()
+    engine.notify_observation(observation)
+    deadline = time.perf_counter() + timeout
+    while True:
+        if engine.failed:
+            raise RuntimeError(engine.failure_traceback)
+        with engine._request_lock:
+            busy = engine._request_in_flight or engine._pending_request is not None
+        if not busy and engine.queue.qsize():
+            return
+        if time.perf_counter() >= deadline:
+            raise TimeoutError("Fresh episode bootstrap did not finish before control start")
+        time.sleep(0.005)
+
+
 def stop_engine(engine: Any) -> None:
     engine.stop()
     worker = engine._worker
@@ -497,6 +520,7 @@ def main() -> int:
     client.initial_pose = args.initial_pose
     client.camera_backend = args.camera_backend
     sink, ticks, engine, result = MemoryMetrics(), [], None, {}
+    fresh_bootstrap_wall_s = None
     frames = [] if args.matched_snapshot is not None else None
     try:
         client.start()
@@ -524,7 +548,9 @@ def main() -> int:
             # mode. Seed the measured policy stream only after both are over.
             set_seed(args.policy_seed)
         if engine is not None:
-            engine.resume()
+            priming_started = time.perf_counter()
+            prime_episode_engine(engine, decode_observation(packet))
+            fresh_bootstrap_wall_s = time.perf_counter() - priming_started
         result = drive_episode(
             client,
             packet,
@@ -556,6 +582,7 @@ def main() -> int:
             realtime_required=realtime,
             metrics_closed=sink.closed,
             subprocess_returncode=None if client.process is None else client.process.returncode,
+            fresh_episode_bootstrap_wall_s=fresh_bootstrap_wall_s,
         )
         if "candidate" in manifest:
             result["candidate"] = manifest["candidate"]

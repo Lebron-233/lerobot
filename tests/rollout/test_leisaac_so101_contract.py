@@ -27,6 +27,7 @@ from eval_leisaac_so101 import (
     decode_observation,
     drive_episode,
     prepare_engine,
+    prime_episode_engine,
     stop_engine,
 )
 from leisaac_so101_contract import (
@@ -471,9 +472,8 @@ def test_production_predicted_prefix_late_discard_and_joined_reset():
     )
     try:
         prepare_engine(engine, raw, timeout=10)
-        engine.resume()
-        engine.notify_observation(raw)
-        wait(lambda: engine.queue.qsize() == 50 and not engine._request_in_flight)
+        prime_episode_engine(engine, raw, timeout=10)
+        assert engine.queue.qsize() == 50 and not engine._request_in_flight
         assert engine.get_action(None)[0].item() == pytest.approx(0.1)
         policy.block_future = True
         engine.notify_observation(raw)

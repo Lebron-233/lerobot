@@ -37,6 +37,7 @@ def candidate_manifest(snapshot: Path | None = None, *, execution_steps: int = 5
         "statistics": "checkpoint's own state/action mean/std",
         "task": TASK,
         "predictor": None,
+        "model_cpu_threads": 1,
         "generated_chunk_steps": 50,
         "sync_executed_chunk_steps": execution_steps,
         "sync_autocast": {
@@ -105,6 +106,10 @@ def load_matched_runtime(snapshot: Path, *, device: str, execution_steps: int = 
     from lerobot.configs.policies import PreTrainedConfig
     from lerobot.policies.factory import make_pre_post_processors
     from lerobot.policies.smolvla.modeling_smolvla import SmolVLAPolicy
+
+    # This GPU policy shares six host cores with the simulator/renderer. Small
+    # CPU tensor operations should not create another full host worker pool.
+    torch.set_num_threads(1)
 
     if snapshot.name not in CANDIDATES:
         raise ValueError("Use the exact task-matched HF snapshot, not a different candidate")

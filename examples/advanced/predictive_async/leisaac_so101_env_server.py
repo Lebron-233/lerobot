@@ -120,6 +120,11 @@ class IsaacEnvironment:
                     camera.class_type = Camera
             self.env = gym.make(TASK_ID, cfg=cfg).unwrapped
             self.torch = torch
+            self.front_reset_anchor = None
+            if camera_backend == "standard":
+                self.front_reset_anchor = tuple(
+                    value.clone() for value in self.env.scene["front"]._view.get_world_poses()
+                )
             self.joint_names = list(self.env.scene["robot"].data.joint_names)
             joint_indices(self.joint_names)
             if set(self.env.termination_manager.active_terms) != {"success", "time_out"}:
@@ -139,6 +144,7 @@ class IsaacEnvironment:
                 "joint_names": self.joint_names,
                 "camera_sources": {"top": "front", "wrist": "wrist"},
                 "camera_backend": camera_backend,
+                "front_reset_anchor": "nominal" if camera_backend == "standard" else "native_tiled",
                 "camera_config": {
                     name: {
                         "prim_path": getattr(cfg.scene, name).prim_path,
@@ -217,6 +223,8 @@ class IsaacEnvironment:
         return packet
 
     def reset(self, seed: int, episode_id: int) -> dict:
+        if self.front_reset_anchor is not None:
+            self.env.scene["front"].set_world_poses(*self.front_reset_anchor, convention="opengl")
         obs, _ = self.env.reset(seed=seed)
         return self.packet(obs, episode_id, 0)
 

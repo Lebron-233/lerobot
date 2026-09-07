@@ -75,3 +75,31 @@ standard-camera reset seam. The first reset test covered tiled cameras only;
 `Camera.reset` refreshes pose data unlike `TiledCamera.reset`, so the original
 same-seed evidence must not be generalized across the two backends. Run the
 same three-reset diagnostic with standard cameras before any remedy.
+
+## Standard-camera reset reproduced; fresh-start correction
+
+`m54l5_reset_drift_standard_v1` at `a4ba2ae2` measured front-camera displacement
+of **0.0163003865m** and **0.0326007730m** on resets2/3 relative to reset1, with
+identical seed and object positions. Quaternion also changed; wrist did not.
+The earlier tiled result remains valid and is not evidence about this backend.
+
+For standard Camera only, save the nominal front world transform immediately
+after environment construction and restore it before each explicit env reset.
+Upstream randomization still applies once with the requested seed; objects,
+camera range, physics and task predicate stay unchanged. Verify three real
+same-seed resets again before the next integration run. No patch to the upstream
+source or the already-stable tiled backend is needed.
+
+The runner also discarded its warmed startup queue for the final episode reset,
+then started the control clock before computing a fresh initial chunk. Correct
+this startup boundary: after the final reset and measured policy seed, obtain
+one new chunk through public `notify_observation` and the real worker, without
+advancing the environment or consuming queue actions; then start control.
+Log this bootstrap's wall time separately. This is not removal of measured late
+events or a manually seeded queue. Fix the matched GPU policy's CPU tensor pool
+at one thread, recorded in candidate runtime metadata, to avoid host-pool contention.
+
+Next run is a bounded **600 measured ticks** engineering check under these
+explicit startup/runtime changes, same L5 seed pair and original timing/cap/
+whole-discard rules. It is not a completed120-second task episode; a step-limit
+finish remains censored. Keep the first two-tick failure unchanged.

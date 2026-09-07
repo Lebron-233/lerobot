@@ -150,3 +150,31 @@ def test_official_rest_pose_centers_respect_unchanged_transport_limits():
 
     target = list(REST_POSE_DEG[:5]) + [0.0]
     assert action_to_radians(target) == pytest.approx([math.radians(x) for x in REST_POSE_DEG])
+
+
+def test_standard_camera_reset_restores_nominal_pose_before_upstream_randomization():
+    from leisaac_so101_env_server import IsaacEnvironment
+
+    class Camera:
+        def set_world_poses(self, pos, quat, *, convention):
+            assert convention == "opengl"
+            self.pos, self.quat = pos.clone(), quat.clone()
+
+    camera = Camera()
+    env = IsaacEnvironment.__new__(IsaacEnvironment)
+    env.front_reset_anchor = (torch.zeros(1, 3), torch.tensor([[1.0, 0, 0, 0]]))
+
+    class NativeEnv:
+        scene = {"front": camera}
+
+        def reset(self, *, seed):
+            assert seed == 123
+            camera.pos += 0.01
+            return {}, {}
+
+    env.env = NativeEnv()
+    env.packet = lambda obs, episode, step: camera.pos.clone()
+    first = env.reset(123, 1)
+    second = env.reset(123, 2)
+    torch.testing.assert_close(first, second)
+    torch.testing.assert_close(env.front_reset_anchor[0], torch.zeros(1, 3))
