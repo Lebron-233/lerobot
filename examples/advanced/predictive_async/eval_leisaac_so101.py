@@ -266,6 +266,7 @@ def drive_episode(
     sync_action: Any = None,
     realtime: bool = True,
     frames: list | None = None,
+    stop_after_placement: bool = False,
 ) -> dict:
     """One notify/get/real step per tick; underflow holds the previous sent target."""
     from lerobot.utils.cycle_timer import CycleTimer
@@ -277,6 +278,11 @@ def drive_episode(
     timer = CycleTimer(FPS, records_data=False)
     origin = time.perf_counter()
     total_reward = 0.0
+    placement_tracker = None
+    if stop_after_placement:
+        from so101_task_evidence import PlacementTracker
+
+        placement_tracker = PlacementTracker()
     for index in range(max_steps):
         started = time.perf_counter()
         # Pace and judge the same fixed slots; neither action indices nor
@@ -340,6 +346,12 @@ def drive_episode(
             raise ContractError("Automatic reset provenance does not match returned termination flags")
         successor = response["observation"]
         validate_step(packet, successor, terminal=terminal)
+        subgoal_reached = False
+        if placement_tracker is not None:
+            witness = row.get("task_transition_after_action")
+            if witness is None:
+                raise ContractError("First-placement protocol requires native pre-reset evidence")
+            subgoal_reached = placement_tracker.update(witness, index) >= 1
         row["finished_at_s"] = time.perf_counter()
         row["work_s"] = row["finished_at_s"] - started
         total_reward += row["reward"]
@@ -355,6 +367,15 @@ def drive_episode(
                 "reward": total_reward,
             }
         packet = successor
+        if subgoal_reached:
+            return {
+                "status": "task_subgoal_reached",
+                "success": None,
+                "subtask_success": True,
+                "timeout": False,
+                "steps": index + 1,
+                "reward": total_reward,
+            }
         if realtime:
             timer.wait(deadline=origin + (index + 1) / FPS)
     return {
@@ -498,6 +519,7 @@ def main() -> int:
     parser.add_argument("--camera-backend", choices=("tiled", "standard"), default="tiled")
     parser.add_argument("--task-evidence", action="store_true")
     parser.add_argument("--action-contract", choices=("strict", "feasible_v1"), default="strict")
+    parser.add_argument("--stop-after-first-placement", action="store_true")
     parser.add_argument(
         "--matched-snapshot", type=Path, help="Exact independent PickOrange candidate snapshot"
     )
@@ -505,6 +527,10 @@ def main() -> int:
         "--sim-device", choices=("cpu", "cuda:0"), help="Simulation compute device; model device is unchanged"
     )
     args = parser.parse_args()
+    if args.stop_after_first_placement and (
+        not args.task_evidence or args.action_contract != "feasible_v1" or args.control_fps != 30
+    ):
+        parser.error("The first-placement task requires task evidence and the 30Hz feasible-action contract")
     if args.action_contract != "strict":
         from leisaac_so101_matched import WSAGI_REVISION
 
@@ -619,6 +645,7 @@ def main() -> int:
             sync_action=sync_action,
             realtime=realtime,
             frames=frames,
+            stop_after_placement=args.stop_after_first_placement,
         )
     except Exception:
         result = {"status": "technical_failure", "error": traceback.format_exc(), "success": None}
@@ -646,6 +673,9 @@ def main() -> int:
         if "candidate" in manifest:
             result["candidate"] = manifest["candidate"]
         result["action_execution_contract"] = args.action_contract
+        result["task_contract"] = (
+            "pickorange_first_settled_v1" if args.stop_after_first_placement else "native_pickorange"
+        )
         projector = getattr(engine if engine is not None else sync_action, "action_projector", None)
         if projector is not None:
             result["projection_records"] = projector.records

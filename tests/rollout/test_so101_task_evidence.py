@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 from types import SimpleNamespace
 
+import pytest
 import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "examples/advanced/predictive_async"))
@@ -68,3 +69,38 @@ def test_native_result_unmodified_and_snapshot_precedes_reset():
     env.scene["Orange001"].data.root_pos_w.zero_()
     assert monitor.latest == captured and len(calls) == 1
     assert monitor.latest["native_success"]
+
+
+@pytest.mark.parametrize("stop", [False, True])
+def test_subgoal_stop_does_not_invent_native_task_success(stop):
+    from eval_leisaac_so101 import drive_episode
+    from leisaac_so101_contract import IMAGE_BYTES, JOINT_NAMES, observation_packet
+
+    def packet(step):
+        return observation_packet(
+            measured=[0.0] * 6,
+            actual_names=JOINT_NAMES,
+            images={name: bytes(IMAGE_BYTES) for name in ("front", "wrist")},
+            camera_frames={"front": step + 1, "wrist": step + 1},
+            episode_id=1,
+            step=step,
+            snapshot_ready_at_s=0.0,
+        )
+
+    class Client:
+        def step(self, previous, action):
+            return {
+                "observation": packet(previous["step"] + 1),
+                "reward": 0.0,
+                "terminated": False,
+                "truncated": False,
+                "post_reset_observation": False,
+                "task_transition": witness(),
+            }
+
+    result = drive_episode(
+        Client(), packet(0), max_steps=12, ticks=[], realtime=False, stop_after_placement=stop
+    )
+    assert result["success"] is None
+    assert result["steps"] == (10 if stop else 12)
+    assert result["status"] == ("task_subgoal_reached" if stop else "censored_step_limit")
