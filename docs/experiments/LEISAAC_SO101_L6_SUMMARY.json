@@ -1,0 +1,82 @@
+{
+  "stage": "L6 independent SO101 forecasting pilot",
+  "training_test_source": "40e00e1654779d5e6bfec8f2f06ab57a6c697ff1",
+  "benchmark_source": "8bb16e8a12e2cdf1705a0e1c9b31e030d85f5401",
+  "policy_repo": "wsagi/SmolVLA-PickOrange",
+  "policy_revision": "c8c3318dba152b0ba671ff07b4314418d5aa4b4a",
+  "predictor_parameters": 273824,
+  "selected_epoch": 3,
+  "trained_epochs": 20,
+  "dataset": {
+    "cached_executed_actions": 4200,
+    "observations": 4207,
+    "train_episodes": [0, 1, 2, 3],
+    "validation_episodes": [4],
+    "test_episodes": [5, 6],
+    "train_pairs": 17856,
+    "validation_pairs": 4464,
+    "test_pairs": 8928,
+    "test_evaluations": 1,
+    "future_chunk_action_leakage": false,
+    "complete_task_success_demonstrations": false,
+    "original_collection_failure_preserved": true,
+    "same_seed_bitwise_trajectory_reproducibility_claimed": false
+  },
+  "test_latent": {
+    "identity_smooth_l1": 28.026378732909013,
+    "predicted_smooth_l1": 27.388519765121536,
+    "smooth_l1_reduction_percent": 2.275923599927998,
+    "identity_cosine_distance": 0.0473214077977522,
+    "predicted_cosine_distance": 0.04497831444037781,
+    "cosine_distance_reduction_percent": 4.951444740166188,
+    "episode_5_smooth_l1_reduction_percent": 1.9780501148114915,
+    "episode_6_smooth_l1_reduction_percent": 2.5556944036443485,
+    "positive_episode_delay_cells": 16,
+    "total_episode_delay_cells": 16,
+    "by_delay_reduction_percent": {
+      "1": 0.6113858812866746,
+      "2": 1.13741523283033,
+      "3": 1.667330455539473,
+      "4": 2.1309141485154726,
+      "5": 2.5224864267823,
+      "6": 2.842746828819931,
+      "7": 3.123652600404825,
+      "8": 3.4458175139716607
+    }
+  },
+  "offline_action_consistency": {
+    "reference": "actual future visual tokens with current state and paired flow noise",
+    "cases": 18,
+    "improved_cases": 9,
+    "worsened_cases": 9,
+    "identity_action_l1": 0.19152497086260054,
+    "predicted_action_l1": 0.17277533664471573,
+    "action_l1_reduction_percent": 9.78965517312922,
+    "episode_5_reduction_percent": 20.96824218253782,
+    "episode_6_reduction_percent": -5.9228656815430325,
+    "future_state_used": false,
+    "task_success_rate_gain_claimed": false
+  },
+  "standalone_latency": {
+    "warmups_per_path": 50,
+    "measured_per_path": 200,
+    "full_rgb_policy_p90_ms": 142.45361839421093,
+    "predictor_forward_p90_ms": 1.6738719190470874,
+    "predictor_to_full_p90_percent": 1.1750294151286442,
+    "simulator_concurrent": false,
+    "runtime_go": false
+  },
+  "real_identity_engineering_trial": {
+    "source": "5ab75cc705064df7b3e797238ead8cd48b91a1b2",
+    "executed_control_ticks": 221,
+    "planned_requests": 8,
+    "underflows": 0,
+    "inference_deadline_misses": 0,
+    "status": "technical_failure",
+    "reason": "lost_control_slot_during_tick"
+  },
+  "old_scientific_results_unchanged": true,
+  "risk_thresholds": null,
+  "task_level_predictive_benefit_established": false,
+  "new_predictor_production_deployed": false
+}
