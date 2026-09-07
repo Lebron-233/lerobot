@@ -299,7 +299,7 @@ def main() -> int:
     parser.add_argument("--assets-root", type=Path, required=True)
     parser.add_argument("--leisaac-root", type=Path, required=True)
     parser.add_argument("--device", default="cuda:0")
-    parser.add_argument("--episode-seconds", type=int, choices=(25, 60), default=25)
+    parser.add_argument("--episode-seconds", type=int, choices=(25, 60, 120), default=25)
     parser.add_argument("--profile-steps", action="store_true")
     args = parser.parse_args()
     connection, env = Connection(args.fd), None

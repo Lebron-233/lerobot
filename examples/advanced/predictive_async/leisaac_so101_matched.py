@@ -11,9 +11,11 @@ CANDIDATE_ID = "leisaac_so101_pickorange_edge_v1"
 POLICY_REPO = "edge-inference/smolvla-so101-pick-orange"
 POLICY_REVISION = "71cf4a9d35ce317f6706efe1a9f9d4cbb2b8fb4d"
 SINGLE_RANK_REVISION = "7f19c683128ed07c31240ea2b29fe61afcb1755b"
+WSAGI_REVISION = "c8c3318dba152b0ba671ff07b4314418d5aa4b4a"
 CANDIDATES = {
     POLICY_REVISION: CANDIDATE_ID,
     SINGLE_RANK_REVISION: "leisaac_so101_pickorange_single_rank_v1",
+    WSAGI_REVISION: "leisaac_so101_pickorange_wsagi15k_v1",
 }
 VLM_REPO = "HuggingFaceTB/SmolVLM2-500M-Video-Instruct"
 VLM_REVISION = "7b375e1b73b11138ff12fe22c8f2822d8fe03467"
@@ -27,7 +29,7 @@ def candidate_manifest(snapshot: Path | None = None) -> dict:
         raise ValueError("Unknown task-matched candidate revision")
     return {
         "id": CANDIDATES[revision],
-        "policy_repo": POLICY_REPO,
+        "policy_repo": "wsagi/SmolVLA-PickOrange" if revision == WSAGI_REVISION else POLICY_REPO,
         "policy_revision": revision,
         "vlm_config_tokenizer_revision": VLM_REVISION,
         "weight_source": "entire task checkpoint; no replacement VLM weights",
@@ -35,7 +37,10 @@ def candidate_manifest(snapshot: Path | None = None) -> dict:
         "statistics": "checkpoint's own state/action mean/std",
         "task": TASK,
         "predictor": None,
-        "sync_autocast": "checkpoint use_amp=true; native torch.autocast CUDA default float16",
+        "sync_autocast": {
+            "enabled": revision != WSAGI_REVISION,
+            "cuda_dtype": "float16" if revision != WSAGI_REVISION else None,
+        },
     }
 
 
@@ -108,8 +113,10 @@ def load_matched_runtime(snapshot: Path, *, device: str):
         raise ValueError("Task-matched state/action shape differs")
     if (config.chunk_size, config.n_action_steps, config.num_steps, config.max_state_dim) != (50, 50, 10, 32):
         raise ValueError("Task-matched inference configuration differs")
-    if config.load_vlm_weights:
-        raise ValueError("This candidate must load all weights from its task checkpoint")
+    if config.load_vlm_weights != (snapshot.name == WSAGI_REVISION):
+        raise ValueError("Candidate VLM initialization configuration differs from its registered snapshot")
+    if config.use_amp != (snapshot.name != WSAGI_REVISION):
+        raise ValueError("Candidate inference precision differs from its registered snapshot")
     vlm = snapshot_download(VLM_REPO, revision=VLM_REVISION, local_files_only=True)
     config.vlm_model_name = vlm
     config.pretrained_path = snapshot

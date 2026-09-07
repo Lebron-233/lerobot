@@ -13,6 +13,7 @@ from leisaac_so101_contract import action_to_radians
 from leisaac_so101_matched import (
     POLICY_REVISION,
     SINGLE_RANK_REVISION,
+    WSAGI_REVISION,
     MotorStatePreprocessor,
     PhysicalActionPostprocessor,
     candidate_manifest,
@@ -28,6 +29,10 @@ def test_candidate_variants_have_distinct_exact_manifest_identities():
     assert main["policy_revision"] == POLICY_REVISION
     assert single["policy_revision"] == SINGLE_RANK_REVISION
     assert main["predictor"] is None and single["predictor"] is None
+    wsagi = candidate_manifest(Path(WSAGI_REVISION))
+    assert wsagi["policy_repo"] == "wsagi/SmolVLA-PickOrange"
+    assert wsagi["sync_autocast"]["enabled"] is False
+    assert main["sync_autocast"]["enabled"] is True
     with pytest.raises(ValueError, match="Unknown"):
         candidate_manifest(Path("not-registered"))
 

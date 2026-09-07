@@ -137,3 +137,22 @@ decoded camera views and teacher-forced first actions through the implemented
 native processor/coordinate path. This is an input/weight sanity diagnostic,
 not a test score, not training, and not access to the previous B4 held-out cache.
 It cannot by itself prove checkpoint quality or complete simulator equivalence.
+
+## Third and final published candidate in this development qualification
+
+Register the previously metadata-inspected
+`wsagi/SmolVLA-PickOrange@c8c3318dba152b0ba671ff07b4314418d5aa4b4a`, separate id
+`leisaac_so101_pickorange_wsagi15k_v1`. Preserve its actual serialized inference
+configuration: use_amp=false, load_vlm_weights=true, prefix_length=0,
+num_expert_layers=0, pad_language_to=max_length. The current implementation
+explicitly handles nonpositive num_expert_layers by using the VLM layer count;
+prefix_length=0 adds no extra padding. These fields are not silently rewritten
+to match the edge candidates. Load its entire final task checkpoint strictly,
+its own processors, and the pinned local VLM initializer/config/tokenizer.
+
+Its model card recommends a **120-second** evaluation budget. Pre-register one
+120 s / 3600-step development diagnostic on seed 20260911/policy 1801, CPU PhysX,
+with training's original task text. This is not a comparison of equal-duration
+success rates against the 60-second edge runs, nor a replication of the publisher's
+different prompts/benchmark. No fourth published checkpoint will be selected in
+this qualification: subsequent work follows concrete interface/dynamics evidence.

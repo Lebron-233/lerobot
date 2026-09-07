@@ -421,7 +421,7 @@ def main() -> int:
     parser.add_argument("--max-steps", type=int, required=True)
     parser.add_argument("--predictor", type=Path)
     parser.add_argument("--device", default="cuda:0")
-    parser.add_argument("--episode-seconds", type=int, choices=(25, 60), default=25)
+    parser.add_argument("--episode-seconds", type=int, choices=(25, 60, 120), default=25)
     parser.add_argument(
         "--matched-snapshot", type=Path, help="Exact independent PickOrange candidate snapshot"
     )
@@ -432,7 +432,7 @@ def main() -> int:
     environment_only = args.mode in ("smoke", "env-profile")
     realtime = args.mode not in ("sync", "env-profile")
     if args.episode_seconds != 25 and args.matched_snapshot is None:
-        parser.error("The 60-second development protocol is exclusive to the independent matched candidate")
+        parser.error("Extended development protocols are exclusive to independent matched candidates")
     if not 1 <= args.max_steps <= (30 if environment_only else args.episode_seconds * int(FPS)):
         parser.error("Step bound exceeds the selected environment-only / episode protocol")
     if args.mode == "predicted" and args.predictor is None:
