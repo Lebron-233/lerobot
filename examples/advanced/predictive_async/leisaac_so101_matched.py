@@ -145,4 +145,13 @@ def load_matched_runtime(snapshot: Path, *, device: str, execution_steps: int = 
             },
         },
     )
-    return policy, MotorStatePreprocessor(pre), PhysicalActionPostprocessor(post)
+    preprocessor, postprocessor = MotorStatePreprocessor(pre), PhysicalActionPostprocessor(post)
+    # A new deployment association, not the frozen SO100 identity.
+    policy._so101_matched_candidate = {
+        "policy_revision": snapshot.name,
+        "vlm_config_tokenizer_revision": VLM_REVISION,
+        "preprocessor": preprocessor,
+        "postprocessor": postprocessor,
+        "execution_steps": execution_steps,
+    }
+    return policy, preprocessor, postprocessor

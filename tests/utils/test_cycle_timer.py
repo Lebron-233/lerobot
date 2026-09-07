@@ -69,6 +69,31 @@ def test_cycle_timer_paces_ticks_to_base_fps(caplog, clock):
     assert not _timer_warnings(caplog)
 
 
+def test_absolute_deadline_repays_bounded_lateness_without_skipping_ticks(clock):
+    timer = CycleTimer(30.0)
+    origin, starts = clock.now, []
+    for index, work in enumerate((0.040, 0.010, 0.020)):
+        starts.append(clock.now - origin)
+        timer.tick()
+        clock.advance(work)
+        timer.wait(deadline=origin + (index + 1) / 30)
+    assert starts == pytest.approx([0.0, 0.040, 2 / 30])
+    assert clock.now - origin == pytest.approx(0.1)
+    assert timer._window.ticks == 3
+    assert timer._window.slot_overruns == 1  # Late work was not removed from telemetry.
+
+
+def test_absolute_deadline_does_not_hide_a_whole_lost_slot(clock):
+    timer = CycleTimer(30.0)
+    origin = clock.now
+    timer.tick()
+    clock.advance(0.080)
+    timer.wait(deadline=origin + 1 / 30)
+    assert clock.now - origin == pytest.approx(0.080)
+    assert clock.now - (origin + 1 / 30) > 1 / 30
+    assert timer._window.slot_overruns == 1
+
+
 def test_cycle_timer_spaces_interpolated_commands_evenly(clock):
     # Interpolation exists to smooth motion, so every tick must be spaced by
     # 1/(fps × multiplier) — not batched at the start of each cycle.

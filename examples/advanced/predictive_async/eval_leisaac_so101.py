@@ -276,8 +276,8 @@ def drive_episode(
     total_reward = 0.0
     for index in range(max_steps):
         started = time.perf_counter()
-        # This observes missed slots against a fixed origin; pacing itself uses
-        # CycleTimer. Neither get indices nor simulation time are fast-forwarded.
+        # Pace and judge the same fixed slots; neither action indices nor
+        # simulation time are fast-forwarded after bounded late work.
         if realtime and started - (origin + index / FPS) >= 1 / FPS:
             raise ContractError("lost_control_slot_before_tick")
         timer.tick()
@@ -291,6 +291,8 @@ def drive_episode(
             "control_fps": packet.get("control_fps", 30),
             "sim_time_s": packet["sim_time_s"],
             "started_at_s": started,
+            "scheduled_start_s": origin + index / FPS,
+            "start_lateness_s": started - (origin + index / FPS),
             "snapshot_ready_at_s": packet["snapshot_ready_at_s"],
             "received_at_s": packet.get("received_at_s"),
             "state": [raw[k] for k in SCALAR_KEYS],
@@ -349,7 +351,7 @@ def drive_episode(
             }
         packet = successor
         if realtime:
-            timer.wait()
+            timer.wait(deadline=origin + (index + 1) / FPS)
     return {
         "status": "censored_step_limit",
         "success": None,
@@ -395,8 +397,8 @@ def load_runtime(
     else:
         from leisaac_so101_matched import TASK as MATCHED_TASK, load_matched_runtime
 
-        if mode not in ("sync", "identity"):
-            raise ValueError("Task-matched predictor has not been qualified; old predictor is incompatible")
+        if mode not in ("sync", "identity", "predicted"):
+            raise ValueError("Unsupported task-matched inference mode")
         task = MATCHED_TASK
         policy, preprocessor, postprocessor = load_matched_runtime(
             matched_snapshot, device=device, execution_steps=sync_execution_steps
@@ -421,10 +423,16 @@ def load_runtime(
             return result.detach().cpu().reshape(-1).tolist()
 
         return None, action
-    predictor = (
-        load_frozen_future_latent_predictor(predictor_path, device=device) if mode == "predicted" else None
-    )
-    engine = PredictiveAsyncInferenceEngine(
+    engine_class = PredictiveAsyncInferenceEngine
+    predictor = None
+    if matched_snapshot is not None and mode == "predicted":
+        from leisaac_so101_predicted import SO101PredictiveAsyncInferenceEngine, load_so101_l6_predictor
+
+        predictor = load_so101_l6_predictor(predictor_path, device=device)
+        engine_class = SO101PredictiveAsyncInferenceEngine
+    elif mode == "predicted":
+        predictor = load_frozen_future_latent_predictor(predictor_path, device=device)
+    engine = engine_class(
         policy=policy,
         preprocessor=preprocessor,
         postprocessor=postprocessor,
@@ -487,8 +495,19 @@ def main() -> int:
         parser.error("Step bound exceeds the selected environment-only / episode protocol")
     if args.mode == "predicted" and args.predictor is None:
         parser.error("predicted requires the frozen portable --predictor")
-    if args.matched_snapshot is not None and args.mode not in ("sync", "identity"):
-        parser.error("Task-matched candidate supports sync/identity only; no qualified predictor yet")
+    if args.matched_snapshot is not None and args.mode not in ("sync", "identity", "predicted"):
+        parser.error("Task-matched candidate supports sync/identity/predicted only")
+    if args.matched_snapshot is not None and args.mode == "predicted":
+        from leisaac_so101_matched import WSAGI_REVISION
+
+        if (
+            args.matched_snapshot.name != WSAGI_REVISION
+            or args.sim_device != "cpu"
+            or args.camera_backend != "standard"
+            or args.initial_pose != "zero"
+            or args.control_fps != 30
+        ):
+            parser.error("L7 predicted requires WSAGI, CPU PhysX, standard cameras, zero start and 30 Hz")
     if args.sync_execution_steps != 50 and (args.matched_snapshot is None or args.mode != "sync"):
         parser.error("Shortened synchronous execution is a matched-candidate development protocol only")
     root = Path(__file__).resolve().parents[3]
@@ -512,6 +531,16 @@ def main() -> int:
         manifest["candidate"] = candidate_manifest(
             args.matched_snapshot, execution_steps=args.sync_execution_steps
         )
+        if args.mode == "predicted":
+            from leisaac_so101_predicted import PREDICTOR_ID, SELECTED_EPOCH, TRAINING_SOURCE
+
+            manifest["candidate"]["predictor"] = {
+                "id": PREDICTOR_ID,
+                "path": str(args.predictor),
+                "training_source": TRAINING_SOURCE,
+                "selected_epoch": SELECTED_EPOCH,
+            }
+    manifest["pacing"] = "absolute_CycleTimer_deadline_same_origin_as_lost_slot_checks"
     (args.output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     client = EnvClient(args.sim_python, args.assets_root, args.leisaac_root, args.sim_device or args.device)
     client.profile_steps = args.mode == "env-profile"
@@ -588,6 +617,8 @@ def main() -> int:
             result["candidate"] = manifest["candidate"]
         if engine is not None:
             result["engine_stats"] = asdict(engine.stats)
+            if args.matched_snapshot is not None and args.mode == "predicted":
+                result["loaded_predictor"] = engine._future_latent_predictor._so101_l6_binding
         if client.profile_steps:
             result["step_profile"] = client.step_profile
         # Control stopped, policy worker joined, sink closed, simulator exited.

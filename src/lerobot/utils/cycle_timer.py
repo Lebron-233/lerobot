@@ -350,12 +350,17 @@ class CycleTimer:
             self._cycle_start = self._tick_start
             self._ticks_done = 0
 
-    def wait(self) -> None:
+    def wait(self, *, deadline: float | None = None) -> None:
         """Sleep until this tick's deadline.  Call at the bottom of the loop body.
 
         A group of ``multiplier`` ticks whose work exceeds the ``1/fps`` budget
         means the policy/recording cadence cannot be held — the only case that
         warns.
+
+        ``deadline`` optionally supplies an absolute ``time.perf_counter`` time.
+        This lets a fixed-slot controller repay bounded lateness on its next
+        shorter tick without changing tick counts or hiding measured overruns.
+        Callers that omit it retain the cycle-relative pacing behavior.
         """
         now = time.perf_counter()
         if self._cycle_start is None or self._tick_start is None:
@@ -376,7 +381,8 @@ class CycleTimer:
         if tick_dt > self.tick_interval:
             stats.slot_overruns += 1
 
-        deadline = self._cycle_start + self._ticks_done * self.tick_interval
+        if deadline is None:
+            deadline = self._cycle_start + self._ticks_done * self.tick_interval
         if self._ticks_done >= self.multiplier:
             self._cycle_start = None
 

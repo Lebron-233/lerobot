@@ -116,7 +116,9 @@ class _InferenceRequest:
 class PredictiveAsyncInferenceEngine(InferenceEngine):
     """Single-worker predictive asynchronous backend for SmolVLA.
 
-    ``predicted`` accepts only the frozen candidate and its processor instances.
+    By default ``predicted`` accepts only the frozen candidate and processors.
+    A separately qualified deployment may specialize candidate validation while
+    retaining this exact worker, delay planner, queue and residual insertion.
     ``oracle`` is deliberately offline-only.
     """
 
@@ -161,6 +163,7 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
             raise ValueError(f"Unsupported fallback_mode: {fallback_mode!r}")
         if context_mode == "oracle":
             raise ValueError("context_mode='oracle' is offline-only and cannot be used by live rollout")
+        self._prediction_camera_keys = POLICY_CAMERA_KEYS
         if context_mode == "predicted":
             if future_latent_predictor is None:
                 raise ValueError("context_mode='predicted' requires a future_latent_predictor")
@@ -168,7 +171,9 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
                 raise ValueError(
                     "predicted context requires 1 <= min_prediction_delay <= max_prediction_delay <= 8"
                 )
-            _validate_frozen_candidate(policy, preprocessor, postprocessor)
+            self._prediction_camera_keys = self._validate_prediction_candidate(
+                policy, preprocessor, postprocessor, future_latent_predictor
+            )
             if not math.isclose(fps, 30.0):
                 raise ValueError("The frozen future-latent candidate requires fps=30")
             state_feature = hw_features.get("observation.state", {})
@@ -266,6 +271,13 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
         self._startup_probe_record: dict[str, Any] | None = None
         if not use_torch_compile and self._startup_phase is None:
             self._ready_event.set()
+
+    def _validate_prediction_candidate(
+        self, policy: Any, preprocessor: Any, postprocessor: Any, predictor: Any
+    ) -> tuple[str, ...]:
+        """Default binding stays frozen; independent deployments must validate theirs."""
+        _validate_frozen_candidate(policy, preprocessor, postprocessor)
+        return POLICY_CAMERA_KEYS
 
     @property
     def queue(self) -> ScheduledActionQueue:
@@ -986,9 +998,14 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
                     with self._record_metrics_phase("vision_encode", metrics, cuda_events):
                         if predicted_request and {
                             key for key in batch if key.startswith("observation.images.")
-                        } != set(POLICY_CAMERA_KEYS):
+                        } != set(self._prediction_camera_keys):
                             raise ValueError(
-                                "A predicted planned observation requires exactly camera1 and camera2"
+                                "A predicted planned observation requires exactly "
+                                + (
+                                    "camera1 and camera2"
+                                    if self._prediction_camera_keys == POLICY_CAMERA_KEYS
+                                    else str(self._prediction_camera_keys)
+                                )
                             )
                         images, image_masks = token_policy.prepare_images(batch)
                         if predicted_request and (len(images) != 2 or len(image_masks) != 2):
