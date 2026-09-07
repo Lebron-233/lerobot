@@ -398,6 +398,7 @@ def load_runtime(
     matched_snapshot: Path | None = None,
     sync_execution_steps: int = 50,
     action_contract: str = "strict",
+    startup_profile: str = "native",
 ):
     import torch
     from huggingface_hub import snapshot_download
@@ -466,6 +467,11 @@ def load_runtime(
         engine_class = SO101PredictiveAsyncInferenceEngine
     elif mode == "predicted":
         predictor = load_frozen_future_latent_predictor(predictor_path, device=device)
+    predictor_warmup = None
+    if startup_profile == "warmed_v2" and predictor is not None:
+        from so101_startup_preparation import warm_predictor_once
+
+        predictor_warmup = warm_predictor_once(policy, preprocessor, predictor, raw, task, device)
     projection_arguments = {}
     if projector is not None:
         from so101_feasible_actions import SO101FeasibleAsyncEngine
@@ -495,6 +501,7 @@ def load_runtime(
         fallback_mode="identity",
         metrics_sink=sink,
     )
+    engine.predictor_warmup = predictor_warmup
     return engine, None
 
 
@@ -520,6 +527,7 @@ def main() -> int:
     parser.add_argument("--task-evidence", action="store_true")
     parser.add_argument("--action-contract", choices=("strict", "feasible_v1"), default="strict")
     parser.add_argument("--stop-after-first-placement", action="store_true")
+    parser.add_argument("--startup-profile", choices=("native", "warmed_v2"), default="native")
     parser.add_argument(
         "--matched-snapshot", type=Path, help="Exact independent PickOrange candidate snapshot"
     )
@@ -527,6 +535,8 @@ def main() -> int:
         "--sim-device", choices=("cpu", "cuda:0"), help="Simulation compute device; model device is unchanged"
     )
     args = parser.parse_args()
+    if args.startup_profile == "warmed_v2" and args.action_contract != "feasible_v1":
+        parser.error("Warmed-v2 is exclusive to the independently registered feasible-action protocol")
     if args.stop_after_first_placement and (
         not args.task_evidence or args.action_contract != "feasible_v1" or args.control_fps != 30
     ):
@@ -605,6 +615,7 @@ def main() -> int:
     sink, ticks, engine, result = MemoryMetrics(), [], None, {}
     fresh_bootstrap_wall_s = None
     sync_action = None
+    setup_rows = []
     frames = [] if args.matched_snapshot is not None else None
     try:
         client.start()
@@ -620,11 +631,17 @@ def main() -> int:
                 matched_snapshot=args.matched_snapshot,
                 sync_execution_steps=args.sync_execution_steps,
                 action_contract=args.action_contract,
+                startup_profile=args.startup_profile,
             )
         else:
             sync_action = None
         if engine is not None:
             prepare_engine(engine, decode_observation(packet))
+        if args.startup_profile == "warmed_v2":
+            from so101_startup_preparation import warm_environment
+
+            warm_environment(client, packet, setup_rows)
+        if engine is not None or args.startup_profile == "warmed_v2":
             packet = client.reset(args.seed)
         if not environment_only:
             from lerobot.utils.random_utils import set_seed
@@ -673,6 +690,9 @@ def main() -> int:
         if "candidate" in manifest:
             result["candidate"] = manifest["candidate"]
         result["action_execution_contract"] = args.action_contract
+        result["startup_profile"] = args.startup_profile
+        result["setup_physics_steps"] = sum(row["dispatch"] == "completed" for row in setup_rows)
+        result["predictor_kernel_warmup"] = getattr(engine, "predictor_warmup", None)
         result["task_contract"] = (
             "pickorange_first_settled_v1" if args.stop_after_first_placement else "native_pickorange"
         )
@@ -690,6 +710,10 @@ def main() -> int:
         for name, rows in (("ticks.jsonl", ticks), ("events.jsonl", sink.events)):
             (args.output / name).write_text("".join(json.dumps(row) + "\n" for row in rows))
         (args.output / "simulator.log").write_bytes(b"".join(client.logs))
+        if setup_rows:
+            (args.output / "setup_ticks.jsonl").write_text(
+                "".join(json.dumps(row) + "\n" for row in setup_rows)
+            )
         if frames:
             from PIL import Image
 

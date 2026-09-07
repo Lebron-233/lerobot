@@ -85,7 +85,7 @@ def comparison_summary(rows: list[dict]) -> dict:
         for mode, group in by_mode.items()
     }
     pairs, geometry_equal = [], []
-    for seed in range(20261101, 20261113):
+    for seed in sorted({row["seed"] for row in rows}):
         conditions = {row["mode"]: row for row in rows if row["seed"] == seed}
         if {"identity", "predicted"} <= conditions.keys():
             identity, predicted = conditions["identity"], conditions["predicted"]
@@ -130,12 +130,14 @@ def comparison_summary(rows: list[dict]) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--cohort", choices=("initial", "warmed"), default="initial")
     args = parser.parse_args()
     repo = Path(__file__).resolve().parents[3]
     if subprocess.check_output(["git", "status", "--porcelain"], cwd=repo, text=True).strip():
         parser.error("Commit the protocol before the frozen comparison")
     source = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo, text=True).strip()
     base = repo.parent
+    first_seed, first_policy_seed = (20261101, 2101) if args.cohort == "initial" else (20261201, 2401)
     order = list(itertools.permutations(("sync", "identity", "predicted"))) * 2
     random.Random(2088).shuffle(order)
     args.output.mkdir(parents=True, exist_ok=False)
@@ -143,8 +145,9 @@ def main() -> None:
         "source_commit": source,
         "task": "pickorange_first_settled_v1",
         "orders": order,
-        "environment_seeds": list(range(20261101, 20261113)),
-        "policy_seeds": list(range(2101, 2113)),
+        "cohort": args.cohort,
+        "environment_seeds": list(range(first_seed, first_seed + 12)),
+        "policy_seeds": list(range(first_policy_seed, first_policy_seed + 12)),
     }
     (args.output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     common = [
@@ -179,6 +182,8 @@ def main() -> None:
         "--stop-after-first-placement",
     ]
     rows = []
+    if args.cohort == "warmed":
+        common += ["--startup-profile", "warmed_v2"]
     for block, modes in enumerate(order):
         for mode in modes:
             folder = args.output / f"block{block:02d}_{mode}"
@@ -188,9 +193,9 @@ def main() -> None:
                 "--mode",
                 mode,
                 "--seed",
-                str(20261101 + block),
+                str(first_seed + block),
                 "--policy-seed",
-                str(2101 + block),
+                str(first_policy_seed + block),
                 "--output",
                 str(folder),
             ]
