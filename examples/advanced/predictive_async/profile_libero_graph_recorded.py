@@ -96,23 +96,35 @@ def run(args, result):
 
     try:
         with torch.inference_mode():
-            directory, spec, _, obs = jobs[0]
-            batch = recorded_batch(directory, obs, spec["task_name"])
-            select("eager", batch, 989999)
-            graph = GraphSampler(policy.model, original, eager.inputs, policy.model.action_out_proj)
-            samplers["graph"] = graph
-            result["capture_projection_shapes"] = graph.capture_projection_shapes
+            result["task_captures"] = []
             result["warmup_pairs"] = []
-            for index in range(5):
-                a = select("eager", batch, 989990 + index)
-                b = select("graph", batch, 989990 + index)
-                comparisons = compare(a, b)
-                result["warmup_pairs"].append(comparisons)
-                if not all(value["exact_equal"] for value in comparisons.values()):
-                    raise RuntimeError("Recorded-input warmup equality failed")
             result["pairs"] = []
+            current_task = None
             for index, (directory, spec, stage, obs) in enumerate(jobs):
                 batch = recorded_batch(directory, obs, spec["task_name"])
+                if spec["task_id"] != current_task:
+                    # A task change can change tokenizer output length. Rebuild outside steady timing,
+                    # rather than pad/truncate text or silently replay an incompatible fixed shape.
+                    current_task = spec["task_id"]
+                    select("eager", batch, 989900 + current_task)
+                    setup = time.perf_counter()
+                    graph = GraphSampler(policy.model, original, eager.inputs, policy.model.action_out_proj)
+                    samplers["graph"] = graph
+                    capture = {
+                        "task_id": current_task,
+                        "setup_seconds": time.perf_counter() - setup,
+                        "input_shapes": [list(value.shape) for value in graph.inputs],
+                        "projection_shapes": graph.capture_projection_shapes,
+                    }
+                    result["task_captures"].append(capture)
+                    if index == 0:
+                        for warmup in range(5):
+                            a = select("eager", batch, 989990 + warmup)
+                            b = select("graph", batch, 989990 + warmup)
+                            comparisons = compare(a, b)
+                            result["warmup_pairs"].append(comparisons)
+                            if not all(value["exact_equal"] for value in comparisons.values()):
+                                raise RuntimeError("Recorded-input warmup equality failed")
                 seed = 990000 + index
                 order = ("eager", "graph") if index % 2 == 0 else ("graph", "eager")
                 selected = {mode: select(mode, batch, seed) for mode in order}
@@ -141,6 +153,8 @@ def run(args, result):
                 )
                 if not all(value["exact_equal"] for value in comparisons.values()):
                     raise RuntimeError(f"Recorded-input equality failed on pair {index}")
+                capture["fresh_visual_encodings_including_setup"] = graph.visual_encoding_calls
+                capture["graph_replay_calls"] = graph.replay_calls
                 if (index + 1) % 30 == 0:
                     print(f"RECORDED_PAIRS {index + 1}/270 exact", flush=True)
             result["timings"] = {
@@ -153,8 +167,10 @@ def run(args, result):
             result["graph_samples_over_50ms"] = sum(row["graph_seconds"] > 0.05 for row in result["pairs"])
             result["exact_measured_pairs"] = len(result["pairs"])
             result["exact_full_chunk_scalar_values"] = len(result["pairs"]) * 50 * 32
-            result["fresh_visual_encodings_including_setup"] = graph.visual_encoding_calls
-            result["graph_replay_calls"] = graph.replay_calls
+            result["fresh_visual_encodings_including_setup"] = sum(
+                row["fresh_visual_encodings_including_setup"] for row in result["task_captures"]
+            )
+            result["graph_replay_calls"] = sum(row["graph_replay_calls"] for row in result["task_captures"])
             result["status"] = "completed"
     finally:
         policy.model.sample_actions = original
