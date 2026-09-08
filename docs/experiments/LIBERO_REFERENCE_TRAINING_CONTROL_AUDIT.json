@@ -256,7 +256,9 @@
     "new_policy_inferences": 0,
     "new_model_driven_actions": 0,
     "new_qualification_episodes": 0,
-    "new_training_runs": 0
+    "new_training_runs": 0,
+    "document_consistency": "passed",
+    "git_diff_check": "passed"
   },
   "qualification": {
     "status": "draft_not_approved_not_run",
@@ -271,6 +273,14 @@
   "github_record": {
     "issue": "https://github.com/Lebron-233/lerobot/issues/1",
     "marker": "LIBERO_TRAINING_CONTROL_AUDIT_20260908",
-    "status": "prepared_for_publication"
-  }
+    "status": "published_once_and_readback_confirmed",
+    "id": 5578989883,
+    "url": "https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5578989883",
+    "created_at": "2026-09-08T04:03:19Z",
+    "body_matches_submitted": true,
+    "deduplicated_before_publish": true,
+    "readback_at": "2026-09-08T04:04:00.606612+00:00",
+    "publication_receipt": "/home/rp/Workspace/SmolVLA_RTC/artifacts/libero_contract_audit_20260908T034709Z/publication_receipt.json"
+  },
+  "result_commit": "72bc7654726445663f6ea1b3023b92a4f9502024"
 }

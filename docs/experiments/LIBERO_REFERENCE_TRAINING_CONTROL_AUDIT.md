@@ -190,3 +190,11 @@ applied directly with existing NumPy; no environment package was installed.
 The machine-readable follow-up is
 [LIBERO_REFERENCE_TRAINING_CONTROL_AUDIT.json](LIBERO_REFERENCE_TRAINING_CONTROL_AUDIT.json).
 Original preparation artifacts and the frozen smoke protocol remain intact.
+
+Result commit: `72bc7654726445663f6ea1b3023b92a4f9502024`, pushed to
+`codex/smolvla-future-latent-m3`. The separate
+[Issue comment 5578989883](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5578989883)
+uses marker `LIBERO_TRAINING_CONTROL_AUDIT_20260908`; it was published once after
+completed duplicate lookup and read back by ID with an identical body. Publication
+and readback receipts are retained. All follow-up metadata/source-read processes
+have exited; no experiment process was opened by this follow-up.

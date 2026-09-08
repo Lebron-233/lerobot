@@ -310,6 +310,16 @@
         "issue": "Checkpoint training/evaluation action-state-camera contract and dataset provenance are not established by the model card",
         "next_step": "Obtain traceable training/configuration or author evidence; approve and freeze the draft before any qualification episodes"
       }
-    ]
+    ],
+    "github_record": {
+      "id": 5578989883,
+      "url": "https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5578989883",
+      "created_at": "2026-09-08T04:03:19Z",
+      "body_matches_submitted": true,
+      "deduplicated_before_publish": true,
+      "readback_at": "2026-09-08T04:04:00.606612+00:00",
+      "status": "published_once_and_readback_confirmed"
+    },
+    "result_commit": "72bc7654726445663f6ea1b3023b92a4f9502024"
   }
 }
