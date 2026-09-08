@@ -1,0 +1,283 @@
+{
+  "date": "2026-09-08",
+  "status": "technical_preparation_completed",
+  "initial_source_head": "8b9cd4e912036a0cd876140952419c95f09e562f",
+  "smoke_source_head": "968c58603177a1888e4a6f117712bd4c84262bae",
+  "artifact_root": "/home/rp/Workspace/SmolVLA_RTC/artifacts/libero_reference_preparation_20260908T030051Z",
+  "existing_l20_comment": {
+    "status": "confirmed",
+    "id": 5578043892,
+    "url": "https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5578043892",
+    "created_at": "2026-09-08T02:10:48Z",
+    "republished": false
+  },
+  "policy": {
+    "repo": "HuggingFaceVLA/smolvla_libero",
+    "revision": "6721902bc4d61e50a3bfdb11dfb4cb626f05d102",
+    "local_path": "/home/rp/Workspace/SmolVLA_RTC/libero-reference-cache/hub/models--HuggingFaceVLA--smolvla_libero/snapshots/6721902bc4d61e50a3bfdb11dfb4cb626f05d102",
+    "private": false,
+    "gated": false,
+    "weight_tensor_count": 788,
+    "raw_config_and_processors_read": true,
+    "fresh_readme_web_read": "tool_error_not_safe_to_open",
+    "readme_content_evidence": "Prior successful reading recorded in the user taskbook; no alternate README fetch in this run"
+  },
+  "vlm": {
+    "declared_repo": "HuggingFaceTB/SmolVLM2-500M-Instruct",
+    "resolved_repo": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct",
+    "revision": "7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+    "local_path": "/home/rp/Workspace/SmolVLA_RTC/libero-reference-cache/hub/models--HuggingFaceTB--SmolVLM2-500M-Video-Instruct/snapshots/7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+    "weight_tensor_count": 489
+  },
+  "statistics": {
+    "status": "read",
+    "state_dim": 8,
+    "action_dim": 7,
+    "all_values_finite": true,
+    "all_standard_deviations_positive": true,
+    "action_pre_post_max_abs_difference": 0.0,
+    "raw_values_file": "statistics.json"
+  },
+  "environment": {
+    "path": "/home/rp/Workspace/SmolVLA_RTC/libero-reference-venv",
+    "python": "3.12.14",
+    "executable": "/home/rp/Workspace/SmolVLA_RTC/libero-reference-venv/bin/python",
+    "versions": {
+      "lerobot": "0.6.2",
+      "torch": "2.11.0+cu128",
+      "torchvision": "0.26.0+cu128",
+      "transformers": "5.5.4",
+      "huggingface-hub": "1.30.0",
+      "gymnasium": "1.3.0",
+      "numpy": "2.2.6",
+      "hf-libero": "0.1.4",
+      "mujoco": "3.8.1",
+      "robosuite": "1.4.0",
+      "robomimic": "0.2.0",
+      "bddl": "1.0.1",
+      "scipy": "1.18.1",
+      "PyOpenGL": "3.1.10",
+      "safetensors": "0.8.0",
+      "opencv-python": "4.13.0.92",
+      "opencv-python-headless": "4.13.0.92",
+      "pytest": "9.1.1",
+      "ruff": "0.16.6",
+      "numba": "0.67.0",
+      "accelerate": "1.14.0"
+    },
+    "install_status": "completed",
+    "pip_check": "passed",
+    "package_count": 139,
+    "requirements": "requirements.lock.txt",
+    "freeze": "pip_freeze.txt",
+    "render_status": "completed",
+    "renderer": {
+      "vendor": "NVIDIA Corporation",
+      "renderer": "NVIDIA GeForce RTX 4070 Ti SUPER/PCIe/SSE2",
+      "version": "4.6.0 NVIDIA 580.173.02"
+    },
+    "render_context": "EGLGLContext",
+    "closed": true,
+    "launch_environment": {
+      "remove_inherited": "PYTHONPATH",
+      "MUJOCO_GL": "egl",
+      "PYOPENGL_PLATFORM": "egl",
+      "HF_HUB_OFFLINE": "1",
+      "TRANSFORMERS_OFFLINE": "1",
+      "LIBERO_CONFIG_PATH": "/home/rp/Workspace/SmolVLA_RTC/libero-reference-cache/config",
+      "LD_PRELOAD": "/usr/lib/x86_64-linux-gnu/libGLdispatch.so.0:/usr/lib/x86_64-linux-gnu/libGLX.so.0"
+    },
+    "old_model_or_isaac_environment_package_changes": false
+  },
+  "assets": {
+    "repo": "lerobot/libero-assets",
+    "repo_type": "dataset",
+    "revision": "0b3ea86be5fe169d0fd036ae63d1070ec09e90f6",
+    "local_path": "/home/rp/Workspace/SmolVLA_RTC/libero-reference-cache/hub/datasets--lerobot--libero-assets/snapshots/0b3ea86be5fe169d0fd036ae63d1070ec09e90f6",
+    "task_and_initial_state_source": "Official PyPI hf_libero-0.1.4-py3-none-any.whl",
+    "bddl_root": "/home/rp/Workspace/SmolVLA_RTC/libero-reference-venv/lib/python3.12/site-packages/libero/libero/bddl_files",
+    "initial_states_root": "/home/rp/Workspace/SmolVLA_RTC/libero-reference-venv/lib/python3.12/site-packages/libero/libero/init_files",
+    "suite": "libero_object",
+    "task_order_index": 0,
+    "tasks": 10,
+    "initial_state_shape_per_task": [
+      50,
+      110
+    ],
+    "inventory": "suite_inventory.json"
+  },
+  "policy_load": {
+    "strict": true,
+    "missing_keys": [],
+    "unexpected_keys": [],
+    "shape_mismatches": [],
+    "vlm_layers": 32,
+    "expert_layers": 32,
+    "expert_hidden_size": 480,
+    "parameter_dtypes_numel": {
+      "torch.bfloat16": 600902304,
+      "torch.float32": 4031872
+    },
+    "trainable_parameters_at_load": 97451872,
+    "trainable_parameters_for_inference": 0,
+    "projection_shapes": {
+      "model.state_proj.weight": [
+        960,
+        32
+      ],
+      "model.action_in_proj.weight": [
+        480,
+        32
+      ],
+      "model.action_out_proj.weight": [
+        32,
+        480
+      ]
+    },
+    "use_amp": false,
+    "preprocessor_steps": [
+      "RenameObservationsProcessorStep",
+      "AddBatchDimensionProcessorStep",
+      "NewLineTaskProcessorStep",
+      "TokenizerProcessorStep",
+      "DeviceProcessorStep",
+      "NormalizerProcessorStep"
+    ],
+    "postprocessor_steps": [
+      "DeviceProcessorStep",
+      "UnnormalizerProcessorStep"
+    ],
+    "status": "completed",
+    "lm_head_embedding_share_storage": false,
+    "synthetic_forward_shape": [
+      1,
+      50,
+      7
+    ],
+    "synthetic_forward_finite": true
+  },
+  "processor_numeric_check": {
+    "state_max_abs_error_vs_one_normalization": 2.1991094834028502e-08,
+    "action_max_abs_error_vs_one_unnormalization": 1.5381928619717655e-08,
+    "within_float32_roundoff": true
+  },
+  "smoke": {
+    "status": "completed",
+    "measured_actions": 20,
+    "settling_actions": 10,
+    "native_success": false,
+    "terminal_reason": "technical_measurement_bound",
+    "actions_with_out_of_box_components": 11,
+    "out_of_box_scalar_components": 11,
+    "maximum_absolute_action_by_component": [
+      0.43973270058631897,
+      0.8632017374038696,
+      0.10929063707590103,
+      0.030876215547323227,
+      0.05985311418771744,
+      0.07341156154870987,
+      1.0290333032608032
+    ],
+    "inference_seconds": {
+      "mean": 0.2789794171403628,
+      "median": 0.2510787699720822,
+      "sum": 5.579588342807256,
+      "max": 0.7685100740054622
+    },
+    "task_id": 0,
+    "initial_state_id": 0,
+    "environment_seed": 4200,
+    "policy_seed": 4201,
+    "generated_chunk_size": 50,
+    "n_action_steps": 1,
+    "num_steps": 10,
+    "environment_closed": true,
+    "exit_code": 0,
+    "artifact_subdirectory": "smoke_v1"
+  },
+  "resolved_preparation_issues": [
+    {
+      "issue": "CUDA extra-index shadowed PyPI requests versions",
+      "evidence": "resolve.log",
+      "repair": "Use --torch-backend cu128 to scope the index",
+      "status": "resolved"
+    },
+    {
+      "issue": "opencv-python 5 and required headless 4 share cv2 namespace",
+      "evidence": "requirements.initial.lock.txt",
+      "repair": "Pin opencv-python to the same 4.13.0.92 version",
+      "status": "resolved"
+    },
+    {
+      "issue": "Inherited ROS PYTHONPATH loaded an unrelated pytest plugin lacking lark",
+      "evidence": "targeted_tests.log",
+      "repair": "Remove PYTHONPATH for independent task processes",
+      "status": "resolved"
+    },
+    {
+      "issue": "Renderer metadata returned null GL strings",
+      "evidence": "environment_check.json",
+      "reset_settling_actions": 10,
+      "closed": true,
+      "status": "preserved_failed_probe"
+    },
+    {
+      "issue": "Second environment probe exited SIGSEGV",
+      "evidence": "environment_probe_v2/process_exit.json",
+      "exit_code": 139,
+      "settling_actions": null,
+      "closed": null,
+      "status": "preserved_failed_probe"
+    },
+    {
+      "issue": "Conda/system GLVND library mixing",
+      "evidence": "egl_library_diagnostic.log",
+      "repair": "Process-local system GLdispatch/GLX preload; final LIBERO probe and smoke passed",
+      "status": "resolved"
+    }
+  ],
+  "tests": {
+    "targeted_tests_passed": 13,
+    "test_exit_code": 0,
+    "ruff_check": "passed",
+    "ruff_format": "passed",
+    "smoke_accounting": {
+      "logged_actions_match_completed_steps": true,
+      "sequential_observation_and_step_indices": true,
+      "actual_env_step_logged": true,
+      "each_selection_consumed_one": true,
+      "each_selection_generated_50_with_10_denoise_steps": true,
+      "state_and_action_shapes": true,
+      "finite_state_and_actions": true,
+      "no_pending_step": true,
+      "native_terminal_accounting": true,
+      "closed": true
+    }
+  },
+  "qualification": {
+    "status": "draft_not_run",
+    "approval": "proposed_not_approved",
+    "development_episodes_proposed": 200,
+    "confirmation_episodes_proposed": 200,
+    "overall_successes_required_per_cohort": 180,
+    "per_task_successes_required": 16,
+    "per_task_episodes": 20,
+    "technical_failures_allowed": 0
+  },
+  "remaining_blockers": [
+    {
+      "scope": "formal_qualification",
+      "issue": "Checkpoint training/evaluation action-state-camera contract and dataset provenance are not established by the model card",
+      "next_step": "Obtain traceable training/configuration or author evidence; approve and freeze the draft before any qualification episodes"
+    }
+  ],
+  "baseline_qualified": false,
+  "realtime_qualified": false,
+  "predictor_benefit_tested": false,
+  "risk_thresholds": null,
+  "github_record": {
+    "issue": "https://github.com/Lebron-233/lerobot/issues/1",
+    "marker": "LIBERO_REFERENCE_PREPARATION_RECOVERY_V2",
+    "publication_receipt": "artifacts/local publication.json after publishing"
+  }
+}

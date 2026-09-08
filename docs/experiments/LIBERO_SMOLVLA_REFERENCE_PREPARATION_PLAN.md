@@ -1,5 +1,19 @@
 # Separate matched SmolVLA reference preparation after L20
 
+## 2026-09-08 execution update
+
+Independent preparation has now completed: fixed policy/VLM and assets,
+Python 3.12 environment with compatible dependencies, actual EGL rendering,
+strict full policy loading, saved processors, and the preregistered 20-action
+technical smoke. See
+[LIBERO_REFERENCE_PREPARATION_RECOVERY_RESULT.md](LIBERO_REFERENCE_PREPARATION_RECOVERY_RESULT.md)
+and [LIBERO_REFERENCE_QUALIFICATION_PLAN.md](LIBERO_REFERENCE_QUALIFICATION_PLAN.md).
+The complete task/confirmation queues remain unrun, and all qualification flags
+remain false. Candidate identity and prior GitHub/optional-package unknowns below
+are historical; the checkpoint's training/control provenance still needs evidence.
+
+## Original preparation proposal
+
 Date: 2026-09-08. Status: preparation proposal / exact candidate unresolved.
 This is not an executed or source-frozen outcome campaign. The user continues
 to authorize project implementation and experiments without another Pro review.
