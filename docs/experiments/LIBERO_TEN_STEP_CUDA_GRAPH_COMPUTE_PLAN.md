@@ -94,3 +94,12 @@ authorized by this compute protocol.
 
 baseline_qualified=false; realtime_qualified=false; predictor_benefit_tested=false;
 risk_thresholds=null. This does not establish future-latent asynchronous benefit.
+
+## Readiness update
+
+The matched-control supervisor has now exited with code0. Its subsequent combined
+result/provenance/process read was blocked and was not rerouted; exact matched
+scores remain unread. This graph experiment's fixed implementation and fixture
+schedule were committed in isolation before that completion and do not depend
+on the unavailable matched outcomes. Five CPU-only contract tests passed; Ruff
+lint/format and diff checks passed. The graph profile itself has not yet run.

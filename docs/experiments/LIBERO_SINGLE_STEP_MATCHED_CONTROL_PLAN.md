@@ -1,16 +1,26 @@
 # Matched original-controller diagnostic after the failed single-step screen
 
-## Execution status: not started
+## Execution update: supervisor completed; final result read blocked
 
-Source `697099645e0b87c3228ab1ea625f1b6f32072703` was committed and pushed.
-The preregistration POST returned comment 5586127789, created 2026-09-08T13:45:08Z.
-The required subsequent body-readback command was blocked by the platform's
-safety-state check before execution. No alternate verification route was used.
-The control worker was never launched: zero started tuples, zero observed control
-outcomes, and the planned control output directory does not exist.
-The protocol below remains unexecuted. This status update is documentation only,
-not a new execution source or an authorization to bypass the readback prerequisite.
-See [the execution status record](LIBERO_SINGLE_STEP_MATCHED_CONTROL_STATUS.json).
+In the continued user-authorized turn, the normal read-only retrieval of comment
+5586127789 succeeded and its body exactly matched the existing preregistration.
+The first and only control invocation then started at 2026-09-08T14:10:34.083392Z,
+using the registered source `697099645e0b87c3228ab1ea625f1b6f32072703` in a detached
+checkout. Its supervisor session1058 exited with code0 after 3992.284s of tool wall
+time. The last successful progress read observed 84 completed tuples, no technical
+failures, and task09/state43 as the latest completed tuple.
+
+The subsequent combined result/provenance/process inspection was blocked by the
+platform before execution. It was not retried by another command, tool or endpoint.
+The final saved summary, exact score and paired statistics have not been read;
+do not invent them from the process exit code. This is no longer an unstarted
+experiment, but its report-level closure is pending. The old before-start denial
+is retained as history in the [execution status record](LIBERO_SINGLE_STEP_MATCHED_CONTROL_STATUS.json).
+
+Only after the supervisor exited was the original branch restored. Synthetic
+CUDA-graph diagnostic code prepared in an isolated worktree was then merged;
+the running matched-controller checkout was not edited to prepare that work.
+The registered protocol below is preserved.
 
 ## Frozen diagnostic protocol
 
