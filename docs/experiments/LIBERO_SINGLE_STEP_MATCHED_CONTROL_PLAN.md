@@ -1,5 +1,19 @@
 # Matched original-controller diagnostic after the failed single-step screen
 
+## Execution status: not started
+
+Source `697099645e0b87c3228ab1ea625f1b6f32072703` was committed and pushed.
+The preregistration POST returned comment 5586127789, created 2026-09-08T13:45:08Z.
+The required subsequent body-readback command was blocked by the platform's
+safety-state check before execution. No alternate verification route was used.
+The control worker was never launched: zero started tuples, zero observed control
+outcomes, and the planned control output directory does not exist.
+The protocol below remains unexecuted. This status update is documentation only,
+not a new execution source or an authorization to bypass the readback prerequisite.
+See [the execution status record](LIBERO_SINGLE_STEP_MATCHED_CONTROL_STATUS.json).
+
+## Frozen diagnostic protocol
+
 Date: 2026-09-08. Candidate screen closed at 64/90; no control-condition outcome
 on these tuples has yet been opened. Under the user's continued experiment
 authorization, the project lead approves this complete matched diagnostic.
