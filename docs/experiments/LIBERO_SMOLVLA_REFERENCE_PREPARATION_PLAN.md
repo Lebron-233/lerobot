@@ -1,5 +1,14 @@
 # Separate matched SmolVLA reference preparation after L20
 
+## 2026-09-08 training/control follow-up
+
+The [training/control audit](LIBERO_REFERENCE_TRAINING_CONTROL_AUDIT.md) now
+confirms `HuggingFaceVLA/libero` through the author, matches all saved normalization
+statistics to pre-upload v2.1 metadata, and traces the independent execution
+contract. The historical source/semantics unknowns below are superseded. The
+formal qualification protocol remains unapproved and unrun; exact historical
+training/evaluation reproduction is not established.
+
 ## 2026-09-08 execution update
 
 Independent preparation has now completed: fixed policy/VLM and assets,

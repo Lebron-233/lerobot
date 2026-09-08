@@ -1,0 +1,276 @@
+{
+  "date": "2026-09-08",
+  "status": "independent_reference_training_source_and_execution_contract_supported",
+  "initial_source_head": "e88e83a5b990f65f22eddd2bc1266742fc1bf4f4",
+  "artifact_root": "/home/rp/Workspace/SmolVLA_RTC/artifacts/libero_contract_audit_20260908T034709Z",
+  "policy": {
+    "repo": "HuggingFaceVLA/smolvla_libero",
+    "revision": "6721902bc4d61e50a3bfdb11dfb4cb626f05d102",
+    "changed": false
+  },
+  "author_evidence": {
+    "author": "jadechoghari",
+    "dataset_confirmation_url": "https://github.com/huggingface/lerobot/issues/1369#issuecomment-3337263535",
+    "announcement_url": "https://github.com/huggingface/lerobot/issues/1369#issuecomment-3323183721"
+  },
+  "dataset": {
+    "repo": "HuggingFaceVLA/libero",
+    "identity_status": "author_confirmed",
+    "normalization_evidence_revision": "affa19c0de0f6bce2a7edd26dddef8a532e7e6f6",
+    "evidence_revision_relationship": "latest_public_dataset_commit_before_policy_upload; exact saved normalization match after float32 conversion",
+    "actual_training_job_revision": null,
+    "evidence_format": "v2.1",
+    "metadata_episodes": 1693,
+    "metadata_frames": 273465,
+    "metadata_tasks": 40,
+    "metadata_fps": 10,
+    "all_saved_normalization_values_match_float32": true,
+    "matched_scalar_count": 30,
+    "normalization_comparison": {
+      "observation.state.mean": {
+        "max_abs_difference": 4.398274189298945e-08,
+        "max_abs_difference_after_float32_cast": 0.0,
+        "all_exact_after_float32_cast": true
+      },
+      "observation.state.std": {
+        "max_abs_difference": 1.3702235568402443e-08,
+        "max_abs_difference_after_float32_cast": 0.0,
+        "all_exact_after_float32_cast": true
+      },
+      "action.mean": {
+        "max_abs_difference": 2.2278189015789707e-09,
+        "max_abs_difference_after_float32_cast": 0.0,
+        "all_exact_after_float32_cast": true
+      },
+      "action.std": {
+        "max_abs_difference": 1.537477478663618e-08,
+        "max_abs_difference_after_float32_cast": 0.0,
+        "all_exact_after_float32_cast": true
+      }
+    },
+    "current_metadata_revision": "86958911c0f959db2bbbdb107eb3e17c5f9c798e",
+    "current_v30_comparison": {
+      "observation.state.mean": {
+        "max_abs_difference": 4.398274189298945e-08,
+        "max_abs_difference_after_float32_cast": 0.0,
+        "all_exact_after_float32_cast": true
+      },
+      "observation.state.std": {
+        "max_abs_difference": 2.8028252818668165e-07,
+        "max_abs_difference_after_float32_cast": 2.682209014892578e-07,
+        "all_exact_after_float32_cast": false
+      },
+      "action.mean": {
+        "max_abs_difference": 2.2278189015789707e-09,
+        "max_abs_difference_after_float32_cast": 0.0,
+        "all_exact_after_float32_cast": true
+      },
+      "action.std": {
+        "max_abs_difference": 1.140268085508822e-08,
+        "max_abs_difference_after_float32_cast": 0.0,
+        "all_exact_after_float32_cast": true
+      }
+    },
+    "separate_smol_libero_revision": "24b61cce80e40919ab5fd8f221708947634ab42c",
+    "separate_smol_libero_comparison": {
+      "observation.state.mean": {
+        "max_abs_difference": 0.1672005483370096,
+        "max_abs_difference_after_float32_cast": 0.16720056533813477,
+        "all_exact_after_float32_cast": false
+      },
+      "observation.state.std": {
+        "max_abs_difference": 0.6972190911380908,
+        "max_abs_difference_after_float32_cast": 0.6972190737724304,
+        "all_exact_after_float32_cast": false
+      },
+      "action.mean": {
+        "max_abs_difference": 0.0545979419944665,
+        "max_abs_difference_after_float32_cast": 0.054597944021224976,
+        "all_exact_after_float32_cast": false
+      },
+      "action.std": {
+        "max_abs_difference": 0.06826766845721632,
+        "max_abs_difference_after_float32_cast": 0.06826767325401306,
+        "all_exact_after_float32_cast": false
+      }
+    },
+    "policy_statistics_changed": false,
+    "demonstration_files_downloaded": false
+  },
+  "operational_contract": {
+    "status": "supported_by_author_linked_evaluator_historical_and_current_source",
+    "historical_lerobot_port": "25384727812de60ff6e7a5e705cc016ec5def552",
+    "camera_mapping": {
+      "agentview_image": "observation.images.image",
+      "robot0_eye_in_hand_image": "observation.images.image2"
+    },
+    "image_rotation_degrees": 180,
+    "image_rotation_count": 1,
+    "state_order": [
+      "world_eef_site_position_m_3",
+      "world_eef_body_xyzw_quaternion_to_axisangle_rad_3",
+      "native_gripper_qpos_m_2"
+    ],
+    "state_dimensions_before_and_after_padding": [
+      8,
+      32
+    ],
+    "state_normalizations": 1,
+    "action_dimensions": 7,
+    "action_mode": "relative_OSC_POSE",
+    "action_translation_scale_m_per_axis": 0.05,
+    "action_rotation_scale_rad_per_axis": 0.5,
+    "action_rotation_frame": "world_axes_left_multiply_current_orientation; zero_rotation_retains_previous_goal",
+    "native_first_six_input_clip": [
+      -1,
+      1
+    ],
+    "gripper": "negative_open_positive_close; sign-based native integration speed 0.01",
+    "extra_action_clipping": false,
+    "control_frequency_hz": 20,
+    "simulated_seconds_per_env_step": 0.05,
+    "generated_actions": 50,
+    "consumed_actions": 1,
+    "denoising_steps": 10,
+    "hard_reset": true,
+    "settling_actions": 10,
+    "object_time_limit": 280,
+    "full_historical_training_eval_manifest": null
+  },
+  "upstream_source_evidence": {
+    "openpi_revision": "871f120a7af9e6439354d39292c17331e0b14699",
+    "openvla_revision": "c8f03f48af692657d3060c19588038c7220e9af9",
+    "lerobot_frequency_fix_revision": "cfd9ff969ca91acf22a68c9f85d3bc2e05c1bc92",
+    "exact_huggingfacevla_conversion_job_confirmed": false
+  },
+  "object_tasks": {
+    "all_ten_names_in_dataset_metadata": true,
+    "native_to_dataset_task_indices": [
+      24,
+      22,
+      26,
+      23,
+      21,
+      28,
+      27,
+      25,
+      29,
+      20
+    ],
+    "details": [
+      {
+        "native_task_id": 0,
+        "language": "pick up the alphabet soup and place it in the basket",
+        "dataset_task_index": 24,
+        "dataset_episodes": 44
+      },
+      {
+        "native_task_id": 1,
+        "language": "pick up the cream cheese and place it in the basket",
+        "dataset_task_index": 22,
+        "dataset_episodes": 45
+      },
+      {
+        "native_task_id": 2,
+        "language": "pick up the salad dressing and place it in the basket",
+        "dataset_task_index": 26,
+        "dataset_episodes": 47
+      },
+      {
+        "native_task_id": 3,
+        "language": "pick up the bbq sauce and place it in the basket",
+        "dataset_task_index": 23,
+        "dataset_episodes": 46
+      },
+      {
+        "native_task_id": 4,
+        "language": "pick up the ketchup and place it in the basket",
+        "dataset_task_index": 21,
+        "dataset_episodes": 45
+      },
+      {
+        "native_task_id": 5,
+        "language": "pick up the tomato sauce and place it in the basket",
+        "dataset_task_index": 28,
+        "dataset_episodes": 42
+      },
+      {
+        "native_task_id": 6,
+        "language": "pick up the butter and place it in the basket",
+        "dataset_task_index": 27,
+        "dataset_episodes": 45
+      },
+      {
+        "native_task_id": 7,
+        "language": "pick up the milk and place it in the basket",
+        "dataset_task_index": 25,
+        "dataset_episodes": 45
+      },
+      {
+        "native_task_id": 8,
+        "language": "pick up the chocolate pudding and place it in the basket",
+        "dataset_task_index": 29,
+        "dataset_episodes": 50
+      },
+      {
+        "native_task_id": 9,
+        "language": "pick up the orange juice and place it in the basket",
+        "dataset_task_index": 20,
+        "dataset_episodes": 45
+      }
+    ],
+    "held_out_training_tasks": false,
+    "training_episode_to_initial_state_id_mapping": null
+  },
+  "historical_reproduction": {
+    "status": "not_established",
+    "unknown": [
+      "training_initialization_checkpoint",
+      "training_job_dataset_revision_and_episode_sampling",
+      "optimizer_schedule_updates_and_seed",
+      "exact_HuggingFaceVLA_conversion_command_and_filters",
+      "author_evaluation_episode_seed_reset_dependency_manifest"
+    ],
+    "local_mujoco": "3.8.1",
+    "author_mujoco_recommendation": "3.3.2",
+    "historical_reset_order_differs_from_current": true
+  },
+  "readme_retry": {
+    "date_utc": "2026-09-08",
+    "operation": "web.open fixed-revision model README",
+    "url": "https://huggingface.co/HuggingFaceVLA/smolvla_libero/blob/6721902bc4d61e50a3bfdb11dfb4cb626f05d102/README.md",
+    "outcome": "tool_error",
+    "error": "not safe to open (non-retryable error)",
+    "evidence": "Transcribed from the new authorized retry's tool output, turn1view0. No alternate endpoint was used to read this README after the error.",
+    "experiment_attempt": false
+  },
+  "validation": {
+    "statistics_comparison": "completed_exit_0",
+    "first_statistics_import": {
+      "outcome": "ImportError",
+      "message": "'datasets' is required but not installed",
+      "resolution": "Applied the same published count-weighted mean/parallel-variance equations directly with existing NumPy",
+      "environment_package_changes": false
+    },
+    "new_simulator_runs": 0,
+    "new_policy_inferences": 0,
+    "new_model_driven_actions": 0,
+    "new_qualification_episodes": 0,
+    "new_training_runs": 0
+  },
+  "qualification": {
+    "status": "draft_not_approved_not_run",
+    "author_source_semantics_prerequisite": "satisfied_for_independent_reference",
+    "next_step": "Approve and commit the final qualification protocol, runner and tuple manifest before opening any formal episode",
+    "historical_score_reproduction_claim": false
+  },
+  "baseline_qualified": false,
+  "realtime_qualified": false,
+  "predictor_benefit_tested": false,
+  "risk_thresholds": null,
+  "github_record": {
+    "issue": "https://github.com/Lebron-233/lerobot/issues/1",
+    "marker": "LIBERO_TRAINING_CONTROL_AUDIT_20260908",
+    "status": "prepared_for_publication"
+  }
+}

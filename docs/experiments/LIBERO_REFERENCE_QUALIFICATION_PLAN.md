@@ -6,18 +6,28 @@ before opening any formal task results. They do not inherit the SO101 7/8 gate.
 
 ## Prerequisites
 
-Complete the registered technical preparation and resolve the checkpoint's
-training/control contract: camera identity and orientation, relative EEF action
-convention and scaling, quaternion/axis-angle state representation, normalization,
-20 Hz control, reset/settling and saved 50/1 consumption. The current source
-implements the recorded convention, but the public model card does not identify
-its training dataset or full evaluation protocol. Obtain a traceable training
-configuration/dataset-conversion source or author documentation; do not infer
-this contract solely from tensor dimensions or a short successful rollout.
+The registered technical preparation is complete. The follow-up
+[training/control audit](LIBERO_REFERENCE_TRAINING_CONTROL_AUDIT.md) establishes
+the author-confirmed `HuggingFaceVLA/libero` dataset, exact float32 equality of all
+30 saved normalization statistics with its pre-checkpoint v2.1 metadata, and the
+camera/state/action convention in the author's linked official evaluator. The
+source/semantics prerequisite is satisfied for this independent reference.
+Keep the recorded relative OSC_POSE controller, camera rotation, axis-angle
+state, saved normalization, 20 Hz control, current reset/settling and 50/1/10
+generation/consumption/denoising. Dataset metadata FPS 10 does not warrant a
+control-rate override. The audit records the supporting source and limitations
+of historical training/evaluation reproduction.
 
 Then approve and commit the final protocol, environment lock, checkpoint and asset
 identities, runner and initial-state/seed manifest before starting the development
 qualification. No outcome-dependent edits are allowed within a campaign.
+
+The complete historical training recipe and author score reproduction are not
+established. This proposal qualifies the fixed independent reference. All ten
+Object task names occur in the confirmed training-source corpus; confirmation
+IDs/seeds are disjoint from this project's preparation/development samples,
+not proven disjoint from original training demonstrations. Dataset task indices
+differ from native suite task IDs; preserve the native order specified below.
 
 ## Frozen candidate and complete suite
 

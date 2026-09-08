@@ -267,8 +267,8 @@
   "remaining_blockers": [
     {
       "scope": "formal_qualification",
-      "issue": "Checkpoint training/evaluation action-state-camera contract and dataset provenance are not established by the model card",
-      "next_step": "Obtain traceable training/configuration or author evidence; approve and freeze the draft before any qualification episodes"
+      "issue": "Qualification protocol remains a draft and no final runner/tuple manifest is approved and committed",
+      "next_step": "Finalize and approve the independent-reference protocol before starting any formal episode; source/semantics evidence is now in the training-control audit"
     }
   ],
   "baseline_qualified": false,
@@ -291,5 +291,25 @@
     "all_tracked_install_download_and_experiment_sessions_exited": true,
     "smoke_exit_code": 0,
     "smoke_environment_closed": true
+  },
+  "training_control_followup": {
+    "date": "2026-09-08",
+    "status": "independent_reference_training_source_and_execution_contract_supported",
+    "report": "LIBERO_REFERENCE_TRAINING_CONTROL_AUDIT.md",
+    "summary": "LIBERO_REFERENCE_TRAINING_CONTROL_AUDIT.json",
+    "artifact_root": "/home/rp/Workspace/SmolVLA_RTC/artifacts/libero_contract_audit_20260908T034709Z",
+    "dataset_repo": "HuggingFaceVLA/libero",
+    "dataset_identity": "author_confirmed",
+    "v21_statistics_all_30_float32_values_match": true,
+    "execution_contract": "supported",
+    "historical_training_and_evaluation_recipe": "not_fully_recovered",
+    "readme_retry": "same_web_tool_error",
+    "previous_remaining_blockers": [
+      {
+        "scope": "formal_qualification",
+        "issue": "Checkpoint training/evaluation action-state-camera contract and dataset provenance are not established by the model card",
+        "next_step": "Obtain traceable training/configuration or author evidence; approve and freeze the draft before any qualification episodes"
+      }
+    ]
   }
 }

@@ -1,5 +1,13 @@
 # Independent LIBERO reference: technical preparation completed
 
+Follow-up on 2026-09-08: the
+[training/control audit](LIBERO_REFERENCE_TRAINING_CONTROL_AUDIT.md) confirms the
+training dataset through the checkpoint author and reproduces all 30 saved
+normalization values from pre-upload dataset metadata. The independent reference's
+execution contract is traced to official source. The training-source unknowns
+in the historical preparation account below are superseded by that audit; the
+complete historical training/evaluation recipe remains unavailable.
+
 Date: 2026-09-08. The independent environment, fixed assets, complete strict
 policy load, saved processors, and one registered 20-action wiring run all
 completed. The smoke executed from committed source
