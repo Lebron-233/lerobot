@@ -29,11 +29,19 @@ ten Euler denoising evaluations. No compilation, attention-kernel substitution,
 fine-tuning, future tokens, dataset, simulator or recorded rollout is involved.
 No changes to src/lerobot, checkpoint files or environment dependencies.
 
-Capture only the original model.sample_actions with explicit noise. The ordinary
-selector retains its existing image preparation, state preparation, slicing,
-queue handling and postprocessor. One experiment-local graph owns fixed-address
-images, camera masks, language tokens/masks, model-ready state and noise buffers.
-Refresh every buffer before every replay, never just the images. The graph output
+Capture the original prefix/ten-step action computation after **fresh current-image
+encoding on every call**, using the existing native-token input API. The installed
+Idefics3VisionEmbeddings.forward uses GPU boolean indexing in its position-ID
+construction; this data-dependent-size operation is outside the capture region.
+This boundary was chosen by CPU-only source inspection before GPU execution,
+not by a timing search. The image encoder still executes and is timed on every
+selector call; no previous observation's tokens are reused. The existing keyword
+name future_image_tokens supplies freshly encoded current tokens in this test.
+
+The ordinary selector retains its existing image preparation, state preparation,
+slicing, queue handling and postprocessor. One experiment-local graph owns
+fixed-address current-image tokens, token masks, language tokens/masks, model-ready
+state and noise buffers. Refresh every buffer before every replay. The graph output
 must retain full [1,50,32]; verify all ten original projection calls during capture.
 Warm up the capture workload three times on a side stream, then capture once.
 Restore the original callable on exit. A capture error ends the experiment and
@@ -55,7 +63,9 @@ policy and processors each call. Generate fresh model-native noise inside the
 timed region and feed that explicit noise to the existing selector. Include all
 graph input copies, normal selector work, postprocessing and GPU completion in
 CUDA-synchronized host timing. Preprocessing before select_action remains outside
-the primary timer, exactly as in the previous compute comparisons.
+the primary timer, exactly as in the previous compute comparisons. Record that the
+graph path's fresh visual-encoding call count equals replay count plus its single
+setup encoding; visual encoding is not skipped to obtain the measured speed.
 
 Compare every padded action in [1,50,32], the selected normalized [1,7] action,
 and its actual postprocessed [1,7] output, all with exact equality. Stop at the

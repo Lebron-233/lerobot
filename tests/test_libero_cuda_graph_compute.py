@@ -8,7 +8,12 @@ import numpy as np
 import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "examples/advanced/predictive_async"))
-from profile_libero_cuda_graph_compute import check_capture_shapes, compare, copy_inputs  # noqa: E402
+from profile_libero_cuda_graph_compute import (  # noqa: E402
+    check_capture_shapes,
+    compare,
+    copy_inputs,
+    invoke_graph,
+)
 
 
 class GraphComputeContractTest(unittest.TestCase):
@@ -32,6 +37,22 @@ class GraphComputeContractTest(unittest.TestCase):
         for shapes in ([[1, 50, 32]], [[1, 1, 32]] * 10, []):
             with self.assertRaises(ValueError):
                 check_capture_shapes(shapes)
+
+    def test_current_tokens_language_state_and_noise_reach_original_sampler(self):
+        values = tuple(torch.tensor(index) for index in range(8))
+
+        def original(images, masks, tokens, token_masks, state, **keywords):
+            self.assertIsNone(images)
+            self.assertIsNone(masks)
+            self.assertIs(tokens, values[4])
+            self.assertIs(token_masks, values[5])
+            self.assertIs(state, values[6])
+            self.assertIs(keywords["noise"], values[7])
+            self.assertIs(keywords["future_image_tokens"][1], values[1])
+            self.assertIs(keywords["future_image_token_masks"][1], values[3])
+            return "original_called"
+
+        self.assertEqual(invoke_graph(original, values), "original_called")
 
     def test_comparison_detects_change_outside_selected_action(self):
         full = np.zeros((1, 50, 32), dtype=np.float32)

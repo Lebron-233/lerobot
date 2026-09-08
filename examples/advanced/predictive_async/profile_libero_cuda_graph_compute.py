@@ -40,6 +40,20 @@ def invoke(original, values):
     return original(values[:2], values[2:4], values[4], values[5], values[6], noise=values[7])
 
 
+def invoke_graph(original, values):
+    # These tokens were freshly encoded from this call's images, not predicted or reused across calls.
+    return original(
+        None,
+        None,
+        values[4],
+        values[5],
+        values[6],
+        noise=values[7],
+        future_image_tokens=tuple(values[:2]),
+        future_image_token_masks=tuple(values[2:4]),
+    )
+
+
 class EagerSampler:
     """Retain the full padded output for comparison outside the timed selector."""
 
@@ -57,14 +71,19 @@ class EagerSampler:
 class GraphSampler:
     """A single experiment-local graph; not installed into the production runtime."""
 
-    def __init__(self, original, inputs, projection):
-        self.inputs = tuple(value.detach().clone() for value in inputs)
+    def __init__(self, model, original, inputs, projection):
+        self.encode = model.encode_image_tokens
+        tokens, masks = self.encode(inputs[:2], inputs[2:4])
+        current = pack(tokens, masks, *inputs[4:])
+        self.inputs = tuple(value.detach().clone() for value in current)
+        self.visual_encoding_calls = 1
+        self.replay_calls = 0
         self.graph = torch.cuda.CUDAGraph()
         stream = torch.cuda.Stream()
         stream.wait_stream(torch.cuda.current_stream())
         with torch.cuda.stream(stream):
             for _ in range(3):
-                invoke(original, self.inputs)
+                invoke_graph(original, self.inputs)
         torch.cuda.current_stream().wait_stream(stream)
         torch.cuda.synchronize()
         self.capture_projection_shapes = []
@@ -73,14 +92,17 @@ class GraphSampler:
         )
         try:
             with torch.cuda.graph(self.graph, stream=stream):
-                self.latest = invoke(original, self.inputs)
+                self.latest = invoke_graph(original, self.inputs)
         finally:
             hook.remove()
         check_capture_shapes(self.capture_projection_shapes)
 
     def __call__(self, images, masks, tokens, token_masks, state, noise=None):
-        copy_inputs(self.inputs, pack(images, masks, tokens, token_masks, state, noise))
+        image_tokens, image_masks = self.encode(images, masks)
+        self.visual_encoding_calls += 1
+        copy_inputs(self.inputs, pack(image_tokens, image_masks, tokens, token_masks, state, noise))
         self.graph.replay()
+        self.replay_calls += 1
         return self.latest
 
 
@@ -157,7 +179,7 @@ def run(args, result):
             initial = select("eager", 0, 979999)
             result["stage"] = "graph_capture"
             start = time.perf_counter()
-            graph = GraphSampler(original, eager.inputs, policy.model.action_out_proj)
+            graph = GraphSampler(policy.model, original, eager.inputs, policy.model.action_out_proj)
             samplers["graph"] = graph
             result["capture_setup_seconds"] = time.perf_counter() - start
             result["capture_projection_shapes"] = graph.capture_projection_shapes
@@ -211,6 +233,8 @@ def run(args, result):
             }
             result["graph_samples_exceeding_50ms"] = sum(row["graph_seconds"] > 0.05 for row in measured)
             result["native_output_changes_between_pairs"] = changed_outputs
+            result["graph_visual_encoding_calls_including_setup"] = graph.visual_encoding_calls
+            result["graph_replay_calls"] = graph.replay_calls
             result["graph_memory"] = {
                 "allocated_bytes": torch.cuda.memory_allocated(),
                 "reserved_bytes": torch.cuda.memory_reserved(),
@@ -241,6 +265,7 @@ def main():
         "status": "started",
         "execution_head": head,
         "scope": "synthetic_compute_only_full_ten_step_cuda_graph",
+        "graph_region": "prefix_and_all_ten_denoising_steps; fresh_visual_encoding_outside_graph_each_call",
         "task_outcomes_measured": 0,
         "qualification_data_read": False,
         "baseline_qualified": False,
