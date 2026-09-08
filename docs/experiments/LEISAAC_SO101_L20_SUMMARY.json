@@ -1,0 +1,23 @@
+{
+  "kind": "closed_L20_source_bound_native_feedback_span_development",
+  "execution_source": "2afee34e55da3ed08bfe2670e4a14252bb7ec2cc",
+  "complete": true,
+  "trials": 16,
+  "aggregates": {
+    "50": {"trials": 8, "native_successes": 0, "subgoal_successes": 5, "technical_failures": 0, "mean_restricted_native_time_s": 120.0, "qualified_development": false},
+    "10": {"trials": 8, "native_successes": 3, "subgoal_successes": 5, "technical_failures": 0, "mean_restricted_native_time_s": 87.74166666666666, "qualified_development": false}
+  },
+  "paired_native_time_difference_s": [0.0, 0.0, -90.93333333333334, -70.2, -96.93333333333334, 0.0, 0.0, 0.0],
+  "mean_paired_native_time_difference_s": -32.25833333333333,
+  "descriptive_paired_bootstrap_95_s": [-63.766666666666666, -8.775],
+  "paired_initial_geometry_equal": [true, true, true, true, true, true, true, true],
+  "completed_actions": 49858,
+  "setup_actions": 480,
+  "native_rule_mismatches": 0,
+  "independent_simulator_exits": 16,
+  "all_cleanup_complete": true,
+  "projected_scalar_components": {"50": 309, "10": 26},
+  "predictor_benefit_tested": false,
+  "realtime_qualified": false,
+  "old_reserved_student_tests_opened": false
+}
