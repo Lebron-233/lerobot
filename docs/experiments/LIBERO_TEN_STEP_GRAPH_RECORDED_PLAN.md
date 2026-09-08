@@ -1,5 +1,12 @@
 # Ten-step graph equivalence on recorded native observations
 
+Execution update: source5953905f completed81 exact measured comparisons for tasks0-2,
+then stopped technically at the next task's incompatible graph input. The remaining
+189 have no complete comparison. The subsequent task-boundary repair is implemented
+but unrun because its preregistrationPOST was blocked. See
+[the consolidated result](LIBERO_TEN_STEP_GRAPH_RESULT.md); the frozen protocol below
+is retained rather than relabeled as270 successful comparisons.
+
 Date: 2026-09-08. The repaired synthetic graph profile at84e38259 completed with
 all exact-equality checks, including all ten original projections. Its formal
 means are219.914ms eager and63.652ms graph (24pairs); all24 graph samples remain

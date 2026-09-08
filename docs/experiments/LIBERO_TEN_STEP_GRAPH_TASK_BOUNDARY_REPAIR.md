@@ -1,5 +1,13 @@
 # Recorded graph validation: task-boundary static-shape repair
 
+## Execution status
+
+Repair sourcebfaeb0de was committed/pushed. Duplicate lookup for its registration
+marker found no comment. The subsequent preregistrationPOST was blocked by the
+platform before execution and returned no publicationID. No alternate publication
+route was used and no repaired validation was launched. The observed partial
+5953905f result below remains the only recorded-input execution.
+
 Date: 2026-09-08. The first recorded-observation validation at5953905f is closed
 as a technical failure. Output `outputs/libero_graph_recorded_5953905f/` is retained.
 Its command exited1 after63.663s. All81 measured pairs for tasks0,1,2 were exact
@@ -33,7 +41,7 @@ the complete first failed run. This reruns model-input comparisons, not native
 episodes. No task success is generated and no original raw record is overwritten.
 
 Same source one-step cohort, all90 initial/midpoint/terminal samples, seeds990000+i,
-alternating measurement order, same six output comparisons and finite/queue rules.
+alternating measurement order, same three paired output comparisons and finite/queue rules.
 Five initial paired warmups are unchanged; each task's new capture uses the same
 three internal side-stream warmups already in GraphSampler. A separate eager setup
 call seeds989900+task supplies that task's capture input. Preserve all10 preparation

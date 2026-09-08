@@ -1,5 +1,11 @@
 # Preserve all ten denoising steps while testing CUDA launch-overhead removal
 
+Execution update: the original f3894bc4 capture failed on an unpinned CPU constant
+copy. After the separately registered minimal device-constant repair,84e38259
+completed all synthetic pairs exactly, with formal means219.914ms eager and63.652ms
+graph. See [the consolidated result](LIBERO_TEN_STEP_GRAPH_RESULT.md), including
+the incomplete subsequent recorded-input validation and all preserved failures.
+
 Date: 2026-09-08. Bounded synthetic-input engineering experiment, not a task cohort.
 The single-step native screen failed at 64/90. Its complete matched ten-step control
 is being executed separately at its unchanged registered source. This experiment's

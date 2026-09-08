@@ -1,0 +1,91 @@
+{
+  "date": "2026-09-08",
+  "scope": "ten_step_graph_compute_and_partial_recorded_equivalence",
+  "synthetic": {
+    "execution_head": "84e38259277401ddce56bf56e87ef0639ffda41c",
+    "preregistration_comment_id": 5587705188,
+    "status": "completed",
+    "output": "outputs/libero_ten_step_graph_84e38259",
+    "formal_pairs": 24,
+    "warmup_pairs": 5,
+    "initial_replay_equality": true,
+    "all_full_selected_and_postprocessed_pairs_exact": true,
+    "eager_seconds": {
+      "mean": 0.21991413919022307,
+      "median": 0.2196208939421922,
+      "empirical_p95": 0.22281595203094184,
+      "min": 0.21787279599811882,
+      "max": 0.22308178897947073
+    },
+    "graph_seconds": {
+      "mean": 0.0636520254968976,
+      "median": 0.06372440251288936,
+      "empirical_p95": 0.06396946299355477,
+      "min": 0.06261463707778603,
+      "max": 0.06400039989966899
+    },
+    "graph_formal_samples_over_50ms": 24,
+    "capture_setup_seconds": 0.9166459030238912,
+    "denoising_projections": 10,
+    "projection_shape": [1, 50, 32],
+    "graph_replays": 30,
+    "visual_encodings_including_setup": 31,
+    "native_output_changes_between_pairs": 28,
+    "command_exit_code": 0,
+    "tool_wall_seconds": 17.427,
+    "original_sampler_restored": true,
+    "final_num_steps": 10
+  },
+  "first_capture_attempt": {
+    "execution_head": "f3894bc4dc4252460285575c75d78437488d461c",
+    "status": "failed_graph_capture_unpinned_cpu_constant_copy",
+    "output": "outputs/libero_ten_step_graph_f3894bc4",
+    "completed_formal_pairs": 0,
+    "command_exit_code": 1,
+    "tool_wall_seconds": 10.326
+  },
+  "recorded_validation": {
+    "execution_head": "5953905f10fd861769c4f1cf2243f51b80da1f8c",
+    "preregistration_comment_id": 5587807866,
+    "output": "outputs/libero_graph_recorded_5953905f",
+    "source": "outputs/libero_single_step_native_ee273bce",
+    "planned_pairs": 270,
+    "completed_exact_pairs": 81,
+    "completed_warmup_pairs": 5,
+    "completed_tasks": [0, 1, 2],
+    "last_complete_pair_index": 80,
+    "first_uncompleted_pair_index": 81,
+    "first_uncompleted_task_id": 3,
+    "first_uncompleted_state_id": 41,
+    "remaining_without_complete_comparison": 189,
+    "observed_numerical_mismatches": 0,
+    "status": "failed_fixed_input_shape_dtype_or_device_check",
+    "command_exit_code": 1,
+    "tool_wall_seconds": 63.663,
+    "original_sampler_restored": true,
+    "new_native_episodes": 0
+  },
+  "task_boundary_repair": {
+    "source_head": "bfaeb0de04a6f2e45ab5606ae44723550b372583",
+    "pushed": true,
+    "validation_status": "not_started_preregistration_post_blocked",
+    "preregistration_comment_id": null,
+    "started_by_this_turn": false,
+    "rerouted_denied_publication": false
+  },
+  "matched_control": {
+    "execution_head": "697099645e0b87c3228ab1ea625f1b6f32072703",
+    "supervisor_session": 1058,
+    "supervisor_exit_code": 0,
+    "tool_wall_seconds": 3992.284,
+    "last_observed_completed_tuples": 84,
+    "last_observed_technical_failures": 0,
+    "final_summary_read": false,
+    "status": "supervisor_exited_result_read_blocked"
+  },
+  "baseline_qualified": false,
+  "realtime_qualified": false,
+  "predictor_benefit_tested": false,
+  "risk_thresholds": null,
+  "old_confirmation": "not_started_untouched"
+}
