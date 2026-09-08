@@ -3,6 +3,11 @@
 Date: 2026-09-08. Authority: the user's continued implementation and experiment
 authorization. This document does not reopen the qualification protocol.
 
+Execution closed: the one registered microbenchmark completed at source
+`9699ef2307156918b1b7cae4fa829cb1647a0766`, with 25/25 exactly equal paired
+actions and all 20 measured cached-token calls above 50 ms. See
+[the result](LIBERO_REFERENCE_COMPUTE_RESULT.md). The design below is preserved.
+
 ## Decision on the closed experiment
 
 Accept the completed qualification record at execution source
