@@ -1,6 +1,7 @@
 """CPU-only checks for fixed-address refresh and preservation of all ten denoising steps."""
 
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -14,6 +15,7 @@ from profile_libero_cuda_graph_compute import (  # noqa: E402
     copy_inputs,
     invoke_graph,
 )
+from profile_libero_graph_recorded import recorded_batch  # noqa: E402
 
 
 class GraphComputeContractTest(unittest.TestCase):
@@ -62,6 +64,23 @@ class GraphComputeContractTest(unittest.TestCase):
         result = compare((0.2, full, action, action), (0.1, changed, action, action))
         self.assertFalse(result["full_padded_chunk"]["exact_equal"])
         self.assertTrue(result["selected_normalized_action"]["exact_equal"])
+
+    def test_recorded_observation_reconstructs_exact_saved_state(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory)
+            image = np.zeros((4, 4, 3), dtype=np.uint8)
+            np.savez_compressed(path / "frame.npz", image=image, image2=image)
+            values = [0.1, 0.2, 0.3, 0.0, 0.0, 0.0, 0.02, -0.02]
+            observation = {
+                "cameras": "frame.npz",
+                "state": {"values": values},
+                "eef_quaternion_xyzw": {"values": [0, 0, 0, 1]},
+            }
+            batch = recorded_batch(path, observation, "pick_up_the_object")
+            self.assertTrue(torch.equal(batch["observation.state"], torch.tensor([values])))
+            observation["state"]["values"][3] = 1.0
+            with self.assertRaisesRegex(ValueError, "Reconstructed"):
+                recorded_batch(path, observation, "pick_up_the_object")
 
 
 if __name__ == "__main__":
