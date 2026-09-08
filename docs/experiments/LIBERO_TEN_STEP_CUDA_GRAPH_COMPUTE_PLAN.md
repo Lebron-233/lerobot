@@ -58,7 +58,9 @@ The complete definitions are in the runner; no fixture is chosen from outcomes.
 
 First compare an eager call and graph replay at fixture 0 / seed979999. Then five
 paired warmups followed by 24 formal pairs (six per fixture), fixture round-robin,
-alternating eager/graph order and equal seed980000+i within every pair. Reset the
+and equal seed980000+i within every pair. Alternate eager/graph order within each
+four-fixture cycle and reverse that assignment on the next cycle, giving three
+eager-first and three graph-first formal pairs for each fixture. Reset the
 policy and processors each call. Generate fresh model-native noise inside the
 timed region and feed that explicit noise to the existing selector. Include all
 graph input copies, normal selector work, postprocessing and GPU completion in

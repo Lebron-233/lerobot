@@ -198,7 +198,8 @@ def run(args, result):
                 warmup = index < 5
                 fixture_index = (index if warmup else index - 5) % 4
                 seed = 980000 + index
-                order = ["eager", "graph"] if index % 2 == 0 else ["graph", "eager"]
+                eager_first = index % 2 == 0 if warmup else (fixture_index + (index - 5) // 4) % 2 == 0
+                order = ["eager", "graph"] if eager_first else ["graph", "eager"]
                 values = {name: select(name, fixture_index, seed) for name in order}
                 comparisons = compare(values["eager"], values["graph"])
                 row = {
