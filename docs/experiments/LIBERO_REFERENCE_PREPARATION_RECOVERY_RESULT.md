@@ -214,7 +214,10 @@ preserved. Weights and raw logs are outside Git.
 
 The existing [L20 comment 5578043892](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5578043892)
 was synchronously read back and confirmed; it was not republished. This result's
-separate Issue 1 record uses marker `LIBERO_REFERENCE_PREPARATION_RECOVERY_V2`.
-After result push, its actual publication response and known-ID readback are
-saved as `publication.json` / `publication_readback.json` in the artifact root
-and linked from the local handover.
+separate [Issue comment 5578746284](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5578746284)
+uses marker `LIBERO_REFERENCE_PREPARATION_RECOVERY_V2`. It was published once
+following a successful duplicate check and read back by its known ID; the body
+matches the submitted text. The actual response and readback are retained as
+`publication.json` / `publication_readback.json`. All tracked installation,
+download and experiment sessions have exited; the task process scan found no
+remaining probe or smoke process. The smoke environment closed normally.

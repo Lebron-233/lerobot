@@ -278,6 +278,18 @@
   "github_record": {
     "issue": "https://github.com/Lebron-233/lerobot/issues/1",
     "marker": "LIBERO_REFERENCE_PREPARATION_RECOVERY_V2",
-    "publication_receipt": "artifacts/local publication.json after publishing"
+    "status": "published_once_and_readback_confirmed",
+    "id": 5578746284,
+    "url": "https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5578746284",
+    "created_at": "2026-09-08T03:37:21Z",
+    "body_matches_submitted": true,
+    "deduplicated_before_publish": true,
+    "publication_receipt": "/home/rp/Workspace/SmolVLA_RTC/artifacts/libero_reference_preparation_20260908T030051Z/publication_receipt.json"
+  },
+  "task_processes": {
+    "active_task_scripts": [],
+    "all_tracked_install_download_and_experiment_sessions_exited": true,
+    "smoke_exit_code": 0,
+    "smoke_environment_closed": true
   }
 }
