@@ -310,5 +310,23 @@
     "development": [
       "task 5 成功 14/20 低于 16/20"
     ]
+  },
+  "publication": {
+    "execution_commit": "1cd7d222c9c49d89c6d385006e7967f825f64a90",
+    "result_commit": "680a930c313c5bbc77ef2619c35205680739b7ba",
+    "preregistration": {
+      "id": 5580879265,
+      "url": "https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5580879265",
+      "created_at": "2026-09-08T07:13:45Z",
+      "body_matches": true,
+      "formal_phase_directories_absent_before_launch": true
+    },
+    "closure": {
+      "id": 5583169242,
+      "url": "https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5583169242",
+      "created_at": "2026-09-08T09:56:24Z",
+      "body_matches": true,
+      "verified_at": "2026-09-08T09:58:23.387919+00:00"
+    }
   }
 }
