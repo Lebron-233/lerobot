@@ -1,8 +1,11 @@
-# Independent LIBERO reference qualification proposal
+# Independent LIBERO reference qualification protocol
 
-Date: 2026-09-08. **Draft, not approved for execution. No qualification episode
-has been run.** These sample sizes, seeds and numerical gates are proposed here
-before opening any formal task results. They do not inherit the SO101 7/8 gate.
+Date: 2026-09-08. **Formal execution protocol.** The design was approved in
+[Issue #1, comment 5579123199](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5579123199)
+and the user's `CODEX_LIBERO_QUALIFICATION_NEXT_TASKS_2026-09-08.md` authorizes
+implementation, registration, execution and closure. No qualification episode
+has been opened at this protocol commit. These sample sizes, seeds and numerical
+gates were fixed before opening outcomes; they do not inherit the SO101 7/8 gate.
 
 ## Prerequisites
 
@@ -18,16 +21,11 @@ generation/consumption/denoising. Dataset metadata FPS 10 does not warrant a
 control-rate override. The audit records the supporting source and limitations
 of historical training/evaluation reproduction.
 
-Then approve and commit the final protocol, environment lock, checkpoint and asset
-identities, runner and initial-state/seed manifest before starting the development
-qualification. No outcome-dependent edits are allowed within a campaign.
-
-The complete historical training recipe and author score reproduction are not
-established. This proposal qualifies the fixed independent reference. All ten
-Object task names occur in the confirmed training-source corpus; confirmation
-IDs/seeds are disjoint from this project's preparation/development samples,
-not proven disjoint from original training demonstrations. Dataset task indices
-differ from native suite task IDs; preserve the native order specified below.
+Commit and push this protocol, the runner, expanded manifest and targeted test
+results, then register the exact execution HEAD and output directory in Issue #1
+before starting development. Reuse the existing preparation environment lock.
+No source or dependency changes are allowed while either cohort runs; both use
+the same execution HEAD. Artifact reports may be written outside the source tree.
 
 ## Frozen candidate and complete suite
 
@@ -61,7 +59,7 @@ and containment checks. Use `info.is_success` from the actual task step. Do not
 replace this with an image judgment, distance threshold, reward shaping or a
 separate approximate geometry test.
 
-## Proposed samples and execution
+## Registered samples and execution
 
 Use one episode per task/initial-state/seed tuple, with no repeated attempt at a
 tuple. Twenty distinct states per task cover more starting configurations than
@@ -74,8 +72,10 @@ the preparation example while keeping each cohort at 200 episodes.
 - For task `t` and state `s`, development environment seed is
   `510000 + 100*t + s`, policy/noise seed `610000 + 100*t + s`.
   Confirmation environment seed is `710000 + 100*t + s`, policy/noise seed
-  `810000 + 100*t + s`. These formulas uniquely enumerate all proposed seeds;
-  materialize them into the final manifest before execution.
+  `810000 + 100*t + s`. The committed
+  [400-tuple manifest](LIBERO_REFERENCE_QUALIFICATION_TUPLES.json) explicitly
+  enumerates every task, state, seed, name and ordinal. The runner compares the
+  entire file with this registered design before opening a cohort.
 - Order: task IDs 0 through 9; within each task, ascending listed initial-state
   ID. Run one environment at a time. Complete the development cohort and its
   decision before opening any confirmation outcome.
@@ -97,14 +97,14 @@ used noise seed 4202 and no simulator. IDs 41–49 remain unused. Neither cohort
 may be substituted for new predictor training data or treated as a tuning set
 for a future candidate.
 
-## Proposed eligibility decision and statistics
+## Eligibility decision and statistics
 
 A cohort qualifies only if it has **at least 180/200 native successes overall,
 at least 16/20 on each of the ten tasks, and zero technical failures**. Apply
 the same gate separately to confirmation. A baseline is qualified only when
 both complete cohorts pass under one unchanged candidate and contract.
 
-The proposed 90% overall gate requires a broadly reliable synchronous reference;
+The 90% overall gate requires a broadly reliable synchronous reference;
 the 80% floor prevents strong tasks from hiding a weak object task. Twenty
 episodes per task give five-percentage-point resolution while using disjoint
 initial-state sets for confirmation. These are project decision requirements,
@@ -122,6 +122,12 @@ seed 910001 for development and 910002 for confirmation. These intervals describ
 uncertainty under the chosen sampling model; the registered gate uses observed
 counts. The suite and initial states are fixed, so this is not a claim about
 arbitrary unseen tasks or an official reproduction of the checkpoint's training.
+
+For an incomplete cohort, report the conservative 20/200 scheduled decision
+denominators separately from actual observed counts. Per-task Wilson intervals
+use only observed tuples (including observed technical non-successes), with the
+actual n printed; n=0 has no interval. Do not compute the registered macro
+bootstrap when any task lacks its 20 observations. Unrun slots are not samples.
 
 Also report technical failures, task timeouts, first-success measured action and
 restricted simulated completion time. Non-success episodes receive 280/20=14 s
@@ -151,12 +157,76 @@ denial before a tuple launches is a campaign blocker, not an observed episode
 failure. Do not open confirmation unless development qualifies and its records
 are closed. No additional favorable-task queue is allowed.
 
+## Runner, recording and launch
+
+Entry: `examples/advanced/predictive_async/libero_reference_qualification.py`.
+Its supervisor loads the registered manifest, requires a clean exact execution
+HEAD and, for confirmation, a closed passing development summary at that HEAD
+before creating any confirmation output or worker process. The worker loads the
+whole pinned policy once per cohort and gives each tuple a fresh environment.
+It uses the existing `load_runtime`, `policy_observation`, native `LiberoEnv`,
+saved processor chain and Gymnasium `TimeLimit(280)`.
+
+Each tuple gets an exclusive directory and a `started.json` marker before native
+environment construction. Its flushed `events.jsonl` records reset, policy seed,
+separate settling/measurement native calls and returns, normalized and original
+actions, state, projection shapes, queue length, native success, terminal flags,
+and cleanup. Both actual raw cameras are saved losslessly at reset and after each
+measured action in `observations/NNN.npz`; their indices link to the step journal.
+Exactly ten denoising projections of shape `[1,50,32]` and an empty action queue
+after selection establish actual 50/1/10 generation/consumption/denoising.
+
+`result.json` is written after cleanup. The supervisor waits for and records the
+worker exit code, then reconciles each of the 200 slots against the native calls,
+returned steps, observation files and cleanup result. A launched tuple without a
+final result is a technical failure; an outstanding native call has **unknown**
+physical completion. Native returns and caller measurement records are counted
+separately. Later slots remain `not_run`; there is no automatic restart or retry.
+The output contains `registration.json`, `policy_load.json`, `worker_process.json`,
+`worker.log`, `process_exit.json`, `tuple_accounting.json` and `summary.json` per
+opened phase. Raw tuple records are retained when accounting rejects a result.
+
+Use the dedicated interpreter
+`/home/rp/Workspace/SmolVLA_RTC/libero-reference-venv/bin/python` through the
+existing `uv run --no-project` command. Remove inherited `PYTHONPATH`; set
+`MUJOCO_GL=egl`, `PYOPENGL_PLATFORM=egl`, `HF_HUB_OFFLINE=1` and
+`TRANSFORMERS_OFFLINE=1`, with the existing dedicated `LIBERO_CONFIG_PATH`.
+Reuse the accepted process-local preload of system `libGLdispatch.so.0` and
+`libGLX.so.0` from the preparation launcher. The new artifact launcher supplies:
+
+```text
+--phase development|confirmation
+--execution-head <exact pre-registered commit>
+--output /home/rp/Workspace/SmolVLA_RTC/artifacts/libero_reference_qualification_20260908T064953Z
+--policy-path <dedicated cache>/hub/models--HuggingFaceVLA--smolvla_libero/snapshots/6721902bc4d61e50a3bfdb11dfb4cb626f05d102
+--vlm-path <dedicated cache>/hub/models--HuggingFaceTB--SmolVLM2-500M-Video-Instruct/snapshots/7b375e1b73b11138ff12fe22c8f2822d8fe03467
+```
+
+The exact command and execution HEAD are recorded in Issue #1 before the first
+development tuple. Confirmation is invoked only after development closes and
+passes. The [implementation test result](LIBERO_REFERENCE_QUALIFICATION_IMPLEMENTATION_TESTS.md)
+records the targeted validation performed before freezing this version.
+
+## Limitations
+
+The complete historical training recipe and author score reproduction are not
+established. This protocol qualifies the fixed independent reference. All ten
+Object task names occur in the confirmed training-source corpus; confirmation
+IDs/seeds are disjoint from this project's preparation/development samples,
+not proven disjoint from original training demonstrations. Dataset task indices
+differ from native suite task IDs. The descriptive intervals concern the fixed
+ten-task design, not arbitrary unseen tasks.
+
 ## Subsequent research boundary
 
 No future-latent training, old SO101 predictor transfer, RTC/oracle/risk-gated
-comparison or production asynchronous migration starts under this draft. After
+comparison or production asynchronous migration starts under this protocol. After
 baseline confirmation, separately bind the new embodiment's state/visual
 predictors, causal-prefix contract and training/validation/test identities.
 The eventual native-outcome question still requires old committed actions to
 execute during background inference and new chunks to take over or be discarded
 under production semantics.
+
+Only two separately complete passing cohorts permit `baseline_qualified=true`.
+Keep `realtime_qualified=false`, `predictor_benefit_tested=false` and
+`risk_thresholds=null` regardless of baseline qualification.
