@@ -101,7 +101,8 @@ def euler_integrate(
     x_t = noise
     for step in range(num_steps):
         time = 1.0 + step * dt
-        time_tensor = torch.tensor(time, dtype=torch.float32, device=device).expand(bsize)
+        # Device-side fill preserves the timestep values without a CPU copy during CUDA capture.
+        time_tensor = torch.full((bsize,), time, dtype=torch.float32, device=device)
 
         if hard_prefix is not None:
             if hard_prefix_mask is None:

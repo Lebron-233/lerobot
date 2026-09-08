@@ -151,6 +151,24 @@ def test_euler_integrate_matches_historical_loop():
     assert torch.equal(out, ref)
 
 
+def test_device_filled_timesteps_match_historical_scalar_conversion():
+    for steps in (1, 3, 10):
+        for batch_size in (1, 2, 7):
+            seen = []
+
+            def denoise(x_t, timestep, seen=seen):
+                seen.append(timestep.clone())
+                return torch.zeros_like(x_t)
+
+            euler_integrate(denoise, torch.zeros(batch_size, 4, 2), steps)
+            expected = [
+                torch.tensor(1.0 + step * (-1.0 / steps), dtype=torch.float32).expand(batch_size)
+                for step in range(steps)
+            ]
+            assert len(seen) == steps
+            assert all(torch.equal(a, b) for a, b in zip(seen, expected, strict=True))
+
+
 def test_euler_integrate_rtc_guidance_and_kwarg_forwarding():
     torch.manual_seed(4)
     denoise_fn = _make_denoise_fn()

@@ -831,7 +831,9 @@ class VLAFlowMatching(nn.Module):
         att_masks += [1] * (states_seq_len)
         embs = torch.cat(embs, dim=1)
         pad_masks = torch.cat(pad_masks, dim=1)
-        att_masks = torch.tensor(att_masks, dtype=torch.bool, device=pad_masks.device)
+        # Construct the same fixed block mask on-device; CPU list copies cannot be graph-captured.
+        att_masks = torch.zeros(len(att_masks), dtype=torch.bool, device=pad_masks.device)
+        att_masks[-states_seq_len:] = True
         att_masks = att_masks[None, :]
 
         seq_len = pad_masks.shape[1]
@@ -883,7 +885,7 @@ class VLAFlowMatching(nn.Module):
         att_masks += [1] * self.config.chunk_size
         embs = torch.cat(embs, dim=1)
         pad_masks = torch.cat(pad_masks, dim=1)
-        att_masks = torch.tensor(att_masks, dtype=embs.dtype, device=embs.device)
+        att_masks = torch.ones(len(att_masks), dtype=embs.dtype, device=embs.device)
         att_masks = att_masks[None, :].expand(bsize, len(att_masks))
         return embs, pad_masks, att_masks
 

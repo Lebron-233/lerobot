@@ -254,6 +254,35 @@ def test_legacy_and_token_prefix_paths_are_identical(tiny_policy, add_image_spec
         torch.testing.assert_close(legacy, overridden, rtol=0, atol=0)
 
 
+@pytest.mark.parametrize("special_tokens", [False, True])
+@pytest.mark.parametrize("batch_size,prefix_length", [(1, 1), (2, 32)])
+def test_graph_safe_masks_match_historical_list_values(
+    tiny_policy, special_tokens, batch_size, prefix_length
+):
+    batch = _make_batch(batch_size)
+    model = tiny_policy.model
+    model.add_image_special_tokens = special_tokens
+    model.prefix_length = prefix_length
+    tokens, masks = _encode_batch_images(tiny_policy, batch)
+    _, _, prefix = model.embed_prefix_from_tokens(
+        tokens,
+        masks,
+        batch[OBS_LANGUAGE_TOKENS],
+        batch[OBS_LANGUAGE_ATTENTION_MASK],
+        tiny_policy.prepare_state(batch),
+    )
+    special_count = len(tokens) * (model.global_image_start_token.numel() + model.image_end_token.numel())
+    non_state = sum(value.shape[1] for value in tokens) + 3 + (special_count if special_tokens else 0)
+    historical = [False] * non_state + [True]
+    historical += [False] * max(0, prefix_length - len(historical))
+    expected = torch.tensor(historical, dtype=torch.bool)[None].expand(batch_size, -1)
+    assert torch.equal(prefix, expected)
+    noise = torch.zeros(batch_size, tiny_policy.config.chunk_size, tiny_policy.config.max_action_dim)
+    suffix_embs, _, suffix = model.embed_suffix(noise, torch.ones(batch_size))
+    expected_suffix = torch.tensor([1] * tiny_policy.config.chunk_size, dtype=suffix_embs.dtype)
+    assert torch.equal(suffix, expected_suffix[None].expand(batch_size, -1))
+
+
 def test_override_path_never_calls_embed_image_and_does_not_require_rgb(tiny_policy) -> None:
     image_tokens, token_masks = _encode_batch_images(tiny_policy, _make_batch())
     tiny_policy.model.vlm_with_expert.embed_image_calls = 0
