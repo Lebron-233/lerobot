@@ -117,12 +117,12 @@ def summarize(records, exit_code, head):
     return result
 
 
-def run_worker(args):
+def run_worker(args, *, denoising_steps=1, tuples=None):
     torch.set_num_threads(1)
     policy, pre, post, report = load_runtime(args.policy_path, args.vlm_path)
     report["saved_num_steps"] = policy.config.num_steps
-    policy.config.num_steps = policy.model.config.num_steps = 1
-    report["executed_num_steps"] = 1
+    policy.config.num_steps = policy.model.config.num_steps = denoising_steps
+    report["executed_num_steps"] = denoising_steps
     write_json(args.output / "policy_load.json", report)
     import gymnasium as gym
     from libero.libero import benchmark, get_assets_path
@@ -152,7 +152,7 @@ def run_worker(args):
         return gym.wrappers.TimeLimit(env, max_episode_steps=280)
 
     try:
-        for spec in registered_tuples():
+        for spec in registered_tuples() if tuples is None else tuples:
             print(f"START {spec['tuple_id']}", flush=True)
             result = reference.run_episode(
                 spec,
@@ -161,7 +161,7 @@ def run_worker(args):
                 pre,
                 post,
                 env_factory,
-                denoising_steps=1,
+                denoising_steps=denoising_steps,
             )
             print(
                 f"END {spec['tuple_id']} {result['status']} success={result['success']} "
