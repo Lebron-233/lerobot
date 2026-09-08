@@ -1,0 +1,314 @@
+{
+  "execution_head": "1cd7d222c9c49d89c6d385006e7967f825f64a90",
+  "preregistration_url": "https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5580879265",
+  "artifact_root": "/home/rp/Workspace/SmolVLA_RTC/artifacts/libero_reference_qualification_20260908T064953Z",
+  "reported_at": "2026-09-08T09:55:16.709604+00:00",
+  "development": {
+    "phase": "development",
+    "source_head": "1cd7d222c9c49d89c6d385006e7967f825f64a90",
+    "scheduled": 200,
+    "completed": 200,
+    "technical_failure": 0,
+    "not_run": 0,
+    "observed": 200,
+    "successes": 185,
+    "timeouts": 15,
+    "native_truncations_observed": 15,
+    "environment_closed": 200,
+    "environment_close_failed": 0,
+    "environment_close_unknown": 0,
+    "measured_actions_returned": 32301,
+    "caller_measurement_records": 32301,
+    "settling_actions_returned": 2000,
+    "physical_step_unknown_tuples": 0,
+    "out_of_box_actions": 17928,
+    "out_of_box_components": 17973,
+    "inference_seconds": 8127.818778563407,
+    "restricted_simulated_mean_seconds_observed": 8.07525,
+    "worker_exit_code": 0,
+    "records_verified": true,
+    "tasks": [
+      {
+        "task_id": 0,
+        "task_name": "pick_up_the_alphabet_soup_and_place_it_in_the_basket",
+        "scheduled": 20,
+        "completed": 20,
+        "technical_failure": 0,
+        "not_run": 0,
+        "observed": 20,
+        "successes": 19,
+        "decision_success_rate": 0.95,
+        "observed_wilson_95": [
+          0.763868806553258,
+          0.9911185511992047
+        ],
+        "wilson_denominator": 20,
+        "restricted_simulated_mean_seconds_observed": 8.825,
+        "tuple_wall_seconds_known": 1079.2891910596518,
+        "tuple_wall_seconds_unknown": 0
+      },
+      {
+        "task_id": 1,
+        "task_name": "pick_up_the_cream_cheese_and_place_it_in_the_basket",
+        "scheduled": 20,
+        "completed": 20,
+        "technical_failure": 0,
+        "not_run": 0,
+        "observed": 20,
+        "successes": 19,
+        "decision_success_rate": 0.95,
+        "observed_wilson_95": [
+          0.763868806553258,
+          0.9911185511992047
+        ],
+        "wilson_denominator": 20,
+        "restricted_simulated_mean_seconds_observed": 7.405000000000001,
+        "tuple_wall_seconds_known": 898.5597019846318,
+        "tuple_wall_seconds_unknown": 0
+      },
+      {
+        "task_id": 2,
+        "task_name": "pick_up_the_salad_dressing_and_place_it_in_the_basket",
+        "scheduled": 20,
+        "completed": 20,
+        "technical_failure": 0,
+        "not_run": 0,
+        "observed": 20,
+        "successes": 20,
+        "decision_success_rate": 1.0,
+        "observed_wilson_95": [
+          0.8388748419471806,
+          1.0
+        ],
+        "wilson_denominator": 20,
+        "restricted_simulated_mean_seconds_observed": 6.772499999999999,
+        "tuple_wall_seconds_known": 799.8369299788028,
+        "tuple_wall_seconds_unknown": 0
+      },
+      {
+        "task_id": 3,
+        "task_name": "pick_up_the_bbq_sauce_and_place_it_in_the_basket",
+        "scheduled": 20,
+        "completed": 20,
+        "technical_failure": 0,
+        "not_run": 0,
+        "observed": 20,
+        "successes": 19,
+        "decision_success_rate": 0.95,
+        "observed_wilson_95": [
+          0.763868806553258,
+          0.9911185511992047
+        ],
+        "wilson_denominator": 20,
+        "restricted_simulated_mean_seconds_observed": 7.040000000000001,
+        "tuple_wall_seconds_known": 825.688486975967,
+        "tuple_wall_seconds_unknown": 0
+      },
+      {
+        "task_id": 4,
+        "task_name": "pick_up_the_ketchup_and_place_it_in_the_basket",
+        "scheduled": 20,
+        "completed": 20,
+        "technical_failure": 0,
+        "not_run": 0,
+        "observed": 20,
+        "successes": 19,
+        "decision_success_rate": 0.95,
+        "observed_wilson_95": [
+          0.763868806553258,
+          0.9911185511992047
+        ],
+        "wilson_denominator": 20,
+        "restricted_simulated_mean_seconds_observed": 8.705,
+        "tuple_wall_seconds_known": 1012.8743462553248,
+        "tuple_wall_seconds_unknown": 0
+      },
+      {
+        "task_id": 5,
+        "task_name": "pick_up_the_tomato_sauce_and_place_it_in_the_basket",
+        "scheduled": 20,
+        "completed": 20,
+        "technical_failure": 0,
+        "not_run": 0,
+        "observed": 20,
+        "successes": 14,
+        "decision_success_rate": 0.7,
+        "observed_wilson_95": [
+          0.4810271816464765,
+          0.8545227551323956
+        ],
+        "wilson_denominator": 20,
+        "restricted_simulated_mean_seconds_observed": 10.025,
+        "tuple_wall_seconds_known": 1163.9892452410422,
+        "tuple_wall_seconds_unknown": 0
+      },
+      {
+        "task_id": 6,
+        "task_name": "pick_up_the_butter_and_place_it_in_the_basket",
+        "scheduled": 20,
+        "completed": 20,
+        "technical_failure": 0,
+        "not_run": 0,
+        "observed": 20,
+        "successes": 19,
+        "decision_success_rate": 0.95,
+        "observed_wilson_95": [
+          0.763868806553258,
+          0.9911185511992047
+        ],
+        "wilson_denominator": 20,
+        "restricted_simulated_mean_seconds_observed": 8.35,
+        "tuple_wall_seconds_known": 1001.9360925591318,
+        "tuple_wall_seconds_unknown": 0
+      },
+      {
+        "task_id": 7,
+        "task_name": "pick_up_the_milk_and_place_it_in_the_basket",
+        "scheduled": 20,
+        "completed": 20,
+        "technical_failure": 0,
+        "not_run": 0,
+        "observed": 20,
+        "successes": 18,
+        "decision_success_rate": 0.9,
+        "observed_wilson_95": [
+          0.6989663547715128,
+          0.9721335187862319
+        ],
+        "wilson_denominator": 20,
+        "restricted_simulated_mean_seconds_observed": 7.875,
+        "tuple_wall_seconds_known": 908.96751774312,
+        "tuple_wall_seconds_unknown": 0
+      },
+      {
+        "task_id": 8,
+        "task_name": "pick_up_the_chocolate_pudding_and_place_it_in_the_basket",
+        "scheduled": 20,
+        "completed": 20,
+        "technical_failure": 0,
+        "not_run": 0,
+        "observed": 20,
+        "successes": 20,
+        "decision_success_rate": 1.0,
+        "observed_wilson_95": [
+          0.8388748419471806,
+          1.0
+        ],
+        "wilson_denominator": 20,
+        "restricted_simulated_mean_seconds_observed": 8.45,
+        "tuple_wall_seconds_known": 925.2587968418375,
+        "tuple_wall_seconds_unknown": 0
+      },
+      {
+        "task_id": 9,
+        "task_name": "pick_up_the_orange_juice_and_place_it_in_the_basket",
+        "scheduled": 20,
+        "completed": 20,
+        "technical_failure": 0,
+        "not_run": 0,
+        "observed": 20,
+        "successes": 18,
+        "decision_success_rate": 0.9,
+        "observed_wilson_95": [
+          0.6989663547715128,
+          0.9721335187862319
+        ],
+        "wilson_denominator": 20,
+        "restricted_simulated_mean_seconds_observed": 7.305,
+        "tuple_wall_seconds_known": 797.5181835800176,
+        "tuple_wall_seconds_unknown": 0
+      }
+    ],
+    "bootstrap_macro_95": [
+      0.8899999999999998,
+      0.9549999999999998
+    ],
+    "bootstrap_seed": 910001,
+    "bootstrap_repetitions": 20000,
+    "baseline_qualified": false,
+    "realtime_qualified": false,
+    "predictor_benefit_tested": false,
+    "risk_thresholds": null,
+    "decision_success_rate": 0.925,
+    "passed": false,
+    "worker_wall_seconds": 9424.931731704972,
+    "launch_error": null
+  },
+  "confirmation": {
+    "phase": "confirmation",
+    "status": "not_started",
+    "registered_slots": 200,
+    "observed": 0,
+    "reason": "Development did not pass its registered gate"
+  },
+  "baseline_qualified": false,
+  "realtime_qualified": false,
+  "predictor_benefit_tested": false,
+  "risk_thresholds": null,
+  "runtime_registration": {
+    "source_head": "1cd7d222c9c49d89c6d385006e7967f825f64a90",
+    "phase": "development",
+    "manifest": "/home/rp/Workspace/SmolVLA_RTC/lerobot/docs/experiments/LIBERO_REFERENCE_QUALIFICATION_TUPLES.json",
+    "policy_path": "/home/rp/Workspace/SmolVLA_RTC/libero-reference-cache/hub/models--HuggingFaceVLA--smolvla_libero/snapshots/6721902bc4d61e50a3bfdb11dfb4cb626f05d102",
+    "vlm_path": "/home/rp/Workspace/SmolVLA_RTC/libero-reference-cache/hub/models--HuggingFaceTB--SmolVLM2-500M-Video-Instruct/snapshots/7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+    "started_at": "2026-09-08T07:14:32.782523+00:00",
+    "supervisor_pid": 2146633,
+    "versions": {
+      "lerobot": "0.6.2",
+      "hf-libero": "0.1.4",
+      "mujoco": "3.8.1",
+      "robosuite": "1.4.0",
+      "numpy": "2.2.6",
+      "torch": "2.11.0+cu128",
+      "transformers": "5.5.4"
+    }
+  },
+  "strict_policy_load": {
+    "strict": true,
+    "missing_keys": [],
+    "unexpected_keys": [],
+    "shape_mismatches": [],
+    "vlm_layers": 32,
+    "expert_layers": 32,
+    "expert_hidden_size": 480,
+    "parameter_dtypes_numel": {
+      "torch.bfloat16": 600902304,
+      "torch.float32": 4031872
+    },
+    "trainable_parameters_at_load": 97451872,
+    "trainable_parameters_for_inference": 0,
+    "projection_shapes": {
+      "model.state_proj.weight": [
+        960,
+        32
+      ],
+      "model.action_in_proj.weight": [
+        480,
+        32
+      ],
+      "model.action_out_proj.weight": [
+        32,
+        480
+      ]
+    },
+    "use_amp": false,
+    "preprocessor_steps": [
+      "RenameObservationsProcessorStep",
+      "AddBatchDimensionProcessorStep",
+      "NewLineTaskProcessorStep",
+      "TokenizerProcessorStep",
+      "DeviceProcessorStep",
+      "NormalizerProcessorStep"
+    ],
+    "postprocessor_steps": [
+      "DeviceProcessorStep",
+      "UnnormalizerProcessorStep"
+    ]
+  },
+  "closure_audit_file": "LIBERO_REFERENCE_QUALIFICATION_AUDIT.json",
+  "decision_reasons": {
+    "development": [
+      "task 5 成功 14/20 低于 16/20"
+    ]
+  }
+}

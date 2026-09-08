@@ -149,10 +149,12 @@ training episodes to the qualification initial-state row IDs. Initial-state
 disjointness from the original training data is not established.
 
 The prior prerequisite to obtain traceable author/source evidence is satisfied
-for the independent reference's operational camera/state/action contract. The
-[qualification proposal](LIBERO_REFERENCE_QUALIFICATION_PLAN.md) remains a draft:
-its final runner and tuple manifest must be approved and committed before any
-formal episode. This follow-up does not approve or start that queue.
+for the independent reference's operational camera/state/action contract. At
+this audit's closure, the qualification proposal was still a draft and this
+source audit did not approve or start it. The subsequently approved
+[qualification protocol](LIBERO_REFERENCE_QUALIFICATION_PLAN.md) was executed
+under a separate registration; its [closed result](LIBERO_REFERENCE_QUALIFICATION_RESULT.md)
+reports 185/200 development successes, task 5 at 14/20, and confirmation not_started.
 
 ## Limitations
 

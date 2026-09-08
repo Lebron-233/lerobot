@@ -1,5 +1,12 @@
 # Independent LIBERO reference qualification protocol
 
+Post-execution status, 2026-09-08: the sole development cohort completed 200/200
+with 185 native successes and zero technical failures at execution HEAD
+`1cd7d222c9c49d89c6d385006e7967f825f64a90`. Task 5 scored 14/20 and failed
+the registered per-task gate. Confirmation remains **not_started** and
+`baseline_qualified=false`. See the [closed result](LIBERO_REFERENCE_QUALIFICATION_RESULT.md).
+The registered design below is preserved; no new cohort is opened by this status update.
+
 Date: 2026-09-08. **Formal execution protocol.** The design was approved in
 [Issue #1, comment 5579123199](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5579123199)
 and the user's `CODEX_LIBERO_QUALIFICATION_NEXT_TASKS_2026-09-08.md` authorizes
