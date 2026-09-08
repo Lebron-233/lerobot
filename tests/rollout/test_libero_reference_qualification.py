@@ -13,6 +13,7 @@ import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "examples/advanced/predictive_async"))
 import libero_reference_qualification as q  # noqa: E402
+import libero_single_step_native as single  # noqa: E402
 
 from lerobot.policies.smolvla.modeling_smolvla import SmolVLAPolicy  # noqa: E402
 from lerobot.utils.constants import ACTION  # noqa: E402
@@ -82,7 +83,7 @@ def raw_observation():
     }
 
 
-def fake_policy(events):
+def fake_policy(events, denoising_steps=10):
     policy = SimpleNamespace(config=SimpleNamespace(n_action_steps=1))
     policy.eval = lambda: policy
     policy._rtc_enabled = lambda: False
@@ -96,7 +97,7 @@ def fake_policy(events):
 
     def generate(batch, noise):
         events.append("generate")
-        for _ in range(10):
+        for _ in range(denoising_steps):
             policy.model.action_out_proj(torch.zeros(1, 50, 32))
         actions = torch.zeros(1, 50, 7)
         actions[:, :, 6] = 1.03
@@ -162,17 +163,17 @@ class FakeEnv(gym.Env):
         self._env = None
 
 
-def run_fake(tmp_path, *, success_at=1, close_fails=False, events=None, spec=None):
+def run_fake(tmp_path, *, success_at=1, close_fails=False, events=None, spec=None, denoising_steps=10):
     events = [] if events is None else events
     spec = spec or q.registered_manifest()["cohorts"]["development"][0]
-    policy = fake_policy(events)
+    policy = fake_policy(events, denoising_steps)
     pre, post = IdentityProcessor(events, "pre"), IdentityProcessor(events, "post")
 
     def factory(spec):
         return gym.wrappers.TimeLimit(FakeEnv(spec, events, success_at, close_fails), max_episode_steps=280)
 
     output = tmp_path / f"tuple_{spec['ordinal']:03d}"
-    result = q.run_episode(spec, output, policy, pre, post, factory)
+    result = q.run_episode(spec, output, policy, pre, post, factory, denoising_steps=denoising_steps)
     return result, output, events
 
 
@@ -321,3 +322,81 @@ def test_step_log_disagreement_revokes_credit(tmp_path):
     audited = q.audit_tuple(output, result["tuple"])
     assert audited["status"] == "technical_failure" and not audited["success"]
     assert "native action" in audited["audit_errors"][0]
+
+
+def single_step_records(counts):
+    rows = []
+    for spec in single.registered_tuples():
+        success = spec["ordinal"] % 9 < counts[spec["task_id"]]
+        rows.append(
+            {
+                "tuple": spec,
+                "status": "completed",
+                "success": success,
+                "truncated": not success,
+                "environment_closed": True,
+                "restricted_simulated_seconds": 5.0 if success else 14.0,
+                "audit_errors": [],
+            }
+        )
+    return rows
+
+
+def test_single_step_manifest_uses_all_and_only_unused_states_on_all_tasks():
+    rows = single.registered_tuples()
+    old = q.registered_manifest()["cohorts"]
+    assert len(rows) == 90 and [r["ordinal"] for r in rows] == list(range(90))
+    assert len({r["tuple_id"] for r in rows}) == 90
+    for task in range(10):
+        task_rows = rows[9 * task : 9 * (task + 1)]
+        assert [r["initial_state_id"] for r in task_rows] == list(range(41, 50))
+        assert all(r["task_id"] == task and r["task_name"] == q.TASK_NAMES[task] for r in task_rows)
+        assert all(r["environment_seed"] == 940000 + 100 * task + r["initial_state_id"] for r in task_rows)
+        assert all(r["policy_seed"] == 950000 + 100 * task + r["initial_state_id"] for r in task_rows)
+    for key in ("initial_state_id", "environment_seed", "policy_seed"):
+        assert {r[key] for r in rows}.isdisjoint({r[key] for r in old["development"] + old["confirmation"]})
+
+
+def test_single_step_observed_projection_and_action_280_success(tmp_path):
+    result, output, _ = run_fake(
+        tmp_path, success_at=280, spec=single.registered_tuples()[0], denoising_steps=1
+    )
+    audit = q.audit_tuple(output, result["tuple"], denoising_steps=1)
+    assert audit["success"] and audit["terminated"] and audit["truncated"]
+    assert audit["first_success_action"] == 280 and not audit["audit_errors"]
+    assert not q.audit_tuple(output, result["tuple"])["success"]
+
+
+def test_single_step_screen_requires_both_total_and_every_task_without_full_qualification():
+    passing = single.summarize(single_step_records([9] + [8] * 9), 0, "head")
+    assert passing["successes"] == 81 and passing["native_screen_passed"]
+    assert not passing["baseline_qualified"] and not passing["realtime_qualified"]
+    assert not single.summarize(single_step_records([8] * 10), 0, "head")["native_screen_passed"]
+    assert not single.summarize(single_step_records([7] + [9] * 9), 0, "head")["native_screen_passed"]
+    assert not single.summarize(single_step_records([9] * 10), 23, "head")["native_screen_passed"]
+
+
+def test_single_step_missing_slots_remain_unobserved():
+    rows = single_step_records([9] * 10)
+    for row in rows[2:]:
+        row.update(status="not_run", success=False, environment_closed=None)
+    result = single.summarize(rows, 2, "head")
+    assert result["observed"] == result["completed"] == 2
+    assert result["not_run"] == 88 and result["technical_failure"] == 0
+    assert result["macro_bootstrap_95"] is None and not result["native_screen_passed"]
+    assert result["tasks"][0]["wilson_95_observed"] == q.wilson(2, 2)
+    assert result["tasks"][1]["wilson_95_observed"] is None
+
+
+def test_single_step_no_old_confirmation_or_reordered_record_accepted():
+    rows = single_step_records([9] * 10)
+    rows[0]["tuple"] = q.registered_manifest()["cohorts"]["confirmation"][0]
+    with pytest.raises(ValueError, match="90-slot"):
+        single.summarize(rows, 0, "head")
+
+
+def test_single_step_cleanup_failure_not_credited(tmp_path):
+    result, output, _ = run_fake(tmp_path, close_fails=True, denoising_steps=1)
+    audited = q.audit_tuple(output, result["tuple"], denoising_steps=1)
+    assert audited["native_success_observed"] is True and not audited["success"]
+    assert audited["status"] == "technical_failure" and audited["environment_closed"] is False

@@ -155,7 +155,7 @@ def save_observation(output, index, raw, language, journal):
     return batch
 
 
-def run_episode(spec, output, policy, pre, post, env_factory):
+def run_episode(spec, output, policy, pre, post, env_factory, *, denoising_steps=10):
     """Write a final result only after cleanup; a native exit leaves a started marker."""
     output.mkdir()
     (output / "observations").mkdir()
@@ -232,8 +232,10 @@ def run_episode(spec, output, policy, pre, post, env_factory):
                 outside = action_outside_bounds(action)
                 if not torch.isfinite(normalized).all():
                     raise ValueError("Non-finite normalized action")
-                if shapes != [[1, 50, 32]] * 10 or len(policy._queues[ACTION]) != 0:
-                    raise RuntimeError("The production selector did not preserve 50/1/10 consumption")
+                if shapes != [[1, 50, 32]] * denoising_steps or len(policy._queues[ACTION]) != 0:
+                    raise RuntimeError(
+                        f"The production selector did not preserve 50/1/{denoising_steps} consumption"
+                    )
                 raw, reward, terminated, truncated, info = env.step(action)
                 result.update(
                     measured_actions=number,
@@ -348,7 +350,7 @@ def read_events(path):
     return events
 
 
-def audit_tuple(directory, spec):
+def audit_tuple(directory, spec, *, denoising_steps=10):
     """Reconcile native calls, returned observations and the final cleanup record."""
     if not (directory / "started.json").exists():
         return {"tuple": spec, "status": "not_run", "success": False}
@@ -420,11 +422,11 @@ def audit_tuple(directory, spec):
         for e, actual in zip(prepared, actual_actions, strict=False):
             if (
                 e["action"] != actual["action"]
-                or e["projection_shapes"] != [[1, 50, 32]] * 10
+                or e["projection_shapes"] != [[1, 50, 32]] * denoising_steps
                 or e["queue_length"] != 0
                 or e["observation_index"] != e["number"] - 1
             ):
-                errors.append("Saved prediction, native action or 50/1/10 record disagrees")
+                errors.append(f"Saved prediction, native action or 50/1/{denoising_steps} record disagrees")
                 break
     if errors:
         result["status"] = "technical_failure"
