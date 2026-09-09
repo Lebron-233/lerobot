@@ -8,6 +8,9 @@
 [完整结果](SMOLVLA_GRAPH_CAP_RECOVERY_RESULT.md)、[机器结果](SMOLVLA_GRAPH_CAP_RECOVERY_RESULT.json)、
 [E-L1审计](SMOLVLA_GRAPH_CAP_RECOVERY_AUDIT.md)、[固定协议](SMOLVLA_GRAPH_CAP_RECOVERY_PLAN.md)、
 [四行清单](SMOLVLA_GRAPH_CAP_RECOVERY_MANIFEST.json)、[实际测试](SMOLVLA_GRAPH_CAP_RECOVERY_TESTS.md)。
+结果HEAD `a27a13b9602ca93825b31074f26a00f48e95f734`已推送；
+[结果评论5601832578](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5601832578)按实际ID单次回读，正文exact。
+[独立发布和退出回执](SMOLVLA_GRAPH_CAP_RECOVERY_RECEIPT.json)记录完整执行/结果身份、发布及实际退出。
 
 旧task0五个接纳样本按原float32/linear P90得到0.714749813079834秒、raw16；
 两次installed bootstrap不入tracker，后续无planned；task2最终raw12也没有后续planned。

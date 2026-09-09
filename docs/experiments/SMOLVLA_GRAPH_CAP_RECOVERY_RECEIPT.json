@@ -1,0 +1,218 @@
+{
+  "experiment": "E-RCV1",
+  "handover_head": "223156f3d41dd37bc982bd691123f8490ed93445",
+  "execution_head": "2544bf404d0698ac60bcf1fee6d302fec1455a4a",
+  "result_head": "a27a13b9602ca93825b31074f26a00f48e95f734",
+  "branch": "codex/smolvla-graph-native-equivalence",
+  "raw_output_directory": "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_cap_recovery_2544bf40",
+  "preparation_directory": "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_cap_recovery_preparation_223156f3",
+  "registration": {
+    "post_command": [
+      "gh",
+      "api",
+      "--method",
+      "POST",
+      "repos/Lebron-233/lerobot/issues/1/comments",
+      "--input",
+      "outputs/smolvla_graph_cap_recovery_preparation_223156f3/registration_payload.json"
+    ],
+    "post_exit_code": 0,
+    "comment_id": 5601625997,
+    "url": "https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5601625997",
+    "read_command": [
+      "gh",
+      "api",
+      "repos/Lebron-233/lerobot/issues/comments/5601625997"
+    ],
+    "read_exit_code": 0,
+    "read_count": 1,
+    "body_exact": true,
+    "recorded_at_utc": "2026-09-09T12:12:30.278409+00:00"
+  },
+  "result_publication": {
+    "execution_head": "2544bf404d0698ac60bcf1fee6d302fec1455a4a",
+    "result_head": "a27a13b9602ca93825b31074f26a00f48e95f734",
+    "post_command": [
+      "gh",
+      "api",
+      "--method",
+      "POST",
+      "repos/Lebron-233/lerobot/issues/1/comments",
+      "--input",
+      "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_cap_recovery_2544bf40/result_payload.json"
+    ],
+    "post_exit_code": 0,
+    "comment_id": 5601832578,
+    "url": "https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5601832578",
+    "read_command": [
+      "gh",
+      "api",
+      "repos/Lebron-233/lerobot/issues/comments/5601832578"
+    ],
+    "read_exit_code": 0,
+    "read_count": 1,
+    "body_exact": true,
+    "recorded_at_utc": "2026-09-09T12:28:56.776899+00:00"
+  },
+  "execution": {
+    "execution_head": "2544bf404d0698ac60bcf1fee6d302fec1455a4a",
+    "command": [
+      "/home/rp/Workspace/SmolVLA_RTC/libero-reference-venv/bin/python",
+      "-u",
+      "-X",
+      "faulthandler",
+      "/home/rp/Workspace/SmolVLA_RTC/lerobot/examples/advanced/predictive_async/libero_graph_cap_recovery_native.py",
+      "--execution-head",
+      "2544bf404d0698ac60bcf1fee6d302fec1455a4a",
+      "--output",
+      "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_cap_recovery_2544bf40",
+      "--worker"
+    ],
+    "started_at_utc": "2026-09-09T12:13:10.594293+00:00",
+    "finished_at_utc": "2026-09-09T12:14:30.000689+00:00",
+    "child_pid": 2649614,
+    "child_exit_code": 0,
+    "child_exit_confirmed": true,
+    "wall_seconds": 79.40642579901032,
+    "stop_reason": null,
+    "forced_termination": false,
+    "attempts": 1,
+    "retries": 0
+  },
+  "independent_exit": {
+    "execution_head": "2544bf404d0698ac60bcf1fee6d302fec1455a4a",
+    "command": [
+      "env",
+      "-u",
+      "PYTHONPATH",
+      "HF_HUB_OFFLINE=1",
+      "TRANSFORMERS_OFFLINE=1",
+      "MUJOCO_GL=egl",
+      "PYOPENGL_PLATFORM=egl",
+      "LIBERO_CONFIG_PATH=/home/rp/Workspace/SmolVLA_RTC/libero-reference-cache/config",
+      "LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libGLdispatch.so.0:/usr/lib/x86_64-linux-gnu/libGLX.so.0",
+      "/home/rp/miniconda3/envs/smolvla-rtc/bin/uv",
+      "run",
+      "--no-config",
+      "--no-project",
+      "--offline",
+      "--no-python-downloads",
+      "--python",
+      "/home/rp/Workspace/SmolVLA_RTC/libero-reference-venv/bin/python",
+      "python",
+      "-u",
+      "-X",
+      "faulthandler",
+      "examples/advanced/predictive_async/libero_graph_cap_recovery_native.py",
+      "--execution-head",
+      "2544bf404d0698ac60bcf1fee6d302fec1455a4a",
+      "--output",
+      "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_cap_recovery_2544bf40"
+    ],
+    "cwd": "/home/rp/Workspace/SmolVLA_RTC/lerobot",
+    "started_at_utc": "2026-09-09T12:13:06.993459+00:00",
+    "finished_at_utc": "2026-09-09T12:14:30.658069+00:00",
+    "supervisor_exit_code": 0,
+    "supervisor_exit_confirmed": true,
+    "wall_seconds": 83.66464758687653,
+    "attempts": 1,
+    "retries": 0
+  },
+  "collection_receipt": {
+    "command": [
+      "/home/rp/miniconda3/envs/smolvla-rtc/bin/uv",
+      "run",
+      "--no-config",
+      "--no-project",
+      "--offline",
+      "--no-python-downloads",
+      "--python",
+      "/home/rp/Workspace/SmolVLA_RTC/libero-reference-venv/bin/python",
+      "python",
+      "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_cap_recovery_preparation_223156f3/collect_recovery.py"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.9413846679963171
+  },
+  "collection_totals": {
+    "total_array_bytes": 775266588,
+    "cuda_initialized": false,
+    "intent_count": 2040,
+    "return_count": 2040,
+    "unknown_calls": [],
+    "model_calls": 52,
+    "request_kinds": {
+      "bootstrap": 8,
+      "startup_probe": 4,
+      "planned": 40
+    },
+    "capture_count": 8,
+    "setup_calls": 8,
+    "warmup_calls": 24,
+    "capture_internal_calls": 8,
+    "graph_replays": 52,
+    "native_settling": 40,
+    "native_measured": 960,
+    "probe_count": 0,
+    "plan_failed_outcomes": {
+      "plan_in_flight": 100
+    },
+    "history_audit_seconds": 0.014651692239567637,
+    "logging_seconds": 0.1212842867244035,
+    "serialization_seconds": 0.5856191860511899
+  },
+  "episodes_completed": 4,
+  "episode_statuses": [
+    {
+      "ordinal": 0,
+      "status": "completed"
+    },
+    {
+      "ordinal": 1,
+      "status": "completed"
+    },
+    {
+      "ordinal": 2,
+      "status": "completed"
+    },
+    {
+      "ordinal": 3,
+      "status": "completed"
+    }
+  ],
+  "first_failure": null,
+  "unknown_native_calls": 0,
+  "flags": {
+    "original_cap_latch_reproduced_cpu": true,
+    "same_path_recovery_passed_cpu": true,
+    "production_default_unchanged": true,
+    "recovery_native_diagnostic_started": true,
+    "recovery_probe_observed_native": false,
+    "recovery_estimator_returned_within_cap_native": false,
+    "planned_takeover_after_recovery_observed_native": false,
+    "recovery_native_four_episode_contract_passed": true,
+    "recovery_native_two_pair_comparison_complete": true,
+    "native_closed_loop_contract_passed": false,
+    "paired_scheduling_comparison_complete": false,
+    "baseline_qualified": false,
+    "realtime_qualified": false,
+    "predictor_benefit_tested": false,
+    "risk_thresholds": null,
+    "old_confirmation": "not_started_untouched"
+  },
+  "native_recovery_coverage": "No cap exceedance or recovery probe; three native recovery observations remain false.",
+  "cleanup": "All four worker joins, Graph releases, sampler restorations, metrics closes and Env closes were confirmed before array serialization.",
+  "environment_comparison": {
+    "python_exact": true,
+    "version_exact": true,
+    "packages_exact": true,
+    "package_count": 140
+  },
+  "retained_first_errors": {
+    "lint": "ruff_first.log",
+    "cpu_test": "cpu_recovery_first.log",
+    "post_exit_report_assembly": "report_assembly_first_error.json",
+    "resolution": "Import order, journal-list tensor conversion, and old-flag report key lookup respectively; no post-registration source changes or additional experiment calls."
+  },
+  "stop": "Sole four-case queue completed; attempts=1, retries=0; no resume, replacement, expanded samples or additional coverage runs."
+}
