@@ -8,22 +8,28 @@
 [新C结果](SMOLVLA_ASYNC_STRICT_DEADLINE_RESULT.md)及[勘误版协议](SMOLVLA_ASYNC_TIMING_REPLAY_PLAN.md)。
 [完整结果](LIBERO_GRAPH_NATIVE_EQUIVALENCE_RESULT.md)及[机器记录](LIBERO_GRAPH_NATIVE_EQUIVALENCE_RESULT.json)。
 
-## D代码已实现，真实模型验证在导入阶段停止
+## D3-r1固定CUDA模型与worker合同通过
 
-D执行源码`4f171a4b04dbf3111167dc6437658cdd2f1df4cb`，36项CPU定向测试通过。
-唯一D3启动在`lerobot.rollout.__init__`缺datasets时ImportError；child exit1、supervisor exit2，
-没有加载模型或启动worker，三个真实CUDA通过标志均false。[D结果](SMOLVLA_GRAPH_TOKEN_WORKER_RESULT.md)。
+D3-r1执行源码`04902a527d684dd43bb55098c8b5f39ae2a96fa2`，
+正常包入口的可选datasets边界修复完成；原环境不变，39项CPU和模型环境导入门通过。
+唯一一次新D3-r1完成20/20对token和12/12个真实worker事件，三个CUDA通过标志均true。
+52主调用+12reference，15 capture，单列setup15/warmup45/capture内调用15；
+37.979632秒，child/supervisor均exit0，worker join、图释放和sampler恢复确认。
+[D3-r1结果](SMOLVLA_GRAPH_TOKEN_WORKER_R1_RESULT.md)及[固定协议](SMOLVLA_GRAPH_TOKEN_WORKER_R1_PLAN.md)。
+
+旧D执行`4f171a4b04dbf3111167dc6437658cdd2f1df4cb`的datasets导入失败及三个false继续保留，
+没有改写旧报告或结果目录。[旧D结果](SMOLVLA_GRAPH_TOKEN_WORKER_RESULT.md)。
 
 | 接口 | 当前实现/证据 | 尚需完成 |
 |---|---|---|
-| 输入入口 | helper已增加配对token入口，RGB委托同一TokenGraph；CPU测过无额外编码、参数拒绝、RNG与输出独立性 | 固定十帧20对真实token/eager exact验证 |
-| 模型与stream所有权 | 具名Graph/identity适配器在原worker中创建、准备、重放、同步和释放helper；CPU线程用例通过 | 真实CUDA owner与capture生命周期验证 |
-| reset/task | 控制线程立即失效CPU epoch；owner边界执行policy/pre/post reset，图按reset/task世代重建；CPU测过capture未完reset与A→B→A | 指定0→3→0模型序列、ready后在途reset与stale证明 |
-| 输出与发布 | policy/post独立CPU复制、有限性及设备屏障已实现；CPU独立性、stop/join超时用例通过 | 真实完整chunk/post输出、CPU消费与退出确认 |
+| 输入入口 | 固定十帧20对noise/完整/去pad/post均exact；每主请求编码与采样各一次，token Graph内部无额外视觉编码，持有输出独立 | D合同已完成 |
+| 模型与stream所有权 | 真实worker的102条模型/processor调用及capture/reset/退出归于同一owner，join/释放/恢复全部确认 | D合同已完成 |
+| reset/task | 真实0→3→0序列和ready后在途reset完成，CPU epoch及时失效；reset、两次task变化和stop的四个旧返回均stale | D合同已完成 |
+| 输出与发布 | 12次主请求与显式noise reference全部exact；12次独立CPU chunks及完成屏障，186个CPU夹具消费动作和退出后档案收回 | D合同已完成 |
 | 无动作行为 | 新C严格deadline回放有669启动无动作ticks，ready后underflow0，eager迟到丢弃4次 | native协议仍需另行固定wall tick、消费数量与无动作处置 |
 
-当前先决阻塞为冻结模型环境与rollout包导入依赖不一致。需另行解决该范围并登记新的D验证；
-本轮按首错停止，没有安装依赖、替换模型环境、绕过包入口或再次启动模型。
+导入边界阻塞已闭合。D3-r1达到固定合同的停止点；下一轮native的动作消费、wall tick和无动作处置
+仍须另行固定。当前没有启动native或predictor新实验，原科学资格不变。
 
 ## 已确认的接管合同与历史勘误
 
@@ -37,8 +43,7 @@ stale旧返回不得清掉更新plan。max_late_steps=2用于guard sizing/诊断
 `outputs/smolvla_async_timing_5d45353f_290c1a3d/result.json`，由此次审阅解释验收错误。
 当前队列不需要为这个首例修复。连续性补偿/残差RTC属于另行研究范围。
 
-上述接口已在D实现并通过CPU定向测试，真实模型入口因依赖阻塞尚未验证。
-新的native队列仍未启动。
+上述接口已在D3-r1通过固定真实CUDA验证，新的native队列仍未启动。
 
 ## 动作转换链
 
