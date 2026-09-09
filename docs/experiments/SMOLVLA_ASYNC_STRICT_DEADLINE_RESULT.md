@@ -7,6 +7,8 @@
 [预注册评论5595075017](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5595075017)在执行前发布并逐字回读一致。
 [勘误协议](SMOLVLA_ASYNC_TIMING_REPLAY_PLAN.md)、[定向测试记录](SMOLVLA_ASYNC_STRICT_DEADLINE_TESTS.md)、
 [机器结果与40条账目](SMOLVLA_ASYNC_STRICT_DEADLINE_RESULT.json)。
+[结果评论5595123840](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5595123840)已发布并回读一致；
+[发布回执](SMOLVLA_ASYNC_STRICT_DEADLINE_RECEIPT.json)记录结果提交及进程退出。
 
 ## 合同勘误与改动
 

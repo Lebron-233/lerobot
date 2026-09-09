@@ -1,0 +1,32 @@
+{
+  "execution_head": "3ae1dc569007e612bca459ba6680dd94204268a6",
+  "result_commit": "29962e53a6a55e8ca7d75e356d6fc27745223130",
+  "branch": "codex/smolvla-graph-native-equivalence",
+  "execution_and_result_push_succeeded": true,
+  "registration": {
+    "id": 5595075017,
+    "html_url": "https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5595075017",
+    "created_at": "2026-09-09T02:57:01Z"
+  },
+  "registration_readback_body_exact": true,
+  "result_comment": {
+    "id": 5595123840,
+    "html_url": "https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5595123840",
+    "created_at": "2026-09-09T03:03:14Z"
+  },
+  "result_readback_body_exact": true,
+  "child_exit_code": 0,
+  "supervisor_exit_code": 0,
+  "attempts": 1,
+  "retries": 0,
+  "c_strict_deadline_cpu_replay_passed": true,
+  "completed_traces": 40,
+  "completed_publications": 6318,
+  "output": "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_async_timing_strict_deadline_3ae1dc56",
+  "old_c_output_untouched": true,
+  "baseline_qualified": false,
+  "realtime_qualified": false,
+  "predictor_benefit_tested": false,
+  "risk_thresholds": null,
+  "old_confirmation": "not_started_untouched"
+}
