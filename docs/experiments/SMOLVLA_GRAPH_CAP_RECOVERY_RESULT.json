@@ -1,0 +1,1520 @@
+{
+  "status": "completed",
+  "experiment": "E-RCV1",
+  "manifest": {
+    "experiment": "E-RCV1",
+    "old_execution_head": "e00b8731b44b80a9e80dc0af91e4434a9af3d7dd",
+    "handoff_head": "223156f3d41dd37bc982bd691123f8490ed93445",
+    "rows": [
+      {
+        "ordinal": 0,
+        "pair_index": 0,
+        "task_id": 0,
+        "task_name": "pick_up_the_alphabet_soup_and_place_it_in_the_basket",
+        "initial_state_id": 41,
+        "environment_seed": 940041,
+        "policy_seed": 950041,
+        "condition": "graph_serialized",
+        "control": {
+          "fps": 20,
+          "queue_threshold": 30,
+          "latency_quantile": 0.9,
+          "latency_window": 50,
+          "delay_safety_margin_steps": 1,
+          "min_prediction_delay": 0,
+          "max_prediction_delay": 8,
+          "committed_guard_steps": 2,
+          "max_late_steps": 2,
+          "context_mode": "identity",
+          "fallback_mode": "identity",
+          "use_torch_compile": false
+        },
+        "limits": {
+          "episodes": 1,
+          "settling": 10,
+          "measurement": 280,
+          "model": 160,
+          "capture": 2
+        },
+        "ready_wall_slots": 1200,
+        "startup_seconds": 30,
+        "request_seconds": 15,
+        "native_call_seconds": 30,
+        "source_ordinal": 0,
+        "recovery_policy": "same_path_discard_probe_v1",
+        "max_recovery_probes_per_episode": 50
+      },
+      {
+        "ordinal": 1,
+        "pair_index": 0,
+        "task_id": 0,
+        "task_name": "pick_up_the_alphabet_soup_and_place_it_in_the_basket",
+        "initial_state_id": 41,
+        "environment_seed": 940041,
+        "policy_seed": 950041,
+        "condition": "graph_identity_async",
+        "control": {
+          "fps": 20,
+          "queue_threshold": 30,
+          "latency_quantile": 0.9,
+          "latency_window": 50,
+          "delay_safety_margin_steps": 1,
+          "min_prediction_delay": 0,
+          "max_prediction_delay": 8,
+          "committed_guard_steps": 2,
+          "max_late_steps": 2,
+          "context_mode": "identity",
+          "fallback_mode": "identity",
+          "use_torch_compile": false
+        },
+        "limits": {
+          "episodes": 1,
+          "settling": 10,
+          "measurement": 280,
+          "model": 160,
+          "capture": 2
+        },
+        "ready_wall_slots": 1200,
+        "startup_seconds": 30,
+        "request_seconds": 15,
+        "native_call_seconds": 30,
+        "source_ordinal": 1,
+        "recovery_policy": "same_path_discard_probe_v1",
+        "max_recovery_probes_per_episode": 50
+      },
+      {
+        "ordinal": 2,
+        "pair_index": 1,
+        "task_id": 2,
+        "task_name": "pick_up_the_salad_dressing_and_place_it_in_the_basket",
+        "initial_state_id": 41,
+        "environment_seed": 940241,
+        "policy_seed": 950241,
+        "condition": "graph_identity_async",
+        "control": {
+          "fps": 20,
+          "queue_threshold": 30,
+          "latency_quantile": 0.9,
+          "latency_window": 50,
+          "delay_safety_margin_steps": 1,
+          "min_prediction_delay": 0,
+          "max_prediction_delay": 8,
+          "committed_guard_steps": 2,
+          "max_late_steps": 2,
+          "context_mode": "identity",
+          "fallback_mode": "identity",
+          "use_torch_compile": false
+        },
+        "limits": {
+          "episodes": 1,
+          "settling": 10,
+          "measurement": 280,
+          "model": 160,
+          "capture": 2
+        },
+        "ready_wall_slots": 1200,
+        "startup_seconds": 30,
+        "request_seconds": 15,
+        "native_call_seconds": 30,
+        "source_ordinal": 5,
+        "recovery_policy": "same_path_discard_probe_v1",
+        "max_recovery_probes_per_episode": 50
+      },
+      {
+        "ordinal": 3,
+        "pair_index": 1,
+        "task_id": 2,
+        "task_name": "pick_up_the_salad_dressing_and_place_it_in_the_basket",
+        "initial_state_id": 41,
+        "environment_seed": 940241,
+        "policy_seed": 950241,
+        "condition": "graph_serialized",
+        "control": {
+          "fps": 20,
+          "queue_threshold": 30,
+          "latency_quantile": 0.9,
+          "latency_window": 50,
+          "delay_safety_margin_steps": 1,
+          "min_prediction_delay": 0,
+          "max_prediction_delay": 8,
+          "committed_guard_steps": 2,
+          "max_late_steps": 2,
+          "context_mode": "identity",
+          "fallback_mode": "identity",
+          "use_torch_compile": false
+        },
+        "limits": {
+          "episodes": 1,
+          "settling": 10,
+          "measurement": 280,
+          "model": 160,
+          "capture": 2
+        },
+        "ready_wall_slots": 1200,
+        "startup_seconds": 30,
+        "request_seconds": 15,
+        "native_call_seconds": 30,
+        "source_ordinal": 4,
+        "recovery_policy": "same_path_discard_probe_v1",
+        "max_recovery_probes_per_episode": 50
+      }
+    ],
+    "recovery_policy": "same_path_discard_probe_v1",
+    "production_default": "disabled",
+    "limits": {
+      "episodes": {
+        "per_episode": 1,
+        "total": 4
+      },
+      "settling": {
+        "per_episode": 10,
+        "total": 40
+      },
+      "measurement": {
+        "per_episode": 280,
+        "total": 1120
+      },
+      "model": {
+        "per_episode": 160,
+        "total": 640
+      },
+      "capture": {
+        "per_episode": 2,
+        "total": 8
+      }
+    },
+    "recovery_probe_limit": {
+      "per_episode": 50,
+      "total": 200,
+      "included_in_main_calls": true
+    },
+    "policy_revision": "6721902bc4d61e50a3bfdb11dfb4cb626f05d102",
+    "vlm_revision": "7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+    "assets_revision": "0b3ea86be5fe169d0fd036ae63d1070ec09e90f6",
+    "chunk_size": 50,
+    "n_action_steps": 1,
+    "num_steps": 10,
+    "soft_stop_seconds": 870,
+    "hard_stop_seconds": 900,
+    "request_seconds": 15,
+    "native_call_seconds": 30,
+    "reference_calls": 0,
+    "predictor_calls": 0,
+    "training_calls": 0,
+    "real_robot_calls": 0,
+    "attempts": 1,
+    "retries": 0,
+    "native_closed_loop_contract_passed": false,
+    "paired_scheduling_comparison_complete": false,
+    "baseline_qualified": false,
+    "realtime_qualified": false,
+    "predictor_benefit_tested": false,
+    "risk_thresholds": null,
+    "old_confirmation": "not_started_untouched"
+  },
+  "episodes_scheduled": 4,
+  "episodes_completed": 4,
+  "pairs": [
+    {
+      "pair_index": 0,
+      "initial_exact": true,
+      "conditions": {
+        "graph_serialized": {
+          "success": true,
+          "first_success_action": 200,
+          "terminal_reason": "native_success",
+          "measured_actions": 200,
+          "wall_seconds": 10.371900765923783,
+          "no_action_slots": 8,
+          "longest_dispatch_gap_seconds": 0.1280079549178481,
+          "planned_takeovers": 8,
+          "chunk_consumption_distribution": {
+            "0": 2,
+            "23": 8,
+            "16": 1
+          }
+        },
+        "graph_identity_async": {
+          "success": true,
+          "first_success_action": 200,
+          "terminal_reason": "native_success",
+          "measured_actions": 200,
+          "wall_seconds": 9.972257119836286,
+          "no_action_slots": 0,
+          "longest_dispatch_gap_seconds": 0.050840162904933095,
+          "planned_takeovers": 8,
+          "chunk_consumption_distribution": {
+            "0": 2,
+            "23": 8,
+            "16": 1
+          }
+        }
+      },
+      "async_minus_serialized": {
+        "measured_actions": 0,
+        "wall_seconds": -0.3996436460874975,
+        "no_action_slots": -8,
+        "longest_dispatch_gap_seconds": -0.07716779201291502,
+        "planned_takeovers": 0
+      }
+    },
+    {
+      "pair_index": 1,
+      "initial_exact": true,
+      "conditions": {
+        "graph_identity_async": {
+          "success": false,
+          "first_success_action": null,
+          "terminal_reason": "time_limit",
+          "measured_actions": 280,
+          "wall_seconds": 13.965559957083315,
+          "no_action_slots": 0,
+          "longest_dispatch_gap_seconds": 0.052474369993433356,
+          "planned_takeovers": 12,
+          "chunk_consumption_distribution": {
+            "0": 2,
+            "23": 12,
+            "4": 1
+          }
+        },
+        "graph_serialized": {
+          "success": false,
+          "first_success_action": null,
+          "terminal_reason": "time_limit",
+          "measured_actions": 280,
+          "wall_seconds": 14.565356388920918,
+          "no_action_slots": 12,
+          "longest_dispatch_gap_seconds": 0.12772241095080972,
+          "planned_takeovers": 12,
+          "chunk_consumption_distribution": {
+            "0": 2,
+            "23": 12,
+            "4": 1
+          }
+        }
+      },
+      "async_minus_serialized": {
+        "measured_actions": 0,
+        "wall_seconds": -0.5997964318376034,
+        "no_action_slots": -12,
+        "longest_dispatch_gap_seconds": -0.07524804095737636,
+        "planned_takeovers": 0
+      }
+    }
+  ],
+  "conditions": {
+    "graph_serialized": {
+      "episodes_completed": 2,
+      "successes": 1,
+      "measured_actions": 480,
+      "measured_wall_seconds": 24.9372571548447,
+      "startup_seconds": 5.980840586125851,
+      "wall_slots": {
+        "dispatch": 480,
+        "serialized_wait": 20
+      },
+      "planned_takeovers": 20,
+      "model_native_overlaps": 0,
+      "chunk_consumption_distribution": {
+        "0": 4,
+        "23": 20,
+        "16": 1,
+        "4": 1
+      },
+      "timings": {
+        "startup_request_seconds": {
+          "n": 6,
+          "mean": 0.9963063311685497,
+          "p50": 1.2310700239613652,
+          "p95": 2.0429617089685053,
+          "p99": 2.0429617089685053,
+          "max": 2.0429617089685053
+        },
+        "measured_request_seconds": {
+          "n": 20,
+          "mean": 0.07419678766746074,
+          "p50": 0.0742076700553298,
+          "p95": 0.07743134791962802,
+          "p99": 0.07757535600103438,
+          "max": 0.07757535600103438
+        },
+        "model_api_seconds": {
+          "n": 26,
+          "mean": 0.27173868427948594,
+          "p50": 0.05952741694636643,
+          "p95": 1.287539399927482,
+          "p99": 2.0203157290816307,
+          "max": 2.0203157290816307
+        },
+        "native_step_seconds": {
+          "n": 480,
+          "mean": 0.011604960971453693,
+          "p50": 0.010859319940209389,
+          "p95": 0.016615637112408876,
+          "p99": 0.019871451193466783,
+          "max": 0.02140051405876875
+        },
+        "serialized_wait_seconds": {
+          "n": 20,
+          "mean": 0.07409939264180139,
+          "p50": 0.07418158301152289,
+          "p95": 0.0774108050391078,
+          "p99": 0.0776781861204654,
+          "max": 0.0776781861204654
+        },
+        "dispatch_observation_age_seconds": {
+          "n": 480,
+          "mean": 0.052604169129335784,
+          "p50": 0.038926718989387155,
+          "p95": 0.0401574419811368,
+          "p99": 0.11561464797705412,
+          "max": 3.3785839159972966
+        },
+        "request_observation_age_seconds": {
+          "n": 26,
+          "mean": 0.288153795659757,
+          "p50": 0.03883046400733292,
+          "p95": 2.0506170839071274,
+          "p99": 2.123309248825535,
+          "max": 2.123309248825535
+        },
+        "dispatch_jitter_seconds": {
+          "n": 480,
+          "mean": 0.0013496880822155314,
+          "p50": 0.00030838395468890667,
+          "p95": 0.0005889029707759619,
+          "p99": 0.02633969997987151,
+          "max": 0.028296641074121
+        }
+      }
+    },
+    "graph_identity_async": {
+      "episodes_completed": 2,
+      "successes": 1,
+      "measured_actions": 480,
+      "measured_wall_seconds": 23.9378170769196,
+      "startup_seconds": 4.987003938993439,
+      "wall_slots": {
+        "dispatch": 480
+      },
+      "planned_takeovers": 20,
+      "model_native_overlaps": 31,
+      "chunk_consumption_distribution": {
+        "0": 4,
+        "23": 20,
+        "16": 1,
+        "4": 1
+      },
+      "timings": {
+        "startup_request_seconds": {
+          "n": 6,
+          "mean": 0.8304099830177923,
+          "p50": 1.1732711340300739,
+          "p95": 1.2546308860182762,
+          "p99": 1.2546308860182762,
+          "max": 1.2546308860182762
+        },
+        "measured_request_seconds": {
+          "n": 20,
+          "mean": 0.07690021998714655,
+          "p50": 0.07626990601420403,
+          "p95": 0.08058447297662497,
+          "p99": 0.08599088690243661,
+          "max": 0.08599088690243661
+        },
+        "model_api_seconds": {
+          "n": 26,
+          "mean": 0.23379374377859327,
+          "p50": 0.05898220092058182,
+          "p95": 1.1970772608183324,
+          "p99": 1.2334547829814255,
+          "max": 1.2334547829814255
+        },
+        "native_step_seconds": {
+          "n": 480,
+          "mean": 0.012166523188837649,
+          "p50": 0.010815782006829977,
+          "p95": 0.01760393986478448,
+          "p99": 0.02035285416059196,
+          "max": 0.026503081200644374
+        },
+        "serialized_wait_seconds": {
+          "n": 0
+        },
+        "dispatch_observation_age_seconds": {
+          "n": 480,
+          "mean": 0.04788419702284349,
+          "p50": 0.03900025901384652,
+          "p95": 0.04008421488106251,
+          "p99": 0.04049049806781113,
+          "max": 2.5438801869750023
+        },
+        "request_observation_age_seconds": {
+          "n": 26,
+          "mean": 0.21983700742622694,
+          "p50": 0.039211689960211515,
+          "p95": 1.250517328036949,
+          "p99": 1.2887177199590951,
+          "max": 1.2887177199590951
+        },
+        "dispatch_jitter_seconds": {
+          "n": 480,
+          "mean": 0.00035111416897658877,
+          "p50": 0.000299717066809535,
+          "p95": 0.0005787669215351343,
+          "p99": 0.0010214480571448803,
+          "max": 0.002778609050437808
+        }
+      }
+    }
+  },
+  "recovery_episodes": [
+    {
+      "ordinal": 0,
+      "probes": [],
+      "native_recovery_chains": [],
+      "probe_count": 0,
+      "admitted_probe_count": 0,
+      "estimator_returned_within_cap": false,
+      "planned_takeover_after_recovery": false,
+      "planner_decisions": {
+        "planned": 8,
+        "plan_failed": 24
+      },
+      "steady_bootstraps": 0,
+      "history_audit_seconds": 0.0032755807042121887
+    },
+    {
+      "ordinal": 1,
+      "probes": [],
+      "native_recovery_chains": [],
+      "probe_count": 0,
+      "admitted_probe_count": 0,
+      "estimator_returned_within_cap": false,
+      "planned_takeover_after_recovery": false,
+      "planner_decisions": {
+        "planned": 8,
+        "plan_failed": 16
+      },
+      "steady_bootstraps": 0,
+      "history_audit_seconds": 0.0029550606850534678
+    },
+    {
+      "ordinal": 2,
+      "probes": [],
+      "native_recovery_chains": [],
+      "probe_count": 0,
+      "admitted_probe_count": 0,
+      "estimator_returned_within_cap": false,
+      "planned_takeover_after_recovery": false,
+      "planner_decisions": {
+        "planned": 12,
+        "plan_failed": 24
+      },
+      "steady_bootstraps": 0,
+      "history_audit_seconds": 0.00435601593926549
+    },
+    {
+      "ordinal": 3,
+      "probes": [],
+      "native_recovery_chains": [],
+      "probe_count": 0,
+      "admitted_probe_count": 0,
+      "estimator_returned_within_cap": false,
+      "planned_takeover_after_recovery": false,
+      "planner_decisions": {
+        "planned": 12,
+        "plan_failed": 36
+      },
+      "steady_bootstraps": 0,
+      "history_audit_seconds": 0.004065034911036491
+    }
+  ],
+  "first_failure": null,
+  "original_cap_latch_reproduced_cpu": true,
+  "same_path_recovery_passed_cpu": true,
+  "production_default_unchanged": true,
+  "recovery_native_diagnostic_started": true,
+  "recovery_probe_observed_native": false,
+  "recovery_estimator_returned_within_cap_native": false,
+  "planned_takeover_after_recovery_observed_native": false,
+  "recovery_native_four_episode_contract_passed": true,
+  "recovery_native_two_pair_comparison_complete": true,
+  "native_closed_loop_contract_passed": false,
+  "paired_scheduling_comparison_complete": false,
+  "baseline_qualified": false,
+  "realtime_qualified": false,
+  "predictor_benefit_tested": false,
+  "risk_thresholds": null,
+  "old_confirmation": "not_started_untouched",
+  "execution_head": "2544bf404d0698ac60bcf1fee6d302fec1455a4a",
+  "execution": {
+    "execution_head": "2544bf404d0698ac60bcf1fee6d302fec1455a4a",
+    "command": [
+      "/home/rp/Workspace/SmolVLA_RTC/libero-reference-venv/bin/python",
+      "-u",
+      "-X",
+      "faulthandler",
+      "/home/rp/Workspace/SmolVLA_RTC/lerobot/examples/advanced/predictive_async/libero_graph_cap_recovery_native.py",
+      "--execution-head",
+      "2544bf404d0698ac60bcf1fee6d302fec1455a4a",
+      "--output",
+      "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_cap_recovery_2544bf40",
+      "--worker"
+    ],
+    "started_at_utc": "2026-09-09T12:13:10.594293+00:00",
+    "finished_at_utc": "2026-09-09T12:14:30.000689+00:00",
+    "child_pid": 2649614,
+    "child_exit_code": 0,
+    "child_exit_confirmed": true,
+    "wall_seconds": 79.40642579901032,
+    "stop_reason": null,
+    "forced_termination": false,
+    "attempts": 1,
+    "retries": 0
+  },
+  "preparation_gates": {
+    "original_cap_latch_reproduced_cpu": true,
+    "same_path_recovery_passed_cpu": true,
+    "production_default_unchanged": true,
+    "model_entry_passed": true,
+    "lint_format_passed": true,
+    "cpu_unique_cases_passed": 25,
+    "cpu_execution_split": "4 passed before candidate; candidate run 4 passed + fixture TypeError; remaining 21 passed after fixing list-to-tensor conversion, original 4 deselected",
+    "receipts": {
+      "cpu_l1_first": {
+        "command": [
+          "/home/rp/miniconda3/envs/smolvla-rtc/bin/uv",
+          "run",
+          "--no-config",
+          "--no-project",
+          "--offline",
+          "--no-python-downloads",
+          "--python",
+          "/home/rp/miniconda3/envs/smolvla-rtc/bin/python",
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "--maxfail=1",
+          "--basetemp=/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_cap_recovery_preparation_223156f3/cpu_l1_tmp",
+          "tests/test_smolvla_cap_recovery.py"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 4.479335619136691
+      },
+      "cpu_recovery_first": {
+        "command": [
+          "/home/rp/miniconda3/envs/smolvla-rtc/bin/uv",
+          "run",
+          "--no-config",
+          "--no-project",
+          "--offline",
+          "--no-python-downloads",
+          "--python",
+          "/home/rp/miniconda3/envs/smolvla-rtc/bin/python",
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "--maxfail=1",
+          "--basetemp=/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_cap_recovery_preparation_223156f3/cpu_recovery_tmp",
+          "tests/test_smolvla_cap_recovery.py",
+          "tests/test_smolvla_graph_startup_boundary.py::test_real_startup_passes_then_stops_without_get_or_measured_dispatch",
+          "tests/test_smolvla_graph_startup_boundary.py::test_first_failure_has_no_followup_model_native_or_seed",
+          "tests/policies/rtc/test_scheduled_action_queue.py::test_any_late_result_is_dropped_without_skipping_its_prefix",
+          "tests/rollout/inference/test_predictive_async.py::test_chunk_completion_barrier_precedes_queue_publication",
+          "tests/test_smolvla_graph_identity_native.py::test_unconfirmed_join_never_serializes_shared_worker_arrays"
+        ],
+        "exit_code": 1,
+        "elapsed_seconds": 6.276350663974881
+      },
+      "cpu_recovery_remaining": {
+        "command": [
+          "/home/rp/miniconda3/envs/smolvla-rtc/bin/uv",
+          "run",
+          "--no-config",
+          "--no-project",
+          "--offline",
+          "--no-python-downloads",
+          "--python",
+          "/home/rp/miniconda3/envs/smolvla-rtc/bin/python",
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "--maxfail=1",
+          "--basetemp=/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_cap_recovery_preparation_223156f3/cpu_recovery_remaining_tmp",
+          "tests/test_smolvla_cap_recovery.py",
+          "tests/test_smolvla_graph_startup_boundary.py::test_real_startup_passes_then_stops_without_get_or_measured_dispatch",
+          "tests/test_smolvla_graph_startup_boundary.py::test_first_failure_has_no_followup_model_native_or_seed",
+          "tests/policies/rtc/test_scheduled_action_queue.py::test_any_late_result_is_dropped_without_skipping_its_prefix",
+          "tests/rollout/inference/test_predictive_async.py::test_chunk_completion_barrier_precedes_queue_publication",
+          "tests/test_smolvla_graph_identity_native.py::test_unconfirmed_join_never_serializes_shared_worker_arrays",
+          "-k",
+          "not (original_cap_latch_survives or positive_control_continues or old_samples_recompute or reset_and_task_boundaries)"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 14.01242526806891
+      },
+      "model_entry": {
+        "command": [
+          "/home/rp/miniconda3/envs/smolvla-rtc/bin/uv",
+          "run",
+          "--no-config",
+          "--no-project",
+          "--offline",
+          "--no-python-downloads",
+          "--python",
+          "/home/rp/Workspace/SmolVLA_RTC/libero-reference-venv/bin/python",
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "--maxfail=1",
+          "tests/test_smolvla_cap_recovery.py::test_actual_recovery_entry_import_and_help_without_inference"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 11.753644407959655
+      },
+      "ruff_final": {
+        "command": [
+          "/home/rp/Workspace/SmolVLA_RTC/libero-reference-venv/bin/ruff",
+          "check",
+          "src/lerobot/rollout/inference/predictive_async.py",
+          "examples/advanced/predictive_async/libero_graph_identity_native.py",
+          "examples/advanced/predictive_async/libero_graph_cap_recovery_native.py",
+          "tests/test_smolvla_cap_recovery.py"
+        ],
+        "exit_code": 0
+      },
+      "format_final": {
+        "command": [
+          "/home/rp/Workspace/SmolVLA_RTC/libero-reference-venv/bin/ruff",
+          "format",
+          "--check",
+          "src/lerobot/rollout/inference/predictive_async.py",
+          "examples/advanced/predictive_async/libero_graph_identity_native.py",
+          "examples/advanced/predictive_async/libero_graph_cap_recovery_native.py",
+          "tests/test_smolvla_cap_recovery.py"
+        ],
+        "exit_code": 0
+      }
+    },
+    "retained_development_failures": [
+      {
+        "file": "ruff_first.log",
+        "error": "I001 import order; fixed before freeze"
+      },
+      {
+        "file": "cpu_recovery_first.log",
+        "error": "Test expected NumPy array but native journal action is list; tensor conversion fixed without changing expected values"
+      }
+    ]
+  },
+  "policy_load": {
+    "strict": true,
+    "missing_keys": [],
+    "unexpected_keys": [],
+    "shape_mismatches": [],
+    "vlm_layers": 32,
+    "expert_layers": 32,
+    "expert_hidden_size": 480,
+    "parameter_dtypes_numel": {
+      "torch.bfloat16": 600902304,
+      "torch.float32": 4031872
+    },
+    "trainable_parameters_at_load": 97451872,
+    "trainable_parameters_for_inference": 0,
+    "projection_shapes": {
+      "model.state_proj.weight": [
+        960,
+        32
+      ],
+      "model.action_in_proj.weight": [
+        480,
+        32
+      ],
+      "model.action_out_proj.weight": [
+        32,
+        480
+      ]
+    },
+    "use_amp": false,
+    "preprocessor_steps": [
+      "RenameObservationsProcessorStep",
+      "AddBatchDimensionProcessorStep",
+      "NewLineTaskProcessorStep",
+      "TokenizerProcessorStep",
+      "DeviceProcessorStep",
+      "NormalizerProcessorStep"
+    ],
+    "postprocessor_steps": [
+      "DeviceProcessorStep",
+      "UnnormalizerProcessorStep"
+    ]
+  },
+  "model_load_seconds": 5.4685299762059,
+  "episode_statuses": [
+    {
+      "ordinal": 0,
+      "status": "completed"
+    },
+    {
+      "ordinal": 1,
+      "status": "completed"
+    },
+    {
+      "ordinal": 2,
+      "status": "completed"
+    },
+    {
+      "ordinal": 3,
+      "status": "completed"
+    }
+  ],
+  "unknown_calls": [],
+  "unknown_native_calls": 0,
+  "call_intents": {
+    "environment_factory": 4,
+    "environment_ensure_and_initial_reset": 4,
+    "environment_reset": 4,
+    "native_seed": 4,
+    "native_reset": 4,
+    "native_set_init_state": 4,
+    "native_step": 1000,
+    "model_request": 52,
+    "environment_step": 960,
+    "environment_close": 4
+  },
+  "call_returns": {
+    "environment_factory": 4,
+    "environment_ensure_and_initial_reset": 4,
+    "environment_reset": 4,
+    "native_seed": 4,
+    "native_reset": 4,
+    "native_set_init_state": 4,
+    "native_step": 1000,
+    "model_request": 52,
+    "environment_step": 960,
+    "environment_close": 4
+  },
+  "measured_native_dispatches": 960,
+  "settling_native_dispatches": 40,
+  "budget": {
+    "episodes": 4,
+    "settling": 40,
+    "model": 52,
+    "capture": 8,
+    "measurement": 960
+  },
+  "raw_output_directory": "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_cap_recovery_2544bf40",
+  "episode_summaries": [
+    {
+      "ordinal": 0,
+      "status": "completed",
+      "condition": "graph_serialized",
+      "success": true,
+      "terminal_reason": "native_success",
+      "initial_pair_exact": null,
+      "budget": {
+        "episodes": 1,
+        "settling": 10,
+        "model": 11,
+        "capture": 2,
+        "measurement": 200
+      },
+      "requests": 11,
+      "startup_seconds": 3.3713222991209477,
+      "startup_probes": [
+        {
+          "total_chunk_s": 0.07217577006667852,
+          "startup_gate_raw_required_delay_steps": 3,
+          "startup_gate_outcome": "passed"
+        }
+      ],
+      "stats": {
+        "requests_started": 11,
+        "bootstrap_requests": 2,
+        "planned_requests": 8,
+        "recovery_probe_requests": 0,
+        "prediction_cap_exceeded": 0,
+        "deadline_misses": 0,
+        "stale_results": 0,
+        "underflows": 0
+      },
+      "capture_count": 2,
+      "setup": 2,
+      "warmup": 6,
+      "capture_internal": 2,
+      "replays": 11,
+      "raw_range": [
+        3,
+        3
+      ],
+      "decisions": {
+        "planned": 8,
+        "plan_failed": 24
+      },
+      "wall": {
+        "counts": {
+          "dispatch": 200,
+          "serialized_wait": 8
+        },
+        "total_slots": 208,
+        "no_action_slots": 8,
+        "longest_no_action_slot_run": 1,
+        "longest_dispatch_gap_seconds": 0.1280079549178481,
+        "measured_wall_seconds": 10.371900765923783,
+        "wall_window_overshoot_seconds": 0
+      },
+      "cleanup": {
+        "worker_joined": true,
+        "graph_released": true,
+        "original_sampler_restored": true,
+        "metrics_closed": true,
+        "environment_closed": true,
+        "worker_failed": false
+      },
+      "arrays_bytes": 161689907,
+      "history_audit_seconds": 0.0032755807042121887,
+      "logging_seconds": 0.02566168992780149,
+      "serialization_seconds": 0.14872232801280916,
+      "model_native_overlaps": 0,
+      "planned_takeovers": 8
+    },
+    {
+      "ordinal": 1,
+      "status": "completed",
+      "condition": "graph_identity_async",
+      "success": true,
+      "terminal_reason": "native_success",
+      "initial_pair_exact": true,
+      "budget": {
+        "episodes": 1,
+        "settling": 10,
+        "model": 11,
+        "capture": 2,
+        "measurement": 200
+      },
+      "requests": 11,
+      "startup_seconds": 2.448414600919932,
+      "startup_probes": [
+        {
+          "total_chunk_s": 0.07147238589823246,
+          "startup_gate_raw_required_delay_steps": 3,
+          "startup_gate_outcome": "passed"
+        }
+      ],
+      "stats": {
+        "requests_started": 11,
+        "bootstrap_requests": 2,
+        "planned_requests": 8,
+        "recovery_probe_requests": 0,
+        "prediction_cap_exceeded": 0,
+        "deadline_misses": 0,
+        "stale_results": 0,
+        "underflows": 0
+      },
+      "capture_count": 2,
+      "setup": 2,
+      "warmup": 6,
+      "capture_internal": 2,
+      "replays": 11,
+      "raw_range": [
+        3,
+        3
+      ],
+      "decisions": {
+        "planned": 8,
+        "plan_failed": 16
+      },
+      "wall": {
+        "counts": {
+          "dispatch": 200
+        },
+        "total_slots": 200,
+        "no_action_slots": 0,
+        "longest_no_action_slot_run": 0,
+        "longest_dispatch_gap_seconds": 0.050840162904933095,
+        "measured_wall_seconds": 9.972257119836286,
+        "wall_window_overshoot_seconds": 0
+      },
+      "cleanup": {
+        "worker_joined": true,
+        "graph_released": true,
+        "original_sampler_restored": true,
+        "metrics_closed": true,
+        "environment_closed": true,
+        "worker_failed": false
+      },
+      "arrays_bytes": 161689459,
+      "history_audit_seconds": 0.0029550606850534678,
+      "logging_seconds": 0.025597050553187728,
+      "serialization_seconds": 0.11297583603300154,
+      "model_native_overlaps": 14,
+      "planned_takeovers": 8
+    },
+    {
+      "ordinal": 2,
+      "status": "completed",
+      "condition": "graph_identity_async",
+      "success": false,
+      "terminal_reason": "time_limit",
+      "initial_pair_exact": null,
+      "budget": {
+        "episodes": 1,
+        "settling": 10,
+        "model": 15,
+        "capture": 2,
+        "measurement": 280
+      },
+      "requests": 15,
+      "startup_seconds": 2.538589338073507,
+      "startup_probes": [
+        {
+          "total_chunk_s": 0.07965224701911211,
+          "startup_gate_raw_required_delay_steps": 3,
+          "startup_gate_outcome": "passed"
+        }
+      ],
+      "stats": {
+        "requests_started": 15,
+        "bootstrap_requests": 2,
+        "planned_requests": 12,
+        "recovery_probe_requests": 0,
+        "prediction_cap_exceeded": 0,
+        "deadline_misses": 0,
+        "stale_results": 0,
+        "underflows": 0
+      },
+      "capture_count": 2,
+      "setup": 2,
+      "warmup": 6,
+      "capture_internal": 2,
+      "replays": 15,
+      "raw_range": [
+        3,
+        3
+      ],
+      "decisions": {
+        "planned": 12,
+        "plan_failed": 24
+      },
+      "wall": {
+        "counts": {
+          "dispatch": 280
+        },
+        "total_slots": 280,
+        "no_action_slots": 0,
+        "longest_no_action_slot_run": 0,
+        "longest_dispatch_gap_seconds": 0.052474369993433356,
+        "measured_wall_seconds": 13.965559957083315,
+        "wall_window_overshoot_seconds": 0
+      },
+      "cleanup": {
+        "worker_joined": true,
+        "graph_released": true,
+        "original_sampler_restored": true,
+        "metrics_closed": true,
+        "environment_closed": true,
+        "worker_failed": false
+      },
+      "arrays_bytes": 225943323,
+      "history_audit_seconds": 0.00435601593926549,
+      "logging_seconds": 0.03571352455765009,
+      "serialization_seconds": 0.1635796190239489,
+      "model_native_overlaps": 17,
+      "planned_takeovers": 12
+    },
+    {
+      "ordinal": 3,
+      "status": "completed",
+      "condition": "graph_serialized",
+      "success": false,
+      "terminal_reason": "time_limit",
+      "initial_pair_exact": true,
+      "budget": {
+        "episodes": 1,
+        "settling": 10,
+        "model": 15,
+        "capture": 2,
+        "measurement": 280
+      },
+      "requests": 15,
+      "startup_seconds": 2.609518287004903,
+      "startup_probes": [
+        {
+          "total_chunk_s": 0.07195531902834773,
+          "startup_gate_raw_required_delay_steps": 3,
+          "startup_gate_outcome": "passed"
+        }
+      ],
+      "stats": {
+        "requests_started": 15,
+        "bootstrap_requests": 2,
+        "planned_requests": 12,
+        "recovery_probe_requests": 0,
+        "prediction_cap_exceeded": 0,
+        "deadline_misses": 0,
+        "stale_results": 0,
+        "underflows": 0
+      },
+      "capture_count": 2,
+      "setup": 2,
+      "warmup": 6,
+      "capture_internal": 2,
+      "replays": 15,
+      "raw_range": [
+        3,
+        3
+      ],
+      "decisions": {
+        "planned": 12,
+        "plan_failed": 36
+      },
+      "wall": {
+        "counts": {
+          "dispatch": 280,
+          "serialized_wait": 12
+        },
+        "total_slots": 292,
+        "no_action_slots": 12,
+        "longest_no_action_slot_run": 1,
+        "longest_dispatch_gap_seconds": 0.12772241095080972,
+        "measured_wall_seconds": 14.565356388920918,
+        "wall_window_overshoot_seconds": 0
+      },
+      "cleanup": {
+        "worker_joined": true,
+        "graph_released": true,
+        "original_sampler_restored": true,
+        "metrics_closed": true,
+        "environment_closed": true,
+        "worker_failed": false
+      },
+      "arrays_bytes": 225943899,
+      "history_audit_seconds": 0.004065034911036491,
+      "logging_seconds": 0.034312021685764194,
+      "serialization_seconds": 0.1603414029814303,
+      "model_native_overlaps": 0,
+      "planned_takeovers": 12
+    }
+  ],
+  "collection": {
+    "mode": "CPU-only readback after all owners/Env and child/supervisor exits; no old arrays or new model/native calls",
+    "environment": {
+      "python_exact": true,
+      "version_exact": true,
+      "packages_exact": true,
+      "package_count": 140
+    },
+    "archives": [
+      {
+        "ordinal": 0,
+        "path": "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_cap_recovery_2544bf40/episode_000/arrays.pt",
+        "bytes": 161689907,
+        "cleanup": {
+          "worker_joined": true,
+          "graph_released": true,
+          "original_sampler_restored": true,
+          "metrics_closed": true,
+          "environment_closed": true
+        },
+        "observations": 201,
+        "request_array_keys": 20,
+        "initial_images": {
+          "image": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "torch.uint8",
+            "device": "cpu"
+          },
+          "image2": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "torch.uint8",
+            "device": "cpu"
+          }
+        },
+        "state_shape": [
+          1,
+          8
+        ]
+      },
+      {
+        "ordinal": 1,
+        "path": "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_cap_recovery_2544bf40/episode_001/arrays.pt",
+        "bytes": 161689459,
+        "cleanup": {
+          "worker_joined": true,
+          "graph_released": true,
+          "original_sampler_restored": true,
+          "metrics_closed": true,
+          "environment_closed": true
+        },
+        "observations": 201,
+        "request_array_keys": 20,
+        "initial_images": {
+          "image": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "torch.uint8",
+            "device": "cpu"
+          },
+          "image2": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "torch.uint8",
+            "device": "cpu"
+          }
+        },
+        "state_shape": [
+          1,
+          8
+        ]
+      },
+      {
+        "ordinal": 2,
+        "path": "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_cap_recovery_2544bf40/episode_002/arrays.pt",
+        "bytes": 225943323,
+        "cleanup": {
+          "worker_joined": true,
+          "graph_released": true,
+          "original_sampler_restored": true,
+          "metrics_closed": true,
+          "environment_closed": true
+        },
+        "observations": 281,
+        "request_array_keys": 28,
+        "initial_images": {
+          "image": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "torch.uint8",
+            "device": "cpu"
+          },
+          "image2": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "torch.uint8",
+            "device": "cpu"
+          }
+        },
+        "state_shape": [
+          1,
+          8
+        ]
+      },
+      {
+        "ordinal": 3,
+        "path": "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_cap_recovery_2544bf40/episode_003/arrays.pt",
+        "bytes": 225943899,
+        "cleanup": {
+          "worker_joined": true,
+          "graph_released": true,
+          "original_sampler_restored": true,
+          "metrics_closed": true,
+          "environment_closed": true
+        },
+        "observations": 281,
+        "request_array_keys": 28,
+        "initial_images": {
+          "image": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "torch.uint8",
+            "device": "cpu"
+          },
+          "image2": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "torch.uint8",
+            "device": "cpu"
+          }
+        },
+        "state_shape": [
+          1,
+          8
+        ]
+      }
+    ],
+    "total_array_bytes": 775266588,
+    "initial_pairs": [
+      {
+        "ordinals": [
+          0,
+          1
+        ],
+        "fields_exact": {
+          "state": true,
+          "eef_quaternion_xyzw": true,
+          "raw_eef_position": true,
+          "raw_gripper_qpos": true,
+          "image": true,
+          "image2": true
+        },
+        "all_exact": true
+      },
+      {
+        "ordinals": [
+          2,
+          3
+        ],
+        "fields_exact": {
+          "state": true,
+          "eef_quaternion_xyzw": true,
+          "raw_eef_position": true,
+          "raw_gripper_qpos": true,
+          "image": true,
+          "image2": true
+        },
+        "all_exact": true
+      }
+    ],
+    "cuda_initialized": false,
+    "intent_count": 2040,
+    "return_count": 2040,
+    "call_counts": {
+      "environment_factory": 4,
+      "environment_ensure_and_initial_reset": 4,
+      "environment_reset": 4,
+      "native_seed": 4,
+      "native_reset": 4,
+      "native_set_init_state": 4,
+      "native_step": 1000,
+      "model_request": 52,
+      "environment_step": 960,
+      "environment_close": 4
+    },
+    "unknown_calls": [],
+    "model_calls": 52,
+    "request_kinds": {
+      "bootstrap": 8,
+      "startup_probe": 4,
+      "planned": 40
+    },
+    "capture_count": 8,
+    "setup_calls": 8,
+    "warmup_calls": 24,
+    "capture_internal_calls": 8,
+    "graph_replays": 52,
+    "native_settling": 40,
+    "native_measured": 960,
+    "probe_count": 0,
+    "plan_failed_outcomes": {
+      "plan_in_flight": 100
+    },
+    "history_audit_seconds": 0.014651692239567637,
+    "logging_seconds": 0.1212842867244035,
+    "serialization_seconds": 0.5856191860511899,
+    "independent_exit": {
+      "execution_head": "2544bf404d0698ac60bcf1fee6d302fec1455a4a",
+      "command": [
+        "env",
+        "-u",
+        "PYTHONPATH",
+        "HF_HUB_OFFLINE=1",
+        "TRANSFORMERS_OFFLINE=1",
+        "MUJOCO_GL=egl",
+        "PYOPENGL_PLATFORM=egl",
+        "LIBERO_CONFIG_PATH=/home/rp/Workspace/SmolVLA_RTC/libero-reference-cache/config",
+        "LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libGLdispatch.so.0:/usr/lib/x86_64-linux-gnu/libGLX.so.0",
+        "/home/rp/miniconda3/envs/smolvla-rtc/bin/uv",
+        "run",
+        "--no-config",
+        "--no-project",
+        "--offline",
+        "--no-python-downloads",
+        "--python",
+        "/home/rp/Workspace/SmolVLA_RTC/libero-reference-venv/bin/python",
+        "python",
+        "-u",
+        "-X",
+        "faulthandler",
+        "examples/advanced/predictive_async/libero_graph_cap_recovery_native.py",
+        "--execution-head",
+        "2544bf404d0698ac60bcf1fee6d302fec1455a4a",
+        "--output",
+        "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_cap_recovery_2544bf40"
+      ],
+      "cwd": "/home/rp/Workspace/SmolVLA_RTC/lerobot",
+      "started_at_utc": "2026-09-09T12:13:06.993459+00:00",
+      "finished_at_utc": "2026-09-09T12:14:30.658069+00:00",
+      "supervisor_exit_code": 0,
+      "supervisor_exit_confirmed": true,
+      "wall_seconds": 83.66464758687653,
+      "attempts": 1,
+      "retries": 0
+    }
+  },
+  "collection_receipt": {
+    "command": [
+      "/home/rp/miniconda3/envs/smolvla-rtc/bin/uv",
+      "run",
+      "--no-config",
+      "--no-project",
+      "--offline",
+      "--no-python-downloads",
+      "--python",
+      "/home/rp/Workspace/SmolVLA_RTC/libero-reference-venv/bin/python",
+      "python",
+      "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_cap_recovery_preparation_223156f3/collect_recovery.py"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.9413846679963171
+  },
+  "registration": {
+    "post_command": [
+      "gh",
+      "api",
+      "--method",
+      "POST",
+      "repos/Lebron-233/lerobot/issues/1/comments",
+      "--input",
+      "outputs/smolvla_graph_cap_recovery_preparation_223156f3/registration_payload.json"
+    ],
+    "post_exit_code": 0,
+    "comment_id": 5601625997,
+    "url": "https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5601625997",
+    "read_command": [
+      "gh",
+      "api",
+      "repos/Lebron-233/lerobot/issues/comments/5601625997"
+    ],
+    "read_exit_code": 0,
+    "read_count": 1,
+    "body_exact": true,
+    "recorded_at_utc": "2026-09-09T12:12:30.278409+00:00"
+  },
+  "gpu_before": {
+    "recorded_at_utc": "2026-09-09T12:10:29.364674+00:00",
+    "paths": {
+      "/home/rp/Workspace/SmolVLA_RTC/libero-reference-cache/hub/models--HuggingFaceVLA--smolvla_libero/snapshots/6721902bc4d61e50a3bfdb11dfb4cb626f05d102": true,
+      "/home/rp/Workspace/SmolVLA_RTC/libero-reference-cache/hub/models--HuggingFaceTB--SmolVLM2-500M-Video-Instruct/snapshots/7b375e1b73b11138ff12fe22c8f2822d8fe03467": true,
+      "/home/rp/Workspace/SmolVLA_RTC/libero-reference-cache/hub/datasets--lerobot--libero-assets/snapshots/0b3ea86be5fe169d0fd036ae63d1070ec09e90f6": true,
+      "/home/rp/Workspace/SmolVLA_RTC/libero-reference-cache/config/config.yaml": true,
+      "/usr/lib/x86_64-linux-gnu/libGLdispatch.so.0": true,
+      "/usr/lib/x86_64-linux-gnu/libGLX.so.0": true
+    },
+    "disk_free_bytes": 1474216316928,
+    "purpose": "One pre-registration snapshot, no process intervention or waiting for lower load",
+    "gpu": {
+      "command": [
+        "nvidia-smi",
+        "--query-gpu=name,memory.total,memory.used,utilization.gpu",
+        "--format=csv,noheader"
+      ],
+      "exit_code": 0,
+      "stdout": "NVIDIA GeForce RTX 4070 Ti SUPER, 16376 MiB, 1608 MiB, 13 %\n",
+      "stderr": ""
+    },
+    "compute_processes": {
+      "command": [
+        "nvidia-smi",
+        "--query-compute-apps=pid,process_name,used_memory",
+        "--format=csv,noheader"
+      ],
+      "exit_code": 0,
+      "stdout": "2004, /usr/local/awesun/awesun, 409 MiB\n",
+      "stderr": ""
+    }
+  },
+  "gpu_after": {
+    "recorded_at_utc": "2026-09-09T12:15:45.565158+00:00",
+    "purpose": "One post-exit snapshot; no process intervention",
+    "gpu": {
+      "command": [
+        "nvidia-smi",
+        "--query-gpu=name,memory.total,memory.used,utilization.gpu",
+        "--format=csv,noheader"
+      ],
+      "exit_code": 0,
+      "stdout": "NVIDIA GeForce RTX 4070 Ti SUPER, 16376 MiB, 1449 MiB, 12 %\n",
+      "stderr": ""
+    },
+    "compute_processes": {
+      "command": [
+        "nvidia-smi",
+        "--query-compute-apps=pid,process_name,used_memory",
+        "--format=csv,noheader"
+      ],
+      "exit_code": 0,
+      "stdout": "2004, /usr/local/awesun/awesun, 409 MiB\n",
+      "stderr": ""
+    }
+  },
+  "model_environment_comparison": {
+    "python_exact": true,
+    "version_exact": true,
+    "packages_exact": true,
+    "package_count": 140
+  },
+  "old_e_flags": {
+    "native_closed_loop_contract_passed": false,
+    "native_multirow_consumption_observed": true,
+    "native_replanning_takeover_observed": true,
+    "native_model_control_overlap_observed": true,
+    "paired_scheduling_comparison_complete": false
+  },
+  "old_e_summary": {
+    "completed": 7,
+    "startup_failed": 1,
+    "not_run": 12,
+    "success": 4,
+    "time_limit": 3,
+    "complete_pairs": 3
+  },
+  "historical_d_flags": {
+    "token_graph_equivalence_passed": true,
+    "graph_worker_lifecycle_passed": true,
+    "graph_identity_engine_integration_passed": true
+  },
+  "native_recovery_coverage": "not_triggered; every steady planner raw requirement was 3; no new native evidence of estimator or planned recovery",
+  "limitations": [
+    "Two deliberately selected hard development pairs; no original-algorithm native arm or generalization estimate.",
+    "CPU recovery evidence does not establish native recovery; no recovery probe was triggered in this queue.",
+    "GPU snapshots do not establish causality for the difference from old E.",
+    "The probe reuses model input and completion computation but omits planned-only queue plan construction and prefix evidence copy.",
+    "On-demand Env stepping does not establish real-robot waiting safety or hard real-time qualification."
+  ],
+  "interception_record": {
+    "path": "/home/rp/.devspace/Reason_for_interception/2026-09-09_devspace_exec_command_safety_interception.md",
+    "existing_recurrence_read": true,
+    "duplicate_append": false,
+    "new_safety_rejection_this_round": false
+  },
+  "post_collection_report_assembly_first_error": {
+    "phase": "post-exit report assembly; not an experiment failure",
+    "exit_code": 1,
+    "observed_error": "KeyError: 'native_closed_loop_contract_passed'",
+    "cause": "The old E report wraps the flags; the assembly read them as top-level keys.",
+    "resolution": "Use the preserved old_flags object from the completed E-S0 audit.",
+    "additional_model_or_native_calls": 0
+  },
+  "next_action": "Stopped after the sole four-case queue; no retry/resume/replacement or additional coverage run."
+}

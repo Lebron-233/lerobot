@@ -1,6 +1,40 @@
 # SmolVLA 异步接入：下一轮审阅差异
 
-## 当前：E-S1 原 cap8 的唯一 startup 诊断已完成
+## 当前：E-L1闭锁复现、E-RCV1四条诊断完成，native未触发恢复
+
+2026-09-09，执行HEAD `2544bf404d0698ac60bcf1fee6d302fec1455a4a`。
+已按新任务书完成旧task0/task2两条async的最小证据重建、CPU判别、默认关闭的候选与准备门，
+[登记5601625997](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5601625997)实际ID单次回读exact后，完成唯一四条新native队列。
+[完整结果](SMOLVLA_GRAPH_CAP_RECOVERY_RESULT.md)、[机器结果](SMOLVLA_GRAPH_CAP_RECOVERY_RESULT.json)、
+[E-L1审计](SMOLVLA_GRAPH_CAP_RECOVERY_AUDIT.md)、[固定协议](SMOLVLA_GRAPH_CAP_RECOVERY_PLAN.md)、
+[四行清单](SMOLVLA_GRAPH_CAP_RECOVERY_MANIFEST.json)、[实际测试](SMOLVLA_GRAPH_CAP_RECOVERY_TESTS.md)。
+
+旧task0五个接纳样本按原float32/linear P90得到0.714749813079834秒、raw16；
+两次installed bootstrap不入tracker，后续无planned；task2最终raw12也没有后续planned。
+CPU真实worker/queue复现该闭锁，健康正控制保持planned；reset/task保留历史、新engine空窗口的边界已记录。
+新增`same_path_discard_probe_v1`仅显式实验启用：在原cap_wait机会同路径计算，输出丢弃、同epoch有效完成才接纳一次，
+每条50预算派发前生效且reset/task不重置；默认关闭、原cap8/P90/window50/whole-discard和bootstrap排除保持。
+受控满窗口正例经45个快probe自然回cap并planned/合法row0接管；持续慢probe不会强制恢复。
+当前25项独立CPU覆盖按4+21通过，模型环境新入口1项通过；lint/format通过，开发首错分别保留。
+
+新task0 serialized/async均success@200；task2 async/serialized均TimeLimit@280。4/4条、2/2对完成，初态exact。
+**四条稳态raw全部3、恢复probe0；三个native恢复observed字段均false。**
+`recovery_native_four_episode_contract_passed=true`、`recovery_native_two_pair_comparison_complete=true`仅表示本次固定队列完成，
+不能代替“超cap→有效probe→回cap→planned→native row0”恢复链。本轮没有该链，也没有原算法native对照臂。
+两对async−serialized measured wall分别−0.399644秒和−0.599796秒，是本次正常路径的描述性结果。
+
+实际Env4、settling40、measured960、主策略52（startup bootstrap8/probe4/planned40）、recovery0、capture8；
+setup8/warmup24/capture内8，reference/predictor/训练/真机0。2040 intent/2040 return，未知调用0。
+40次正常planned接管和960次动作来源通过原审计；async正常model/native重叠31次，serialized为0。
+4/4 join/Graph释放/sampler恢复/metrics关闭/Env关闭确认，child与监督exit0；监督79.406426秒、独立外层83.664648秒。
+数组清理后保存775,266,588字节，退出后仅CPU读取新初态；140项模型环境metadata前后exact。
+原始目录为`outputs/smolvla_graph_cap_recovery_2544bf40/`；执行、结果、发布回执分别提交。
+
+唯一队列已到固定停止点，没有追加探针覆盖或重开旧E。旧E仍7 completed/1 startup失败/12 not_run、4 success/3 TimeLimit、3完整对；
+旧整体两个flag仍false，三个observed与D三个历史通过flag保持true；科学资格仍false、risk_thresholds=null、旧confirmation untouched。
+GPU前后快照只记背景，不能解释旧E的慢slot。DevSpace复发条目已存在，读取后未重复追加；本轮无新的安全拒绝。
+
+## 以下为E-S1原cap8唯一startup诊断的历史结果
 
 2026-09-09，执行HEAD `6ff4fd48098023de89b348d9f384ae82979935c8`。
 E-S0已独立读取旧报告/事件/CPU初态/评论/退出并完成边界复算；E-S1准备和测试提交后，
