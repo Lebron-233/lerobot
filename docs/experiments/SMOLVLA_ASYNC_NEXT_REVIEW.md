@@ -3,7 +3,9 @@
 2026-09-09。A 连续模型合同通过；B 在 `5d45353ff98fc448bc514b284c1a19609405585b`
 完成 40/40 条原生运行、20 对逐步 exact。C 在 `290c1a3dbaa90d4e3d900c4c4eb83aa6840b2ce8`
 完成全部6,318个CPU请求trace。原contract_gap来自任务书与正式strict-deadline裁决冲突，
-现有whole-discard实现正确。新版本仅纠正验收；严格deadline新回放按[勘误版协议](SMOLVLA_ASYNC_TIMING_REPLAY_PLAN.md)登记执行。
+现有whole-discard实现正确。新版本仅纠正验收；严格deadline新回放在
+`3ae1dc569007e612bca459ba6680dd94204268a6`完成40条/6,318请求、7项边界和完整账目，正常exit0。
+[新C结果](SMOLVLA_ASYNC_STRICT_DEADLINE_RESULT.md)及[勘误版协议](SMOLVLA_ASYNC_TIMING_REPLAY_PLAN.md)。
 [完整结果](LIBERO_GRAPH_NATIVE_EQUIVALENCE_RESULT.md)及[机器记录](LIBERO_GRAPH_NATIVE_EQUIVALENCE_RESULT.json)。
 
 ## 尚缺的接口与合同
@@ -14,7 +16,7 @@
 | 模型和 stream 所有权 | helper 在创建线程记录 owner；现有异步模型推理在后台 worker；graph capture 要求同进程没有并行 CUDA 工作 | 在 worker 内创建、准备、replay、同步和释放 graph；task 变化先建立新 capture，再接受相应请求。控制线程不得在 capture 期间对 GPU 队列/prefix/processor 发起 CUDA 工作 |
 | reset | queue/task epoch 已能拒绝旧结果；CPU 线程用例通过。engine.reset 当前从调用线程直接 reset policy/pre/post | 将 GPU 模型/processor reset 和图释放交回 owner，并明确 in-flight 完成或取消的边界。单靠丢弃旧 epoch 结果不足以证明 capture/reset 的资源顺序 |
 | 输出与发布 | helper 的完整输出 clone 已通过连续 replay 持有测试；queue 已复制 policy/post-policy chunks；engine 已在 publication 前等待 device completion | 保留这三个现有承诺。token 入口接通后仍须在新路径证明独立输出和完成屏障，随后重新登记有限模型合同 |
-| 无动作行为 | C 启动期间有 669 个明确无动作 tick，ready 后 underflow=0；eager trace 有4次迟到丢弃 | 原生调度器明确每个 wall tick 的 startup/underflow 处置与停止条件，记录缺动作。不能暂停时钟或 hold-last 来计作连续新控制 |
+| 无动作行为 | 新C严格deadline回放启动期间有 669 个明确无动作 tick，ready 后 underflow=0；eager trace 有4次迟到丢弃 | 原生调度器明确每个 wall tick 的 startup/underflow 处置与停止条件，记录缺动作。不能暂停时钟或 hold-last 来计作连续新控制 |
 
 ## 已确认的接管合同与历史勘误
 
