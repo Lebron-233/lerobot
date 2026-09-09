@@ -6,6 +6,8 @@
 [登记评论5595549440](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5595549440)在启动前发布并按实际ID回读一致。
 [固定协议](SMOLVLA_GRAPH_TOKEN_WORKER_PLAN.md)、[定向测试](SMOLVLA_GRAPH_TOKEN_WORKER_TESTS.md)、
 [机器结果](SMOLVLA_GRAPH_TOKEN_WORKER_RESULT.json)。
+[结果评论5595618423](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5595618423)已发布并回读一致，
+[发布回执](SMOLVLA_GRAPH_TOKEN_WORKER_RECEIPT.json)记录提交、失败状态及退出确认。
 
 ## 首个真实失败与退出
 
@@ -57,6 +59,8 @@ CPU测试使用已有smolvla-rtc环境；模型专用环境缺datasets的初次�
 ## 已知问题与下一停止点
 
 冻结模型环境和生产rollout包的必需依赖不一致，是当前确定的执行阻塞。
+本轮准备漏检了指定模型环境的完整rollout导入链；初次测试收集已显示datasets缺失，
+切换CPU测试环境没有解决D3入口的依赖。这个入口准备缺口需要在新D登记前收敛。
 D的token数值等价、GPU owner/reset/stop与CPU发布合同仍未获得真实模型证据；已实现代码不能替代这些验证。
 下一次D需要先另行固定依赖/导入入口的解决范围，再登记新的有界验证。本轮不改环境或绕过包入口继续运行。
 

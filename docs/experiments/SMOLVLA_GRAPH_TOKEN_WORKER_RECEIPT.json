@@ -1,0 +1,36 @@
+{
+  "execution_head": "4f171a4b04dbf3111167dc6437658cdd2f1df4cb",
+  "result_commit": "99c5198deeb4a9e25ee2484d4ccb1533fab6188e",
+  "branch": "codex/smolvla-graph-native-equivalence",
+  "execution_and_result_push_succeeded": true,
+  "registration": {
+    "id": 5595549440,
+    "html_url": "https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5595549440",
+    "created_at": "2026-09-09T03:57:00Z"
+  },
+  "registration_readback_body_exact": true,
+  "result_comment": {
+    "id": 5595618423,
+    "html_url": "https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5595618423",
+    "created_at": "2026-09-09T04:06:02Z"
+  },
+  "result_readback_body_exact": true,
+  "status": "blocked_before_model",
+  "attempts": 1,
+  "retries": 0,
+  "child_exit_code": 1,
+  "supervisor_exit_code": 2,
+  "process_exit_confirmed": true,
+  "model_worker_started": false,
+  "worker_joined": null,
+  "graph_released": null,
+  "token_graph_equivalence_passed": false,
+  "graph_worker_lifecycle_passed": false,
+  "graph_identity_engine_integration_passed": false,
+  "output": "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_async_contract_4f171a4b",
+  "baseline_qualified": false,
+  "realtime_qualified": false,
+  "predictor_benefit_tested": false,
+  "risk_thresholds": null,
+  "old_confirmation": "not_started_untouched"
+}
