@@ -7,6 +7,9 @@ E-S0已独立读取旧报告/事件/CPU初态/评论/退出并完成边界复算
 [登记5600354734](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5600354734)回读一次exact，随后完成唯一新案例。
 [E-S1完整结果](SMOLVLA_GRAPH_STARTUP_BOUNDARY_RESULT.md)、[机器结果](SMOLVLA_GRAPH_STARTUP_BOUNDARY_RESULT.json)、
 [旧边界审计](SMOLVLA_GRAPH_STARTUP_BOUNDARY_AUDIT.md)、[固定协议](SMOLVLA_GRAPH_STARTUP_BOUNDARY_PLAN.md)。
+结果提交`a9bb53f51ad8109710c4702b6817f048cadb0f52`已推送；
+[结果评论5600443170](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5600443170)按实际ID回读一次，正文exact。
+[独立发布和退出回执](SMOLVLA_GRAPH_STARTUP_BOUNDARY_RECEIPT.json)记录完整执行/结果身份与实际进程退出。
 
 旧失败的9来自0.36472486099228263秒×20Hz，原取整为8，再加一次margin1；
 startup gate使用当前probe，没有P90，未先clamp，失败样本未入tracker。原cap8合法拒绝，未识别/修复源合同缺陷。
