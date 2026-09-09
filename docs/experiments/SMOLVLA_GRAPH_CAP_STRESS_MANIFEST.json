@@ -1,0 +1,13 @@
+{
+  "experiment": "E-RCV2",
+  "handover_head": "5e2679a95adefa0de57e10b05506d20f35c7cac2",
+  "source_ordinals": [1, 1, 5, 5],
+  "arms": ["disabled", "candidate", "candidate", "disabled"],
+  "condition": "graph_identity_async",
+  "intervention": "one_host_pause_after_first_planned_cpu_completion_before_admission",
+  "host_pause_seconds": 0.6,
+  "max_recovery_probes_per_episode": 50,
+  "max_recovery_probes_total": 100,
+  "attempts": 1,
+  "retries": 0
+}

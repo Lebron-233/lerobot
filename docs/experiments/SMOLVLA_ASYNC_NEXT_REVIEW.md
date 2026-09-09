@@ -1,6 +1,28 @@
 # SmolVLA 异步接入：下一轮审阅差异
 
-## 当前：E-L1闭锁复现、E-RCV1四条诊断完成，native未触发恢复
+## 当前：E-RCV2准备已核对，实测接续等待平台解除记录
+
+2026-09-09，接管HEAD `5e2679a95adefa0de57e10b05506d20f35c7cac2`。
+按用户附件`SMOLVLA_E_RCV2_PROGRESS_AND_HANDOFF.md`完整读取现存新入口、测试、PLAN/MANIFEST、原始日志与回执。
+E-RCV2保持四条graph_identity_async：task0 disabled/candidate、task2 candidate/disabled，原state41和seeds不变。
+两臂首个planned在原独立CPU chunks及设备完成屏障后、原采样/接纳前，仅一次600ms主机暂停。
+该受控干预用于机制对照，`natural_latency_recovery_demonstrated`在本轮固定false。
+
+已有5项不同CPU测试按首轮2项、修正夹具接口后剩余3项通过；入口--help exit0、CUDA未初始化，最终Ruff/格式通过。
+首次AttributeError、F811和格式差异原件保留，本次接续没有重跑已通过测试或更改候选/冻结参数。
+[正式TESTS](SMOLVLA_GRAPH_CAP_STRESS_TESTS.md)、[固定PLAN](SMOLVLA_GRAPH_CAP_STRESS_PLAN.md)、
+[MANIFEST](SMOLVLA_GRAPH_CAP_STRESS_MANIFEST.json)、[完整接续状态](SMOLVLA_GRAPH_CAP_STRESS_PREPARATION.md)。
+
+附件记录DevSpace对模型版本/包元数据、GPU、磁盘准备查询的自动安全审查拒绝，没有返回PID/exit code或快照。
+第7节要求维护者已处理拦截、执行环境明确获准后接续；本次已请求解除记录，尚未收到。
+准备代码与测试记录可独立保存；尚无登记的execution HEAD、预登记评论、新模型/Env、native结果或退出回执。
+未重试受阻查询，也未通过其他通道代查。准备通过不代表资源准备、平台放行或native合同通过。
+
+条件满足后继续原固定四条、attempt1/retry0，预算与首错规则按PLAN；缺触发/未恢复均不补跑。
+两个disabled闭锁、两个candidate的同epoch恢复与native合法row0、四条完成及两对初态exact同时满足，才允许stress机制通过。
+旧E/E-S1/E-RCV1及全部科学资格保持。下方E-RCV1为最近完成的native结果。
+
+## E-L1闭锁复现、E-RCV1四条诊断完成，native未触发恢复（最近完成结果）
 
 2026-09-09，执行HEAD `2544bf404d0698ac60bcf1fee6d302fec1455a4a`。
 已按新任务书完成旧task0/task2两条async的最小证据重建、CPU判别、默认关闭的候选与准备门，
