@@ -1,12 +1,41 @@
 # SmolVLA 异步接入：下一轮审阅差异
 
+## 当前：E-S1 原 cap8 的唯一 startup 诊断已完成
+
+2026-09-09，执行HEAD `6ff4fd48098023de89b348d9f384ae82979935c8`。
+E-S0已独立读取旧报告/事件/CPU初态/评论/退出并完成边界复算；E-S1准备和测试提交后，
+[登记5600354734](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5600354734)回读一次exact，随后完成唯一新案例。
+[E-S1完整结果](SMOLVLA_GRAPH_STARTUP_BOUNDARY_RESULT.md)、[机器结果](SMOLVLA_GRAPH_STARTUP_BOUNDARY_RESULT.json)、
+[旧边界审计](SMOLVLA_GRAPH_STARTUP_BOUNDARY_AUDIT.md)、[固定协议](SMOLVLA_GRAPH_STARTUP_BOUNDARY_PLAN.md)。
+
+旧失败的9来自0.36472486099228263秒×20Hz，原取整为8，再加一次margin1；
+startup gate使用当前probe，没有P90，未先clamp，失败样本未入tracker。原cap8合法拒绝，未识别/修复源合同缺陷。
+本轮新增独立startup入口及CPU主机快照，生产算法、旧E入口及所有冻结条件保持。
+
+新ordinal0复制旧ordinal7：task3/pair3/graph_serialized/state41，Env seed940341、policy seed950341。
+10 settling后独立CPU双图/state/quaternion/EEF/gripper与旧失败项exact。
+本次probe68.071492ms，换算2步+margin1=3≤8，cold/probe/fresh共3次主调用、2次capture；
+setup2/warmup6/capture内2、replay3，原owner seed一次。
+到ready后立即stop，get0、measured0、unknown0；所有20个journal intent均有return。
+join/Graph释放/sampler恢复/metrics关闭/Env关闭确认，child和监督exit0；监督15.631292秒、独立外层19.116673秒。
+CPU定向19 passed，固定模型环境新入口1 passed，ruff/format通过；140项模型环境metadata前后exact。
+原始结果位于 `outputs/smolvla_graph_startup_boundary_6ff4fd48/`，CPU数组1,603,297字节，清理退出后回读确认。
+
+一次新startup通过不改变旧超限事实，不证明稳定修复或原E完整合同通过。旧E仍7 completed、1 startup失败、12 not_run，
+其中4 success/3 TimeLimit，3完整对；旧三个observed与D历史三项通过标志保持，两个E整体标志仍false。
+科学资格仍false、risk_thresholds=null、旧confirmation untouched。诊断已停止，未续跑旧清单或新建E-r1。
+本次同卡登记前1337MiB/4%只是背景记录，不能与旧6248MiB/40%组成因果实验。
+DevSpace原拦截记录已按本任务书明确事实追加并回读，缺失待追加附件没有被当作已读取原文。
+
+## 以下为 E 原生闭环的历史执行记录
+
 2026-09-09。E 已完成实现、定向测试、预登记及唯一一次固定native队列；在第8项startup首错停止。
 执行HEAD `e00b8731b44b80a9e80dc0af91e4434a9af3d7dd`。
 7/20 episodes完成、1失败、12 not_run，3/10完整配对；失败后没有修补重跑或改变实验条件。
 [E完整结果](SMOLVLA_GRAPH_IDENTITY_NATIVE_RESULT.md)、[机器结果](SMOLVLA_GRAPH_IDENTITY_NATIVE_RESULT.json)、
 [E固定协议](SMOLVLA_GRAPH_IDENTITY_NATIVE_PLAN.md)、[20行清单](SMOLVLA_GRAPH_IDENTITY_NATIVE_MANIFEST.json)。
 
-## 当前停止点：E startup要求9步，固定cap为8
+## E原历史停止点：startup要求9步，固定cap为8
 
 ordinal7 / task3 / state41 / graph_serialized，在10 settling后与同对async初态exact。
 probe request1实测364.724861ms，按原20Hz换算8步，加安全余量1得到9，
