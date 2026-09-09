@@ -19,12 +19,14 @@ def test_ticks_keep_advancing_and_planner_uses_only_completed_history():
     assert any(r["kind"] == "planned" for r in result["records"])
 
 
-def test_boundary_probe_reports_the_real_missing_crop_contract():
+def test_boundary_probe_preserves_whole_discard_for_every_late_result():
     cases = queue_boundary_cases()
-    failed = [case for case in cases if not case["passed"]]
-    assert len(failed) == 1
-    assert failed[0]["case"] == "slightly_late_prefix_crop"
-    assert failed[0]["late_steps"] == 1
-    assert failed[0]["actual_outcome"] == "deadline_miss"
-    assert failed[0]["actual_next_action"] == 4
-    assert failed[0]["expected_next_action"] == 101
+    assert all(case["passed"] for case in cases)
+    by_name = {case["case"]: case for case in cases}
+    for late, old_action in ((1, 4), (2, 5), (3, 6)):
+        case = by_name[f"late_{late}_whole_discard"]
+        assert case["late_steps"] == late
+        assert case["actual_outcome"] == "deadline_miss"
+        assert case["actual_next_action"] == case["expected_next_action"] == old_action
+        assert case["matching_plan_cleared"] is True
+        assert case["no_staged_chunk"] is True

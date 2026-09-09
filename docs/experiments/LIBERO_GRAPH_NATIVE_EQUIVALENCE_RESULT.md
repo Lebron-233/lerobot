@@ -1,5 +1,9 @@
 # LIBERO 十步 Graph 原生等价性结果
 
+> 2026-09-09 验收勘误：本报告保留首次A/B/C执行记录。旧C的裁剪预期与此前正式裁决冲突，
+> `contract_gap`不表示已确认的生产队列缺陷。严格whole-discard验收及新独立结果见
+> [勘误版协议](SMOLVLA_ASYNC_TIMING_REPLAY_PLAN.md)与[新C结果](SMOLVLA_ASYNC_STRICT_DEADLINE_RESULT.md)。
+
 2026-09-09。**A 通过，B 原生工程等价性通过；C 固定时序回放完成，轻微晚到裁剪合同未满足。**
 
 A/B 执行源码：`5d45353ff98fc448bc514b284c1a19609405585b`。C 执行源码：`290c1a3dbaa90d4e3d900c4c4eb83aa6840b2ce8`。

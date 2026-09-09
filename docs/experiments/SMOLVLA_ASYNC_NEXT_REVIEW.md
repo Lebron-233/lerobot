@@ -2,24 +2,34 @@
 
 2026-09-09。A 连续模型合同通过；B 在 `5d45353ff98fc448bc514b284c1a19609405585b`
 完成 40/40 条原生运行、20 对逐步 exact。C 在 `290c1a3dbaa90d4e3d900c4c4eb83aa6840b2ce8`
-完成全部 6,318 个 CPU 请求 trace，轻微迟到裁剪合同未通过。
+完成全部6,318个CPU请求trace。原contract_gap来自任务书与正式strict-deadline裁决冲突，
+现有whole-discard实现正确。新版本仅纠正验收；严格deadline新回放按[勘误版协议](SMOLVLA_ASYNC_TIMING_REPLAY_PLAN.md)登记执行。
 [完整结果](LIBERO_GRAPH_NATIVE_EQUIVALENCE_RESULT.md)及[机器记录](LIBERO_GRAPH_NATIVE_EQUIVALENCE_RESULT.json)。
 
 ## 尚缺的接口与合同
 
 | 接口 | 已确认现状 | 下一轮需要定下的具体差异 |
 |---|---|---|
-| 轻微迟到 | `ScheduledActionQueue.stage_chunk` 对任何 late>0 整块丢弃；engine 保存的 max_late_steps=2 未用于 stage | 确定是否保留严格 deadline，或接受 late≤2 时裁掉对应行；若接受，明确每行对应的绝对时间、guard 消耗、剩余行索引与归一化 anchor。两种规则会发送不同动作，不能沿用同一等价性结论 |
 | 输入入口 | 新 graph helper 接收 raw images/masks；异步 planned/startup_probe 已先编码图像，并用 future_image_tokens/masks 调用 predict_action_chunk | 增加明确的 token 输入入口，把当次已编码的两路 tokens、masks、语言、state、noise 交给同一 graph core。identity 必须来自冻结的当前观测；不能对 tokens 再调用图像编码，也不能隐式 fallback |
 | 模型和 stream 所有权 | helper 在创建线程记录 owner；现有异步模型推理在后台 worker；graph capture 要求同进程没有并行 CUDA 工作 | 在 worker 内创建、准备、replay、同步和释放 graph；task 变化先建立新 capture，再接受相应请求。控制线程不得在 capture 期间对 GPU 队列/prefix/processor 发起 CUDA 工作 |
 | reset | queue/task epoch 已能拒绝旧结果；CPU 线程用例通过。engine.reset 当前从调用线程直接 reset policy/pre/post | 将 GPU 模型/processor reset 和图释放交回 owner，并明确 in-flight 完成或取消的边界。单靠丢弃旧 epoch 结果不足以证明 capture/reset 的资源顺序 |
 | 输出与发布 | helper 的完整输出 clone 已通过连续 replay 持有测试；queue 已复制 policy/post-policy chunks；engine 已在 publication 前等待 device completion | 保留这三个现有承诺。token 入口接通后仍须在新路径证明独立输出和完成屏障，随后重新登记有限模型合同 |
 | 无动作行为 | C 启动期间有 669 个明确无动作 tick，ready 后 underflow=0；eager trace 有4次迟到丢弃 | 原生调度器明确每个 wall tick 的 startup/underflow 处置与停止条件，记录缺动作。不能暂停时钟或 hold-last 来计作连续新控制 |
 
-首个失败证据：C 固定边界 plan.takeover_index=3，消费到 next_action_index=4 后提交新块。
-实际返回 `deadline_miss`，下一个执行标记 4 来自旧块；裁剪语义的预期是新块第二行标记 101。
-原始记录：`outputs/smolvla_async_timing_5d45353f_290c1a3d/result.json` 的 `first_failure`。
-本轮保留现有接管承诺，C=`contract_gap`；未修改 queue 来改变已验证的动作选择。
+## 已确认的接管合同与历史勘误
+
+[正式裁决5471357164](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5471357164)及
+[复核5554561794](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5554561794)先于旧C实验：
+提前仅staging，准时从新块第0行接管，任何late>0整块丢弃并继续旧active；耗尽返回None并计underflow。
+stale旧返回不得清掉更新plan。max_late_steps=2用于guard sizing/诊断，不授权无补偿裁剪。
+
+旧C的takeover_index=3、next_action_index=4首例正确结果就是deadline_miss及旧动作4。
+其原expected=101、exit2和contract_gap永久保留于
+`outputs/smolvla_async_timing_5d45353f_290c1a3d/result.json`，由此次审阅解释验收错误。
+当前队列不需要为这个首例修复。连续性补偿/残差RTC属于另行研究范围。
+
+真正的下一工程任务是上表的token入口、同一worker的模型/reset所有权与完成后发布。
+本次勘误不启动这些GPU/模型任务，也不运行新的native队列。
 
 ## 动作转换链
 

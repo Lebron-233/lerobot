@@ -259,20 +259,31 @@ def queue_boundary_cases():
             "actions": actions,
         }
     )
-    for late in (1, 3):
+    for late in (1, 2, 3):
         queue, plan = setup()
         for _ in range(plan.takeover_index + late):
             queue.get_with_task()
         actual = stage(queue)
+        matching_plan_cleared = queue.plan_snapshot() is None
+        no_staged_chunk = not queue.has_staged_chunk()
         next_action = queue.get_with_task().post_policy_action.item()
+        expected_next_action = plan.takeover_index + late
         cases.append(
             {
-                "case": "slightly_late_prefix_crop" if late == 1 else "severely_late_discard",
-                "passed": (next_action == 101 if late == 1 else actual.outcome is StageOutcome.DEADLINE_MISS),
+                "case": f"late_{late}_whole_discard",
+                "passed": (
+                    actual.late_steps == late
+                    and actual.outcome is StageOutcome.DEADLINE_MISS
+                    and next_action == expected_next_action
+                    and matching_plan_cleared
+                    and no_staged_chunk
+                ),
                 "late_steps": actual.late_steps,
                 "actual_outcome": actual.outcome.value,
                 "actual_next_action": next_action,
-                "expected_next_action": 101 if late == 1 else 6,
+                "expected_next_action": expected_next_action,
+                "matching_plan_cleared": matching_plan_cleared,
+                "no_staged_chunk": no_staged_chunk,
             }
         )
     for change in ("reset", "task"):
@@ -308,6 +319,11 @@ def main():
         "episodes": [],
         "status": "running",
         "scope": "cpu_fake_policy_timing_not_native_control",
+        "late_policy": "whole_discard_any_late",
+        "late_policy_decisions": [
+            "https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5471357164",
+            "https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5554561794",
+        ],
     }
     rows = json.loads((SOURCE / "tuple_accounting.json").read_text())
     for row in rows:
