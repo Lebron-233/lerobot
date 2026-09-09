@@ -2,6 +2,12 @@
 
 ## Execution status
 
+2026-09-09 continuation: the existing repair was executed at36597f04 after
+preregistration5594244474 and exact readback. All270 real recorded inputs passed
+full-chunk/selected/post exact equality; process exited0. Language lengths were
+11/12/13 across tasks. See [completed result](LIBERO_TEN_STEP_GRAPH_RECORDED_RESULT.md).
+The paragraphs below retain the earlier, unstarted publication attempt as history.
+
 Repair sourcebfaeb0de was committed/pushed. Duplicate lookup for its registration
 marker found no comment. The subsequent preregistrationPOST was blocked by the
 platform before execution and returned no publicationID. No alternate publication
