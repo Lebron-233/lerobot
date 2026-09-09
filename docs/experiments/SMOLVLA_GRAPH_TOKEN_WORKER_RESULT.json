@@ -1,0 +1,110 @@
+{
+  "status": "blocked_before_model",
+  "collection_kind": "post_exit_failure_report",
+  "execution_head": "4f171a4b04dbf3111167dc6437658cdd2f1df4cb",
+  "branch": "codex/smolvla-graph-native-equivalence",
+  "token_graph_equivalence_passed": false,
+  "graph_worker_lifecycle_passed": false,
+  "graph_identity_engine_integration_passed": false,
+  "stage_status": {
+    "D1_code": "implemented_cpu_tested",
+    "D2_code": "implemented_cpu_tested",
+    "D3": "import_failed_before_main"
+  },
+  "cuda_validation_status": {
+    "token_graph_equivalence": "not_run",
+    "graph_worker_lifecycle": "not_run",
+    "graph_identity_engine_integration": "not_run"
+  },
+  "first_failure": {
+    "stage": "module_import",
+    "type": "ImportError",
+    "message": "'datasets' is required but not installed",
+    "location": "src/lerobot/rollout/__init__.py:27",
+    "traceback": "Traceback (most recent call last):\n  File \"/home/rp/Workspace/SmolVLA_RTC/lerobot/examples/advanced/predictive_async/validate_smolvla_graph_worker.py\", line 25, in <module>\n    from smolvla_graph_identity import SmolVLAGraphIdentityEngine\n  File \"/home/rp/Workspace/SmolVLA_RTC/lerobot/examples/advanced/predictive_async/smolvla_graph_identity.py\", line 9, in <module>\n    from lerobot.rollout.inference.predictive_async import (\n  File \"/home/rp/Workspace/SmolVLA_RTC/lerobot/src/lerobot/rollout/__init__.py\", line 27, in <module>\n    require_package(\"datasets\", extra=\"dataset\")\n  File \"/home/rp/Workspace/SmolVLA_RTC/lerobot/src/lerobot/utils/import_utils.py\", line 101, in require_package\n    raise ImportError(\nImportError: 'datasets' is required but not installed. Install it with: pip install 'lerobot[dataset]' (or uv pip install 'lerobot[dataset]')\n",
+    "meaning": "The fixed model environment cannot import the production rollout package; no model result was obtained."
+  },
+  "execution": {
+    "execution_head": "4f171a4b04dbf3111167dc6437658cdd2f1df4cb",
+    "supervisor_python": "/home/rp/Workspace/SmolVLA_RTC/libero-reference-venv/bin/python",
+    "command": [
+      "/home/rp/Workspace/SmolVLA_RTC/libero-reference-venv/bin/python",
+      "-u",
+      "examples/advanced/predictive_async/validate_smolvla_graph_worker.py",
+      "--execution-head",
+      "4f171a4b04dbf3111167dc6437658cdd2f1df4cb",
+      "--output",
+      "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_async_contract_4f171a4b"
+    ],
+    "cwd": "/home/rp/Workspace/SmolVLA_RTC/lerobot",
+    "environment_overrides": {
+      "PYTHONPATH": null,
+      "HF_HUB_OFFLINE": "1",
+      "TRANSFORMERS_OFFLINE": "1"
+    },
+    "started_at_utc": "2026-09-09T03:57:41.147739+00:00",
+    "finished_at_utc": "2026-09-09T03:57:46.072392+00:00",
+    "wall_seconds": 4.924666500999592,
+    "soft_shutdown_seconds": 295,
+    "max_wall_seconds": 300,
+    "soft_timeout": false,
+    "hard_timeout": false,
+    "child_pid": 2458906,
+    "child_exit_code": 1,
+    "child_exit_confirmed": true,
+    "normal_exit": false,
+    "attempts": 1,
+    "retries": 0,
+    "output": "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_async_contract_4f171a4b",
+    "registration_url": "https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5595549440",
+    "registration_readback_body_exact": true
+  },
+  "supervisor_exit_code": 2,
+  "model_driver_result_available": false,
+  "model_driver_array_archive_available": false,
+  "model_load_reached": false,
+  "worker_started": false,
+  "worker_joined": null,
+  "graph_released": null,
+  "original_sampler_restored": null,
+  "actual_model_activity": {
+    "policy_calls_started": 0,
+    "reference_calls_started": 0,
+    "captures_started": 0,
+    "recorded_frames_loaded": 0,
+    "basis": "Traceback terminates at the adapter import before main() and load_runtime; no instrumented model budget was created."
+  },
+  "planned_model_activity": {
+    "token_pairs": 20,
+    "token_main_calls": 40,
+    "worker_main_calls": 12,
+    "worker_reference_calls": 12,
+    "total_calls": 64,
+    "captures": 15
+  },
+  "tests": {
+    "passed": 36,
+    "failed_final": 0,
+    "pytest_seconds": 0.81,
+    "exit_code": 0,
+    "python": "/home/rp/miniconda3/envs/smolvla-rtc/bin/python",
+    "command": "env -u PYTHONPATH HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 /home/rp/miniconda3/envs/smolvla-rtc/bin/uv run --no-config --no-project --offline --no-python-downloads --python /home/rp/miniconda3/envs/smolvla-rtc/bin/python python -m pytest -q tests/test_smolvla_graph_identity.py tests/test_smolvla_graph_native.py::test_feature_off_never_installs_runtime tests/test_smolvla_graph_native.py::test_consecutive_noise_output_lifetime_and_all_eight_inputs tests/test_smolvla_graph_native.py::test_reset_reuses_same_task_but_a_b_a_recaptures tests/test_smolvla_graph_native.py::test_incompatible_same_task_inputs_fail_without_replay_and_restore tests/test_smolvla_graph_native.py::test_preparation_exception_restores_rng_sampler_and_buffers tests/test_smolvla_graph_native.py::test_graph_audit_requires_capture_and_actual_replay_not_python_hooks tests/rollout/inference/test_predictive_async.py::test_chunk_completion_barrier_precedes_queue_publication tests/rollout/inference/test_predictive_async.py::test_reset_discards_inflight_result_without_reusing_action_index tests/rollout/inference/test_predictive_async.py::test_task_change_invalidates_inflight_result_but_preserves_active_provenance tests/rollout/inference/test_predictive_async.py::test_predictive_metrics_request_error_preserves_error_policy tests/rollout/inference/test_predictive_async.py::test_predictive_metrics_sink_closes_after_worker_finishes tests/rollout/inference/test_predictive_async.py::test_identity_startup_reset_and_task_boundaries",
+    "raw_final_log": "\nTesting with DEVICE='cuda'\n....................................                                     [100%]\n36 passed in 0.81s\n",
+    "ruff_check": "passed",
+    "ruff_format_check": "6 files already formatted",
+    "model_env_collection": "datasets missing; original log preserved; no packages installed"
+  },
+  "output": "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_async_contract_4f171a4b",
+  "new_native_episodes": 0,
+  "robot_actions": 0,
+  "reruns": 0,
+  "environment_changed": false,
+  "old_abc_results_untouched": true,
+  "late_policy": "whole_discard_any_late",
+  "baseline_qualified": false,
+  "realtime_qualified": false,
+  "predictor_benefit_tested": false,
+  "risk_thresholds": null,
+  "old_confirmation": "not_started_untouched",
+  "next_requirement": "Resolve the rollout import dependency within a separately fixed environment/interface scope, then register a new bounded D validation; this attempt is closed without retry."
+}

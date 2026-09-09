@@ -8,15 +8,22 @@
 [新C结果](SMOLVLA_ASYNC_STRICT_DEADLINE_RESULT.md)及[勘误版协议](SMOLVLA_ASYNC_TIMING_REPLAY_PLAN.md)。
 [完整结果](LIBERO_GRAPH_NATIVE_EQUIVALENCE_RESULT.md)及[机器记录](LIBERO_GRAPH_NATIVE_EQUIVALENCE_RESULT.json)。
 
-## 尚缺的接口与合同
+## D代码已实现，真实模型验证在导入阶段停止
 
-| 接口 | 已确认现状 | 下一轮需要定下的具体差异 |
+D执行源码`4f171a4b04dbf3111167dc6437658cdd2f1df4cb`，36项CPU定向测试通过。
+唯一D3启动在`lerobot.rollout.__init__`缺datasets时ImportError；child exit1、supervisor exit2，
+没有加载模型或启动worker，三个真实CUDA通过标志均false。[D结果](SMOLVLA_GRAPH_TOKEN_WORKER_RESULT.md)。
+
+| 接口 | 当前实现/证据 | 尚需完成 |
 |---|---|---|
-| 输入入口 | 新 graph helper 接收 raw images/masks；异步 planned/startup_probe 已先编码图像，并用 future_image_tokens/masks 调用 predict_action_chunk | 增加明确的 token 输入入口，把当次已编码的两路 tokens、masks、语言、state、noise 交给同一 graph core。identity 必须来自冻结的当前观测；不能对 tokens 再调用图像编码，也不能隐式 fallback |
-| 模型和 stream 所有权 | helper 在创建线程记录 owner；现有异步模型推理在后台 worker；graph capture 要求同进程没有并行 CUDA 工作 | 在 worker 内创建、准备、replay、同步和释放 graph；task 变化先建立新 capture，再接受相应请求。控制线程不得在 capture 期间对 GPU 队列/prefix/processor 发起 CUDA 工作 |
-| reset | queue/task epoch 已能拒绝旧结果；CPU 线程用例通过。engine.reset 当前从调用线程直接 reset policy/pre/post | 将 GPU 模型/processor reset 和图释放交回 owner，并明确 in-flight 完成或取消的边界。单靠丢弃旧 epoch 结果不足以证明 capture/reset 的资源顺序 |
-| 输出与发布 | helper 的完整输出 clone 已通过连续 replay 持有测试；queue 已复制 policy/post-policy chunks；engine 已在 publication 前等待 device completion | 保留这三个现有承诺。token 入口接通后仍须在新路径证明独立输出和完成屏障，随后重新登记有限模型合同 |
-| 无动作行为 | 新C严格deadline回放启动期间有 669 个明确无动作 tick，ready 后 underflow=0；eager trace 有4次迟到丢弃 | 原生调度器明确每个 wall tick 的 startup/underflow 处置与停止条件，记录缺动作。不能暂停时钟或 hold-last 来计作连续新控制 |
+| 输入入口 | helper已增加配对token入口，RGB委托同一TokenGraph；CPU测过无额外编码、参数拒绝、RNG与输出独立性 | 固定十帧20对真实token/eager exact验证 |
+| 模型与stream所有权 | 具名Graph/identity适配器在原worker中创建、准备、重放、同步和释放helper；CPU线程用例通过 | 真实CUDA owner与capture生命周期验证 |
+| reset/task | 控制线程立即失效CPU epoch；owner边界执行policy/pre/post reset，图按reset/task世代重建；CPU测过capture未完reset与A→B→A | 指定0→3→0模型序列、ready后在途reset与stale证明 |
+| 输出与发布 | policy/post独立CPU复制、有限性及设备屏障已实现；CPU独立性、stop/join超时用例通过 | 真实完整chunk/post输出、CPU消费与退出确认 |
+| 无动作行为 | 新C严格deadline回放有669启动无动作ticks，ready后underflow0，eager迟到丢弃4次 | native协议仍需另行固定wall tick、消费数量与无动作处置 |
+
+当前先决阻塞为冻结模型环境与rollout包导入依赖不一致。需另行解决该范围并登记新的D验证；
+本轮按首错停止，没有安装依赖、替换模型环境、绕过包入口或再次启动模型。
 
 ## 已确认的接管合同与历史勘误
 
@@ -30,8 +37,8 @@ stale旧返回不得清掉更新plan。max_late_steps=2用于guard sizing/诊断
 `outputs/smolvla_async_timing_5d45353f_290c1a3d/result.json`，由此次审阅解释验收错误。
 当前队列不需要为这个首例修复。连续性补偿/残差RTC属于另行研究范围。
 
-真正的下一工程任务是上表的token入口、同一worker的模型/reset所有权与完成后发布。
-本次勘误不启动这些GPU/模型任务，也不运行新的native队列。
+上述接口已在D实现并通过CPU定向测试，真实模型入口因依赖阻塞尚未验证。
+新的native队列仍未启动。
 
 ## 动作转换链
 
