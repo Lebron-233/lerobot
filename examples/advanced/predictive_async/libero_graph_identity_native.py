@@ -294,7 +294,20 @@ class NativeAudit(CallAudit):
 class NativeEngine(SmolVLAGraphIdentityEngine):
     """Only owner seed, completion notification and read-only experiment evidence."""
 
-    def __init__(self, policy, pre, post, features, spec, budget, calls, *, device="cuda"):
+    def __init__(
+        self,
+        policy,
+        pre,
+        post,
+        features,
+        spec,
+        budget,
+        calls,
+        *,
+        device="cuda",
+        recovery_policy="disabled",
+        max_recovery_probes_per_episode=50,
+    ):
         self.spec, self.budget, self.calls = spec, budget, calls
         self.audit = NativeAudit(self, policy, budget)
         self.metrics = Metrics()
@@ -314,6 +327,8 @@ class NativeEngine(SmolVLAGraphIdentityEngine):
             task=spec["task_name"].replace("_", " "),
             device=device,
             metrics_sink=self.metrics,
+            recovery_policy=recovery_policy,
+            max_recovery_probes_per_episode=max_recovery_probes_per_episode,
             **CONTROL,
         )
 
@@ -882,7 +897,14 @@ def audit_episode(engine, native, control):
         "chunks": chunks,
         "chunk_consumption_distribution": dict(Counter(c["native_rows_sent"] for c in chunks)),
         "discarded_chunks": sum(
-            c["outcome"] in ("deadline_miss", "stale", "probe_discarded")
+            c["outcome"]
+            in (
+                "deadline_miss",
+                "stale",
+                "probe_discarded",
+                "discarded_recovery_probe",
+                "stale_recovery_probe",
+            )
             or c["startup_phase"] == "cold_temporary"
             for c in chunks
         ),
@@ -1012,17 +1034,31 @@ def run_episode(
                 except BaseException:
                     result["status"] = "technical_failure"
                     result["first_failure"] = result["first_failure"] or traceback.format_exc()
-            serialization_start = clock.now()
-            torch.save(
-                {
-                    "observations": records,
-                    "requests": {} if engine is None else engine.arrays,
-                    "control": cpu(control),
-                    "pending_at_stop": pending_at_stop,
-                },
-                directory / "arrays.pt",
-            )
-            result["serialization_seconds"] = clock.now() - serialization_start
+            if result["environment_closed"] is True and (
+                engine is None
+                or all(
+                    result[k]
+                    for k in (
+                        "worker_joined",
+                        "graph_released",
+                        "original_sampler_restored",
+                        "metrics_closed",
+                    )
+                )
+            ):
+                serialization_start = clock.now()
+                torch.save(
+                    {
+                        "observations": records,
+                        "requests": {} if engine is None else engine.arrays,
+                        "control": cpu(control),
+                        "pending_at_stop": pending_at_stop,
+                    },
+                    directory / "arrays.pt",
+                )
+                result["serialization_seconds"] = clock.now() - serialization_start
+            else:
+                result["arrays_not_serialized"] = "Graph/processor/metrics/Env cleanup was not confirmed"
         else:
             result["arrays_not_serialized"] = "Worker exit unconfirmed; shared arrays remain unsaved"
         result.update(

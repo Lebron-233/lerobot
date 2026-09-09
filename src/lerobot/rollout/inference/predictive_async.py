@@ -93,6 +93,7 @@ class PredictiveAsyncStats:
     requests_started: int = 0
     bootstrap_requests: int = 0
     planned_requests: int = 0
+    recovery_probe_requests: int = 0
     prediction_cap_exceeded: int = 0
     deadline_misses: int = 0
     stale_results: int = 0
@@ -102,7 +103,7 @@ class PredictiveAsyncStats:
 @dataclass(frozen=True)
 class _InferenceRequest:
     request_id: int
-    kind: Literal["warmup", "bootstrap", "planned", "startup_probe"]
+    kind: Literal["warmup", "bootstrap", "planned", "startup_probe", "recovery_probe"]
     observation: dict[str, Any]
     requested_at: float
     reset_epoch: int
@@ -148,6 +149,8 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
         compile_warmup_inferences: int = 2,
         shutdown_event: Event | None = None,
         metrics_sink: InferenceMetricsSink | None = None,
+        recovery_policy: str = "disabled",
+        max_recovery_probes_per_episode: int = 50,
     ) -> None:
         super().__init__(task=task)
         if not math.isfinite(fps) or fps <= 0:
@@ -161,6 +164,19 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
             )
         if fallback_mode not in ("identity", "discard"):
             raise ValueError(f"Unsupported fallback_mode: {fallback_mode!r}")
+        if recovery_policy not in ("disabled", "same_path_discard_probe_v1"):
+            raise ValueError(f"Unsupported recovery_policy: {recovery_policy!r}")
+        if recovery_policy != "disabled" and (
+            context_mode != "identity"
+            or fallback_mode != "identity"
+            or max_prediction_delay != 8
+            or use_torch_compile
+        ):
+            raise ValueError("Recovery probes require identity context/fallback, cap8 and no compile")
+        if not 0 <= max_recovery_probes_per_episode <= 50:
+            raise ValueError("Recovery probe budget must be between 0 and 50")
+        self._recovery_policy = recovery_policy
+        self._max_recovery_probes_per_episode = max_recovery_probes_per_episode
         if context_mode == "oracle":
             raise ValueError("context_mode='oracle' is offline-only and cannot be used by live rollout")
         self._prediction_camera_keys = POLICY_CAMERA_KEYS
@@ -493,6 +509,8 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
                     requests_started=self._stats.requests_started + 1,
                     bootstrap_requests=(self._stats.bootstrap_requests + (request.kind == "bootstrap")),
                     planned_requests=self._stats.planned_requests + (request.kind == "planned"),
+                    recovery_probe_requests=self._stats.recovery_probe_requests
+                    + (request.kind == "recovery_probe"),
                 )
                 self._request_ready.set()
         if metrics_event:
@@ -610,6 +628,26 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
                 delay_plan.planned_delay_steps,
                 self._queue.next_action_index,
             )
+            if (
+                self._recovery_policy == "same_path_discard_probe_v1"
+                and self._startup_phase == "complete"
+                and available > 0
+                and self._stats.recovery_probe_requests < self._max_recovery_probes_per_episode
+            ):
+                # Observe the planned compute cohort without touching a takeover plan.
+                self._request_id += 1
+                if metrics_event is not None:
+                    metrics_event.update(decision="recovery_probe", request_id=request_id)
+                return _InferenceRequest(
+                    request_id=request_id,
+                    kind="recovery_probe",
+                    observation=observation,
+                    requested_at=now,
+                    reset_epoch=self._reset_epoch,
+                    task=task,
+                    task_epoch=task_epoch,
+                    delay_plan=delay_plan,
+                )
             if available != 0 or self._fallback_mode == "discard":
                 if metrics_event is not None:
                     metrics_event["decision"] = (
@@ -1009,9 +1047,10 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
                 warmup_token_override = request.kind == "warmup" and self._warmup_completed > 0
                 if metrics is not None:
                     metrics["policy_includes_vision"] = not (
-                        request.kind in ("planned", "startup_probe") or warmup_token_override
+                        request.kind in ("planned", "startup_probe", "recovery_probe")
+                        or warmup_token_override
                     )
-                if request.kind in ("planned", "startup_probe") or warmup_token_override:
+                if request.kind in ("planned", "startup_probe", "recovery_probe") or warmup_token_override:
                     token_policy: Any = self._policy
                     predicted_request = (
                         request.kind in ("planned", "startup_probe") and self._context_mode == "predicted"
@@ -1168,6 +1207,28 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
                     completion_started_at=completion_started_at,
                     outcome=installed.outcome.value,
                     result_next_action_index=installed.next_action_index,
+                )
+                return
+
+            if request.kind == "recovery_probe":
+                with self._request_lock:
+                    valid = (
+                        not self._shutdown_event.is_set()
+                        and request.reset_epoch == self._reset_epoch
+                        and (request.task, request.task_epoch) == self.task_snapshot
+                    )
+                    if valid:
+                        self._latency_tracker.add(latency_s)
+                        if metrics is not None:
+                            metrics["latency_tracker_admitted"] = True
+                    else:
+                        self._stats = replace(self._stats, stale_results=self._stats.stale_results + 1)
+                self._finish_request_metrics(
+                    metrics,
+                    cuda_events,
+                    latency_s=latency_s,
+                    completion_started_at=completion_started_at,
+                    outcome="discarded_recovery_probe" if valid else "stale_recovery_probe",
                 )
                 return
 
