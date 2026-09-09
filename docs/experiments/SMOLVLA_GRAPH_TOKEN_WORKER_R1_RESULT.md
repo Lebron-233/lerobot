@@ -6,6 +6,10 @@
 [协议](SMOLVLA_GRAPH_TOKEN_WORKER_R1_PLAN.md)、[定向测试](SMOLVLA_GRAPH_TOKEN_WORKER_R1_TESTS.md)、
 [机器结果](SMOLVLA_GRAPH_TOKEN_WORKER_R1_RESULT.json)、[发布回执](SMOLVLA_GRAPH_TOKEN_WORKER_R1_RECEIPT.json)。
 
+结果提交 `088f262531da3b3217cde078aee13b0535e6aacb` 已推送；
+[结果评论5597431688](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5597431688)
+已按真实ID同步回读一次，正文与保存的结果评论exact一致。
+
 ## 实测与退出
 
 | 判定 | 结果 | 实际覆盖 |
