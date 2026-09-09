@@ -140,9 +140,11 @@ def checked_observation(raw, language):
     return batch
 
 
-def save_observation(output, index, raw, language, journal):
+def save_observation(output, index, raw, language, journal, timing=None):
     """Keep both actual raw cameras losslessly, including the terminal observation."""
+    start = time.perf_counter()
     batch = checked_observation(raw, language)
+    converted = time.perf_counter()
     file = output / "observations" / f"{index:03d}.npz"
     np.savez_compressed(file, image=raw["pixels"]["image"], image2=raw["pixels"]["image2"])
     journal.emit(
@@ -151,11 +153,24 @@ def save_observation(output, index, raw, language, journal):
         cameras=str(file.relative_to(output)),
         state=array_record(batch[OBS_STATE]),
         eef_quaternion_xyzw=array_record(raw["robot_state"]["eef"]["quat"]),
+        **(
+            {
+                "raw_eef_position": array_record(raw["robot_state"]["eef"]["pos"]),
+                "raw_gripper_qpos": array_record(raw["robot_state"]["gripper"]["qpos"]),
+            }
+            if timing is not None
+            else {}
+        ),
     )
+    if timing is not None:
+        timing.update(
+            observation_conversion_seconds=converted - start,
+            observation_logging_seconds=time.perf_counter() - converted,
+        )
     return batch
 
 
-def run_episode(spec, output, policy, pre, post, env_factory, *, denoising_steps=10):
+def run_episode(spec, output, policy, pre, post, env_factory, *, denoising_steps=10, runtime=None):
     """Write a final result only after cleanup; a native exit leaves a started marker."""
     output.mkdir()
     (output / "observations").mkdir()
@@ -197,6 +212,7 @@ def run_episode(spec, output, policy, pre, post, env_factory, *, denoising_steps
 
         env.unwrapped._env.step = logged_native_step
         raw = reset_for_tuple(env, policy, pre, post, spec, journal)
+        observation_returned_at = time.perf_counter()
         result["settling_actions"] = native_counts["settling"]
         if native_counts["settling"] != SETTLING_ACTIONS:
             raise RuntimeError("Native reset did not execute exactly ten settling actions")
@@ -204,13 +220,16 @@ def run_episode(spec, output, policy, pre, post, env_factory, *, denoising_steps
             raise RuntimeError("Native initial-state row selection differs from the tuple")
         language = spec["task_name"].replace("_", " ")
         segment = "measurement"
-        batch = save_observation(output, 0, raw, language, journal)
+        observation_timing = {} if runtime is not None else None
+        batch = save_observation(output, 0, raw, language, journal, observation_timing)
         shapes = []
-        hook = policy.model.action_out_proj.register_forward_hook(
-            lambda _module, _args, value: shapes.append(list(value.shape))
-        )
+        if runtime is None or runtime.mode == "eager":
+            hook = policy.model.action_out_proj.register_forward_hook(
+                lambda _module, _args, value: shapes.append(list(value.shape))
+            )
         with torch.inference_mode():
             for number in range(1, LIMIT + 1):
+                processing_start = time.perf_counter()
                 processed = pre(batch)
                 if processed[OBS_STATE].shape != (1, 8) or not torch.isfinite(processed[OBS_STATE]).all():
                     raise ValueError(f"Invalid normalized state: {array_record(processed[OBS_STATE])}")
@@ -218,6 +237,7 @@ def run_episode(spec, output, policy, pre, post, env_factory, *, denoising_steps
                 inference_start = time.perf_counter()
                 normalized = policy.select_action(processed)
                 action = post(normalized).detach().cpu().numpy()[0]
+                action_ready_at = time.perf_counter()
                 journal.emit(
                     "action_prepared",
                     number=number,
@@ -227,16 +247,51 @@ def run_episode(spec, output, policy, pre, post, env_factory, *, denoising_steps
                     action=array_record(action),
                     projection_shapes=shapes.copy(),
                     queue_length=len(policy._queues[ACTION]),
-                    inference_seconds=time.perf_counter() - inference_start,
+                    inference_seconds=action_ready_at - inference_start,
                 )
+                if runtime is not None:
+                    from smolvla_graph_runtime import valid_sampler_evidence
+
+                    if not valid_sampler_evidence(runtime.mode, shapes, runtime.metadata, runtime.captures):
+                        raise RuntimeError("Sampler capture/replay evidence differs from the contract")
+                    runtime.record_request(output, number, normalized, action, journal)
+                    journal.emit(
+                        "request_timing",
+                        number=number,
+                        preprocessing_seconds=inference_start - processing_start,
+                        selector_to_cpu_action_seconds=action_ready_at - inference_start,
+                        engineering_seconds=action_ready_at - observation_returned_at,
+                        processing_seconds=(
+                            action_ready_at
+                            - processing_start
+                            + observation_timing["observation_conversion_seconds"]
+                        ),
+                        raw_to_action_wall_seconds=action_ready_at - observation_returned_at,
+                        logging_seconds=(
+                            time.perf_counter()
+                            - action_ready_at
+                            + observation_timing["observation_logging_seconds"]
+                        ),
+                        **observation_timing,
+                    )
                 outside = action_outside_bounds(action)
                 if not torch.isfinite(normalized).all():
                     raise ValueError("Non-finite normalized action")
-                if shapes != [[1, 50, 32]] * denoising_steps or len(policy._queues[ACTION]) != 0:
+                if (runtime is None and shapes != [[1, 50, 32]] * denoising_steps) or len(
+                    policy._queues[ACTION]
+                ) != 0:
                     raise RuntimeError(
                         f"The production selector did not preserve 50/1/{denoising_steps} consumption"
                     )
+                environment_start = time.perf_counter()
                 raw, reward, terminated, truncated, info = env.step(action)
+                observation_returned_at = time.perf_counter()
+                if runtime is not None:
+                    journal.emit(
+                        "environment_timing",
+                        number=number,
+                        seconds=observation_returned_at - environment_start,
+                    )
                 result.update(
                     measured_actions=number,
                     native_success_observed=bool(info["is_success"]),
@@ -254,7 +309,7 @@ def run_episode(spec, output, policy, pre, post, env_factory, *, denoising_steps
                     truncated=bool(truncated),
                     outside_box_components=outside,
                 )
-                batch = save_observation(output, number, raw, language, journal)
+                batch = save_observation(output, number, raw, language, journal, observation_timing)
                 if number % 40 == 0:
                     print(
                         f"STEP {spec['tuple_id']} {number}/{LIMIT} success={info['is_success']}", flush=True
@@ -271,6 +326,9 @@ def run_episode(spec, output, policy, pre, post, env_factory, *, denoising_steps
         journal.emit("python_exception", traceback=result["exception"])
     finally:
         result["settling_actions"] = native_counts["settling"]
+        if runtime is not None:
+            result["sampler_mode"] = runtime.mode
+            result["captures"] = list(runtime.captures)
         if hook is not None:
             hook.remove()
         if env is not None:
@@ -285,6 +343,17 @@ def run_episode(spec, output, policy, pre, post, env_factory, *, denoising_steps
                 result["status"] = "technical_failure"
                 result["close_exception"] = traceback.format_exc()
             journal.emit("cleanup_returned", environment_closed=result["environment_closed"])
+        if runtime is not None:
+            try:
+                if result["status"] != "completed" and runtime.latest_noise is not None:
+                    failure = {"noise": runtime.latest_noise.detach().cpu().numpy()}
+                    if runtime.latest is not None:
+                        failure["full_chunk"] = runtime.latest.detach().cpu().numpy()
+                    np.savez_compressed(output / "first_failure_sampler.npz", **failure)
+            except Exception:
+                result["failure_snapshot_exception"] = traceback.format_exc()
+            finally:
+                runtime.reset_output()
         result["success"] = result["status"] == "completed" and result["native_success_observed"] is True
         result["wall_seconds"] = time.perf_counter() - start
         result["restricted_simulated_seconds"] = (
@@ -295,13 +364,8 @@ def run_episode(spec, output, policy, pre, post, env_factory, *, denoising_steps
     return result
 
 
-def run_worker(args):
-    """One policy load per cohort; every tuple owns and closes a fresh native environment."""
-    phase_directory = args.output / args.phase
-    manifest = read_manifest(args.manifest)
-    torch.set_num_threads(1)
-    policy, pre, post, report = load_runtime(args.policy_path, args.vlm_path)
-    write_json(phase_directory / "policy_load.json", report)
+def make_native_env_factory():
+    """Build the pinned full native suite without dispatching an episode."""
     import gymnasium as gym
     from libero.libero import benchmark, get_assets_path
 
@@ -329,6 +393,18 @@ def run_worker(args):
         )
         return gym.wrappers.TimeLimit(native, max_episode_steps=LIMIT)
 
+    return env_factory
+
+
+def run_worker(args):
+    """One policy load per cohort; every tuple owns and closes a fresh native environment."""
+    phase_directory = args.output / args.phase
+    manifest = read_manifest(args.manifest)
+    torch.set_num_threads(1)
+    policy, pre, post, report = load_runtime(args.policy_path, args.vlm_path)
+    write_json(phase_directory / "policy_load.json", report)
+    env_factory = make_native_env_factory()
+
     for spec in manifest["cohorts"][args.phase]:
         print(f"START {spec['tuple_id']}", flush=True)
         result = run_episode(spec, tuple_directory(phase_directory, spec), policy, pre, post, env_factory)
@@ -350,7 +426,7 @@ def read_events(path):
     return events
 
 
-def audit_tuple(directory, spec, *, denoising_steps=10):
+def audit_tuple(directory, spec, *, denoising_steps=10, sampler_mode="eager"):
     """Reconcile native calls, returned observations and the final cleanup record."""
     if not (directory / "started.json").exists():
         return {"tuple": spec, "status": "not_run", "success": False}
@@ -419,10 +495,22 @@ def audit_tuple(directory, spec, *, denoising_steps=10):
             if any(e["native_success"] or e["terminated"] or e["truncated"] for e in measured[:-1]):
                 errors.append("Actions continued after an episode terminal")
         actual_actions = [e for e in starts if e["segment"] == "measurement"]
+        sampler_requests = {e["number"]: e for e in events if e["event"] == "sampler_request"}
         for e, actual in zip(prepared, actual_actions, strict=False):
+            if sampler_mode == "graph":
+                from smolvla_graph_runtime import valid_sampler_evidence
+
+                projection_valid = valid_sampler_evidence(
+                    sampler_mode,
+                    e["projection_shapes"],
+                    sampler_requests.get(e["number"]),
+                    result.get("captures", []),
+                )
+            else:
+                projection_valid = e["projection_shapes"] == [[1, 50, 32]] * denoising_steps
             if (
                 e["action"] != actual["action"]
-                or e["projection_shapes"] != [[1, 50, 32]] * denoising_steps
+                or not projection_valid
                 or e["queue_length"] != 0
                 or e["observation_index"] != e["number"] - 1
             ):
