@@ -9,6 +9,9 @@
 [实际TESTS](SMOLVLA_GRAPH_CAP_STRESS_TESTS.md)、[固定PLAN](SMOLVLA_GRAPH_CAP_STRESS_PLAN.md)、
 [MANIFEST](SMOLVLA_GRAPH_CAP_STRESS_MANIFEST.json)、[执行任务书](SMOLVLA_E_RCV2_CODEX_EXECUTION_PLAN_20260909.md)。
 原始目录 `outputs/smolvla_graph_cap_stress_9b7aa868/` 已有执行与退出证据，首次执行机会已消耗，不得重跑。
+结果HEAD `f132f6cec76bf952bbbfa014318e6aefb815e650` 已推送；
+[结果评论5603596852](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5603596852)按实际ID单次回读exact。
+[独立发布与退出回执](SMOLVLA_GRAPH_CAP_STRESS_RECEIPT.json)随本次独立回执提交保存，实际完整回执HEAD在提交后写入本地HANDOVER。
 
 | ordinal | task / arm | outcome | measured返回 | model intent/return | recovery probe | planned接管 |
 |---:|---|---|---:|---|---:|---:|
@@ -34,7 +37,7 @@ task0配对初态推理前与CPU回读exact；第二对没有完整归档，不�
 准备接纳历史5项CPU，新增3项，受影响回归2项复查通过；当前8项不同CPU用例通过，入口/lint/format exit0，原开发首错保留。
 模型Python/version/140项metadata前后exact。GPU各一次背景快照6010MiB/47%→4088MiB/11%，未干预其他任务或选择低负载时机。
 本次本地终端命令正常返回，没有新的工具拒绝；旧插件拒绝属于历史事件，不能写成当前仍待放行。
-已按首错结束实验，余下只归档发布和独立回执。旧E/E-S1/E-RCV1及全部科学资格保持。下方为历史结果。
+已按首错结束实验，结果发布与exact回读完成，独立回执已落盘。旧E/E-S1/E-RCV1及全部科学资格保持。下方为历史结果。
 
 ## E-L1闭锁复现、E-RCV1四条诊断完成，native未触发恢复（历史结果）
 

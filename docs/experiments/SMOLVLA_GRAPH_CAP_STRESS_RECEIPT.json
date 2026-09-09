@@ -1,0 +1,396 @@
+{
+  "experiment": "E-RCV2",
+  "status": "executed_technical_failure_result_published",
+  "branch": "codex/smolvla-graph-native-equivalence",
+  "execution_head": "9b7aa8685ae1978c553da6e6d7ac3d4b38e3b9e6",
+  "result_head": "f132f6cec76bf952bbbfa014318e6aefb815e650",
+  "execution_and_result_commits_pushed": true,
+  "receipt_commit_identity": "Separate commit containing this receipt; resolved after commit in the local HANDOVER.",
+  "registration": {
+    "execution_head": "9b7aa8685ae1978c553da6e6d7ac3d4b38e3b9e6",
+    "post_command": [
+      "gh",
+      "api",
+      "--method",
+      "POST",
+      "repos/Lebron-233/lerobot/issues/1/comments",
+      "--input",
+      "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_cap_stress_preparation_5e2679a9/registration_payload.json"
+    ],
+    "post_exit_code": 0,
+    "comment_id": 5603304679,
+    "url": "https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5603304679",
+    "read_command": [
+      "gh",
+      "api",
+      "repos/Lebron-233/lerobot/issues/comments/5603304679"
+    ],
+    "read_exit_code": 0,
+    "read_count": 1,
+    "body_exact": true,
+    "recorded_at_utc": "2026-09-09T14:12:52.999390+00:00"
+  },
+  "result_comment": {
+    "post_command": [
+      "gh",
+      "api",
+      "--method",
+      "POST",
+      "repos/Lebron-233/lerobot/issues/1/comments",
+      "--input",
+      "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_cap_stress_9b7aa868/result_comment_payload.json"
+    ],
+    "post_exit_code": 0,
+    "read_count": 1,
+    "recorded_at_utc": "2026-09-09T14:32:38.037295+00:00",
+    "comment_id": 5603596852,
+    "url": "https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5603596852",
+    "read_command": [
+      "gh",
+      "api",
+      "repos/Lebron-233/lerobot/issues/comments/5603596852"
+    ],
+    "read_exit_code": 0,
+    "body_exact": true
+  },
+  "raw_output_directory": "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_cap_stress_9b7aa868",
+  "native_executed": true,
+  "episodes_scheduled": 4,
+  "episodes_attempted": 4,
+  "episodes_completed": 3,
+  "complete_pairs": 1,
+  "attempts": 1,
+  "retries": 0,
+  "resumes": 0,
+  "replacements": 0,
+  "episode_statuses": [
+    {
+      "ordinal": 0,
+      "status": "completed"
+    },
+    {
+      "ordinal": 1,
+      "status": "completed"
+    },
+    {
+      "ordinal": 2,
+      "status": "completed"
+    },
+    {
+      "ordinal": 3,
+      "status": "started_return_unknown"
+    }
+  ],
+  "stress_four_episode_contract_passed": false,
+  "stress_disabled_latch_both_observed": false,
+  "stress_candidate_recovery_both_observed": true,
+  "stress_mechanism_contrast_passed": false,
+  "natural_latency_recovery_demonstrated": false,
+  "production_default_unchanged": true,
+  "first_failure": {
+    "type": "model_request_timeout",
+    "ordinal": 3,
+    "request_id": 3,
+    "call_id": 1251,
+    "limit_seconds": 15,
+    "intent": {
+      "event": "call_intent",
+      "timestamp": 1063736.830878878,
+      "call_id": 1251,
+      "kind": "model_request",
+      "ordinal": 3,
+      "limit": 15,
+      "request_id": 3
+    },
+    "source": "result.json:execution.stop_reason.expired_calls; calls.jsonl unmatched call_intent",
+    "observed_return": false,
+    "internal_phase": "unknown",
+    "host_pause_reached": "unknown",
+    "termination": "original supervisor SIGTERM, wait up to 5 seconds, SIGKILL; child exit -9 confirmed",
+    "cleanup_confirmed": false
+  },
+  "execution": {
+    "execution_head": "9b7aa8685ae1978c553da6e6d7ac3d4b38e3b9e6",
+    "command": [
+      "/home/rp/Workspace/SmolVLA_RTC/libero-reference-venv/bin/python",
+      "-u",
+      "-X",
+      "faulthandler",
+      "/home/rp/Workspace/SmolVLA_RTC/lerobot/examples/advanced/predictive_async/libero_graph_cap_stress_native.py",
+      "--execution-head",
+      "9b7aa8685ae1978c553da6e6d7ac3d4b38e3b9e6",
+      "--output",
+      "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_cap_stress_9b7aa868",
+      "--worker"
+    ],
+    "started_at_utc": "2026-09-09T14:13:52.114732+00:00",
+    "finished_at_utc": "2026-09-09T14:16:15.829852+00:00",
+    "child_pid": 2725045,
+    "child_exit_code": -9,
+    "child_exit_confirmed": true,
+    "wall_seconds": 144.3681603448931,
+    "stop_reason": {
+      "expired_calls": [
+        {
+          "event": "call_intent",
+          "timestamp": 1063736.830878878,
+          "call_id": 1251,
+          "kind": "model_request",
+          "ordinal": 3,
+          "limit": 15,
+          "request_id": 3
+        }
+      ]
+    },
+    "forced_termination": true,
+    "attempts": 1,
+    "retries": 0
+  },
+  "independent_exit": {
+    "execution_head": "9b7aa8685ae1978c553da6e6d7ac3d4b38e3b9e6",
+    "command": [
+      "env",
+      "-u",
+      "PYTHONPATH",
+      "HF_HUB_OFFLINE=1",
+      "TRANSFORMERS_OFFLINE=1",
+      "MUJOCO_GL=egl",
+      "PYOPENGL_PLATFORM=egl",
+      "LIBERO_CONFIG_PATH=/home/rp/Workspace/SmolVLA_RTC/libero-reference-cache/config",
+      "LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libGLdispatch.so.0:/usr/lib/x86_64-linux-gnu/libGLX.so.0",
+      "/home/rp/miniconda3/envs/smolvla-rtc/bin/uv",
+      "run",
+      "--no-config",
+      "--no-project",
+      "--offline",
+      "--no-python-downloads",
+      "--python",
+      "/home/rp/Workspace/SmolVLA_RTC/libero-reference-venv/bin/python",
+      "python",
+      "-u",
+      "-X",
+      "faulthandler",
+      "examples/advanced/predictive_async/libero_graph_cap_stress_native.py",
+      "--execution-head",
+      "9b7aa8685ae1978c553da6e6d7ac3d4b38e3b9e6",
+      "--output",
+      "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_cap_stress_9b7aa868"
+    ],
+    "cwd": "/home/rp/Workspace/SmolVLA_RTC/lerobot",
+    "started_at_utc": "2026-09-09T14:13:47.240552+00:00",
+    "finished_at_utc": "2026-09-09T14:16:41.317386+00:00",
+    "supervisor_exit_code": 2,
+    "supervisor_exit_confirmed": true,
+    "wall_seconds": 174.07689663604833,
+    "attempts": 1,
+    "retries": 0
+  },
+  "known_accounting": {
+    "journal": {
+      "intent_count": 1258,
+      "return_count": 1257,
+      "call_intents": {
+        "environment_factory": 4,
+        "environment_ensure_and_initial_reset": 4,
+        "environment_reset": 4,
+        "native_seed": 4,
+        "native_reset": 4,
+        "native_set_init_state": 4,
+        "native_step": 608,
+        "model_request": 55,
+        "environment_step": 568,
+        "environment_close": 3
+      },
+      "call_returns": {
+        "environment_factory": 4,
+        "environment_ensure_and_initial_reset": 4,
+        "environment_reset": 4,
+        "native_seed": 4,
+        "native_reset": 4,
+        "native_set_init_state": 4,
+        "native_step": 608,
+        "model_request": 54,
+        "environment_step": 568,
+        "environment_close": 3
+      },
+      "environment_instances": 4,
+      "settling_native": 40,
+      "measured_native": 568,
+      "model_request_intents": 55,
+      "model_request_returns": 54,
+      "unknown_model_requests": 1,
+      "unknown_native_calls": 0
+    },
+    "completed_episode_archives": {
+      "archived_model_requests": 51,
+      "archived_request_kinds": {
+        "bootstrap": 11,
+        "startup_probe": 3,
+        "planned": 10,
+        "recovery_probe": 27
+      },
+      "archived_capture_count": 6,
+      "archived_setup_calls": 6,
+      "archived_warmup_calls": 18,
+      "archived_capture_internal_calls": 6,
+      "archived_graph_replays": 51,
+      "probe_count": 27,
+      "host_pause_count": 3,
+      "host_pause_seconds": 1.8003586363047361,
+      "history_audit_seconds": 0.19216351537033916,
+      "logging_seconds": 0.3849469032138586,
+      "serialization_seconds": 0.5764790477696806
+    },
+    "archived_api_counts": {
+      "policy_reset": 3,
+      "pre_reset": 3,
+      "post_reset": 3,
+      "pre": 51,
+      "policy": 51,
+      "prepare_images": 51,
+      "noise": 51,
+      "vision": 51,
+      "post": 51
+    },
+    "source_audited_measured_actions": 545,
+    "source_audit_unavailable_measured_actions": 23,
+    "partial_episode_startup_inference": {
+      "ordinal": 3,
+      "basis": "startup request IDs 0, 1, 2 returned before measured actions; original fixed cold/probe/fresh source sequence",
+      "additional_captures_inferred": 2,
+      "additional_setup_calls_inferred": 2,
+      "additional_warmup_calls_inferred": 6,
+      "additional_capture_internal_calls_inferred": 2,
+      "additional_completed_graph_replays_inferred": 3,
+      "per_api_archive_available": false,
+      "last_planned_internal_progress": "unknown"
+    },
+    "reference_predictor_training_real_robot_calls": {
+      "reference": 0,
+      "predictor": 0,
+      "training": 0,
+      "real_robot": 0
+    },
+    "complete_global_capture_and_api_receipt_available": false,
+    "accounting_note": "55 is the durable request-intent count, not a fully archived policy API count; 51 main calls and 6 captures are archived for completed episodes. The returned fourth cold/probe/fresh sequence supports additional 3 completed main requests and 2 captures by unchanged source semantics. Progress inside its final planned request is unknown. environment_step and native_step describe one dynamics advance, never two."
+  },
+  "archival_and_cleanup": {
+    "completed_episodes": [
+      0,
+      1,
+      2
+    ],
+    "confirmed_cleanup_each": [
+      "worker_joined",
+      "graph_released",
+      "original_sampler_restored",
+      "metrics_closed",
+      "environment_closed"
+    ],
+    "unconfirmed_cleanup_ordinal": 3,
+    "partial_episode_arrays_saved": false,
+    "array_bytes": 446513691,
+    "source_audited_measured_actions": 545,
+    "partial_actions_without_archive_source_audit": 23
+  },
+  "post_exit_collection": {
+    "receipt": {
+      "command": [
+        "/home/rp/miniconda3/envs/smolvla-rtc/bin/uv",
+        "run",
+        "--no-config",
+        "--no-project",
+        "--offline",
+        "--no-python-downloads",
+        "--python",
+        "/home/rp/Workspace/SmolVLA_RTC/libero-reference-venv/bin/python",
+        "python",
+        "-u",
+        "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_cap_stress_preparation_5e2679a9/collect_stress.py"
+      ],
+      "started_at_utc": "2026-09-09T14:23:41.127734+00:00",
+      "finished_at_utc": "2026-09-09T14:23:46.842557+00:00",
+      "wall_seconds": 5.714825775008649,
+      "exit_code": 0,
+      "mode": "CPU post-exit collection only"
+    },
+    "cuda_initialized": false,
+    "model_environment_comparison": {
+      "python_exact": true,
+      "version_exact": true,
+      "packages_exact": true,
+      "package_count": 140
+    },
+    "initial_pairs": [
+      {
+        "ordinals": [
+          0,
+          1
+        ],
+        "fields_exact": {
+          "state": true,
+          "eef_quaternion_xyzw": true,
+          "raw_eef_position": true,
+          "raw_gripper_qpos": true,
+          "image": true,
+          "image2": true
+        },
+        "all_exact": true
+      },
+      {
+        "ordinals": [
+          2,
+          3
+        ],
+        "all_exact": null,
+        "reason": "both saved initials not available"
+      }
+    ],
+    "native_recovery_chain_readback": [
+      {
+        "ordinal": 1,
+        "paused_request_id": 3,
+        "probe_request_id": 13,
+        "planned_request_id": 14,
+        "checks": {
+          "source_request_exact": true,
+          "source_row_zero": true,
+          "dispatch_matches_chunk": true,
+          "native_matches_chunk": true,
+          "native_times_exact": true
+        },
+        "all_exact": true
+      },
+      {
+        "ordinal": 2,
+        "paused_request_id": 3,
+        "probe_request_id": 11,
+        "planned_request_id": 12,
+        "checks": {
+          "source_request_exact": true,
+          "source_row_zero": true,
+          "dispatch_matches_chunk": true,
+          "native_matches_chunk": true,
+          "native_times_exact": true
+        },
+        "all_exact": true
+      }
+    ]
+  },
+  "historical_qualification": {
+    "native_closed_loop_contract_passed": false,
+    "native_multirow_consumption_observed": true,
+    "native_replanning_takeover_observed": true,
+    "native_model_control_overlap_observed": true,
+    "paired_scheduling_comparison_complete": false,
+    "token_graph_equivalence_passed": true,
+    "graph_worker_lifecycle_passed": true,
+    "graph_identity_engine_integration_passed": true,
+    "baseline_qualified": false,
+    "realtime_qualified": false,
+    "predictor_benefit_tested": false,
+    "risk_thresholds": null,
+    "old_confirmation": "not_started_untouched"
+  },
+  "stop_state": "The unique registered queue reached its first technical failure. No remaining authorized native attempt; preserve partial evidence and original raw null fields."
+}
