@@ -22,36 +22,39 @@ references the controller, so strategies stay usable non-interactively.  Control
 intent under the controller lock; ``serve()`` is the only place intent becomes motion.
 """
 
-from lerobot.utils.import_utils import require_package
+from typing import TYPE_CHECKING
 
-require_package("datasets", extra="dataset")
+from lerobot.utils.import_utils import _datasets_available, require_package
 
-from .configs import (
-    BaseStrategyConfig,
-    DAggerKeyboardConfig,
-    DAggerPedalConfig,
-    DAggerStrategyConfig,
-    EpisodicStrategyConfig,
-    HighlightStrategyConfig,
-    RolloutConfig,
-    RolloutStrategyConfig,
-    SentryStrategyConfig,
-)
-from .context import (
-    DatasetContext,
-    HardwareContext,
-    PolicyContext,
-    ProcessorContext,
-    RolloutContext,
-    RuntimeContext,
-    build_rollout_context,
-)
-from .controller import (
-    AskResult,
-    LinkedEvent,
-    RolloutController,
-    RolloutEvent,
-)
+# Standalone inference uses CPU observations and does not need a dataset. Keep
+# the existing full-rollout import order when the dataset extra is available.
+if TYPE_CHECKING or _datasets_available:
+    from .configs import (
+        BaseStrategyConfig,
+        DAggerKeyboardConfig,
+        DAggerPedalConfig,
+        DAggerStrategyConfig,
+        EpisodicStrategyConfig,
+        HighlightStrategyConfig,
+        RolloutConfig,
+        RolloutStrategyConfig,
+        SentryStrategyConfig,
+    )
+    from .context import (
+        DatasetContext,
+        HardwareContext,
+        PolicyContext,
+        ProcessorContext,
+        RolloutContext,
+        RuntimeContext,
+        build_rollout_context,
+    )
+    from .controller import (
+        AskResult,
+        LinkedEvent,
+        RolloutController,
+        RolloutEvent,
+    )
 from .inference import (
     InferenceEngine,
     InferenceEngineConfig,
@@ -65,16 +68,18 @@ from .inference import (
     SyncInferenceEngine,
     create_inference_engine,
 )
-from .interactive import InteractiveSession
-from .strategies import (
-    BaseStrategy,
-    DAggerStrategy,
-    EpisodicStrategy,
-    HighlightStrategy,
-    RolloutStrategy,
-    SentryStrategy,
-    create_strategy,
-)
+
+if TYPE_CHECKING or _datasets_available:
+    from .interactive import InteractiveSession
+    from .strategies import (
+        BaseStrategy,
+        DAggerStrategy,
+        EpisodicStrategy,
+        HighlightStrategy,
+        RolloutStrategy,
+        SentryStrategy,
+        create_strategy,
+    )
 
 __all__ = [
     "AskResult",
@@ -117,3 +122,9 @@ __all__ = [
     "create_inference_engine",
     "create_strategy",
 ]
+
+
+def __getattr__(name: str):
+    if name in __all__:
+        require_package("datasets", extra="dataset")
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
