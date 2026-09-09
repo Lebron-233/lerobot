@@ -1,20 +1,25 @@
 # SmolVLA 异步接入：下一轮审阅差异
 
-## 当前：E-RCV2准备已核对，实测接续等待平台解除记录
+## 当前：E-RCV2证据修订与补测通过，资源准备仍未执行
 
-2026-09-09，接管HEAD `5e2679a95adefa0de57e10b05506d20f35c7cac2`。
-按用户附件`SMOLVLA_E_RCV2_PROGRESS_AND_HANDOFF.md`完整读取现存新入口、测试、PLAN/MANIFEST、原始日志与回执。
+2026-09-09，接管准备HEAD `1242c09f4e496708d7d19b6063c18d0245936e45`。
+最新[执行任务书](SMOLVLA_E_RCV2_CODEX_EXECUTION_PLAN_20260909.md)已完整读取并纳入仓库。
+当前本地只存在历史preparation目录，没有登记、执行intent、started/result或E-RCV2运行目录。
 E-RCV2保持四条graph_identity_async：task0 disabled/candidate、task2 candidate/disabled，原state41和seeds不变。
 两臂首个planned在原独立CPU chunks及设备完成屏障后、原采样/接纳前，仅一次600ms主机暂停。
 该受控干预用于机制对照，`natural_latency_recovery_demonstrated`在本轮固定false。
 
-已有5项不同CPU测试按首轮2项、修正夹具接口后剩余3项通过；入口--help exit0、CUDA未初始化，最终Ruff/格式通过。
-首次AttributeError、F811和格式差异原件保留，本次接续没有重跑已通过测试或更改候选/冻结参数。
+按新任务书6.1/6.2补齐取证：快bootstrap使用原latency_to_steps的整数容差，恢复链显式关联同epoch暂停请求、
+probe/planned、native源request/row0和起止；生产恢复算法、控制器、干预与冻结参数保持。
+历史5项不同CPU用例继续接纳；新增整数边界2项和async暂停晚完成/原源审计1项，并复跑受取证改动影响的原负例2项。
+此次5 passed in 0.64s，当前共8项不同CPU用例通过；修订入口--help、Ruff/格式均exit0，CUDA未初始化。
+新CPU链：paused request3的625ms样本late1整块丢弃仍接纳、raw13；4个probe后planned request8在index31发送row0，原源审计通过。
+缺native row0或暂停epoch不同均判false。首次AttributeError、F811和格式差异原件保留，本次没有新开发首错。
 [正式TESTS](SMOLVLA_GRAPH_CAP_STRESS_TESTS.md)、[固定PLAN](SMOLVLA_GRAPH_CAP_STRESS_PLAN.md)、
 [MANIFEST](SMOLVLA_GRAPH_CAP_STRESS_MANIFEST.json)、[完整接续状态](SMOLVLA_GRAPH_CAP_STRESS_PREPARATION.md)。
 
 附件记录DevSpace对模型版本/包元数据、GPU、磁盘准备查询的自动安全审查拒绝，没有返回PID/exit code或快照。
-第7节要求维护者已处理拦截、执行环境明确获准后接续；本次已请求解除记录，尚未收到。
+此前请求的解除记录尚未收到；最新执行任务书第2节仍要求不换通道绕过安全拒绝。
 准备代码与测试记录可独立保存；尚无登记的execution HEAD、预登记评论、新模型/Env、native结果或退出回执。
 未重试受阻查询，也未通过其他通道代查。准备通过不代表资源准备、平台放行或native合同通过。
 

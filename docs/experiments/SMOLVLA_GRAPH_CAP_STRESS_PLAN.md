@@ -3,6 +3,8 @@
 2026-09-09。依据附件E-RCV1完整报告及Issue #1评论5601832578继续。
 E-RCV1四条合同已通过，但raw始终3、probe为0，不能声称native恢复。
 本轮新建独立诊断，不重复旧队列，不改写E-RCV1或旧E任何结果/资格。
+最新执行安排见已纳入仓库的[执行计划书](SMOLVLA_E_RCV2_CODEX_EXECUTION_PLAN_20260909.md)。
+准备修订尚未用于登记或native执行，原四条设计和600ms干预不变。
 
 ## 问题与唯一改动
 
@@ -57,7 +59,11 @@ CPU仅既有smolvla-rtc解释器；模型入口--help用libero-reference-venv，
 输出outputs/smolvla_graph_cap_stress_<HEAD前8位>必须未存在；内部worker仍由监督器调用。
 
 主要证据：同epoch的超cap→有效probe丢弃接纳→原P90回cap→新planned→原审计通过的native row0。
-负对照还要求至少一个快bootstrap installed但不接纳、历史不变、没有后续planned。
+负对照还要求至少一个快bootstrap installed但不接纳、历史不变、没有后续planned；
+“快”严格使用原`latency_to_steps(total_chunk_s,20)+1 <= 8`，保留整数容差，不用近似350ms阈值。
+恢复链同时记录暂停请求ID及其历史、同epoch的probe/planned ID、source_request_id/source_row_offset、
+takeover index和native起止。原source audit已逐值确认唯一staged请求与发送命令，取证显式保留该来源。
+缺少实际native row0，或暂停请求与恢复链不属同epoch，均不报告完整恢复。
 两个disabled闭锁和两个candidate恢复均观测且四条完整/两对初态exact才置stress_mechanism_contrast_passed。
 缺一则该字段false；正常完成与机制成功是不同字段。
 本轮字段为stress命名空间，natural_latency_recovery_demonstrated固定false。

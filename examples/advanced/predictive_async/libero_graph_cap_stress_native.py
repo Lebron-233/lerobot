@@ -132,15 +132,47 @@ def evidence(record):
         if r["kind"] == "bootstrap"
         and r.get("terminal", {}).get("outcome") == "installed"
         and r["terminal"].get("latency_tracker_admitted") is False
-        and r["terminal"]["total_chunk_s"] <= 0.35
+        and recovery.latency_to_steps(r["terminal"]["total_chunk_s"], 20) + 1 <= 8
     ]
     frozen = bool(after) and all(
         r.get("recovery", {}).get("history_after", {}).get("samples_seconds")
         == history.get("samples_seconds")
         for r in after
     )
+    by_id = {r["request_id"]: r for r in requests}
+    chains = []
+    for chain in result["native_recovery_chains"]:
+        if not valid_pause or (chain["reset_epoch"], chain["task_epoch"]) != (
+            first["reset_epoch"],
+            first["task_epoch"],
+        ):
+            continue
+        probe = by_id[chain["probe_request_id"]]
+        planned = by_id[chain["planned_request_id"]]
+        if probe["requested_at"] < first["finished_at"]:
+            continue
+        step = next(
+            s
+            for s in record["native_steps"]
+            if s["segment"] == "measurement" and s["number"] == chain["native_step_number"]
+        )
+        # The original source audit already matched this takeover's command to
+        # this uniquely staged request. Preserve that identity explicitly.
+        chains.append(
+            {
+                **chain,
+                "paused_request_id": first["request_id"],
+                "paused_history_before": first["recovery"]["history_before"],
+                "paused_history_after": history,
+                "source_request_id": planned["request_id"],
+                "source_row_offset": step["action_index"] - planned["terminal"]["takeover_index"],
+                "native_started_at": step["started_at"],
+            }
+        )
     return {
         **result,
+        "native_recovery_chains": chains,
+        "planned_takeover_after_recovery": bool(chains),
         "ordinal": record["spec"]["ordinal"],
         "arm": record["spec"]["arm"],
         "valid_host_pause_with_cap_exceedance": valid_pause,
@@ -149,6 +181,18 @@ def evidence(record):
         "post_intervention_history": history,
         "post_intervention_planned_requests": sum(r["kind"] == "planned" for r in after),
         "fast_excluded_bootstraps_after_intervention": len(fast_boots),
+        "fast_excluded_bootstrap_evidence": [
+            {
+                "request_id": r["request_id"],
+                "reset_epoch": r["reset_epoch"],
+                "task_epoch": r["task_epoch"],
+                "total_chunk_s": r["terminal"]["total_chunk_s"],
+                "raw_required_steps": recovery.latency_to_steps(r["terminal"]["total_chunk_s"], 20) + 1,
+                "latency_tracker_admitted": r["terminal"]["latency_tracker_admitted"],
+                "history_after": r["recovery"]["history_after"],
+            }
+            for r in fast_boots
+        ],
         "disabled_latch_observed": bool(
             record["spec"]["arm"] == "disabled"
             and valid_pause

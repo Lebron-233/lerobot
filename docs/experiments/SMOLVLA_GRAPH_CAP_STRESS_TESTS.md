@@ -3,9 +3,47 @@
 2026-09-09。接续HEAD `5e2679a95adefa0de57e10b05506d20f35c7cac2`。
 工作目录`/home/rp/Workspace/SmolVLA_RTC/lerobot`，原件位于
 `outputs/smolvla_graph_cap_stress_preparation_5e2679a9/`。
-本文件根据现存日志及命令退出回执整理；本次接续没有重跑这些已通过的检查。
+历史部分根据现存日志及命令退出回执整理；最新执行计划带来的定向补测单列如下。
 
-## 实际结果
+## 新执行计划的定向补测
+
+接管准备提交`1242c09f4e496708d7d19b6063c18d0245936e45`。
+新计划第6.1/6.2节明确要求原整数容差和从暂停请求到native row0的显式证据，
+因此修正实验入口的bootstrap分类及恢复链取证；生产恢复算法、控制器和600ms干预没有修改。
+
+仅运行新增的整数容差两项、真实async暂停晚完成/源审计一项，以及受影响的缺证据/未启动两个原回归：
+
+```text
+test_fast_bootstrap_evidence_uses_original_integer_tolerance[0.35000001-8]
+test_fast_bootstrap_evidence_uses_original_integer_tolerance[0.3500001-9]
+test_async_host_pause_admits_late_sample_and_links_audited_native_row_zero
+test_empty_or_unstarted_queue_cannot_claim_recovery
+test_missing_intervention_and_probes_cannot_supply_stress_evidence
+```
+
+实际`5 passed in 0.64s`、exit0，见`cpu_execution_plan_first.log`与receipt中的精确argv/外层耗时。
+这是3项新增CPU用例和2项受影响原回归；与历史5项合并为8项不同CPU用例，未重跑整套历史5项。
+若整数边界判定、晚完成接纳或native来源关联失败，将阻止冻结；本次没有新的开发首错。
+
+真实CPU worker在首个planned完成后暂停，独立controller在线程等待期限内继续消费，证明暂停未持有其需要的queue/request锁。
+该planned request3按原any-late整块丢弃，late_steps=1；真实受控总时延0.625秒仍被原tracker接纳，
+P90=0.5634999871253967秒、raw13。暂停本身在受控时钟中包含controller继续推进的时间，没有从样本扣除。
+随后4个同路径probe中request7使原估计回cap；request8产生新planned，takeover index31，
+CPU FakeEnv的第32次measured step实际发送其row0，原`audit_episode`逐值检查通过。
+新结果取证的source_request_id=8/source_row_offset=0与原source audit写入的dispatch字段一致。
+删除该native记录，或把暂停请求放入另一个task epoch，恢复判定均为false；测试结束5项清理全部确认。
+原件保留于`cpu_execution_plan_tmp/test_async_host_pause_admits_l0/evidence.json`，这是CPU夹具证据。
+
+350.00001ms经原整数容差得到raw8，350.0001ms得到raw9，分类直接复用原换算函数。
+没有为此改变P90、cap、时钟或真实请求时延。
+
+新入口发生源码修订后，复用原模型解释器和原`model_entry_receipt.json`中的完整命令重新执行import/--help。
+`model_entry_execution_plan.log`确认公开参数不变、CUDA initialized: False、exit0；没有模型加载或Env。
+`ruff_execution_plan.log`为All checks passed、`format_execution_plan_check.log`为2 files already formatted，均exit0。
+自动format命令报告2 files left unchanged、exit0。所有独立receipt与历史日志分别保存，没有覆盖原首错。
+现有preparation_gates更新为8项不同CPU用例的真实准备结果；这仍不代表资源准备或native放行。
+
+## 历史准备实际结果（原5项）
 
 | 检查 | 原始输出 | 命令退出码 | 独立外层秒 |
 |---|---|---:|---:|
@@ -76,8 +114,8 @@
 Ruff使用既有`/home/rp/Workspace/SmolVLA_RTC/libero-reference-venv/bin/ruff`，
 范围仅`libero_graph_cap_stress_native.py`与`test_smolvla_cap_stress.py`。
 当时`git diff --check`不覆盖未跟踪文件，不能把这一空diff的exit0当作四个新增文件的完整审阅。
-接续时已逐一读取新入口、测试、PLAN和MANIFEST；没有发现需要修改算法、暂停时长或冻结条件的问题。
-本次按明确路径暂存全部6个E-RCV2新增文件及NEXT_REVIEW后，`git diff --cached --check`实际exit0，
+准备提交1242c09f前已逐一读取新入口、测试、PLAN和MANIFEST；没有修改算法、暂停时长或冻结条件。
+当时按明确路径暂存全部6个E-RCV2新增文件及NEXT_REVIEW后，`git diff --cached --check`实际exit0，
 覆盖本次提交的新增文件；三个旧未跟踪文档保持未暂存。
 
 源码确认：`StressEngine._prepare_queue_actions`先返回原Graph适配器的独立CPU chunks，
