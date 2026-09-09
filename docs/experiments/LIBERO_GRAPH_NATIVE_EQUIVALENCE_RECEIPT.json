@@ -1,0 +1,17 @@
+{
+  "implementation_execution_head": "5d45353ff98fc448bc514b284c1a19609405585b",
+  "cpu_replay_execution_head": "290c1a3dbaa90d4e3d900c4c4eb83aa6840b2ce8",
+  "result_commit": "749884a9d2eb559fb88f2ac644e7f67e8ac58273",
+  "preregistration_comment_id": 5594614809,
+  "preregistration_readback_exact": true,
+  "result_comment_id": 5594914737,
+  "result_comment_url": "https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5594914737",
+  "result_readback_exact": true,
+  "native_graph_equivalence_passed": true,
+  "async_timing_contract_passed": false,
+  "model_worker_exit_code": 0,
+  "native_worker_exit_code": 0,
+  "native_supervisor_exit_code": 0,
+  "cpu_replay_exit_code": 2,
+  "cpu_replay_exit_reason": "slightly_late_prefix_crop_contract_gap"
+}
