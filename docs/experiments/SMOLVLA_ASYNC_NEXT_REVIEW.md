@@ -1,35 +1,42 @@
 # SmolVLA 异步接入：下一轮审阅差异
 
-## 当前：E-RCV2代码、测试和资源准备通过，进入冻结登记
+## 当前：E-RCV2已执行，两个候选恢复链成立，第四条模型超时，整体未通过
 
-2026-09-09，接管准备HEAD `24b687bfa100e06f05fd562f5972a62b98a7df36`。
-最新[执行任务书](SMOLVLA_E_RCV2_CODEX_EXECUTION_PLAN_20260909.md)已完整读取并纳入仓库。
-当前本地只存在历史preparation目录，没有登记、执行intent、started/result或E-RCV2运行目录。
-E-RCV2保持四条graph_identity_async：task0 disabled/candidate、task2 candidate/disabled，原state41和seeds不变。
-两臂首个planned在原独立CPU chunks及设备完成屏障后、原采样/接纳前，仅一次600ms主机暂停。
-该受控干预用于机制对照，`natural_latency_recovery_demonstrated`在本轮固定false。
+2026-09-09，执行HEAD `9b7aa8685ae1978c553da6e6d7ac3d4b38e3b9e6`。
+本地终端完成准备、冻结、[预登记5603304679](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5603304679)实际ID单次exact回读与唯一四条native队列。
+**3/4条完成、1/2对完整**，第4条在首个planned model request3超过15秒后按原监督器TERM/KILL终止；没有retry/resume/replacement。
+[完整结果](SMOLVLA_GRAPH_CAP_STRESS_RESULT.md)、[机器结果](SMOLVLA_GRAPH_CAP_STRESS_RESULT.json)、
+[实际TESTS](SMOLVLA_GRAPH_CAP_STRESS_TESTS.md)、[固定PLAN](SMOLVLA_GRAPH_CAP_STRESS_PLAN.md)、
+[MANIFEST](SMOLVLA_GRAPH_CAP_STRESS_MANIFEST.json)、[执行任务书](SMOLVLA_E_RCV2_CODEX_EXECUTION_PLAN_20260909.md)。
+原始目录 `outputs/smolvla_graph_cap_stress_9b7aa868/` 已有执行与退出证据，首次执行机会已消耗，不得重跑。
 
-按新任务书6.1/6.2补齐取证：快bootstrap使用原latency_to_steps的整数容差，恢复链显式关联同epoch暂停请求、
-probe/planned、native源request/row0和起止；生产恢复算法、控制器、干预与冻结参数保持。
-历史5项不同CPU用例继续接纳；新增整数边界2项和async暂停晚完成/原源审计1项，并复跑受取证改动影响的原负例2项。
-此次5 passed in 0.64s，当前共8项不同CPU用例通过；修订入口--help、Ruff/格式均exit0，CUDA未初始化。
-新CPU链：paused request3的625ms样本late1整块丢弃仍接纳、raw13；4个probe后planned request8在index31发送row0，原源审计通过。
-缺native row0或暂停epoch不同均判false。首次AttributeError、F811和格式差异原件保留，本次没有新开发首错。
-[正式TESTS](SMOLVLA_GRAPH_CAP_STRESS_TESTS.md)、[固定PLAN](SMOLVLA_GRAPH_CAP_STRESS_PLAN.md)、
-[MANIFEST](SMOLVLA_GRAPH_CAP_STRESS_MANIFEST.json)、[完整接续状态](SMOLVLA_GRAPH_CAP_STRESS_PREPARATION.md)。
+| ordinal | task / arm | outcome | measured返回 | model intent/return | recovery probe | planned接管 |
+|---:|---|---|---:|---|---:|---:|
+| 0 | 0 / disabled | success | 148 | 6/6 | 0 | 0 |
+| 1 | 0 / candidate | wall_slot_limit | 270 | 31/31 | 20 | 5 |
+| 2 | 2 / candidate | success | 127 | 14/14 | 7 | 2 |
+| 3 | 2 / disabled | started_return_unknown | 23 | 4/3 | 0 | 未确认 |
 
-附件记录DevSpace对模型版本/包元数据、GPU、磁盘准备查询的自动安全审查拒绝，没有返回PID/exit code或快照。
-这是旧插件会话的历史记录，不能据此认定当前本地终端被禁止使用。
-本次按用户明确授权使用本机终端，准备命令均正常返回exit0，没有新的工具拒绝或虚构的解除回执。
-模型Python/version/140项metadata与E-RCV1退出快照exact；固定资源齐全，磁盘可用1,473,396,756,480字节。
-登记前一次GPU快照6010MiB/47%，另一项目4637MiB保持原状；没有干预其他任务或等待低负载。
-准备门通过后进入执行提交与预登记；此时尚未产生新的native结果。
+前三条实际暂停600.073085/600.223495/600.062056ms，首个planned均deadline_miss整块丢弃但时延接纳，raw分别14/16/16。
+task0 disabled的快bootstrap request4/5均raw3、installed而不入历史；历史仍raw14，后续planned0，闭锁观测成立。
+两个candidate均同epoch 1/0：paused3→probe13→planned14→index98/native99 row0，paused3→probe11→planned12→index81/native82 row0。
+退出后CPU读取实际dispatch/chunk/native动作及起止，逐值exact。首次回cap各用9/7个probe；task0后来再次超cap，最终raw18，task2最终raw5。
+因此 `stress_candidate_recovery_both_observed=true`；四条合同、两个disabled闭锁、整体机制对照均false，natural_latency_recovery_demonstrated仍false。
+task0配对初态推理前与CPU回读exact；第二对没有完整归档，不能计为完成对照。
 
-继续原固定四条、attempt1/retry0，预算与首错规则按PLAN；缺触发/未恢复均不补跑。
-两个disabled闭锁、两个candidate的同epoch恢复与native合法row0、四条完成及两对初态exact同时满足，才允许stress机制通过。
-旧E/E-S1/E-RCV1及全部科学资格保持。下方E-RCV1为最近完成的native结果。
+实际Env4、settling40、measured568，底层native608次全部返回；1258 intent/1257 return，未知model1、未知native0。
+完整三条归档主调用51、capture6、setup6/warmup18/capture内6、replay51、probe27；第4条startup三请求已返回，
+按固定源码推知另2capture及2/6/2内部调用，最终planned内部进度与完整API账目未保存。55是journal主请求intent数。
+545个完成条目动作通过原source audit，余23个动作没有归档源审计；三个已保存数组合计446,513,691字节。
+前三条5项清理均确认，第4条清理均未确认、无Env close intent。child -9、监督2，退出均确认；监督wall144.368160秒，独立外层174.076897秒。
+首错原件为execution.stop_reason.expired_calls/calls.jsonl的ordinal3 request3 call1251；冻结汇总first_failure/budget为null的报告缺口已在正式报告中明确补充，原件未改。
 
-## E-L1闭锁复现、E-RCV1四条诊断完成，native未触发恢复（最近完成结果）
+准备接纳历史5项CPU，新增3项，受影响回归2项复查通过；当前8项不同CPU用例通过，入口/lint/format exit0，原开发首错保留。
+模型Python/version/140项metadata前后exact。GPU各一次背景快照6010MiB/47%→4088MiB/11%，未干预其他任务或选择低负载时机。
+本次本地终端命令正常返回，没有新的工具拒绝；旧插件拒绝属于历史事件，不能写成当前仍待放行。
+已按首错结束实验，余下只归档发布和独立回执。旧E/E-S1/E-RCV1及全部科学资格保持。下方为历史结果。
+
+## E-L1闭锁复现、E-RCV1四条诊断完成，native未触发恢复（历史结果）
 
 2026-09-09，执行HEAD `2544bf404d0698ac60bcf1fee6d302fec1455a4a`。
 已按新任务书完成旧task0/task2两条async的最小证据重建、CPU判别、默认关闭的候选与准备门，

@@ -124,7 +124,7 @@ Ruff使用既有`/home/rp/Workspace/SmolVLA_RTC/libero-reference-venv/bin/ruff`�
 
 ## 资源准备与实测前状态
 
-现有`preparation_gates.json`只表示CPU、入口和lint/格式准备通过，不能代表资源准备或实测放行。
+历史`preparation_gates.json`只表示CPU、入口和lint/格式准备通过；登记前新版另据实际快照补入资源与环境门。
 模型版本/包元数据、GPU和磁盘准备查询在前一工具会话被平台安全审查拒绝，未返回查询结果、PID或exit code。
 此为旧插件会话的历史记录。本次按用户明确要求使用当前本地终端，实际准备查询均exit0，没有新的工具拒绝。
 模型Python/version/140项metadata与E-RCV1退出快照直接比较exact；固定资源路径齐全。

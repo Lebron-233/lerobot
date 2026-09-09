@@ -1,4 +1,7 @@
-# E-RCV2 接续状态：准备通过，进入唯一队列的冻结登记
+# E-RCV2 准备记录（已执行队列的历史准备快照）
+
+当前队列已于执行HEAD `9b7aa8685ae1978c553da6e6d7ac3d4b38e3b9e6` 完成唯一尝试，3条完成、第4条模型超时；
+见[实际结果](SMOLVLA_GRAPH_CAP_STRESS_RESULT.md)。下面的“尚未执行”等状态仅指冻结登记之前，不是当前接续入口。
 
 2026-09-09。最新依据为用户附件
 `/home/rp/Downloads/SMOLVLA_E_RCV2_CODEX_EXECUTION_PLAN_20260909.md`，已完整读取并纳入仓库。
@@ -48,7 +51,7 @@ CPU实测暂停planned总时延625ms、late1整块丢弃，但原tracker仍接�
 此前CodexPro的Unknown workspace_id与这次平台拒绝分别保留，不推断共同根因。
 上述事件原文保留在用户附件，本次未改写既有Reason_for_interception历史记录。
 
-## 固定接续点
+## 冻结前的固定接续点（已执行）
 
 资源/环境准备已完成；确认最终源码、PLAN、MANIFEST、实际TESTS和新任务书的冻结提交后，指定完整execution HEAD。
 以该HEAD展开精确命令和独占输出`outputs/smolvla_graph_cap_stress_<HEAD前8位>`，发布Issue #1预登记并按实际返回ID单次回读exact。
@@ -62,5 +65,5 @@ startup30秒、单model15秒、单native30秒、外层870/900秒；无retry/resu
 才允许`stress_mechanism_contrast_passed=true`。
 `natural_latency_recovery_demonstrated`在本轮固定false；旧E整体资格、科学资格和旧confirmation保持。
 
-目前没有本轮execution HEAD、登记评论ID、native输出目录、RESULT或实测退出回执。
-这份文件记录准备进展与未满足条件，不是新的native结果。
+上述准备快照形成时，没有本轮execution HEAD、登记评论ID、native输出目录、RESULT或实测退出回执。
+这份文件保留冻结前准备事实；当前状态以RESULT及NEXT_REVIEW为准，不能再次启动队列。
