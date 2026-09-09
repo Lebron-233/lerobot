@@ -706,48 +706,61 @@ class PredictiveAsyncInferenceEngine(InferenceEngine):
             )
         return result.post_policy_action
 
+    @contextmanager
+    def _worker_resources(self) -> Iterator[None]:
+        """Optional worker-owned resources; the default engine needs no lifecycle work."""
+        yield
+
+    def _request_error_is_fatal(self, request: _InferenceRequest) -> bool:
+        return request.startup_phase is not None
+
+    def _request_finished(self, request: _InferenceRequest) -> None:
+        """Optional owner-thread terminal observation, outside the request lock."""
+
     def _worker_loop(self) -> None:
         consecutive_errors = 0
         try:
-            while not self._shutdown_event.is_set():
-                if not self._policy_active.is_set():
-                    time.sleep(_IDLE_WAIT_S)
-                    continue
-                if not self._request_ready.wait(timeout=_IDLE_WAIT_S):
-                    continue
-                with self._request_lock:
-                    if self._shutdown_event.is_set() or not self._policy_active.is_set():
+            with self._worker_resources():
+                while not self._shutdown_event.is_set():
+                    if not self._policy_active.is_set():
+                        time.sleep(_IDLE_WAIT_S)
                         continue
-                    request = self._pending_request
-                    self._pending_request = None
-                    self._request_ready.clear()
-                    if request is None:
+                    if not self._request_ready.wait(timeout=_IDLE_WAIT_S):
                         continue
-                    self._request_in_flight = True
-
-                try:
-                    self._run_request(request)
-                    consecutive_errors = 0
-                except Exception:
-                    if request.plan is not None:
-                        self._queue.cancel_plan(
-                            request_id=request.request_id,
-                            reset_epoch=request.reset_epoch,
-                            task_epoch=request.task_epoch,
-                        )
-                    if request.startup_phase is not None:
-                        raise
-                    consecutive_errors += 1
-                    logger.exception(
-                        "Predictive async inference error (%d/%d)",
-                        consecutive_errors,
-                        _MAX_CONSECUTIVE_ERRORS,
-                    )
-                    if consecutive_errors >= _MAX_CONSECUTIVE_ERRORS:
-                        raise
-                finally:
                     with self._request_lock:
-                        self._request_in_flight = False
+                        if self._shutdown_event.is_set() or not self._policy_active.is_set():
+                            continue
+                        request = self._pending_request
+                        self._pending_request = None
+                        self._request_ready.clear()
+                        if request is None:
+                            continue
+                        self._request_in_flight = True
+
+                    try:
+                        self._run_request(request)
+                        consecutive_errors = 0
+                    except Exception:
+                        if request.plan is not None:
+                            self._queue.cancel_plan(
+                                request_id=request.request_id,
+                                reset_epoch=request.reset_epoch,
+                                task_epoch=request.task_epoch,
+                            )
+                        if self._request_error_is_fatal(request):
+                            raise
+                        consecutive_errors += 1
+                        logger.exception(
+                            "Predictive async inference error (%d/%d)",
+                            consecutive_errors,
+                            _MAX_CONSECUTIVE_ERRORS,
+                        )
+                        if consecutive_errors >= _MAX_CONSECUTIVE_ERRORS:
+                            raise
+                    finally:
+                        with self._request_lock:
+                            self._request_in_flight = False
+                        self._request_finished(request)
         except Exception as error:
             self._failure_traceback = traceback.format_exc()
             logger.error("Fatal predictive async worker error: %s", error)

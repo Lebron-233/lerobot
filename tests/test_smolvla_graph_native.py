@@ -14,7 +14,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent / "rollout"))
 import libero_graph_native_equivalence as campaign  # noqa: E402
 import libero_reference_qualification as q  # noqa: E402
 import smolvla_graph_runtime as runtime_module  # noqa: E402
-from profile_libero_cuda_graph_compute import copy_inputs, invoke, pack  # noqa: E402
+from profile_libero_cuda_graph_compute import copy_inputs, invoke_graph, pack  # noqa: E402
 from test_libero_reference_qualification import FakeEnv, IdentityProcessor, fake_policy  # noqa: E402
 
 
@@ -29,7 +29,17 @@ class FakeModel:
         self.sampled.append(value.clone())
         return value
 
-    def sample_actions(self, images, masks, tokens, token_masks, state, noise=None):
+    def encode_image_tokens(self, images, masks):
+        return tuple(image[:, None, :] for image in images), tuple(mask[:, None] for mask in masks)
+
+    def _validate_image_token_overrides(self, tokens, masks, *, batch_size, device):
+        for token, mask in zip(tokens, masks, strict=True):
+            if token.ndim != 3 or mask.shape != token.shape[:2] or token.device != device:
+                raise ValueError("Invalid image tokens")
+
+    def sample_actions(self, images, masks, tokens, token_masks, state, noise=None, **kwargs):
+        if images is None:
+            images, masks = kwargs["future_image_tokens"], kwargs["future_image_token_masks"]
         if noise is None:
             noise = self.sample_noise((1, 50, 32), state.device)
         for _ in range(10):
@@ -38,24 +48,24 @@ class FakeModel:
 
 
 class FakeGraph:
-    def __init__(self, model, original, inputs, projection):
+    def __init__(self, model, original, inputs, projection, capture_record=None):
         torch.rand(19)  # Preparation really consumes RNG; the runtime must restore it.
         self.original = original
         self.inputs = [v.clone() for v in inputs]
-        self.latest = invoke(original, inputs)
+        self.latest = invoke_graph(original, inputs)
         self.capture_projection_shapes = [[1, 50, 32]] * 10
         self.replay_calls = 0
 
-    def __call__(self, images, masks, tokens, token_masks, state, noise=None):
-        copy_inputs(self.inputs, pack(images, masks, tokens, token_masks, state, noise))
-        self.latest.copy_(invoke(self.original, self.inputs))
+    def __call__(self, inputs):
+        copy_inputs(self.inputs, inputs)
+        self.latest.copy_(invoke_graph(self.original, self.inputs))
         self.replay_calls += 1
         return self.latest
 
 
 @pytest.fixture
 def cpu_graph(monkeypatch):
-    monkeypatch.setattr(runtime_module, "GraphSampler", FakeGraph)
+    monkeypatch.setattr(runtime_module, "TokenGraph", FakeGraph)
     monkeypatch.setattr(torch.cuda, "synchronize", lambda: None)
 
 
@@ -96,7 +106,9 @@ def test_consecutive_noise_output_lifetime_and_all_eight_inputs(cpu_graph):
             assert not torch.equal(first, second)
             assert runtime.noise_draws == 2
             if mode == "graph":
-                expected = pack(*inputs(1), model.sampled[-1])
+                rgb, masks, *rest = inputs(1)
+                tokens, token_masks = model.encode_image_tokens(rgb, masks)
+                expected = pack(tokens, token_masks, *rest, model.sampled[-1])
                 assert all(torch.equal(a, b) for a, b in zip(runtime.graph.inputs, expected, strict=True))
             sequences[mode] = (model.sampled, [first, second])
     for a, b in zip(sequences["eager"], sequences["graph"], strict=True):
@@ -144,7 +156,7 @@ def test_preparation_exception_restores_rng_sampler_and_buffers(cpu_graph, monke
         torch.rand(100)
         raise RuntimeError("capture failed")
 
-    monkeypatch.setattr(runtime_module, "GraphSampler", fail)
+    monkeypatch.setattr(runtime_module, "TokenGraph", fail)
     model = FakeModel()
     original = model.sample_actions
     torch.manual_seed(42)
