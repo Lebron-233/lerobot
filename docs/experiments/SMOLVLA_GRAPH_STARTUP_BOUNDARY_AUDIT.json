@@ -1,0 +1,5167 @@
+{
+  "source_identity": {
+    "head": "9038ba38b89ab3e26671bc042dbeac9b6cdc124c",
+    "branch": "codex/smolvla-graph-native-equivalence",
+    "old_execution_head": "e00b8731b44b80a9e80dc0af91e4434a9af3d7dd",
+    "old_result_head": "b1bf64077f4db736a9c541096d3543bdccf93055",
+    "old_handoff_head": "9038ba38b89ab3e26671bc042dbeac9b6cdc124c",
+    "execution_ancestor_of_handoff": true,
+    "execution_to_head_files": [
+      "docs/experiments/SMOLVLA_ASYNC_NEXT_REVIEW.md",
+      "docs/experiments/SMOLVLA_GRAPH_IDENTITY_NATIVE_RECEIPT.json",
+      "docs/experiments/SMOLVLA_GRAPH_IDENTITY_NATIVE_RESULT.json",
+      "docs/experiments/SMOLVLA_GRAPH_IDENTITY_NATIVE_RESULT.md"
+    ],
+    "old_source": "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_identity_native_e00b8731",
+    "old_case": {
+      "ordinal": 7,
+      "pair_index": 3,
+      "task_id": 3,
+      "task_name": "pick_up_the_bbq_sauce_and_place_it_in_the_basket",
+      "initial_state_id": 41,
+      "environment_seed": 940341,
+      "policy_seed": 950341,
+      "condition": "graph_serialized",
+      "control": {
+        "fps": 20,
+        "queue_threshold": 30,
+        "latency_quantile": 0.9,
+        "latency_window": 50,
+        "delay_safety_margin_steps": 1,
+        "min_prediction_delay": 0,
+        "max_prediction_delay": 8,
+        "committed_guard_steps": 2,
+        "max_late_steps": 2,
+        "context_mode": "identity",
+        "fallback_mode": "identity",
+        "use_torch_compile": false
+      },
+      "limits": {
+        "episodes": 1,
+        "settling": 10,
+        "measurement": 280,
+        "model": 160,
+        "capture": 2
+      },
+      "ready_wall_slots": 1200,
+      "startup_seconds": 30,
+      "request_seconds": 15,
+      "native_call_seconds": 30
+    },
+    "old_case_arrays": "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_identity_native_e00b8731/episode_007/arrays.pt",
+    "untracked_docs": [
+      "?? docs/experiments/CODEX_D_GRAPH_TOKEN_WORKER_CONTRACT_20260909.md",
+      "?? docs/experiments/CODEX_NEXT_TASK_GRAPH_NATIVE_ASYNC_20260909.md",
+      "?? docs/experiments/SMOLVLA_GRAPH_AB_REVIEW_C_CONTRACT_CORRECTION_20260909.md"
+    ],
+    "interception_record_appended_and_read": true,
+    "interception_missing_attachment": "SmolVLA_DevSpace_拦截记录_待追加_20260909_9038ba38后续.md"
+  },
+  "state_table": [
+    {
+      "ordinal": 0,
+      "condition": "graph_serialized",
+      "task": 0,
+      "status": "completed",
+      "native_intents": {
+        "environment_factory": 1,
+        "environment_ensure_and_initial_reset": 1,
+        "environment_reset": 1,
+        "native_seed": 1,
+        "native_reset": 1,
+        "native_set_init_state": 1,
+        "native_step": 210,
+        "model_request": 11,
+        "environment_step": 200,
+        "environment_close": 1
+      },
+      "native_returns": {
+        "environment_factory": 1,
+        "environment_ensure_and_initial_reset": 1,
+        "environment_reset": 1,
+        "native_seed": 1,
+        "native_reset": 1,
+        "native_set_init_state": 1,
+        "native_step": 210,
+        "model_request": 11,
+        "environment_step": 200,
+        "environment_close": 1
+      },
+      "unknown_call_ids": [],
+      "settling_intents": 10,
+      "measured_intents": 200,
+      "task_outcome": "success",
+      "startup_entered": true,
+      "measured_entered": true,
+      "success_first_action": 200,
+      "settling_returned": 10,
+      "measured_returned": 200,
+      "cleanup": {
+        "worker_joined": true,
+        "graph_released": true,
+        "original_sampler_restored": true,
+        "environment_closed": true,
+        "metrics_closed": true
+      }
+    },
+    {
+      "ordinal": 1,
+      "condition": "graph_identity_async",
+      "task": 0,
+      "status": "completed",
+      "native_intents": {
+        "environment_factory": 1,
+        "environment_ensure_and_initial_reset": 1,
+        "environment_reset": 1,
+        "native_seed": 1,
+        "native_reset": 1,
+        "native_set_init_state": 1,
+        "native_step": 220,
+        "model_request": 9,
+        "environment_step": 210,
+        "environment_close": 1
+      },
+      "native_returns": {
+        "environment_factory": 1,
+        "environment_ensure_and_initial_reset": 1,
+        "environment_reset": 1,
+        "native_seed": 1,
+        "native_reset": 1,
+        "native_set_init_state": 1,
+        "native_step": 220,
+        "model_request": 9,
+        "environment_step": 210,
+        "environment_close": 1
+      },
+      "unknown_call_ids": [],
+      "settling_intents": 10,
+      "measured_intents": 210,
+      "task_outcome": "success",
+      "startup_entered": true,
+      "measured_entered": true,
+      "success_first_action": 210,
+      "settling_returned": 10,
+      "measured_returned": 210,
+      "cleanup": {
+        "worker_joined": true,
+        "graph_released": true,
+        "original_sampler_restored": true,
+        "environment_closed": true,
+        "metrics_closed": true
+      }
+    },
+    {
+      "ordinal": 2,
+      "condition": "graph_identity_async",
+      "task": 1,
+      "status": "completed",
+      "native_intents": {
+        "environment_factory": 1,
+        "environment_ensure_and_initial_reset": 1,
+        "environment_reset": 1,
+        "native_seed": 1,
+        "native_reset": 1,
+        "native_set_init_state": 1,
+        "native_step": 290,
+        "model_request": 14,
+        "environment_step": 280,
+        "environment_close": 1
+      },
+      "native_returns": {
+        "environment_factory": 1,
+        "environment_ensure_and_initial_reset": 1,
+        "environment_reset": 1,
+        "native_seed": 1,
+        "native_reset": 1,
+        "native_set_init_state": 1,
+        "native_step": 290,
+        "model_request": 14,
+        "environment_step": 280,
+        "environment_close": 1
+      },
+      "unknown_call_ids": [],
+      "settling_intents": 10,
+      "measured_intents": 280,
+      "task_outcome": "time_limit",
+      "startup_entered": true,
+      "measured_entered": true,
+      "success_first_action": null,
+      "settling_returned": 10,
+      "measured_returned": 280,
+      "cleanup": {
+        "worker_joined": true,
+        "graph_released": true,
+        "original_sampler_restored": true,
+        "environment_closed": true,
+        "metrics_closed": true
+      }
+    },
+    {
+      "ordinal": 3,
+      "condition": "graph_serialized",
+      "task": 1,
+      "status": "completed",
+      "native_intents": {
+        "environment_factory": 1,
+        "environment_ensure_and_initial_reset": 1,
+        "environment_reset": 1,
+        "native_seed": 1,
+        "native_reset": 1,
+        "native_set_init_state": 1,
+        "native_step": 148,
+        "model_request": 8,
+        "environment_step": 138,
+        "environment_close": 1
+      },
+      "native_returns": {
+        "environment_factory": 1,
+        "environment_ensure_and_initial_reset": 1,
+        "environment_reset": 1,
+        "native_seed": 1,
+        "native_reset": 1,
+        "native_set_init_state": 1,
+        "native_step": 148,
+        "model_request": 8,
+        "environment_step": 138,
+        "environment_close": 1
+      },
+      "unknown_call_ids": [],
+      "settling_intents": 10,
+      "measured_intents": 138,
+      "task_outcome": "success",
+      "startup_entered": true,
+      "measured_entered": true,
+      "success_first_action": 138,
+      "settling_returned": 10,
+      "measured_returned": 138,
+      "cleanup": {
+        "worker_joined": true,
+        "graph_released": true,
+        "original_sampler_restored": true,
+        "environment_closed": true,
+        "metrics_closed": true
+      }
+    },
+    {
+      "ordinal": 4,
+      "condition": "graph_serialized",
+      "task": 2,
+      "status": "completed",
+      "native_intents": {
+        "environment_factory": 1,
+        "environment_ensure_and_initial_reset": 1,
+        "environment_reset": 1,
+        "native_seed": 1,
+        "native_reset": 1,
+        "native_set_init_state": 1,
+        "native_step": 290,
+        "model_request": 14,
+        "environment_step": 280,
+        "environment_close": 1
+      },
+      "native_returns": {
+        "environment_factory": 1,
+        "environment_ensure_and_initial_reset": 1,
+        "environment_reset": 1,
+        "native_seed": 1,
+        "native_reset": 1,
+        "native_set_init_state": 1,
+        "native_step": 290,
+        "model_request": 14,
+        "environment_step": 280,
+        "environment_close": 1
+      },
+      "unknown_call_ids": [],
+      "settling_intents": 10,
+      "measured_intents": 280,
+      "task_outcome": "time_limit",
+      "startup_entered": true,
+      "measured_entered": true,
+      "success_first_action": null,
+      "settling_returned": 10,
+      "measured_returned": 280,
+      "cleanup": {
+        "worker_joined": true,
+        "graph_released": true,
+        "original_sampler_restored": true,
+        "environment_closed": true,
+        "metrics_closed": true
+      }
+    },
+    {
+      "ordinal": 5,
+      "condition": "graph_identity_async",
+      "task": 2,
+      "status": "completed",
+      "native_intents": {
+        "environment_factory": 1,
+        "environment_ensure_and_initial_reset": 1,
+        "environment_reset": 1,
+        "native_seed": 1,
+        "native_reset": 1,
+        "native_set_init_state": 1,
+        "native_step": 290,
+        "model_request": 14,
+        "environment_step": 280,
+        "environment_close": 1
+      },
+      "native_returns": {
+        "environment_factory": 1,
+        "environment_ensure_and_initial_reset": 1,
+        "environment_reset": 1,
+        "native_seed": 1,
+        "native_reset": 1,
+        "native_set_init_state": 1,
+        "native_step": 290,
+        "model_request": 14,
+        "environment_step": 280,
+        "environment_close": 1
+      },
+      "unknown_call_ids": [],
+      "settling_intents": 10,
+      "measured_intents": 280,
+      "task_outcome": "time_limit",
+      "startup_entered": true,
+      "measured_entered": true,
+      "success_first_action": null,
+      "settling_returned": 10,
+      "measured_returned": 280,
+      "cleanup": {
+        "worker_joined": true,
+        "graph_released": true,
+        "original_sampler_restored": true,
+        "environment_closed": true,
+        "metrics_closed": true
+      }
+    },
+    {
+      "ordinal": 6,
+      "condition": "graph_identity_async",
+      "task": 3,
+      "status": "completed",
+      "native_intents": {
+        "environment_factory": 1,
+        "environment_ensure_and_initial_reset": 1,
+        "environment_reset": 1,
+        "native_seed": 1,
+        "native_reset": 1,
+        "native_set_init_state": 1,
+        "native_step": 207,
+        "model_request": 11,
+        "environment_step": 197,
+        "environment_close": 1
+      },
+      "native_returns": {
+        "environment_factory": 1,
+        "environment_ensure_and_initial_reset": 1,
+        "environment_reset": 1,
+        "native_seed": 1,
+        "native_reset": 1,
+        "native_set_init_state": 1,
+        "native_step": 207,
+        "model_request": 11,
+        "environment_step": 197,
+        "environment_close": 1
+      },
+      "unknown_call_ids": [],
+      "settling_intents": 10,
+      "measured_intents": 197,
+      "task_outcome": "success",
+      "startup_entered": true,
+      "measured_entered": true,
+      "success_first_action": 197,
+      "settling_returned": 10,
+      "measured_returned": 197,
+      "cleanup": {
+        "worker_joined": true,
+        "graph_released": true,
+        "original_sampler_restored": true,
+        "environment_closed": true,
+        "metrics_closed": true
+      }
+    },
+    {
+      "ordinal": 7,
+      "condition": "graph_serialized",
+      "task": 3,
+      "status": "technical_failure",
+      "native_intents": {
+        "environment_factory": 1,
+        "environment_ensure_and_initial_reset": 1,
+        "environment_reset": 1,
+        "native_seed": 1,
+        "native_reset": 1,
+        "native_set_init_state": 1,
+        "native_step": 10,
+        "model_request": 2,
+        "environment_close": 1
+      },
+      "native_returns": {
+        "environment_factory": 1,
+        "environment_ensure_and_initial_reset": 1,
+        "environment_reset": 1,
+        "native_seed": 1,
+        "native_reset": 1,
+        "native_set_init_state": 1,
+        "native_step": 10,
+        "model_request": 2,
+        "environment_close": 1
+      },
+      "unknown_call_ids": [],
+      "settling_intents": 10,
+      "measured_intents": 0,
+      "task_outcome": "startup_gate_rejected",
+      "startup_entered": true,
+      "measured_entered": false,
+      "success_first_action": null,
+      "settling_returned": 10,
+      "measured_returned": 0,
+      "cleanup": {
+        "worker_joined": true,
+        "graph_released": true,
+        "original_sampler_restored": true,
+        "environment_closed": true,
+        "metrics_closed": true
+      }
+    },
+    {
+      "ordinal": 8,
+      "condition": "graph_serialized",
+      "task": 4,
+      "status": "not_run",
+      "native_intents": {},
+      "native_returns": {},
+      "unknown_call_ids": [],
+      "settling_intents": 0,
+      "measured_intents": 0,
+      "task_outcome": "not_run",
+      "startup_entered": false,
+      "measured_entered": false,
+      "cleanup": "not_applicable",
+      "settling_returned": 0,
+      "measured_returned": 0
+    },
+    {
+      "ordinal": 9,
+      "condition": "graph_identity_async",
+      "task": 4,
+      "status": "not_run",
+      "native_intents": {},
+      "native_returns": {},
+      "unknown_call_ids": [],
+      "settling_intents": 0,
+      "measured_intents": 0,
+      "task_outcome": "not_run",
+      "startup_entered": false,
+      "measured_entered": false,
+      "cleanup": "not_applicable",
+      "settling_returned": 0,
+      "measured_returned": 0
+    },
+    {
+      "ordinal": 10,
+      "condition": "graph_identity_async",
+      "task": 5,
+      "status": "not_run",
+      "native_intents": {},
+      "native_returns": {},
+      "unknown_call_ids": [],
+      "settling_intents": 0,
+      "measured_intents": 0,
+      "task_outcome": "not_run",
+      "startup_entered": false,
+      "measured_entered": false,
+      "cleanup": "not_applicable",
+      "settling_returned": 0,
+      "measured_returned": 0
+    },
+    {
+      "ordinal": 11,
+      "condition": "graph_serialized",
+      "task": 5,
+      "status": "not_run",
+      "native_intents": {},
+      "native_returns": {},
+      "unknown_call_ids": [],
+      "settling_intents": 0,
+      "measured_intents": 0,
+      "task_outcome": "not_run",
+      "startup_entered": false,
+      "measured_entered": false,
+      "cleanup": "not_applicable",
+      "settling_returned": 0,
+      "measured_returned": 0
+    },
+    {
+      "ordinal": 12,
+      "condition": "graph_serialized",
+      "task": 6,
+      "status": "not_run",
+      "native_intents": {},
+      "native_returns": {},
+      "unknown_call_ids": [],
+      "settling_intents": 0,
+      "measured_intents": 0,
+      "task_outcome": "not_run",
+      "startup_entered": false,
+      "measured_entered": false,
+      "cleanup": "not_applicable",
+      "settling_returned": 0,
+      "measured_returned": 0
+    },
+    {
+      "ordinal": 13,
+      "condition": "graph_identity_async",
+      "task": 6,
+      "status": "not_run",
+      "native_intents": {},
+      "native_returns": {},
+      "unknown_call_ids": [],
+      "settling_intents": 0,
+      "measured_intents": 0,
+      "task_outcome": "not_run",
+      "startup_entered": false,
+      "measured_entered": false,
+      "cleanup": "not_applicable",
+      "settling_returned": 0,
+      "measured_returned": 0
+    },
+    {
+      "ordinal": 14,
+      "condition": "graph_identity_async",
+      "task": 7,
+      "status": "not_run",
+      "native_intents": {},
+      "native_returns": {},
+      "unknown_call_ids": [],
+      "settling_intents": 0,
+      "measured_intents": 0,
+      "task_outcome": "not_run",
+      "startup_entered": false,
+      "measured_entered": false,
+      "cleanup": "not_applicable",
+      "settling_returned": 0,
+      "measured_returned": 0
+    },
+    {
+      "ordinal": 15,
+      "condition": "graph_serialized",
+      "task": 7,
+      "status": "not_run",
+      "native_intents": {},
+      "native_returns": {},
+      "unknown_call_ids": [],
+      "settling_intents": 0,
+      "measured_intents": 0,
+      "task_outcome": "not_run",
+      "startup_entered": false,
+      "measured_entered": false,
+      "cleanup": "not_applicable",
+      "settling_returned": 0,
+      "measured_returned": 0
+    },
+    {
+      "ordinal": 16,
+      "condition": "graph_serialized",
+      "task": 8,
+      "status": "not_run",
+      "native_intents": {},
+      "native_returns": {},
+      "unknown_call_ids": [],
+      "settling_intents": 0,
+      "measured_intents": 0,
+      "task_outcome": "not_run",
+      "startup_entered": false,
+      "measured_entered": false,
+      "cleanup": "not_applicable",
+      "settling_returned": 0,
+      "measured_returned": 0
+    },
+    {
+      "ordinal": 17,
+      "condition": "graph_identity_async",
+      "task": 8,
+      "status": "not_run",
+      "native_intents": {},
+      "native_returns": {},
+      "unknown_call_ids": [],
+      "settling_intents": 0,
+      "measured_intents": 0,
+      "task_outcome": "not_run",
+      "startup_entered": false,
+      "measured_entered": false,
+      "cleanup": "not_applicable",
+      "settling_returned": 0,
+      "measured_returned": 0
+    },
+    {
+      "ordinal": 18,
+      "condition": "graph_identity_async",
+      "task": 9,
+      "status": "not_run",
+      "native_intents": {},
+      "native_returns": {},
+      "unknown_call_ids": [],
+      "settling_intents": 0,
+      "measured_intents": 0,
+      "task_outcome": "not_run",
+      "startup_entered": false,
+      "measured_entered": false,
+      "cleanup": "not_applicable",
+      "settling_returned": 0,
+      "measured_returned": 0
+    },
+    {
+      "ordinal": 19,
+      "condition": "graph_serialized",
+      "task": 9,
+      "status": "not_run",
+      "native_intents": {},
+      "native_returns": {},
+      "unknown_call_ids": [],
+      "settling_intents": 0,
+      "measured_intents": 0,
+      "task_outcome": "not_run",
+      "startup_entered": false,
+      "measured_entered": false,
+      "cleanup": "not_applicable",
+      "settling_returned": 0,
+      "measured_returned": 0
+    }
+  ],
+  "startup_requests": [
+    {
+      "ordinal": 0,
+      "condition": "graph_serialized",
+      "task": 0,
+      "startup_phase": "cold_temporary",
+      "request_id": 0,
+      "observation_id": 0,
+      "reset_epoch": 0,
+      "task_epoch": 0,
+      "engine_generation": "not_recorded",
+      "derived_fresh_engine_instance": 0,
+      "clock": "time.perf_counter host monotonic seconds",
+      "requested_at_s": 1045831.787097755,
+      "started_at_s": 1045831.795450262,
+      "completed_at_s": 1045833.761112308,
+      "completion_timestamp_origin": "requested_at_s + measured latency_s after existing device completion barrier",
+      "total_chunk_s": 1.974014553008601,
+      "dispatch_wait_s": 0.008352507022209466,
+      "queue_chunks_completed_at_s": 1045833.76073896,
+      "request_finished_at_s": 1045833.761198542,
+      "phase_host_wall_s": {
+        "observation_preparation": 0.01929276203736663,
+        "preprocessor": 0.013309458969160914,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1.931232213973999,
+        "postprocessor": 0.0009346710285171866
+      },
+      "phase_cuda_stream_elapsed_ms": {
+        "observation_preparation": 19.40889549255371,
+        "preprocessor": 13.380607604980469,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1931.27294921875,
+        "postprocessor": 0.9604480266571045
+      },
+      "device_completion_wait_s": 1.8549966625869274e-05,
+      "tracker_before_samples": [],
+      "tracker_admitted": false,
+      "tracker_source": "not admitted",
+      "gate_uses_quantile": "not_applicable",
+      "gate_sample_count": 0,
+      "gate_required_unclamped": null,
+      "converted_completed_steps": 40,
+      "gate_outcome": null,
+      "control": {
+        "fps": 20,
+        "queue_threshold": 30,
+        "latency_quantile": 0.9,
+        "latency_window": 50,
+        "delay_safety_margin_steps": 1,
+        "min_prediction_delay": 0,
+        "max_prediction_delay": 8,
+        "committed_guard_steps": 2,
+        "max_late_steps": 2,
+        "context_mode": "identity",
+        "fallback_mode": "identity",
+        "use_torch_compile": false
+      },
+      "new_capture": true,
+      "capture_records": [
+        {
+          "capture_id": 1,
+          "task": [
+            0,
+            0,
+            "pick up the alphabet soup and place it in the basket"
+          ],
+          "owner_thread": 126129388115520,
+          "eager_setup_calls": 1,
+          "side_stream_warmup_calls": 3,
+          "capture_calls": 1,
+          "setup_visual_encodings": 0,
+          "projection_shapes": [
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "input_shapes": [
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              12
+            ],
+            [
+              1,
+              12
+            ],
+            [
+              1,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "status": "captured",
+          "eager_setup_seconds": 0.4612052940065041,
+          "preparation_seconds": 1.4799652529181913
+        }
+      ],
+      "replay_count": 1,
+      "setup_warmup_capture_individual_start_end": "not_recorded",
+      "CPU_copy_and_post_separate_intervals": "not_recorded; combined postprocessor phase and CPU completion timestamp retained",
+      "tracker_after_samples": [],
+      "p90_after_for_later_planning_s": null
+    },
+    {
+      "ordinal": 0,
+      "condition": "graph_serialized",
+      "task": 0,
+      "startup_phase": "probe",
+      "request_id": 1,
+      "observation_id": 0,
+      "reset_epoch": 0,
+      "task_epoch": 0,
+      "engine_generation": "not_recorded",
+      "derived_fresh_engine_instance": 0,
+      "clock": "time.perf_counter host monotonic seconds",
+      "requested_at_s": 1045833.761764022,
+      "started_at_s": 1045833.762211803,
+      "completed_at_s": 1045833.827145376,
+      "completion_timestamp_origin": "requested_at_s + measured latency_s after existing device completion barrier",
+      "total_chunk_s": 0.06538135395385325,
+      "dispatch_wait_s": 0.0004477809416130185,
+      "queue_chunks_completed_at_s": 1045833.826767536,
+      "request_finished_at_s": 1045833.827238702,
+      "phase_host_wall_s": {
+        "observation_preparation": 0.0004948870046064258,
+        "preprocessor": 0.0003757460508495569,
+        "vision_encode": 0.01030813402030617,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 0.052699649007990956,
+        "postprocessor": 0.0007087918929755688
+      },
+      "phase_cuda_stream_elapsed_ms": {
+        "observation_preparation": 0.5225920081138611,
+        "preprocessor": 0.3961600065231323,
+        "vision_encode": 10.342080116271973,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 52.76777648925781,
+        "postprocessor": 0.7325760126113892
+      },
+      "device_completion_wait_s": 1.6783014871180058e-05,
+      "tracker_before_samples": [],
+      "tracker_admitted": true,
+      "tracker_source": "this probe",
+      "gate_uses_quantile": false,
+      "gate_sample_count": 1,
+      "gate_required_unclamped": 3,
+      "converted_completed_steps": 2,
+      "gate_outcome": "passed",
+      "control": {
+        "fps": 20,
+        "queue_threshold": 30,
+        "latency_quantile": 0.9,
+        "latency_window": 50,
+        "delay_safety_margin_steps": 1,
+        "min_prediction_delay": 0,
+        "max_prediction_delay": 8,
+        "committed_guard_steps": 2,
+        "max_late_steps": 2,
+        "context_mode": "identity",
+        "fallback_mode": "identity",
+        "use_torch_compile": false
+      },
+      "new_capture": false,
+      "capture_records": [],
+      "replay_count": 1,
+      "setup_warmup_capture_individual_start_end": "not_recorded",
+      "CPU_copy_and_post_separate_intervals": "not_recorded; combined postprocessor phase and CPU completion timestamp retained",
+      "tracker_after_samples": [
+        0.06538135395385325
+      ],
+      "p90_after_for_later_planning_s": 0.06538135558366776
+    },
+    {
+      "ordinal": 0,
+      "condition": "graph_serialized",
+      "task": 0,
+      "startup_phase": "fresh_warmed",
+      "request_id": 2,
+      "observation_id": 0,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "engine_generation": "not_recorded",
+      "derived_fresh_engine_instance": 0,
+      "clock": "time.perf_counter host monotonic seconds",
+      "requested_at_s": 1045833.827314631,
+      "started_at_s": 1045833.840329502,
+      "completed_at_s": 1045835.056597043,
+      "completion_timestamp_origin": "requested_at_s + measured latency_s after existing device completion barrier",
+      "total_chunk_s": 1.2292824119795114,
+      "dispatch_wait_s": 0.013014871045015752,
+      "queue_chunks_completed_at_s": 1045835.056325196,
+      "request_finished_at_s": 1045835.05667938,
+      "phase_host_wall_s": {
+        "observation_preparation": 0.00035586394369602203,
+        "preprocessor": 0.00039636099245399237,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1.213517352938652,
+        "postprocessor": 0.0011932960478588939
+      },
+      "phase_cuda_stream_elapsed_ms": {
+        "observation_preparation": 0.38313600420951843,
+        "preprocessor": 0.41868799924850464,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1213.9083251953125,
+        "postprocessor": 1.2135039567947388
+      },
+      "device_completion_wait_s": 1.7051934264600277e-05,
+      "tracker_before_samples": [
+        0.06538135395385325
+      ],
+      "tracker_admitted": false,
+      "tracker_source": "not admitted",
+      "gate_uses_quantile": "not_applicable",
+      "gate_sample_count": 0,
+      "gate_required_unclamped": null,
+      "converted_completed_steps": 25,
+      "gate_outcome": null,
+      "control": {
+        "fps": 20,
+        "queue_threshold": 30,
+        "latency_quantile": 0.9,
+        "latency_window": 50,
+        "delay_safety_margin_steps": 1,
+        "min_prediction_delay": 0,
+        "max_prediction_delay": 8,
+        "committed_guard_steps": 2,
+        "max_late_steps": 2,
+        "context_mode": "identity",
+        "fallback_mode": "identity",
+        "use_torch_compile": false
+      },
+      "new_capture": true,
+      "capture_records": [
+        {
+          "capture_id": 2,
+          "task": [
+            1,
+            0,
+            "pick up the alphabet soup and place it in the basket"
+          ],
+          "owner_thread": 126129388115520,
+          "eager_setup_calls": 1,
+          "side_stream_warmup_calls": 3,
+          "capture_calls": 1,
+          "setup_visual_encodings": 0,
+          "projection_shapes": [
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "input_shapes": [
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              12
+            ],
+            [
+              1,
+              12
+            ],
+            [
+              1,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "status": "captured",
+          "eager_setup_seconds": 0.22187521599698812,
+          "preparation_seconds": 1.1492572069400921
+        }
+      ],
+      "replay_count": 1,
+      "setup_warmup_capture_individual_start_end": "not_recorded",
+      "CPU_copy_and_post_separate_intervals": "not_recorded; combined postprocessor phase and CPU completion timestamp retained",
+      "tracker_after_samples": [
+        0.06538135395385325
+      ],
+      "p90_after_for_later_planning_s": 0.06538135558366776
+    },
+    {
+      "ordinal": 1,
+      "condition": "graph_identity_async",
+      "task": 0,
+      "startup_phase": "cold_temporary",
+      "request_id": 0,
+      "observation_id": 0,
+      "reset_epoch": 0,
+      "task_epoch": 0,
+      "engine_generation": "not_recorded",
+      "derived_fresh_engine_instance": 1,
+      "clock": "time.perf_counter host monotonic seconds",
+      "requested_at_s": 1045847.850240765,
+      "started_at_s": 1045847.854333233,
+      "completed_at_s": 1045849.625036746,
+      "completion_timestamp_origin": "requested_at_s + measured latency_s after existing device completion barrier",
+      "total_chunk_s": 1.7747959810076281,
+      "dispatch_wait_s": 0.004092467948794365,
+      "queue_chunks_completed_at_s": 1045849.622598311,
+      "request_finished_at_s": 1045849.625851365,
+      "phase_host_wall_s": {
+        "observation_preparation": 0.005329176899977028,
+        "preprocessor": 0.007882656995207071,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1.7158212149515748,
+        "postprocessor": 0.03165980102494359
+      },
+      "phase_cuda_stream_elapsed_ms": {
+        "observation_preparation": 5.386047840118408,
+        "preprocessor": 7.915775775909424,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1721.9808349609375,
+        "postprocessor": 33.35081481933594
+      },
+      "device_completion_wait_s": 5.9611047618091106e-05,
+      "tracker_before_samples": [],
+      "tracker_admitted": false,
+      "tracker_source": "not admitted",
+      "gate_uses_quantile": "not_applicable",
+      "gate_sample_count": 0,
+      "gate_required_unclamped": null,
+      "converted_completed_steps": 36,
+      "gate_outcome": null,
+      "control": {
+        "fps": 20,
+        "queue_threshold": 30,
+        "latency_quantile": 0.9,
+        "latency_window": 50,
+        "delay_safety_margin_steps": 1,
+        "min_prediction_delay": 0,
+        "max_prediction_delay": 8,
+        "committed_guard_steps": 2,
+        "max_late_steps": 2,
+        "context_mode": "identity",
+        "fallback_mode": "identity",
+        "use_torch_compile": false
+      },
+      "new_capture": true,
+      "capture_records": [
+        {
+          "capture_id": 1,
+          "task": [
+            0,
+            0,
+            "pick up the alphabet soup and place it in the basket"
+          ],
+          "owner_thread": 126128433907264,
+          "eager_setup_calls": 1,
+          "side_stream_warmup_calls": 3,
+          "capture_calls": 1,
+          "setup_visual_encodings": 0,
+          "projection_shapes": [
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "input_shapes": [
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              12
+            ],
+            [
+              1,
+              12
+            ],
+            [
+              1,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "status": "captured",
+          "eager_setup_seconds": 0.28118902700953186,
+          "preparation_seconds": 1.3987461809301749
+        }
+      ],
+      "replay_count": 1,
+      "setup_warmup_capture_individual_start_end": "not_recorded",
+      "CPU_copy_and_post_separate_intervals": "not_recorded; combined postprocessor phase and CPU completion timestamp retained",
+      "tracker_after_samples": [],
+      "p90_after_for_later_planning_s": null
+    },
+    {
+      "ordinal": 1,
+      "condition": "graph_identity_async",
+      "task": 0,
+      "startup_phase": "probe",
+      "request_id": 1,
+      "observation_id": 0,
+      "reset_epoch": 0,
+      "task_epoch": 0,
+      "engine_generation": "not_recorded",
+      "derived_fresh_engine_instance": 1,
+      "clock": "time.perf_counter host monotonic seconds",
+      "requested_at_s": 1045849.626815414,
+      "started_at_s": 1045849.6367338,
+      "completed_at_s": 1045849.830810756,
+      "completion_timestamp_origin": "requested_at_s + measured latency_s after existing device completion barrier",
+      "total_chunk_s": 0.2039953419007361,
+      "dispatch_wait_s": 0.009918386000208557,
+      "queue_chunks_completed_at_s": 1045849.828988315,
+      "request_finished_at_s": 1045849.831564541,
+      "phase_host_wall_s": {
+        "observation_preparation": 0.011432819068431854,
+        "preprocessor": 0.009961203089915216,
+        "vision_encode": 0.07236415997613221,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 0.07554062292911112,
+        "postprocessor": 0.016017055953852832
+      },
+      "phase_cuda_stream_elapsed_ms": {
+        "observation_preparation": 11.508511543273926,
+        "preprocessor": 10.040127754211426,
+        "vision_encode": 75.88556671142578,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 78.38076782226562,
+        "postprocessor": 16.10883140563965
+      },
+      "device_completion_wait_s": 0.0001479809870943427,
+      "tracker_before_samples": [],
+      "tracker_admitted": true,
+      "tracker_source": "this probe",
+      "gate_uses_quantile": false,
+      "gate_sample_count": 1,
+      "gate_required_unclamped": 6,
+      "converted_completed_steps": 5,
+      "gate_outcome": "passed",
+      "control": {
+        "fps": 20,
+        "queue_threshold": 30,
+        "latency_quantile": 0.9,
+        "latency_window": 50,
+        "delay_safety_margin_steps": 1,
+        "min_prediction_delay": 0,
+        "max_prediction_delay": 8,
+        "committed_guard_steps": 2,
+        "max_late_steps": 2,
+        "context_mode": "identity",
+        "fallback_mode": "identity",
+        "use_torch_compile": false
+      },
+      "new_capture": false,
+      "capture_records": [],
+      "replay_count": 1,
+      "setup_warmup_capture_individual_start_end": "not_recorded",
+      "CPU_copy_and_post_separate_intervals": "not_recorded; combined postprocessor phase and CPU completion timestamp retained",
+      "tracker_after_samples": [
+        0.2039953419007361
+      ],
+      "p90_after_for_later_planning_s": 0.20399534702301025
+    },
+    {
+      "ordinal": 1,
+      "condition": "graph_identity_async",
+      "task": 0,
+      "startup_phase": "fresh_warmed",
+      "request_id": 2,
+      "observation_id": 0,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "engine_generation": "not_recorded",
+      "derived_fresh_engine_instance": 1,
+      "clock": "time.perf_counter host monotonic seconds",
+      "requested_at_s": 1045849.832256717,
+      "started_at_s": 1045849.848138013,
+      "completed_at_s": 1045851.538566972,
+      "completion_timestamp_origin": "requested_at_s + measured latency_s after existing device completion barrier",
+      "total_chunk_s": 1.7063102549873292,
+      "dispatch_wait_s": 0.015881296014413238,
+      "queue_chunks_completed_at_s": 1045851.533136567,
+      "request_finished_at_s": 1045851.54009588,
+      "phase_host_wall_s": {
+        "observation_preparation": 0.007287387037649751,
+        "preprocessor": 0.010429227957502007,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1.6083632040536031,
+        "postprocessor": 0.04926232190337032
+      },
+      "phase_cuda_stream_elapsed_ms": {
+        "observation_preparation": 7.348095893859863,
+        "preprocessor": 10.493951797485352,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1616.4630126953125,
+        "postprocessor": 53.241119384765625
+      },
+      "device_completion_wait_s": 0.00010582397226244211,
+      "tracker_before_samples": [
+        0.2039953419007361
+      ],
+      "tracker_admitted": false,
+      "tracker_source": "not admitted",
+      "gate_uses_quantile": "not_applicable",
+      "gate_sample_count": 0,
+      "gate_required_unclamped": null,
+      "converted_completed_steps": 35,
+      "gate_outcome": null,
+      "control": {
+        "fps": 20,
+        "queue_threshold": 30,
+        "latency_quantile": 0.9,
+        "latency_window": 50,
+        "delay_safety_margin_steps": 1,
+        "min_prediction_delay": 0,
+        "max_prediction_delay": 8,
+        "committed_guard_steps": 2,
+        "max_late_steps": 2,
+        "context_mode": "identity",
+        "fallback_mode": "identity",
+        "use_torch_compile": false
+      },
+      "new_capture": true,
+      "capture_records": [
+        {
+          "capture_id": 2,
+          "task": [
+            1,
+            0,
+            "pick up the alphabet soup and place it in the basket"
+          ],
+          "owner_thread": 126128433907264,
+          "eager_setup_calls": 1,
+          "side_stream_warmup_calls": 3,
+          "capture_calls": 1,
+          "setup_visual_encodings": 0,
+          "projection_shapes": [
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "input_shapes": [
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              12
+            ],
+            [
+              1,
+              12
+            ],
+            [
+              1,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "status": "captured",
+          "eager_setup_seconds": 0.2749289689818397,
+          "preparation_seconds": 1.4528824220178649
+        }
+      ],
+      "replay_count": 1,
+      "setup_warmup_capture_individual_start_end": "not_recorded",
+      "CPU_copy_and_post_separate_intervals": "not_recorded; combined postprocessor phase and CPU completion timestamp retained",
+      "tracker_after_samples": [
+        0.2039953419007361
+      ],
+      "p90_after_for_later_planning_s": 0.20399534702301025
+    },
+    {
+      "ordinal": 2,
+      "condition": "graph_identity_async",
+      "task": 1,
+      "startup_phase": "cold_temporary",
+      "request_id": 0,
+      "observation_id": 0,
+      "reset_epoch": 0,
+      "task_epoch": 0,
+      "engine_generation": "not_recorded",
+      "derived_fresh_engine_instance": 2,
+      "clock": "time.perf_counter host monotonic seconds",
+      "requested_at_s": 1045909.149911843,
+      "started_at_s": 1045909.155616208,
+      "completed_at_s": 1045911.008383502,
+      "completion_timestamp_origin": "requested_at_s + measured latency_s after existing device completion barrier",
+      "total_chunk_s": 1.8584716590121388,
+      "dispatch_wait_s": 0.005704364972189069,
+      "queue_chunks_completed_at_s": 1045911.007623669,
+      "request_finished_at_s": 1045911.009089013,
+      "phase_host_wall_s": {
+        "observation_preparation": 0.007737557985819876,
+        "preprocessor": 0.00982355501037091,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1.820997781935148,
+        "postprocessor": 0.011476701009087265
+      },
+      "phase_cuda_stream_elapsed_ms": {
+        "observation_preparation": 8.909472465515137,
+        "preprocessor": 8.9169921875,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1821.5472412109375,
+        "postprocessor": 11.558303833007812
+      },
+      "device_completion_wait_s": 6.335205398499966e-05,
+      "tracker_before_samples": [],
+      "tracker_admitted": false,
+      "tracker_source": "not admitted",
+      "gate_uses_quantile": "not_applicable",
+      "gate_sample_count": 0,
+      "gate_required_unclamped": null,
+      "converted_completed_steps": 38,
+      "gate_outcome": null,
+      "control": {
+        "fps": 20,
+        "queue_threshold": 30,
+        "latency_quantile": 0.9,
+        "latency_window": 50,
+        "delay_safety_margin_steps": 1,
+        "min_prediction_delay": 0,
+        "max_prediction_delay": 8,
+        "committed_guard_steps": 2,
+        "max_late_steps": 2,
+        "context_mode": "identity",
+        "fallback_mode": "identity",
+        "use_torch_compile": false
+      },
+      "new_capture": true,
+      "capture_records": [
+        {
+          "capture_id": 1,
+          "task": [
+            0,
+            0,
+            "pick up the cream cheese and place it in the basket"
+          ],
+          "owner_thread": 126128375178816,
+          "eager_setup_calls": 1,
+          "side_stream_warmup_calls": 3,
+          "capture_calls": 1,
+          "setup_visual_encodings": 0,
+          "projection_shapes": [
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "input_shapes": [
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              12
+            ],
+            [
+              1,
+              12
+            ],
+            [
+              1,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "status": "captured",
+          "eager_setup_seconds": 0.324169542058371,
+          "preparation_seconds": 1.6794220610754564
+        }
+      ],
+      "replay_count": 1,
+      "setup_warmup_capture_individual_start_end": "not_recorded",
+      "CPU_copy_and_post_separate_intervals": "not_recorded; combined postprocessor phase and CPU completion timestamp retained",
+      "tracker_after_samples": [],
+      "p90_after_for_later_planning_s": null
+    },
+    {
+      "ordinal": 2,
+      "condition": "graph_identity_async",
+      "task": 1,
+      "startup_phase": "probe",
+      "request_id": 1,
+      "observation_id": 0,
+      "reset_epoch": 0,
+      "task_epoch": 0,
+      "engine_generation": "not_recorded",
+      "derived_fresh_engine_instance": 2,
+      "clock": "time.perf_counter host monotonic seconds",
+      "requested_at_s": 1045911.009864017,
+      "started_at_s": 1045911.017183021,
+      "completed_at_s": 1045911.165554297,
+      "completion_timestamp_origin": "requested_at_s + measured latency_s after existing device completion barrier",
+      "total_chunk_s": 0.15569028002209961,
+      "dispatch_wait_s": 0.0073190039256587625,
+      "queue_chunks_completed_at_s": 1045911.164753993,
+      "request_finished_at_s": 1045911.16586879,
+      "phase_host_wall_s": {
+        "observation_preparation": 0.007832692936062813,
+        "preprocessor": 0.011155931977555156,
+        "vision_encode": 0.06509434396866709,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 0.061062718043103814,
+        "postprocessor": 0.001867008046247065
+      },
+      "phase_cuda_stream_elapsed_ms": {
+        "observation_preparation": 8.065407752990723,
+        "preprocessor": 11.112447738647461,
+        "vision_encode": 65.17855834960938,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 61.18521499633789,
+        "postprocessor": 1.923967957496643
+      },
+      "device_completion_wait_s": 3.543705679476261e-05,
+      "tracker_before_samples": [],
+      "tracker_admitted": true,
+      "tracker_source": "this probe",
+      "gate_uses_quantile": false,
+      "gate_sample_count": 1,
+      "gate_required_unclamped": 5,
+      "converted_completed_steps": 4,
+      "gate_outcome": "passed",
+      "control": {
+        "fps": 20,
+        "queue_threshold": 30,
+        "latency_quantile": 0.9,
+        "latency_window": 50,
+        "delay_safety_margin_steps": 1,
+        "min_prediction_delay": 0,
+        "max_prediction_delay": 8,
+        "committed_guard_steps": 2,
+        "max_late_steps": 2,
+        "context_mode": "identity",
+        "fallback_mode": "identity",
+        "use_torch_compile": false
+      },
+      "new_capture": false,
+      "capture_records": [],
+      "replay_count": 1,
+      "setup_warmup_capture_individual_start_end": "not_recorded",
+      "CPU_copy_and_post_separate_intervals": "not_recorded; combined postprocessor phase and CPU completion timestamp retained",
+      "tracker_after_samples": [
+        0.15569028002209961
+      ],
+      "p90_after_for_later_planning_s": 0.1556902825832367
+    },
+    {
+      "ordinal": 2,
+      "condition": "graph_identity_async",
+      "task": 1,
+      "startup_phase": "fresh_warmed",
+      "request_id": 2,
+      "observation_id": 0,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "engine_generation": "not_recorded",
+      "derived_fresh_engine_instance": 2,
+      "clock": "time.perf_counter host monotonic seconds",
+      "requested_at_s": 1045911.166143603,
+      "started_at_s": 1045911.187260481,
+      "completed_at_s": 1045912.511423611,
+      "completion_timestamp_origin": "requested_at_s + measured latency_s after existing device completion barrier",
+      "total_chunk_s": 1.3452800079248846,
+      "dispatch_wait_s": 0.021116877906024456,
+      "queue_chunks_completed_at_s": 1045912.511136273,
+      "request_finished_at_s": 1045912.511597354,
+      "phase_host_wall_s": {
+        "observation_preparation": 0.0005299939075484872,
+        "preprocessor": 0.0005781289655715227,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1.3155391999753192,
+        "postprocessor": 0.006232566083781421
+      },
+      "phase_cuda_stream_elapsed_ms": {
+        "observation_preparation": 0.5799360275268555,
+        "preprocessor": 0.66348797082901,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1315.6474609375,
+        "postprocessor": 6.259903907775879
+      },
+      "device_completion_wait_s": 1.9202008843421936e-05,
+      "tracker_before_samples": [
+        0.15569028002209961
+      ],
+      "tracker_admitted": false,
+      "tracker_source": "not admitted",
+      "gate_uses_quantile": "not_applicable",
+      "gate_sample_count": 0,
+      "gate_required_unclamped": null,
+      "converted_completed_steps": 27,
+      "gate_outcome": null,
+      "control": {
+        "fps": 20,
+        "queue_threshold": 30,
+        "latency_quantile": 0.9,
+        "latency_window": 50,
+        "delay_safety_margin_steps": 1,
+        "min_prediction_delay": 0,
+        "max_prediction_delay": 8,
+        "committed_guard_steps": 2,
+        "max_late_steps": 2,
+        "context_mode": "identity",
+        "fallback_mode": "identity",
+        "use_torch_compile": false
+      },
+      "new_capture": true,
+      "capture_records": [
+        {
+          "capture_id": 2,
+          "task": [
+            1,
+            0,
+            "pick up the cream cheese and place it in the basket"
+          ],
+          "owner_thread": 126128375178816,
+          "eager_setup_calls": 1,
+          "side_stream_warmup_calls": 3,
+          "capture_calls": 1,
+          "setup_visual_encodings": 0,
+          "projection_shapes": [
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "input_shapes": [
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              12
+            ],
+            [
+              1,
+              12
+            ],
+            [
+              1,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "status": "captured",
+          "eager_setup_seconds": 0.27323157899081707,
+          "preparation_seconds": 1.2414930840022862
+        }
+      ],
+      "replay_count": 1,
+      "setup_warmup_capture_individual_start_end": "not_recorded",
+      "CPU_copy_and_post_separate_intervals": "not_recorded; combined postprocessor phase and CPU completion timestamp retained",
+      "tracker_after_samples": [
+        0.15569028002209961
+      ],
+      "p90_after_for_later_planning_s": 0.1556902825832367
+    },
+    {
+      "ordinal": 3,
+      "condition": "graph_serialized",
+      "task": 1,
+      "startup_phase": "cold_temporary",
+      "request_id": 0,
+      "observation_id": 0,
+      "reset_epoch": 0,
+      "task_epoch": 0,
+      "engine_generation": "not_recorded",
+      "derived_fresh_engine_instance": 3,
+      "clock": "time.perf_counter host monotonic seconds",
+      "requested_at_s": 1045928.840615392,
+      "started_at_s": 1045928.844578764,
+      "completed_at_s": 1045930.273659875,
+      "completion_timestamp_origin": "requested_at_s + measured latency_s after existing device completion barrier",
+      "total_chunk_s": 1.4330444830702618,
+      "dispatch_wait_s": 0.003963372088037431,
+      "queue_chunks_completed_at_s": 1045930.273232969,
+      "request_finished_at_s": 1045930.274127063,
+      "phase_host_wall_s": {
+        "observation_preparation": 0.0044708820059895515,
+        "preprocessor": 0.0082211890257895,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1.407550917007029,
+        "postprocessor": 0.00743613694794476
+      },
+      "phase_cuda_stream_elapsed_ms": {
+        "observation_preparation": 4.5181121826171875,
+        "preprocessor": 8.276927947998047,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1407.6280517578125,
+        "postprocessor": 7.486303806304932
+      },
+      "device_completion_wait_s": 2.8128037229180336e-05,
+      "tracker_before_samples": [],
+      "tracker_admitted": false,
+      "tracker_source": "not admitted",
+      "gate_uses_quantile": "not_applicable",
+      "gate_sample_count": 0,
+      "gate_required_unclamped": null,
+      "converted_completed_steps": 29,
+      "gate_outcome": null,
+      "control": {
+        "fps": 20,
+        "queue_threshold": 30,
+        "latency_quantile": 0.9,
+        "latency_window": 50,
+        "delay_safety_margin_steps": 1,
+        "min_prediction_delay": 0,
+        "max_prediction_delay": 8,
+        "committed_guard_steps": 2,
+        "max_late_steps": 2,
+        "context_mode": "identity",
+        "fallback_mode": "identity",
+        "use_torch_compile": false
+      },
+      "new_capture": true,
+      "capture_records": [
+        {
+          "capture_id": 1,
+          "task": [
+            0,
+            0,
+            "pick up the cream cheese and place it in the basket"
+          ],
+          "owner_thread": 126128391976512,
+          "eager_setup_calls": 1,
+          "side_stream_warmup_calls": 3,
+          "capture_calls": 1,
+          "setup_visual_encodings": 0,
+          "projection_shapes": [
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "input_shapes": [
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              12
+            ],
+            [
+              1,
+              12
+            ],
+            [
+              1,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "status": "captured",
+          "eager_setup_seconds": 0.23896936292294413,
+          "preparation_seconds": 1.2812197390012443
+        }
+      ],
+      "replay_count": 1,
+      "setup_warmup_capture_individual_start_end": "not_recorded",
+      "CPU_copy_and_post_separate_intervals": "not_recorded; combined postprocessor phase and CPU completion timestamp retained",
+      "tracker_after_samples": [],
+      "p90_after_for_later_planning_s": null
+    },
+    {
+      "ordinal": 3,
+      "condition": "graph_serialized",
+      "task": 1,
+      "startup_phase": "probe",
+      "request_id": 1,
+      "observation_id": 0,
+      "reset_epoch": 0,
+      "task_epoch": 0,
+      "engine_generation": "not_recorded",
+      "derived_fresh_engine_instance": 3,
+      "clock": "time.perf_counter host monotonic seconds",
+      "requested_at_s": 1045930.274697141,
+      "started_at_s": 1045930.279329185,
+      "completed_at_s": 1045930.381112656,
+      "completion_timestamp_origin": "requested_at_s + measured latency_s after existing device completion barrier",
+      "total_chunk_s": 0.1064155149506405,
+      "dispatch_wait_s": 0.004632044001482427,
+      "queue_chunks_completed_at_s": 1045930.380790988,
+      "request_finished_at_s": 1045930.381202944,
+      "phase_host_wall_s": {
+        "observation_preparation": 0.00549037498421967,
+        "preprocessor": 0.0061907620402053,
+        "vision_encode": 0.036399228032678366,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 0.05241761601064354,
+        "postprocessor": 0.0006814749212935567
+      },
+      "phase_cuda_stream_elapsed_ms": {
+        "observation_preparation": 5.533696174621582,
+        "preprocessor": 6.219071865081787,
+        "vision_encode": 36.44838333129883,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 52.512542724609375,
+        "postprocessor": 0.7045120000839233
+      },
+      "device_completion_wait_s": 1.8135993741452694e-05,
+      "tracker_before_samples": [],
+      "tracker_admitted": true,
+      "tracker_source": "this probe",
+      "gate_uses_quantile": false,
+      "gate_sample_count": 1,
+      "gate_required_unclamped": 4,
+      "converted_completed_steps": 3,
+      "gate_outcome": "passed",
+      "control": {
+        "fps": 20,
+        "queue_threshold": 30,
+        "latency_quantile": 0.9,
+        "latency_window": 50,
+        "delay_safety_margin_steps": 1,
+        "min_prediction_delay": 0,
+        "max_prediction_delay": 8,
+        "committed_guard_steps": 2,
+        "max_late_steps": 2,
+        "context_mode": "identity",
+        "fallback_mode": "identity",
+        "use_torch_compile": false
+      },
+      "new_capture": false,
+      "capture_records": [],
+      "replay_count": 1,
+      "setup_warmup_capture_individual_start_end": "not_recorded",
+      "CPU_copy_and_post_separate_intervals": "not_recorded; combined postprocessor phase and CPU completion timestamp retained",
+      "tracker_after_samples": [
+        0.1064155149506405
+      ],
+      "p90_after_for_later_planning_s": 0.1064155176281929
+    },
+    {
+      "ordinal": 3,
+      "condition": "graph_serialized",
+      "task": 1,
+      "startup_phase": "fresh_warmed",
+      "request_id": 2,
+      "observation_id": 0,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "engine_generation": "not_recorded",
+      "derived_fresh_engine_instance": 3,
+      "clock": "time.perf_counter host monotonic seconds",
+      "requested_at_s": 1045930.381285046,
+      "started_at_s": 1045930.394832764,
+      "completed_at_s": 1045931.744650185,
+      "completion_timestamp_origin": "requested_at_s + measured latency_s after existing device completion barrier",
+      "total_chunk_s": 1.3633651389973238,
+      "dispatch_wait_s": 0.013547718059271574,
+      "queue_chunks_completed_at_s": 1045931.744277975,
+      "request_finished_at_s": 1045931.745143921,
+      "phase_host_wall_s": {
+        "observation_preparation": 0.00038258195854723454,
+        "preprocessor": 0.00040559901390224695,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1.3405909129651263,
+        "postprocessor": 0.007262231898494065
+      },
+      "phase_cuda_stream_elapsed_ms": {
+        "observation_preparation": 0.40940800309181213,
+        "preprocessor": 0.5744640231132507,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1340.884765625,
+        "postprocessor": 7.313024044036865
+      },
+      "device_completion_wait_s": 3.4766970202326775e-05,
+      "tracker_before_samples": [
+        0.1064155149506405
+      ],
+      "tracker_admitted": false,
+      "tracker_source": "not admitted",
+      "gate_uses_quantile": "not_applicable",
+      "gate_sample_count": 0,
+      "gate_required_unclamped": null,
+      "converted_completed_steps": 28,
+      "gate_outcome": null,
+      "control": {
+        "fps": 20,
+        "queue_threshold": 30,
+        "latency_quantile": 0.9,
+        "latency_window": 50,
+        "delay_safety_margin_steps": 1,
+        "min_prediction_delay": 0,
+        "max_prediction_delay": 8,
+        "committed_guard_steps": 2,
+        "max_late_steps": 2,
+        "context_mode": "identity",
+        "fallback_mode": "identity",
+        "use_torch_compile": false
+      },
+      "new_capture": true,
+      "capture_records": [
+        {
+          "capture_id": 2,
+          "task": [
+            1,
+            0,
+            "pick up the cream cheese and place it in the basket"
+          ],
+          "owner_thread": 126128391976512,
+          "eager_setup_calls": 1,
+          "side_stream_warmup_calls": 3,
+          "capture_calls": 1,
+          "setup_visual_encodings": 0,
+          "projection_shapes": [
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "input_shapes": [
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              12
+            ],
+            [
+              1,
+              12
+            ],
+            [
+              1,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "status": "captured",
+          "eager_setup_seconds": 0.22793231799732894,
+          "preparation_seconds": 1.2683028880273923
+        }
+      ],
+      "replay_count": 1,
+      "setup_warmup_capture_individual_start_end": "not_recorded",
+      "CPU_copy_and_post_separate_intervals": "not_recorded; combined postprocessor phase and CPU completion timestamp retained",
+      "tracker_after_samples": [
+        0.1064155149506405
+      ],
+      "p90_after_for_later_planning_s": 0.1064155176281929
+    },
+    {
+      "ordinal": 4,
+      "condition": "graph_serialized",
+      "task": 2,
+      "startup_phase": "cold_temporary",
+      "request_id": 0,
+      "observation_id": 0,
+      "reset_epoch": 0,
+      "task_epoch": 0,
+      "engine_generation": "not_recorded",
+      "derived_fresh_engine_instance": 4,
+      "clock": "time.perf_counter host monotonic seconds",
+      "requested_at_s": 1045942.133548701,
+      "started_at_s": 1045942.139830646,
+      "completed_at_s": 1045943.476043781,
+      "completion_timestamp_origin": "requested_at_s + measured latency_s after existing device completion barrier",
+      "total_chunk_s": 1.3424950800836086,
+      "dispatch_wait_s": 0.0062819450395181775,
+      "queue_chunks_completed_at_s": 1045943.474597988,
+      "request_finished_at_s": 1045943.476629146,
+      "phase_host_wall_s": {
+        "observation_preparation": 0.00718654808588326,
+        "preprocessor": 0.010895320097915828,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1.3054211059352383,
+        "postprocessor": 0.00997249293141067
+      },
+      "phase_cuda_stream_elapsed_ms": {
+        "observation_preparation": 8.19916820526123,
+        "preprocessor": 11.671903610229492,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1304.119384765625,
+        "postprocessor": 9.877823829650879
+      },
+      "device_completion_wait_s": 2.355698961764574e-05,
+      "tracker_before_samples": [],
+      "tracker_admitted": false,
+      "tracker_source": "not admitted",
+      "gate_uses_quantile": "not_applicable",
+      "gate_sample_count": 0,
+      "gate_required_unclamped": null,
+      "converted_completed_steps": 27,
+      "gate_outcome": null,
+      "control": {
+        "fps": 20,
+        "queue_threshold": 30,
+        "latency_quantile": 0.9,
+        "latency_window": 50,
+        "delay_safety_margin_steps": 1,
+        "min_prediction_delay": 0,
+        "max_prediction_delay": 8,
+        "committed_guard_steps": 2,
+        "max_late_steps": 2,
+        "context_mode": "identity",
+        "fallback_mode": "identity",
+        "use_torch_compile": false
+      },
+      "new_capture": true,
+      "capture_records": [
+        {
+          "capture_id": 1,
+          "task": [
+            0,
+            0,
+            "pick up the salad dressing and place it in the basket"
+          ],
+          "owner_thread": 126128383583808,
+          "eager_setup_calls": 1,
+          "side_stream_warmup_calls": 3,
+          "capture_calls": 1,
+          "setup_visual_encodings": 0,
+          "projection_shapes": [
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "input_shapes": [
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              12
+            ],
+            [
+              1,
+              12
+            ],
+            [
+              1,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "status": "captured",
+          "eager_setup_seconds": 0.25310263002756983,
+          "preparation_seconds": 1.1726164480205625
+        }
+      ],
+      "replay_count": 1,
+      "setup_warmup_capture_individual_start_end": "not_recorded",
+      "CPU_copy_and_post_separate_intervals": "not_recorded; combined postprocessor phase and CPU completion timestamp retained",
+      "tracker_after_samples": [],
+      "p90_after_for_later_planning_s": null
+    },
+    {
+      "ordinal": 4,
+      "condition": "graph_serialized",
+      "task": 2,
+      "startup_phase": "probe",
+      "request_id": 1,
+      "observation_id": 0,
+      "reset_epoch": 0,
+      "task_epoch": 0,
+      "engine_generation": "not_recorded",
+      "derived_fresh_engine_instance": 4,
+      "clock": "time.perf_counter host monotonic seconds",
+      "requested_at_s": 1045943.477878587,
+      "started_at_s": 1045943.483693588,
+      "completed_at_s": 1045943.606443589,
+      "completion_timestamp_origin": "requested_at_s + measured latency_s after existing device completion barrier",
+      "total_chunk_s": 0.12856500199995935,
+      "dispatch_wait_s": 0.005815000971779227,
+      "queue_chunks_completed_at_s": 1045943.606024577,
+      "request_finished_at_s": 1045943.606530509,
+      "phase_host_wall_s": {
+        "observation_preparation": 0.005179933970794082,
+        "preprocessor": 0.009535283083096147,
+        "vision_encode": 0.04693173500709236,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 0.05953755509108305,
+        "postprocessor": 0.0006954170530661941
+      },
+      "phase_cuda_stream_elapsed_ms": {
+        "observation_preparation": 5.24502420425415,
+        "preprocessor": 9.46720027923584,
+        "vision_encode": 47.080448150634766,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 59.49484634399414,
+        "postprocessor": 0.7190719842910767
+      },
+      "device_completion_wait_s": 1.8552993424236774e-05,
+      "tracker_before_samples": [],
+      "tracker_admitted": true,
+      "tracker_source": "this probe",
+      "gate_uses_quantile": false,
+      "gate_sample_count": 1,
+      "gate_required_unclamped": 4,
+      "converted_completed_steps": 3,
+      "gate_outcome": "passed",
+      "control": {
+        "fps": 20,
+        "queue_threshold": 30,
+        "latency_quantile": 0.9,
+        "latency_window": 50,
+        "delay_safety_margin_steps": 1,
+        "min_prediction_delay": 0,
+        "max_prediction_delay": 8,
+        "committed_guard_steps": 2,
+        "max_late_steps": 2,
+        "context_mode": "identity",
+        "fallback_mode": "identity",
+        "use_torch_compile": false
+      },
+      "new_capture": false,
+      "capture_records": [],
+      "replay_count": 1,
+      "setup_warmup_capture_individual_start_end": "not_recorded",
+      "CPU_copy_and_post_separate_intervals": "not_recorded; combined postprocessor phase and CPU completion timestamp retained",
+      "tracker_after_samples": [
+        0.12856500199995935
+      ],
+      "p90_after_for_later_planning_s": 0.1285649985074997
+    },
+    {
+      "ordinal": 4,
+      "condition": "graph_serialized",
+      "task": 2,
+      "startup_phase": "fresh_warmed",
+      "request_id": 2,
+      "observation_id": 0,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "engine_generation": "not_recorded",
+      "derived_fresh_engine_instance": 4,
+      "clock": "time.perf_counter host monotonic seconds",
+      "requested_at_s": 1045943.606605526,
+      "started_at_s": 1045943.622309167,
+      "completed_at_s": 1045944.856374204,
+      "completion_timestamp_origin": "requested_at_s + measured latency_s after existing device completion barrier",
+      "total_chunk_s": 1.249768678098917,
+      "dispatch_wait_s": 0.015703641111031175,
+      "queue_chunks_completed_at_s": 1045944.854052127,
+      "request_finished_at_s": 1045944.85704623,
+      "phase_host_wall_s": {
+        "observation_preparation": 0.0004826310323551297,
+        "preprocessor": 0.0006877750856801867,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1.2248854419449344,
+        "postprocessor": 0.0063492360059171915
+      },
+      "phase_cuda_stream_elapsed_ms": {
+        "observation_preparation": 0.5462080240249634,
+        "preprocessor": 0.708736002445221,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1225.091064453125,
+        "postprocessor": 6.389887809753418
+      },
+      "device_completion_wait_s": 2.1332059986889362e-05,
+      "tracker_before_samples": [
+        0.12856500199995935
+      ],
+      "tracker_admitted": false,
+      "tracker_source": "not admitted",
+      "gate_uses_quantile": "not_applicable",
+      "gate_sample_count": 0,
+      "gate_required_unclamped": null,
+      "converted_completed_steps": 25,
+      "gate_outcome": null,
+      "control": {
+        "fps": 20,
+        "queue_threshold": 30,
+        "latency_quantile": 0.9,
+        "latency_window": 50,
+        "delay_safety_margin_steps": 1,
+        "min_prediction_delay": 0,
+        "max_prediction_delay": 8,
+        "committed_guard_steps": 2,
+        "max_late_steps": 2,
+        "context_mode": "identity",
+        "fallback_mode": "identity",
+        "use_torch_compile": false
+      },
+      "new_capture": true,
+      "capture_records": [
+        {
+          "capture_id": 2,
+          "task": [
+            1,
+            0,
+            "pick up the salad dressing and place it in the basket"
+          ],
+          "owner_thread": 126128383583808,
+          "eager_setup_calls": 1,
+          "side_stream_warmup_calls": 3,
+          "capture_calls": 1,
+          "setup_visual_encodings": 0,
+          "projection_shapes": [
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "input_shapes": [
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              12
+            ],
+            [
+              1,
+              12
+            ],
+            [
+              1,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "status": "captured",
+          "eager_setup_seconds": 0.22471035202033818,
+          "preparation_seconds": 1.1526596309849992
+        }
+      ],
+      "replay_count": 1,
+      "setup_warmup_capture_individual_start_end": "not_recorded",
+      "CPU_copy_and_post_separate_intervals": "not_recorded; combined postprocessor phase and CPU completion timestamp retained",
+      "tracker_after_samples": [
+        0.12856500199995935
+      ],
+      "p90_after_for_later_planning_s": 0.1285649985074997
+    },
+    {
+      "ordinal": 5,
+      "condition": "graph_identity_async",
+      "task": 2,
+      "startup_phase": "cold_temporary",
+      "request_id": 0,
+      "observation_id": 0,
+      "reset_epoch": 0,
+      "task_epoch": 0,
+      "engine_generation": "not_recorded",
+      "derived_fresh_engine_instance": 5,
+      "clock": "time.perf_counter host monotonic seconds",
+      "requested_at_s": 1045961.863932552,
+      "started_at_s": 1045961.866425309,
+      "completed_at_s": 1045963.033326113,
+      "completion_timestamp_origin": "requested_at_s + measured latency_s after existing device completion barrier",
+      "total_chunk_s": 1.1693935609655455,
+      "dispatch_wait_s": 0.002492756932042539,
+      "queue_chunks_completed_at_s": 1045963.033118357,
+      "request_finished_at_s": 1045963.033392781,
+      "phase_host_wall_s": {
+        "observation_preparation": 0.00035179604310542345,
+        "preprocessor": 0.0005092910723760724,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1.1642077290453017,
+        "postprocessor": 0.0010436230804771185
+      },
+      "phase_cuda_stream_elapsed_ms": {
+        "observation_preparation": 0.37916800379753113,
+        "preprocessor": 0.5324479937553406,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1164.3812255859375,
+        "postprocessor": 1.0669759511947632
+      },
+      "device_completion_wait_s": 1.575099304318428e-05,
+      "tracker_before_samples": [],
+      "tracker_admitted": false,
+      "tracker_source": "not admitted",
+      "gate_uses_quantile": "not_applicable",
+      "gate_sample_count": 0,
+      "gate_required_unclamped": null,
+      "converted_completed_steps": 24,
+      "gate_outcome": null,
+      "control": {
+        "fps": 20,
+        "queue_threshold": 30,
+        "latency_quantile": 0.9,
+        "latency_window": 50,
+        "delay_safety_margin_steps": 1,
+        "min_prediction_delay": 0,
+        "max_prediction_delay": 8,
+        "committed_guard_steps": 2,
+        "max_late_steps": 2,
+        "context_mode": "identity",
+        "fallback_mode": "identity",
+        "use_torch_compile": false
+      },
+      "new_capture": true,
+      "capture_records": [
+        {
+          "capture_id": 1,
+          "task": [
+            0,
+            0,
+            "pick up the salad dressing and place it in the basket"
+          ],
+          "owner_thread": 126128391976512,
+          "eager_setup_calls": 1,
+          "side_stream_warmup_calls": 3,
+          "capture_calls": 1,
+          "setup_visual_encodings": 0,
+          "projection_shapes": [
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "input_shapes": [
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              12
+            ],
+            [
+              1,
+              12
+            ],
+            [
+              1,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "status": "captured",
+          "eager_setup_seconds": 0.22528579900972545,
+          "preparation_seconds": 1.0837197579676285
+        }
+      ],
+      "replay_count": 1,
+      "setup_warmup_capture_individual_start_end": "not_recorded",
+      "CPU_copy_and_post_separate_intervals": "not_recorded; combined postprocessor phase and CPU completion timestamp retained",
+      "tracker_after_samples": [],
+      "p90_after_for_later_planning_s": null
+    },
+    {
+      "ordinal": 5,
+      "condition": "graph_identity_async",
+      "task": 2,
+      "startup_phase": "probe",
+      "request_id": 1,
+      "observation_id": 0,
+      "reset_epoch": 0,
+      "task_epoch": 0,
+      "engine_generation": "not_recorded",
+      "derived_fresh_engine_instance": 5,
+      "clock": "time.perf_counter host monotonic seconds",
+      "requested_at_s": 1045963.033464595,
+      "started_at_s": 1045963.033810366,
+      "completed_at_s": 1045963.096679198,
+      "completion_timestamp_origin": "requested_at_s + measured latency_s after existing device completion barrier",
+      "total_chunk_s": 0.0632146029965952,
+      "dispatch_wait_s": 0.00034577096812427044,
+      "queue_chunks_completed_at_s": 1045963.096086686,
+      "request_finished_at_s": 1045963.096762572,
+      "phase_host_wall_s": {
+        "observation_preparation": 0.0008416540222242475,
+        "preprocessor": 0.00046368001494556665,
+        "vision_encode": 0.010802339995279908,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 0.04956644191406667,
+        "postprocessor": 0.0007813279516994953
+      },
+      "phase_cuda_stream_elapsed_ms": {
+        "observation_preparation": 0.7121279835700989,
+        "preprocessor": 0.4864000082015991,
+        "vision_encode": 10.865471839904785,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 49.61296081542969,
+        "postprocessor": 0.8270400166511536
+      },
+      "device_completion_wait_s": 2.485897857695818e-05,
+      "tracker_before_samples": [],
+      "tracker_admitted": true,
+      "tracker_source": "this probe",
+      "gate_uses_quantile": false,
+      "gate_sample_count": 1,
+      "gate_required_unclamped": 3,
+      "converted_completed_steps": 2,
+      "gate_outcome": "passed",
+      "control": {
+        "fps": 20,
+        "queue_threshold": 30,
+        "latency_quantile": 0.9,
+        "latency_window": 50,
+        "delay_safety_margin_steps": 1,
+        "min_prediction_delay": 0,
+        "max_prediction_delay": 8,
+        "committed_guard_steps": 2,
+        "max_late_steps": 2,
+        "context_mode": "identity",
+        "fallback_mode": "identity",
+        "use_torch_compile": false
+      },
+      "new_capture": false,
+      "capture_records": [],
+      "replay_count": 1,
+      "setup_warmup_capture_individual_start_end": "not_recorded",
+      "CPU_copy_and_post_separate_intervals": "not_recorded; combined postprocessor phase and CPU completion timestamp retained",
+      "tracker_after_samples": [
+        0.0632146029965952
+      ],
+      "p90_after_for_later_planning_s": 0.06321460008621216
+    },
+    {
+      "ordinal": 5,
+      "condition": "graph_identity_async",
+      "task": 2,
+      "startup_phase": "fresh_warmed",
+      "request_id": 2,
+      "observation_id": 0,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "engine_generation": "not_recorded",
+      "derived_fresh_engine_instance": 5,
+      "clock": "time.perf_counter host monotonic seconds",
+      "requested_at_s": 1045963.096828151,
+      "started_at_s": 1045963.110793589,
+      "completed_at_s": 1045964.365542891,
+      "completion_timestamp_origin": "requested_at_s + measured latency_s after existing device completion barrier",
+      "total_chunk_s": 1.2687147399410605,
+      "dispatch_wait_s": 0.013965438003651798,
+      "queue_chunks_completed_at_s": 1045964.365308662,
+      "request_finished_at_s": 1045964.365621705,
+      "phase_host_wall_s": {
+        "observation_preparation": 0.000411281012929976,
+        "preprocessor": 0.0003588339313864708,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1.2516442789928988,
+        "postprocessor": 0.0012304889969527721
+      },
+      "phase_cuda_stream_elapsed_ms": {
+        "observation_preparation": 0.44255998730659485,
+        "preprocessor": 0.3798080086708069,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1252.3658447265625,
+        "postprocessor": 1.2566720247268677
+      },
+      "device_completion_wait_s": 1.90449645742774e-05,
+      "tracker_before_samples": [
+        0.0632146029965952
+      ],
+      "tracker_admitted": false,
+      "tracker_source": "not admitted",
+      "gate_uses_quantile": "not_applicable",
+      "gate_sample_count": 0,
+      "gate_required_unclamped": null,
+      "converted_completed_steps": 26,
+      "gate_outcome": null,
+      "control": {
+        "fps": 20,
+        "queue_threshold": 30,
+        "latency_quantile": 0.9,
+        "latency_window": 50,
+        "delay_safety_margin_steps": 1,
+        "min_prediction_delay": 0,
+        "max_prediction_delay": 8,
+        "committed_guard_steps": 2,
+        "max_late_steps": 2,
+        "context_mode": "identity",
+        "fallback_mode": "identity",
+        "use_torch_compile": false
+      },
+      "new_capture": true,
+      "capture_records": [
+        {
+          "capture_id": 2,
+          "task": [
+            1,
+            0,
+            "pick up the salad dressing and place it in the basket"
+          ],
+          "owner_thread": 126128391976512,
+          "eager_setup_calls": 1,
+          "side_stream_warmup_calls": 3,
+          "capture_calls": 1,
+          "setup_visual_encodings": 0,
+          "projection_shapes": [
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "input_shapes": [
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              12
+            ],
+            [
+              1,
+              12
+            ],
+            [
+              1,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "status": "captured",
+          "eager_setup_seconds": 0.24982087698299438,
+          "preparation_seconds": 1.1874028539750725
+        }
+      ],
+      "replay_count": 1,
+      "setup_warmup_capture_individual_start_end": "not_recorded",
+      "CPU_copy_and_post_separate_intervals": "not_recorded; combined postprocessor phase and CPU completion timestamp retained",
+      "tracker_after_samples": [
+        0.0632146029965952
+      ],
+      "p90_after_for_later_planning_s": 0.06321460008621216
+    },
+    {
+      "ordinal": 6,
+      "condition": "graph_identity_async",
+      "task": 3,
+      "startup_phase": "cold_temporary",
+      "request_id": 0,
+      "observation_id": 0,
+      "reset_epoch": 0,
+      "task_epoch": 0,
+      "engine_generation": "not_recorded",
+      "derived_fresh_engine_instance": 6,
+      "clock": "time.perf_counter host monotonic seconds",
+      "requested_at_s": 1045987.725794832,
+      "started_at_s": 1045987.729543313,
+      "completed_at_s": 1045989.011315949,
+      "completion_timestamp_origin": "requested_at_s + measured latency_s after existing device completion barrier",
+      "total_chunk_s": 1.2855211170390248,
+      "dispatch_wait_s": 0.0037484810454770923,
+      "queue_chunks_completed_at_s": 1045989.01092704,
+      "request_finished_at_s": 1045989.011633097,
+      "phase_host_wall_s": {
+        "observation_preparation": 0.005205954075790942,
+        "preprocessor": 0.00804554601199925,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1.2648909509880468,
+        "postprocessor": 0.0018300090450793505
+      },
+      "phase_cuda_stream_elapsed_ms": {
+        "observation_preparation": 5.941984176635742,
+        "preprocessor": 7.485439777374268,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1265.347412109375,
+        "postprocessor": 1.8583040237426758
+      },
+      "device_completion_wait_s": 1.914903987199068e-05,
+      "tracker_before_samples": [],
+      "tracker_admitted": false,
+      "tracker_source": "not admitted",
+      "gate_uses_quantile": "not_applicable",
+      "gate_sample_count": 0,
+      "gate_required_unclamped": null,
+      "converted_completed_steps": 26,
+      "gate_outcome": null,
+      "control": {
+        "fps": 20,
+        "queue_threshold": 30,
+        "latency_quantile": 0.9,
+        "latency_window": 50,
+        "delay_safety_margin_steps": 1,
+        "min_prediction_delay": 0,
+        "max_prediction_delay": 8,
+        "committed_guard_steps": 2,
+        "max_late_steps": 2,
+        "context_mode": "identity",
+        "fallback_mode": "identity",
+        "use_torch_compile": false
+      },
+      "new_capture": true,
+      "capture_records": [
+        {
+          "capture_id": 1,
+          "task": [
+            0,
+            0,
+            "pick up the bbq sauce and place it in the basket"
+          ],
+          "owner_thread": 126128383583808,
+          "eager_setup_calls": 1,
+          "side_stream_warmup_calls": 3,
+          "capture_calls": 1,
+          "setup_visual_encodings": 0,
+          "projection_shapes": [
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "input_shapes": [
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              13
+            ],
+            [
+              1,
+              13
+            ],
+            [
+              1,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "status": "captured",
+          "eager_setup_seconds": 0.2375542540103197,
+          "preparation_seconds": 1.1437665070407093
+        }
+      ],
+      "replay_count": 1,
+      "setup_warmup_capture_individual_start_end": "not_recorded",
+      "CPU_copy_and_post_separate_intervals": "not_recorded; combined postprocessor phase and CPU completion timestamp retained",
+      "tracker_after_samples": [],
+      "p90_after_for_later_planning_s": null
+    },
+    {
+      "ordinal": 6,
+      "condition": "graph_identity_async",
+      "task": 3,
+      "startup_phase": "probe",
+      "request_id": 1,
+      "observation_id": 0,
+      "reset_epoch": 0,
+      "task_epoch": 0,
+      "engine_generation": "not_recorded",
+      "derived_fresh_engine_instance": 6,
+      "clock": "time.perf_counter host monotonic seconds",
+      "requested_at_s": 1045989.012863087,
+      "started_at_s": 1045989.014736961,
+      "completed_at_s": 1045989.090230584,
+      "completion_timestamp_origin": "requested_at_s + measured latency_s after existing device completion barrier",
+      "total_chunk_s": 0.077367497025989,
+      "dispatch_wait_s": 0.001873873989097774,
+      "queue_chunks_completed_at_s": 1045989.089526063,
+      "request_finished_at_s": 1045989.090316538,
+      "phase_host_wall_s": {
+        "observation_preparation": 0.004313010955229402,
+        "preprocessor": 0.001124650938436389,
+        "vision_encode": 0.01537616504356265,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 0.05327888100873679,
+        "postprocessor": 0.0010012589627876878
+      },
+      "phase_cuda_stream_elapsed_ms": {
+        "observation_preparation": 4.370368003845215,
+        "preprocessor": 1.0670080184936523,
+        "vision_encode": 15.448063850402832,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 53.32851028442383,
+        "postprocessor": 1.0240639448165894
+      },
+      "device_completion_wait_s": 1.778104342520237e-05,
+      "tracker_before_samples": [],
+      "tracker_admitted": true,
+      "tracker_source": "this probe",
+      "gate_uses_quantile": false,
+      "gate_sample_count": 1,
+      "gate_required_unclamped": 3,
+      "converted_completed_steps": 2,
+      "gate_outcome": "passed",
+      "control": {
+        "fps": 20,
+        "queue_threshold": 30,
+        "latency_quantile": 0.9,
+        "latency_window": 50,
+        "delay_safety_margin_steps": 1,
+        "min_prediction_delay": 0,
+        "max_prediction_delay": 8,
+        "committed_guard_steps": 2,
+        "max_late_steps": 2,
+        "context_mode": "identity",
+        "fallback_mode": "identity",
+        "use_torch_compile": false
+      },
+      "new_capture": false,
+      "capture_records": [],
+      "replay_count": 1,
+      "setup_warmup_capture_individual_start_end": "not_recorded",
+      "CPU_copy_and_post_separate_intervals": "not_recorded; combined postprocessor phase and CPU completion timestamp retained",
+      "tracker_after_samples": [
+        0.077367497025989
+      ],
+      "p90_after_for_later_planning_s": 0.07736749947071075
+    },
+    {
+      "ordinal": 6,
+      "condition": "graph_identity_async",
+      "task": 3,
+      "startup_phase": "fresh_warmed",
+      "request_id": 2,
+      "observation_id": 0,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "engine_generation": "not_recorded",
+      "derived_fresh_engine_instance": 6,
+      "clock": "time.perf_counter host monotonic seconds",
+      "requested_at_s": 1045989.090396388,
+      "started_at_s": 1045989.105485238,
+      "completed_at_s": 1045990.31242322,
+      "completion_timestamp_origin": "requested_at_s + measured latency_s after existing device completion barrier",
+      "total_chunk_s": 1.2220268320525065,
+      "dispatch_wait_s": 0.015088850050233305,
+      "queue_chunks_completed_at_s": 1045990.311400782,
+      "request_finished_at_s": 1045990.312981612,
+      "phase_host_wall_s": {
+        "observation_preparation": 0.00037328002508729696,
+        "preprocessor": 0.0004770280793309212,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1.1974451791029423,
+        "postprocessor": 0.0072813809383660555
+      },
+      "phase_cuda_stream_elapsed_ms": {
+        "observation_preparation": 0.45398399233818054,
+        "preprocessor": 0.4761599898338318,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1197.9564208984375,
+        "postprocessor": 7.3172478675842285
+      },
+      "device_completion_wait_s": 2.328807022422552e-05,
+      "tracker_before_samples": [
+        0.077367497025989
+      ],
+      "tracker_admitted": false,
+      "tracker_source": "not admitted",
+      "gate_uses_quantile": "not_applicable",
+      "gate_sample_count": 0,
+      "gate_required_unclamped": null,
+      "converted_completed_steps": 25,
+      "gate_outcome": null,
+      "control": {
+        "fps": 20,
+        "queue_threshold": 30,
+        "latency_quantile": 0.9,
+        "latency_window": 50,
+        "delay_safety_margin_steps": 1,
+        "min_prediction_delay": 0,
+        "max_prediction_delay": 8,
+        "committed_guard_steps": 2,
+        "max_late_steps": 2,
+        "context_mode": "identity",
+        "fallback_mode": "identity",
+        "use_torch_compile": false
+      },
+      "new_capture": true,
+      "capture_records": [
+        {
+          "capture_id": 2,
+          "task": [
+            1,
+            0,
+            "pick up the bbq sauce and place it in the basket"
+          ],
+          "owner_thread": 126128383583808,
+          "eager_setup_calls": 1,
+          "side_stream_warmup_calls": 3,
+          "capture_calls": 1,
+          "setup_visual_encodings": 0,
+          "projection_shapes": [
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "input_shapes": [
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              13
+            ],
+            [
+              1,
+              13
+            ],
+            [
+              1,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "status": "captured",
+          "eager_setup_seconds": 0.21133056399412453,
+          "preparation_seconds": 1.1262751800240949
+        }
+      ],
+      "replay_count": 1,
+      "setup_warmup_capture_individual_start_end": "not_recorded",
+      "CPU_copy_and_post_separate_intervals": "not_recorded; combined postprocessor phase and CPU completion timestamp retained",
+      "tracker_after_samples": [
+        0.077367497025989
+      ],
+      "p90_after_for_later_planning_s": 0.07736749947071075
+    },
+    {
+      "ordinal": 7,
+      "condition": "graph_serialized",
+      "task": 3,
+      "startup_phase": "cold_temporary",
+      "request_id": 0,
+      "observation_id": 0,
+      "reset_epoch": 0,
+      "task_epoch": 0,
+      "engine_generation": "not_recorded",
+      "derived_fresh_engine_instance": 7,
+      "clock": "time.perf_counter host monotonic seconds",
+      "requested_at_s": 1046004.500636506,
+      "started_at_s": 1046004.505748762,
+      "completed_at_s": 1046006.483632681,
+      "completion_timestamp_origin": "requested_at_s + measured latency_s after existing device completion barrier",
+      "total_chunk_s": 1.9829961749492213,
+      "dispatch_wait_s": 0.005112256039865315,
+      "queue_chunks_completed_at_s": 1046006.482462184,
+      "request_finished_at_s": 1046006.484999107,
+      "phase_host_wall_s": {
+        "observation_preparation": 0.004819341003894806,
+        "preprocessor": 0.008431805996224284,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1.934141886071302,
+        "postprocessor": 0.020822389982640743
+      },
+      "phase_cuda_stream_elapsed_ms": {
+        "observation_preparation": 4.882271766662598,
+        "preprocessor": 8.480768203735352,
+        "vision_encode": null,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 1942.0714111328125,
+        "postprocessor": 20.889087677001953
+      },
+      "device_completion_wait_s": 2.7960981242358685e-05,
+      "tracker_before_samples": [],
+      "tracker_admitted": false,
+      "tracker_source": "not admitted",
+      "gate_uses_quantile": "not_applicable",
+      "gate_sample_count": 0,
+      "gate_required_unclamped": null,
+      "converted_completed_steps": 40,
+      "gate_outcome": null,
+      "control": {
+        "fps": 20,
+        "queue_threshold": 30,
+        "latency_quantile": 0.9,
+        "latency_window": 50,
+        "delay_safety_margin_steps": 1,
+        "min_prediction_delay": 0,
+        "max_prediction_delay": 8,
+        "committed_guard_steps": 2,
+        "max_late_steps": 2,
+        "context_mode": "identity",
+        "fallback_mode": "identity",
+        "use_torch_compile": false
+      },
+      "new_capture": true,
+      "capture_records": [
+        {
+          "capture_id": 1,
+          "task": [
+            0,
+            0,
+            "pick up the bbq sauce and place it in the basket"
+          ],
+          "owner_thread": 126128375191104,
+          "eager_setup_calls": 1,
+          "side_stream_warmup_calls": 3,
+          "capture_calls": 1,
+          "setup_visual_encodings": 0,
+          "projection_shapes": [
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "input_shapes": [
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64,
+              960
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              64
+            ],
+            [
+              1,
+              13
+            ],
+            [
+              1,
+              13
+            ],
+            [
+              1,
+              32
+            ],
+            [
+              1,
+              50,
+              32
+            ]
+          ],
+          "status": "captured",
+          "eager_setup_seconds": 0.6049356239382178,
+          "preparation_seconds": 1.711849506944418
+        }
+      ],
+      "replay_count": 1,
+      "setup_warmup_capture_individual_start_end": "not_recorded",
+      "CPU_copy_and_post_separate_intervals": "not_recorded; combined postprocessor phase and CPU completion timestamp retained",
+      "tracker_after_samples": [],
+      "p90_after_for_later_planning_s": null
+    },
+    {
+      "ordinal": 7,
+      "condition": "graph_serialized",
+      "task": 3,
+      "startup_phase": "probe",
+      "request_id": 1,
+      "observation_id": 0,
+      "reset_epoch": 0,
+      "task_epoch": 0,
+      "engine_generation": "not_recorded",
+      "derived_fresh_engine_instance": 7,
+      "clock": "time.perf_counter host monotonic seconds",
+      "requested_at_s": 1046006.48615087,
+      "started_at_s": 1046006.493366871,
+      "completed_at_s": 1046006.850875731,
+      "completion_timestamp_origin": "requested_at_s + measured latency_s after existing device completion barrier",
+      "total_chunk_s": 0.36472486099228263,
+      "dispatch_wait_s": 0.0072160010458901525,
+      "queue_chunks_completed_at_s": 1046006.849150117,
+      "request_finished_at_s": 1046006.854276767,
+      "phase_host_wall_s": {
+        "observation_preparation": 0.016591374995186925,
+        "preprocessor": 0.01319380197674036,
+        "vision_encode": 0.21204355300869793,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 0.07884126296266913,
+        "postprocessor": 0.02305682096630335
+      },
+      "phase_cuda_stream_elapsed_ms": {
+        "observation_preparation": 17.52899169921875,
+        "preprocessor": 12.447104454040527,
+        "vision_encode": 214.78810119628906,
+        "predictor_input_preparation": null,
+        "predictor_forward": null,
+        "residual_application": null,
+        "policy_total": 86.32441711425781,
+        "postprocessor": 23.131103515625
+      },
+      "device_completion_wait_s": 3.726198337972164e-05,
+      "tracker_before_samples": [],
+      "tracker_admitted": false,
+      "tracker_source": "not admitted",
+      "gate_uses_quantile": false,
+      "gate_sample_count": 1,
+      "gate_required_unclamped": 9,
+      "converted_completed_steps": 8,
+      "gate_outcome": "cap_exceeded",
+      "control": {
+        "fps": 20,
+        "queue_threshold": 30,
+        "latency_quantile": 0.9,
+        "latency_window": 50,
+        "delay_safety_margin_steps": 1,
+        "min_prediction_delay": 0,
+        "max_prediction_delay": 8,
+        "committed_guard_steps": 2,
+        "max_late_steps": 2,
+        "context_mode": "identity",
+        "fallback_mode": "identity",
+        "use_torch_compile": false
+      },
+      "new_capture": false,
+      "capture_records": [],
+      "replay_count": 1,
+      "setup_warmup_capture_individual_start_end": "not_recorded",
+      "CPU_copy_and_post_separate_intervals": "not_recorded; combined postprocessor phase and CPU completion timestamp retained",
+      "tracker_after_samples": [],
+      "p90_after_for_later_planning_s": null
+    }
+  ],
+  "tracker_admissions": [
+    {
+      "ordinal": 0,
+      "request_id": 1,
+      "startup_phase": "probe",
+      "reset_epoch": 0,
+      "task_epoch": 0,
+      "latency_s": 0.06538135395385325
+    },
+    {
+      "ordinal": 0,
+      "request_id": 3,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.07451146189123392
+    },
+    {
+      "ordinal": 0,
+      "request_id": 4,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.0773571920581162
+    },
+    {
+      "ordinal": 0,
+      "request_id": 5,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.0716136540286243
+    },
+    {
+      "ordinal": 0,
+      "request_id": 6,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.08969806996174157
+    },
+    {
+      "ordinal": 0,
+      "request_id": 7,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.08039473299868405
+    },
+    {
+      "ordinal": 0,
+      "request_id": 8,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.07264009793289006
+    },
+    {
+      "ordinal": 0,
+      "request_id": 9,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.07435833499766886
+    },
+    {
+      "ordinal": 0,
+      "request_id": 10,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.07227013190276921
+    },
+    {
+      "ordinal": 1,
+      "request_id": 1,
+      "startup_phase": "probe",
+      "reset_epoch": 0,
+      "task_epoch": 0,
+      "latency_s": 0.2039953419007361
+    },
+    {
+      "ordinal": 1,
+      "request_id": 3,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.3028119750088081
+    },
+    {
+      "ordinal": 1,
+      "request_id": 4,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.21727405302226543
+    },
+    {
+      "ordinal": 1,
+      "request_id": 5,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.3505812670337036
+    },
+    {
+      "ordinal": 1,
+      "request_id": 6,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.957529005012475
+    },
+    {
+      "ordinal": 2,
+      "request_id": 1,
+      "startup_phase": "probe",
+      "reset_epoch": 0,
+      "task_epoch": 0,
+      "latency_s": 0.15569028002209961
+    },
+    {
+      "ordinal": 2,
+      "request_id": 3,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.23170539003331214
+    },
+    {
+      "ordinal": 2,
+      "request_id": 4,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.06627136201132089
+    },
+    {
+      "ordinal": 2,
+      "request_id": 5,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.06621892901603132
+    },
+    {
+      "ordinal": 2,
+      "request_id": 6,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.06631571205798537
+    },
+    {
+      "ordinal": 2,
+      "request_id": 7,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.06634787796065211
+    },
+    {
+      "ordinal": 2,
+      "request_id": 8,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.07159094896633178
+    },
+    {
+      "ordinal": 2,
+      "request_id": 9,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.0689873460214585
+    },
+    {
+      "ordinal": 2,
+      "request_id": 10,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.06767964002210647
+    },
+    {
+      "ordinal": 2,
+      "request_id": 11,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.08652859006542712
+    },
+    {
+      "ordinal": 2,
+      "request_id": 12,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.08500941004604101
+    },
+    {
+      "ordinal": 2,
+      "request_id": 13,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.08188195596449077
+    },
+    {
+      "ordinal": 3,
+      "request_id": 1,
+      "startup_phase": "probe",
+      "reset_epoch": 0,
+      "task_epoch": 0,
+      "latency_s": 0.1064155149506405
+    },
+    {
+      "ordinal": 3,
+      "request_id": 3,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.14978123700711876
+    },
+    {
+      "ordinal": 3,
+      "request_id": 4,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.14471649401821196
+    },
+    {
+      "ordinal": 3,
+      "request_id": 5,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.15037606190890074
+    },
+    {
+      "ordinal": 3,
+      "request_id": 6,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.14541412598919123
+    },
+    {
+      "ordinal": 3,
+      "request_id": 7,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.1843483499251306
+    },
+    {
+      "ordinal": 4,
+      "request_id": 1,
+      "startup_phase": "probe",
+      "reset_epoch": 0,
+      "task_epoch": 0,
+      "latency_s": 0.12856500199995935
+    },
+    {
+      "ordinal": 4,
+      "request_id": 3,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.14376789797097445
+    },
+    {
+      "ordinal": 4,
+      "request_id": 4,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.15869739197660238
+    },
+    {
+      "ordinal": 4,
+      "request_id": 5,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.159895483055152
+    },
+    {
+      "ordinal": 4,
+      "request_id": 6,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.14628043805714697
+    },
+    {
+      "ordinal": 4,
+      "request_id": 7,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.17446292901877314
+    },
+    {
+      "ordinal": 4,
+      "request_id": 8,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.1395491890143603
+    },
+    {
+      "ordinal": 4,
+      "request_id": 9,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.11662149301264435
+    },
+    {
+      "ordinal": 4,
+      "request_id": 10,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.06727834499906749
+    },
+    {
+      "ordinal": 4,
+      "request_id": 11,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.06639843294396996
+    },
+    {
+      "ordinal": 4,
+      "request_id": 12,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.06347722199279815
+    },
+    {
+      "ordinal": 4,
+      "request_id": 13,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.06770612392574549
+    },
+    {
+      "ordinal": 5,
+      "request_id": 1,
+      "startup_phase": "probe",
+      "reset_epoch": 0,
+      "task_epoch": 0,
+      "latency_s": 0.0632146029965952
+    },
+    {
+      "ordinal": 5,
+      "request_id": 3,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.0803857910213992
+    },
+    {
+      "ordinal": 5,
+      "request_id": 4,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.09325398202054203
+    },
+    {
+      "ordinal": 5,
+      "request_id": 5,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.08998238702770323
+    },
+    {
+      "ordinal": 5,
+      "request_id": 6,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.14388379990123212
+    },
+    {
+      "ordinal": 5,
+      "request_id": 7,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.14918835798744112
+    },
+    {
+      "ordinal": 5,
+      "request_id": 8,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.14246857701800764
+    },
+    {
+      "ordinal": 5,
+      "request_id": 9,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.15147833502851427
+    },
+    {
+      "ordinal": 5,
+      "request_id": 10,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.19121898093726486
+    },
+    {
+      "ordinal": 5,
+      "request_id": 11,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.20337386603932828
+    },
+    {
+      "ordinal": 5,
+      "request_id": 12,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.5529419559752569
+    },
+    {
+      "ordinal": 5,
+      "request_id": 13,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.5961744299856946
+    },
+    {
+      "ordinal": 6,
+      "request_id": 1,
+      "startup_phase": "probe",
+      "reset_epoch": 0,
+      "task_epoch": 0,
+      "latency_s": 0.077367497025989
+    },
+    {
+      "ordinal": 6,
+      "request_id": 3,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.132138438988477
+    },
+    {
+      "ordinal": 6,
+      "request_id": 4,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.15194657898973674
+    },
+    {
+      "ordinal": 6,
+      "request_id": 5,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.15380105702206492
+    },
+    {
+      "ordinal": 6,
+      "request_id": 6,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.1473734660539776
+    },
+    {
+      "ordinal": 6,
+      "request_id": 7,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.1921481869649142
+    },
+    {
+      "ordinal": 6,
+      "request_id": 8,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.15993879304733127
+    },
+    {
+      "ordinal": 6,
+      "request_id": 9,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.1761704549426213
+    },
+    {
+      "ordinal": 6,
+      "request_id": 10,
+      "startup_phase": null,
+      "reset_epoch": 1,
+      "task_epoch": 0,
+      "latency_s": 0.2251326619880274
+    }
+  ],
+  "startup_phase_counts": {
+    "cold_temporary": 8,
+    "probe": 8,
+    "fresh_warmed": 7
+  },
+  "failure": {
+    "ordinal": 7,
+    "condition": "graph_serialized",
+    "task": 3,
+    "startup_phase": "probe",
+    "request_id": 1,
+    "observation_id": 0,
+    "reset_epoch": 0,
+    "task_epoch": 0,
+    "engine_generation": "not_recorded",
+    "derived_fresh_engine_instance": 7,
+    "clock": "time.perf_counter host monotonic seconds",
+    "requested_at_s": 1046006.48615087,
+    "started_at_s": 1046006.493366871,
+    "completed_at_s": 1046006.850875731,
+    "completion_timestamp_origin": "requested_at_s + measured latency_s after existing device completion barrier",
+    "total_chunk_s": 0.36472486099228263,
+    "dispatch_wait_s": 0.0072160010458901525,
+    "queue_chunks_completed_at_s": 1046006.849150117,
+    "request_finished_at_s": 1046006.854276767,
+    "phase_host_wall_s": {
+      "observation_preparation": 0.016591374995186925,
+      "preprocessor": 0.01319380197674036,
+      "vision_encode": 0.21204355300869793,
+      "predictor_input_preparation": null,
+      "predictor_forward": null,
+      "residual_application": null,
+      "policy_total": 0.07884126296266913,
+      "postprocessor": 0.02305682096630335
+    },
+    "phase_cuda_stream_elapsed_ms": {
+      "observation_preparation": 17.52899169921875,
+      "preprocessor": 12.447104454040527,
+      "vision_encode": 214.78810119628906,
+      "predictor_input_preparation": null,
+      "predictor_forward": null,
+      "residual_application": null,
+      "policy_total": 86.32441711425781,
+      "postprocessor": 23.131103515625
+    },
+    "device_completion_wait_s": 3.726198337972164e-05,
+    "tracker_before_samples": [],
+    "tracker_admitted": false,
+    "tracker_source": "not admitted",
+    "gate_uses_quantile": false,
+    "gate_sample_count": 1,
+    "gate_required_unclamped": 9,
+    "converted_completed_steps": 8,
+    "gate_outcome": "cap_exceeded",
+    "control": {
+      "fps": 20,
+      "queue_threshold": 30,
+      "latency_quantile": 0.9,
+      "latency_window": 50,
+      "delay_safety_margin_steps": 1,
+      "min_prediction_delay": 0,
+      "max_prediction_delay": 8,
+      "committed_guard_steps": 2,
+      "max_late_steps": 2,
+      "context_mode": "identity",
+      "fallback_mode": "identity",
+      "use_torch_compile": false
+    },
+    "new_capture": false,
+    "capture_records": [],
+    "replay_count": 1,
+    "setup_warmup_capture_individual_start_end": "not_recorded",
+    "CPU_copy_and_post_separate_intervals": "not_recorded; combined postprocessor phase and CPU completion timestamp retained",
+    "tracker_after_samples": [],
+    "p90_after_for_later_planning_s": null
+  },
+  "old_failure_recomputed": true,
+  "source_contract_defect_identified": false,
+  "original_exit": {
+    "execution_head": "e00b8731b44b80a9e80dc0af91e4434a9af3d7dd",
+    "command": [
+      "/home/rp/Workspace/SmolVLA_RTC/libero-reference-venv/bin/python",
+      "-u",
+      "-X",
+      "faulthandler",
+      "/home/rp/Workspace/SmolVLA_RTC/lerobot/examples/advanced/predictive_async/libero_graph_identity_native.py",
+      "--execution-head",
+      "e00b8731b44b80a9e80dc0af91e4434a9af3d7dd",
+      "--output",
+      "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_identity_native_e00b8731",
+      "--worker"
+    ],
+    "python": "/home/rp/Workspace/SmolVLA_RTC/libero-reference-venv/bin/python",
+    "started_at_utc": "2026-09-09T09:17:17.759183+00:00",
+    "finished_at_utc": "2026-09-09T09:20:27.281520+00:00",
+    "wall_seconds": 189.52285112196114,
+    "child_pid": 2594512,
+    "child_exit_code": 2,
+    "child_exit_confirmed": true,
+    "attempts": 1,
+    "retries": 0,
+    "stop_reason": null,
+    "forced_termination": false,
+    "normal_exit": false,
+    "registration_url": "https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5599454489",
+    "registration_readback_body_exact": true
+  },
+  "original_independent_exit": {
+    "command": [
+      "env",
+      "-u",
+      "PYTHONPATH",
+      "HF_HUB_OFFLINE=1",
+      "TRANSFORMERS_OFFLINE=1",
+      "MUJOCO_GL=egl",
+      "PYOPENGL_PLATFORM=egl",
+      "LIBERO_CONFIG_PATH=/home/rp/Workspace/SmolVLA_RTC/libero-reference-cache/config",
+      "LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libGLdispatch.so.0:/usr/lib/x86_64-linux-gnu/libGLX.so.0",
+      "/home/rp/miniconda3/envs/smolvla-rtc/bin/uv",
+      "run",
+      "--no-config",
+      "--no-project",
+      "--offline",
+      "--no-python-downloads",
+      "--python",
+      "/home/rp/Workspace/SmolVLA_RTC/libero-reference-venv/bin/python",
+      "python",
+      "-u",
+      "-X",
+      "faulthandler",
+      "examples/advanced/predictive_async/libero_graph_identity_native.py",
+      "--execution-head",
+      "e00b8731b44b80a9e80dc0af91e4434a9af3d7dd",
+      "--output",
+      "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_identity_native_e00b8731"
+    ],
+    "cwd": "/home/rp/Workspace/SmolVLA_RTC/lerobot",
+    "execution_head": "e00b8731b44b80a9e80dc0af91e4434a9af3d7dd",
+    "output": "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_identity_native_e00b8731",
+    "started_at_utc": "2026-09-09T09:17:14.092070+00:00",
+    "finished_at_utc": "2026-09-09T09:20:28.351495+00:00",
+    "wall_seconds": 194.25980796990916,
+    "supervisor_exit_code": 2,
+    "attempts": 1,
+    "retries": 0
+  },
+  "original_pairs_completed_only": [
+    {
+      "pair_index": 0,
+      "initial_exact": true,
+      "conditions": {
+        "graph_serialized": {
+          "success": true,
+          "first_success_action": 200,
+          "terminal_reason": "native_success",
+          "measured_actions": 200,
+          "wall_seconds": 10.371798655949533,
+          "no_action_slots": 8,
+          "longest_dispatch_gap_seconds": 0.13984054105821997,
+          "planned_takeovers": 8,
+          "chunk_consumption_distribution": {
+            "0": 2,
+            "23": 8,
+            "16": 1
+          }
+        },
+        "graph_identity_async": {
+          "success": true,
+          "first_success_action": 210,
+          "terminal_reason": "native_success",
+          "measured_actions": 210,
+          "wall_seconds": 54.58356735599227,
+          "no_action_slots": 882,
+          "longest_dispatch_gap_seconds": 10.47612627199851,
+          "planned_takeovers": 4,
+          "chunk_consumption_distribution": {
+            "0": 2,
+            "26": 1,
+            "27": 2,
+            "28": 1,
+            "50": 2,
+            "2": 1
+          }
+        }
+      },
+      "async_minus_serialized": {
+        "measured_actions": 10,
+        "wall_seconds": 44.21176870004274,
+        "no_action_slots": 874,
+        "longest_dispatch_gap_seconds": 10.33628573094029,
+        "planned_takeovers": -4
+      }
+    },
+    {
+      "pair_index": 1,
+      "initial_exact": true,
+      "conditions": {
+        "graph_identity_async": {
+          "success": false,
+          "first_success_action": null,
+          "terminal_reason": "time_limit",
+          "measured_actions": 280,
+          "wall_seconds": 13.96879698697012,
+          "no_action_slots": 0,
+          "longest_dispatch_gap_seconds": 0.06235258700326085,
+          "planned_takeovers": 11,
+          "chunk_consumption_distribution": {
+            "0": 2,
+            "25": 7,
+            "26": 4,
+            "1": 1
+          }
+        },
+        "graph_serialized": {
+          "success": true,
+          "first_success_action": 138,
+          "terminal_reason": "native_success",
+          "measured_actions": 138,
+          "wall_seconds": 7.828471995075233,
+          "no_action_slots": 19,
+          "longest_dispatch_gap_seconds": 0.23705931403674185,
+          "planned_takeovers": 5,
+          "chunk_consumption_distribution": {
+            "0": 2,
+            "24": 3,
+            "25": 2,
+            "16": 1
+          }
+        }
+      },
+      "async_minus_serialized": {
+        "measured_actions": 142,
+        "wall_seconds": 6.140324991894886,
+        "no_action_slots": -19,
+        "longest_dispatch_gap_seconds": -0.174706727033481,
+        "planned_takeovers": 6
+      }
+    },
+    {
+      "pair_index": 2,
+      "initial_exact": true,
+      "conditions": {
+        "graph_serialized": {
+          "success": false,
+          "first_success_action": null,
+          "terminal_reason": "time_limit",
+          "measured_actions": 280,
+          "wall_seconds": 15.024409666890278,
+          "no_action_slots": 21,
+          "longest_dispatch_gap_seconds": 0.23199054598808289,
+          "planned_takeovers": 11,
+          "chunk_consumption_distribution": {
+            "0": 2,
+            "24": 2,
+            "25": 9,
+            "7": 1
+          }
+        },
+        "graph_identity_async": {
+          "success": false,
+          "first_success_action": null,
+          "terminal_reason": "time_limit",
+          "measured_actions": 280,
+          "wall_seconds": 21.041415552957915,
+          "no_action_slots": 141,
+          "longest_dispatch_gap_seconds": 0.5568697709823027,
+          "planned_takeovers": 11,
+          "chunk_consumption_distribution": {
+            "0": 2,
+            "23": 4,
+            "24": 4,
+            "25": 2,
+            "26": 1,
+            "16": 1
+          }
+        }
+      },
+      "async_minus_serialized": {
+        "measured_actions": 0,
+        "wall_seconds": 6.017005886067636,
+        "no_action_slots": 120,
+        "longest_dispatch_gap_seconds": 0.32487922499421984,
+        "planned_takeovers": 0
+      }
+    }
+  ],
+  "old_unknown_calls": [],
+  "old_flags": {
+    "native_closed_loop_contract_passed": false,
+    "native_multirow_consumption_observed": true,
+    "native_replanning_takeover_observed": true,
+    "native_model_control_overlap_observed": true,
+    "paired_scheduling_comparison_complete": false
+  },
+  "phase_gate_uses_only_probe_not_quantile": true,
+  "old_raw_control_model_overlap": {
+    "graph_serialized": 0,
+    "graph_identity_async": 51
+  },
+  "planner_summary": {
+    "count": 315,
+    "all_recomputed_exact": true,
+    "raw_required_counts": {
+      "3": 43,
+      "4": 35,
+      "5": 129,
+      "6": 23,
+      "7": 9,
+      "8": 5,
+      "12": 4,
+      "16": 67
+    },
+    "full_member_trace": "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_graph_startup_boundary_preparation_9038ba38/old_audit.json"
+  },
+  "original_cpu_initials": {
+    "original_arrays_loaded_with_mmap": 8,
+    "cpu_initial_pairs": [
+      {
+        "pair": 0,
+        "difference": null
+      },
+      {
+        "pair": 1,
+        "difference": null
+      },
+      {
+        "pair": 2,
+        "difference": null
+      },
+      {
+        "pair": 3,
+        "difference": null
+      }
+    ],
+    "all_exact": true,
+    "cuda_initialized": false,
+    "no_model_or_native_calls": true
+  },
+  "independent_overlap": {
+    "computed_from_request_and_native_intervals": true,
+    "rows": [
+      {
+        "ordinal": 0,
+        "condition": "graph_serialized",
+        "overlap_count": 0,
+        "overlaps": []
+      },
+      {
+        "ordinal": 1,
+        "condition": "graph_identity_async",
+        "overlap_count": 8,
+        "overlaps": [
+          {
+            "request_id": 3,
+            "native_step_index": 23,
+            "start": 1045853.614173327,
+            "end": 1045853.644270916,
+            "seconds": 0.030097589013166726
+          },
+          {
+            "request_id": 3,
+            "native_step_index": 24,
+            "start": 1045853.675345565,
+            "end": 1045853.683636459,
+            "seconds": 0.008290894096717238
+          },
+          {
+            "request_id": 4,
+            "native_step_index": 48,
+            "start": 1045856.152734589,
+            "end": 1045856.157334912,
+            "seconds": 0.004600323038175702
+          },
+          {
+            "request_id": 4,
+            "native_step_index": 49,
+            "start": 1045856.178651774,
+            "end": 1045856.193353097,
+            "seconds": 0.014701323001645505
+          },
+          {
+            "request_id": 4,
+            "native_step_index": 50,
+            "start": 1045856.199235519,
+            "end": 1045856.21297945,
+            "seconds": 0.013743930961936712
+          },
+          {
+            "request_id": 5,
+            "native_step_index": 77,
+            "start": 1045858.948340869,
+            "end": 1045859.015761802,
+            "seconds": 0.06742093292996287
+          },
+          {
+            "request_id": 6,
+            "native_step_index": 103,
+            "start": 1045879.246918501,
+            "end": 1045879.261525426,
+            "seconds": 0.014606924960389733
+          },
+          {
+            "request_id": 6,
+            "native_step_index": 104,
+            "start": 1045879.302934198,
+            "end": 1045879.322873048,
+            "seconds": 0.01993885007686913
+          }
+        ]
+      },
+      {
+        "ordinal": 2,
+        "condition": "graph_identity_async",
+        "overlap_count": 18,
+        "overlaps": [
+          {
+            "request_id": 3,
+            "native_step_index": 24,
+            "start": 1045913.683830151,
+            "end": 1045913.687815011,
+            "seconds": 0.003984860028140247
+          },
+          {
+            "request_id": 3,
+            "native_step_index": 25,
+            "start": 1045913.712630588,
+            "end": 1045913.726655632,
+            "seconds": 0.01402504404541105
+          },
+          {
+            "request_id": 4,
+            "native_step_index": 47,
+            "start": 1045914.812594119,
+            "end": 1045914.826367443,
+            "seconds": 0.013773323968052864
+          },
+          {
+            "request_id": 5,
+            "native_step_index": 72,
+            "start": 1045916.07749706,
+            "end": 1045916.081068216,
+            "seconds": 0.003571156063117087
+          },
+          {
+            "request_id": 5,
+            "native_step_index": 73,
+            "start": 1045916.1125401,
+            "end": 1045916.126193326,
+            "seconds": 0.013653225963935256
+          },
+          {
+            "request_id": 6,
+            "native_step_index": 98,
+            "start": 1045917.376502722,
+            "end": 1045917.380138499,
+            "seconds": 0.0036357769276946783
+          },
+          {
+            "request_id": 6,
+            "native_step_index": 99,
+            "start": 1045917.41255499,
+            "end": 1045917.427439002,
+            "seconds": 0.014884011936374009
+          },
+          {
+            "request_id": 7,
+            "native_step_index": 124,
+            "start": 1045918.676809803,
+            "end": 1045918.681581304,
+            "seconds": 0.00477150094229728
+          },
+          {
+            "request_id": 7,
+            "native_step_index": 125,
+            "start": 1045918.712582377,
+            "end": 1045918.726383213,
+            "seconds": 0.013800835935398936
+          },
+          {
+            "request_id": 8,
+            "native_step_index": 151,
+            "start": 1045920.012682775,
+            "end": 1045920.029184699,
+            "seconds": 0.016501923906616867
+          },
+          {
+            "request_id": 9,
+            "native_step_index": 175,
+            "start": 1045921.227037509,
+            "end": 1045921.229795755,
+            "seconds": 0.002758246031589806
+          },
+          {
+            "request_id": 9,
+            "native_step_index": 176,
+            "start": 1045921.262579191,
+            "end": 1045921.27627045,
+            "seconds": 0.013691258965991437
+          },
+          {
+            "request_id": 10,
+            "native_step_index": 200,
+            "start": 1045922.477890901,
+            "end": 1045922.481228374,
+            "seconds": 0.0033374729100614786
+          },
+          {
+            "request_id": 10,
+            "native_step_index": 201,
+            "start": 1045922.512637164,
+            "end": 1045922.52724709,
+            "seconds": 0.01460992603097111
+          },
+          {
+            "request_id": 11,
+            "native_step_index": 226,
+            "start": 1045923.762797344,
+            "end": 1045923.784596495,
+            "seconds": 0.021799150970764458
+          },
+          {
+            "request_id": 12,
+            "native_step_index": 251,
+            "start": 1045925.012749027,
+            "end": 1045925.027256108,
+            "seconds": 0.014507081010378897
+          },
+          {
+            "request_id": 13,
+            "native_step_index": 275,
+            "start": 1045926.230893926,
+            "end": 1045926.235221668,
+            "seconds": 0.00432774203363806
+          },
+          {
+            "request_id": 13,
+            "native_step_index": 276,
+            "start": 1045926.262745232,
+            "end": 1045926.280395488,
+            "seconds": 0.01765025604981929
+          }
+        ]
+      },
+      {
+        "ordinal": 3,
+        "condition": "graph_serialized",
+        "overlap_count": 0,
+        "overlaps": []
+      },
+      {
+        "ordinal": 4,
+        "condition": "graph_serialized",
+        "overlap_count": 0,
+        "overlaps": []
+      },
+      {
+        "ordinal": 5,
+        "condition": "graph_identity_async",
+        "overlap_count": 13,
+        "overlaps": [
+          {
+            "request_id": 3,
+            "native_step_index": 21,
+            "start": 1045965.386773442,
+            "end": 1045965.39160011,
+            "seconds": 0.0048266679514199495
+          },
+          {
+            "request_id": 3,
+            "native_step_index": 22,
+            "start": 1045965.416325542,
+            "end": 1045965.437274555,
+            "seconds": 0.02094901294913143
+          },
+          {
+            "request_id": 4,
+            "native_step_index": 45,
+            "start": 1045966.566136198,
+            "end": 1045966.582681466,
+            "seconds": 0.016545268008485436
+          },
+          {
+            "request_id": 5,
+            "native_step_index": 67,
+            "start": 1045967.690582077,
+            "end": 1045967.713707991,
+            "seconds": 0.02312591392546892
+          },
+          {
+            "request_id": 5,
+            "native_step_index": 68,
+            "start": 1045967.721762039,
+            "end": 1045967.738065475,
+            "seconds": 0.016303436015732586
+          },
+          {
+            "request_id": 6,
+            "native_step_index": 92,
+            "start": 1045968.916013365,
+            "end": 1045968.929958969,
+            "seconds": 0.013945603976026177
+          },
+          {
+            "request_id": 7,
+            "native_step_index": 115,
+            "start": 1045970.066123922,
+            "end": 1045970.080285019,
+            "seconds": 0.014161097002215683
+          },
+          {
+            "request_id": 8,
+            "native_step_index": 139,
+            "start": 1045971.266021647,
+            "end": 1045971.281802893,
+            "seconds": 0.015781246009282768
+          },
+          {
+            "request_id": 9,
+            "native_step_index": 163,
+            "start": 1045972.466079747,
+            "end": 1045972.482887788,
+            "seconds": 0.01680804102215916
+          },
+          {
+            "request_id": 10,
+            "native_step_index": 187,
+            "start": 1045973.686623672,
+            "end": 1045973.718440134,
+            "seconds": 0.03181646193843335
+          },
+          {
+            "request_id": 11,
+            "native_step_index": 211,
+            "start": 1045976.730906554,
+            "end": 1045976.758304675,
+            "seconds": 0.027398120961152017
+          },
+          {
+            "request_id": 12,
+            "native_step_index": 238,
+            "start": 1045979.067393059,
+            "end": 1045979.105848313,
+            "seconds": 0.038455253932625055
+          },
+          {
+            "request_id": 13,
+            "native_step_index": 261,
+            "start": 1045982.667842357,
+            "end": 1045982.701496898,
+            "seconds": 0.033654541010037065
+          }
+        ]
+      },
+      {
+        "ordinal": 6,
+        "condition": "graph_identity_async",
+        "overlap_count": 12,
+        "overlaps": [
+          {
+            "request_id": 3,
+            "native_step_index": 23,
+            "start": 1045991.414286102,
+            "end": 1045991.427080125,
+            "seconds": 0.012794022914022207
+          },
+          {
+            "request_id": 4,
+            "native_step_index": 46,
+            "start": 1045992.564284621,
+            "end": 1045992.57874975,
+            "seconds": 0.014465129002928734
+          },
+          {
+            "request_id": 5,
+            "native_step_index": 70,
+            "start": 1045993.764304577,
+            "end": 1045993.782047867,
+            "seconds": 0.017743289936333895
+          },
+          {
+            "request_id": 5,
+            "native_step_index": 71,
+            "start": 1045993.814330449,
+            "end": 1045993.814665688,
+            "seconds": 0.0003352389903739095
+          },
+          {
+            "request_id": 6,
+            "native_step_index": 94,
+            "start": 1045994.964247729,
+            "end": 1045994.977909203,
+            "seconds": 0.013661473989486694
+          },
+          {
+            "request_id": 7,
+            "native_step_index": 119,
+            "start": 1045996.244702844,
+            "end": 1045996.260256496,
+            "seconds": 0.01555365207605064
+          },
+          {
+            "request_id": 7,
+            "native_step_index": 120,
+            "start": 1045996.265565534,
+            "end": 1045996.282403039,
+            "seconds": 0.016837505041621625
+          },
+          {
+            "request_id": 8,
+            "native_step_index": 144,
+            "start": 1045997.46432918,
+            "end": 1045997.479943374,
+            "seconds": 0.01561419409699738
+          },
+          {
+            "request_id": 8,
+            "native_step_index": 145,
+            "start": 1045997.514394168,
+            "end": 1045997.518680153,
+            "seconds": 0.004285984905436635
+          },
+          {
+            "request_id": 9,
+            "native_step_index": 169,
+            "start": 1045998.817069681,
+            "end": 1045998.853476415,
+            "seconds": 0.03640673402696848
+          },
+          {
+            "request_id": 10,
+            "native_step_index": 194,
+            "start": 1046001.465924527,
+            "end": 1046001.475683064,
+            "seconds": 0.009758536936715245
+          },
+          {
+            "request_id": 10,
+            "native_step_index": 195,
+            "start": 1046001.525585001,
+            "end": 1046001.537576069,
+            "seconds": 0.011991068022325635
+          }
+        ]
+      }
+    ]
+  }
+}
