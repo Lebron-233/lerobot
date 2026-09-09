@@ -122,9 +122,13 @@ Ruff使用既有`/home/rp/Workspace/SmolVLA_RTC/libero-reference-venv/bin/ruff`�
 原设备完成屏障与finite检查已经执行，随后才在首个planned暂停。
 继承路径的原最终完成屏障、实际时延采样、tracker接纳及whole-discard处置继续执行；没有新增GPU调用。
 
-## 尚未执行的准备与实测
+## 资源准备与实测前状态
 
 现有`preparation_gates.json`只表示CPU、入口和lint/格式准备通过，不能代表资源准备或实测放行。
 模型版本/包元数据、GPU和磁盘准备查询在前一工具会话被平台安全审查拒绝，未返回查询结果、PID或exit code。
-本次接续尚未收到维护者解除记录，没有重试该查询、启动模型/Env、预登记或新native队列。
-本轮实测恢复条件与剩余交付见[接续状态](SMOLVLA_GRAPH_CAP_STRESS_PREPARATION.md)。
+此为旧插件会话的历史记录。本次按用户明确要求使用当前本地终端，实际准备查询均exit0，没有新的工具拒绝。
+模型Python/version/140项metadata与E-RCV1退出快照直接比较exact；固定资源路径齐全。
+登记前一次GPU快照6010MiB/47%，保留其他进程背景；磁盘可用1,473,396,756,480字节。
+实际原件为model_environment_before.json、model_environment_vs_e_rcv1.json和gpu_before.json。
+没有安装、sync、升级、换解释器或等待较低负载。源码和测试没有再改，已通过的8项CPU证据及入口/lint继续复用。
+冻结登记及唯一队列接续见[接续状态](SMOLVLA_GRAPH_CAP_STRESS_PREPARATION.md)；此处未预填native结果。

@@ -1,8 +1,8 @@
 # SmolVLA 异步接入：下一轮审阅差异
 
-## 当前：E-RCV2证据修订与补测通过，资源准备仍未执行
+## 当前：E-RCV2代码、测试和资源准备通过，进入冻结登记
 
-2026-09-09，接管准备HEAD `1242c09f4e496708d7d19b6063c18d0245936e45`。
+2026-09-09，接管准备HEAD `24b687bfa100e06f05fd562f5972a62b98a7df36`。
 最新[执行任务书](SMOLVLA_E_RCV2_CODEX_EXECUTION_PLAN_20260909.md)已完整读取并纳入仓库。
 当前本地只存在历史preparation目录，没有登记、执行intent、started/result或E-RCV2运行目录。
 E-RCV2保持四条graph_identity_async：task0 disabled/candidate、task2 candidate/disabled，原state41和seeds不变。
@@ -19,11 +19,13 @@ probe/planned、native源request/row0和起止；生产恢复算法、控制器�
 [MANIFEST](SMOLVLA_GRAPH_CAP_STRESS_MANIFEST.json)、[完整接续状态](SMOLVLA_GRAPH_CAP_STRESS_PREPARATION.md)。
 
 附件记录DevSpace对模型版本/包元数据、GPU、磁盘准备查询的自动安全审查拒绝，没有返回PID/exit code或快照。
-此前请求的解除记录尚未收到；最新执行任务书第2节仍要求不换通道绕过安全拒绝。
-准备代码与测试记录可独立保存；尚无登记的execution HEAD、预登记评论、新模型/Env、native结果或退出回执。
-未重试受阻查询，也未通过其他通道代查。准备通过不代表资源准备、平台放行或native合同通过。
+这是旧插件会话的历史记录，不能据此认定当前本地终端被禁止使用。
+本次按用户明确授权使用本机终端，准备命令均正常返回exit0，没有新的工具拒绝或虚构的解除回执。
+模型Python/version/140项metadata与E-RCV1退出快照exact；固定资源齐全，磁盘可用1,473,396,756,480字节。
+登记前一次GPU快照6010MiB/47%，另一项目4637MiB保持原状；没有干预其他任务或等待低负载。
+准备门通过后进入执行提交与预登记；此时尚未产生新的native结果。
 
-条件满足后继续原固定四条、attempt1/retry0，预算与首错规则按PLAN；缺触发/未恢复均不补跑。
+继续原固定四条、attempt1/retry0，预算与首错规则按PLAN；缺触发/未恢复均不补跑。
 两个disabled闭锁、两个candidate的同epoch恢复与native合法row0、四条完成及两对初态exact同时满足，才允许stress机制通过。
 旧E/E-S1/E-RCV1及全部科学资格保持。下方E-RCV1为最近完成的native结果。
 

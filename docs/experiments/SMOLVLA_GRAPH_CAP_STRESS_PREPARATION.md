@@ -1,8 +1,8 @@
-# E-RCV2 接续状态：代码与测试已核对，资源准备等待平台解除记录
+# E-RCV2 接续状态：准备通过，进入唯一队列的冻结登记
 
 2026-09-09。最新依据为用户附件
 `/home/rp/Downloads/SMOLVLA_E_RCV2_CODEX_EXECUTION_PLAN_20260909.md`，已完整读取并纳入仓库。
-本次接管准备HEAD `1242c09f4e496708d7d19b6063c18d0245936e45`，
+本次接管准备HEAD `24b687bfa100e06f05fd562f5972a62b98a7df36`，
 分支`codex/smolvla-graph-native-equivalence`。
 
 ## 本次完成
@@ -26,21 +26,31 @@ CPU实测暂停planned总时延625ms、late1整块丢弃，但原tracker仍接�
 没有改动候选、冻结参数或干预时长。
 原CPU AttributeError、Ruff F811和格式差异原件完整保留，未改名冒充通过。
 
-## 未满足的接续条件
+## 本机环境与资源准备
+
+用户明确要求使用当前本地终端后，准备命令实际正常返回，均exit0；本轮未调用DevSpace或CodexPro。
+模型解释器、Python版本及140项包metadata与E-RCV1退出快照直接比较exact。
+固定policy/VLM/assets/config/EGL路径均存在，磁盘可用1,473,396,756,480字节。
+登记前GPU只读快照为2026-09-09T14:08:23.625285+00:00，RTX4070TiSUPER总16376MiB、使用6010MiB、利用率47%。
+其他进程包括PID2004/awesun 413MiB和PID2719319另一项目Python 4637MiB；未干预、未等待负载变化或重复采样。
+`model_environment_before.json`、`model_environment_vs_e_rcv1.json`和`gpu_before.json`保留实际结果。
+既有8项不同CPU证据、新入口与最终lint/format继续复用，源码与测试在本轮资源准备时没有再改。
+
+## 历史工具中断记录
 
 旧交接附件第6节记载，DevSpace工作区`ws_85671cfbfc`的模型版本/包元数据、nvidia-smi、磁盘剩余空间只读准备查询被拦截：
 
 > 因 OpenAI 无法确定请求的安全状态，已拦截此工具调用。
 
 没有返回PID、exit code、快照或具体触发因素。它不是已执行实验的技术失败，也不表示资源检查通过。
-此前已请求维护者解除记录或确认，目前尚未取得；没有改写、分拆或通过其他通道重试该查询。
-最新执行计划第2节仍要求保留权限拒绝并停止相应操作，不换通道绕过。本轮使用正常本机终端完成独立的代码/CPU工作，未调用插件。
+该记录对应旧插件会话。此前把它当作当前本机终端仍需额外放行的依据不准确；没有据此虚构维护者解除回执。
+当前本机授权操作的实际返回与该历史记录分别保留；本轮没有收到新的工具拒绝。
 此前CodexPro的Unknown workspace_id与这次平台拒绝分别保留，不推断共同根因。
 上述事件原文保留在用户附件，本次未改写既有Reason_for_interception历史记录。
 
-## 待条件满足后的固定接续点
+## 固定接续点
 
-完成原计划的资源/环境准备，保存实际快照；随后确认最终源码、PLAN、MANIFEST、实际TESTS和新任务书的冻结提交，指定完整execution HEAD。
+资源/环境准备已完成；确认最终源码、PLAN、MANIFEST、实际TESTS和新任务书的冻结提交后，指定完整execution HEAD。
 以该HEAD展开精确命令和独占输出`outputs/smolvla_graph_cap_stress_<HEAD前8位>`，发布Issue #1预登记并按实际返回ID单次回读exact。
 随后仅运行固定四条队列一次：task0 disabled/candidate、task2 candidate/disabled，原state41和seeds保持。
 每条首个planned的600ms主机暂停保持，Env4、settling40、measured≤1120、主调用≤640、capture≤8、候选probe总≤100。
