@@ -1,6 +1,23 @@
 # SmolVLA 异步接入：下一轮审阅差异
 
-## 当前：E-NAT1完整20条正常运行调度对照通过，identity async测量wall减少3.858%
+## 当前：F-LAT1-r1离线预测及动作消融完成，动作条件优势尚未建立
+
+2026-09-10，执行HEAD `63f1f3064b4aae954e63a0149f85a7ca221afc3a`，预登记5612120361正文exact后唯一运行。
+[完整结果](SMOLVLA_LIBERO_FUTURE_LATENT_R1_RESULT.md)、[机器摘要](SMOLVLA_LIBERO_FUTURE_LATENT_R1_RESULT.json)、
+[修正计划](SMOLVLA_LIBERO_FUTURE_LATENT_R1_PLAN.md)、[原训练合同](SMOLVLA_LIBERO_FUTURE_LATENT_PILOT_PLAN.md)。
+旧F-LAT1 c5950d51因首个current token不一致在训练前停止，其报告和原件保留；r1使用原生worker准备路径，没有放宽exact门。
+E-NAT1的76对承诺前缀→future已对齐，train51/validation13/test12（任务0–5/6–7/8–9），全部delay3。
+两臂69,680参数、各200updates；conditioned选择step125，no_action选择175，test未用于调参。
+留出相对identity：conditioned token误差下降0.964768%、row0到oracle视觉输出误差下降7.639004%、50行误差下降14.563230%；
+no_action分别0.437504%、14.668806%、17.196498%。**动作层指标no_action更好，不能宣称动作输入创新有效。**
+oracle只是真实未来视觉＋当前state的原策略输出，不是专家动作或闭环success上界。
+10任务current两camera token/state及12例identity完整chunk与原件exact；108个指标独立CPU复算通过，未重跑模型。
+86编码批次、400updates、48decoder、2capture及内部2/6/2，139组phase完整；child2864128/supervisor2864081 exit0。
+新增Env/native/真机0，独立外层19.270007s，环境140包exact。原11项CPU和新2项路径测试分别保留。
+本轮结束，不在这12例上继续调参。下一步需在新数据划分中复核动作条件增量；在线predicted路径的固定6D准备不兼容本原生7D检查点，
+接入须单独定义，当前不直接部署。state/risk未训练，生产默认与所有旧结论/科学资格保持，confirmation untouched。
+
+## 历史：E-NAT1完整20条正常运行调度对照通过，identity async测量wall减少3.858%
 
 2026-09-10。执行HEAD `2d672b5e3c9d56e54b21cc0a9211bab89f825f15`；
 预登记[5611778706](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5611778706)实际ID一次GET exact后完成唯一新队列。
