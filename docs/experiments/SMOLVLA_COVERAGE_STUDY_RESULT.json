@@ -1,0 +1,29 @@
+{
+  "experiment": "F-COV1",
+  "execution_head": "6249b03d716e9578ac45f36b677c158ed93806ac",
+  "independent_contract_accepted": true,
+  "data_summary": {"single_train": 24, "multi_train": 72, "validation": 16, "new_samples": 64},
+  "coverage_row0_improved": true,
+  "action_increment_observed": true,
+  "nonidentity_selected": true,
+  "validation_candidate_gate_passed": true,
+  "native_budget": {"episodes": 16, "settling": 160, "model": 195, "capture": 32, "measurement": 3517},
+  "counts": {"decoder": 812, "old_reference_exact": 12, "encoding": 80, "current_exact": 16, "gradient_decoder": 288, "backward": 288, "updates": 288, "offline_captures": 62},
+  "numeric_comparisons": 1440,
+  "journal_intents": 7501,
+  "journal_returns": 7501,
+  "test_reads": 0,
+  "baseline": {"latent": 2670.8288650512695, "row0": 0.03170970366045367, "chunk": 0.05324802114046179},
+  "selected": {
+    "single_conditioned": {"best_step": 72, "nonzero_residual": true, "latent": 2674.843589782715, "row0": 0.029763374142930843, "chunk": 0.05885465241590282},
+    "multi_conditioned": {"best_step": 72, "nonzero_residual": true, "latent": 2674.2529220581055, "row0": 0.029442513157846406, "chunk": 0.049140438008180354},
+    "single_no_action": {"best_step": 72, "nonzero_residual": true, "latent": 2674.7723693847656, "row0": 0.02940266704536043, "chunk": 0.052969111275160685},
+    "multi_no_action": {"best_step": 72, "nonzero_residual": true, "latent": 2674.3018112182617, "row0": 0.029710716240515467, "chunk": 0.049999032271443866}
+  },
+  "gains_percent_vs_identity": {
+    "single_conditioned": {"latent": -0.1503175581176075, "row0": 6.137961862917585, "chunk": -10.529276309914737},
+    "multi_conditioned": {"latent": -0.1282020368897907, "row0": 7.1498318839061215, "chunk": 7.714057807793706},
+    "single_no_action": {"latent": -0.14765095529325478, "row0": 7.275490934248086, "chunk": 0.5237938599922276},
+    "multi_no_action": {"latent": -0.13003252332774995, "row0": 6.304024286518994, "chunk": 6.10161429369832}
+  }
+}
