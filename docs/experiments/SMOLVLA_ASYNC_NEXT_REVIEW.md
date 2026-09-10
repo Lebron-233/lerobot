@@ -1,6 +1,38 @@
 # SmolVLA 异步接入：下一轮审阅差异
 
-## 当前：E-RCV2已执行，两个候选恢复链成立，第四条模型超时，整体未通过
+## 当前：E-RCV3-trace独立核验通过，固定两对600ms受控暂停恢复机制对照接纳
+
+2026-09-10，执行HEAD `563a8077b69785e90763be98da4dbce1bea7a996`。
+原唯一队列已完成4/4条、2/2对；本次只完成退出后的CPU核验，新增model/Env/native/reference/predictor/训练均0，没有重跑15项准备测试。
+本次补全[运行与核验断点5611313602](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5611313602)，没有第二次实验。
+[完整结果](SMOLVLA_GRAPH_CAP_TRACE_RESULT.md)、[机器结果](SMOLVLA_GRAPH_CAP_TRACE_RESULT.json)、
+[冻结PLAN](SMOLVLA_GRAPH_CAP_TRACE_PLAN.md)、[原15项测试](SMOLVLA_GRAPH_CAP_TRACE_TESTS.md)。
+
+两个disabled的paused request3接纳后raw14，快bootstrap request4/5均raw3但不入tracker；历史不变、后续planned0，cap_wait74/54。
+两个candidate各5个probe，request8将raw9→8；同epoch1/0的paused3→probe8→planned9→takeover index48→native49实际发送request9 row0。
+两个native区间分别1104200.832341207→1104200.847018372、1104213.244521946→1104213.267225263。
+CPU重新运行原source audit，573个measured动作及9次planned接管全部exact；两个row0直接数组比较exact。
+四份真实checkpoint与保存初态、两对checkpoint/保存初态均exact；39份原窗口/P90/raw和terminal snapshot逐项exact。
+
+`trace_four_episode_contract_passed`、`trace_disabled_latch_both_observed`、`trace_candidate_recovery_both_observed`、`trace_mechanism_contrast_passed`的运行器判定及独立核验均通过。
+四条success分别148/161/136/128个measured动作；两臂各2/2 success。
+两对candidate−disabled wall分别+0.457247458秒/+0.202198476秒，不能写成成功率提升或耗时收益。
+natural_latency_recovery_demonstrated=false、生产默认disabled、旧E/E-RCV2及D历史字段保持，全部科学资格仍未提升。
+
+真实账目：Env4、settling40、measured573、main39、probe10（5+5，含main）、capture8、setup8/warmup24/capture内8、replay39。
+1253 intent/1253 return，error0/unknown0；613次底层native与外层调用的精确身份/动作及有序嵌套区间全部核对。
+4/4 worker join/Graph释放/sampler恢复/metrics关闭/Env关闭确认，清理后数组466,153,260字节；首次模型前checkpoint另3,160,116字节。
+child2847418 exit0、supervisor2847368 exit0均已确认；stop_reason和first_failure均null，无强制终止。
+监督wall57.570463162秒、独立外层62.341006344秒；attempt1/retry/resume/replacement0。
+
+补充metadata UTC01:54:54.650868，与准备及启动前Python/version/140项packages均exact；唯一补充GPU UTC01:54:54.706090为1159MiB/17%。
+这些是收集时刻快照，不是实验刚退出快照；未重采、未干预其他进程，不归因性能。
+首个收集器误读缺失elapsed、第二次误把外层journal和内层native时间要求相等，两个exit2原件保留。
+按冻结接口修正字段及区间关联后，仅JSON完成剩余检查exit0；已通过数组检查复用，最终独立接纳全部true、未解决差异为空。
+原运行器和旧结果没有被覆盖，冻结源码未改。原始目录 `outputs/smolvla_graph_cap_trace_563a8077/` 已到终点，不得再启动队列。
+当前工作只剩本报告的结果提交、正式发布及独立回执收尾；下方为历史结果。
+
+## 历史：E-RCV2已执行，两个候选恢复链成立，第四条模型超时，整体未通过
 
 2026-09-09，执行HEAD `9b7aa8685ae1978c553da6e6d7ac3d4b38e3b9e6`。
 本地终端完成准备、冻结、[预登记5603304679](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5603304679)实际ID单次exact回读与唯一四条native队列。
