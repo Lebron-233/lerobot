@@ -5,6 +5,8 @@
 2026-09-10，执行HEAD `63f1f3064b4aae954e63a0149f85a7ca221afc3a`，预登记5612120361正文exact后唯一运行。
 [完整结果](SMOLVLA_LIBERO_FUTURE_LATENT_R1_RESULT.md)、[机器摘要](SMOLVLA_LIBERO_FUTURE_LATENT_R1_RESULT.json)、
 [修正计划](SMOLVLA_LIBERO_FUTURE_LATENT_R1_PLAN.md)、[原训练合同](SMOLVLA_LIBERO_FUTURE_LATENT_PILOT_PLAN.md)。
+结果HEAD `dd7e9dbc68f2946e00ff45faba06ea9101d2c64a`已推送；正式评论5612169518实际ID单次GET正文exact。
+[独立发布回执](SMOLVLA_LIBERO_FUTURE_LATENT_R1_RECEIPT.md)另行提交；核验和发布无新增forward/native。
 旧F-LAT1 c5950d51因首个current token不一致在训练前停止，其报告和原件保留；r1使用原生worker准备路径，没有放宽exact门。
 E-NAT1的76对承诺前缀→future已对齐，train51/validation13/test12（任务0–5/6–7/8–9），全部delay3。
 两臂69,680参数、各200updates；conditioned选择step125，no_action选择175，test未用于调参。
