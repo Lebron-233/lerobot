@@ -7,6 +7,9 @@
 [完整报告](SMOLVLA_GRAPH_NATURAL_RESULT.md)、[机器结果](SMOLVLA_GRAPH_NATURAL_RESULT.json)、
 [冻结PLAN](SMOLVLA_GRAPH_NATURAL_PLAN.md)、[5项新CPU准备](SMOLVLA_GRAPH_NATURAL_TESTS.md)。
 旧E和E-RCV3均未重跑；本轮原始目录 `outputs/smolvla_graph_natural_2d672b5e/` 已结束。
+结果HEAD `c95a0190debe25276f57e631102cd76c7bfd6293`已推送，
+[正式结果5611860645](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5611860645)按实际ID单次GET正文exact；
+[独立发布回执](SMOLVLA_GRAPH_NATURAL_RECEIPT.md)另作提交，结果与回执不合并身份。
 
 20/20条完成、10/10初态exact，退出后独立CPU核验全部3670动作/150 planned接管/214请求历史与terminal通过。
 新`nat_native_closed_loop_contract_passed`、`nat_paired_scheduling_comparison_complete`及多行/重规划/重叠observed均true。

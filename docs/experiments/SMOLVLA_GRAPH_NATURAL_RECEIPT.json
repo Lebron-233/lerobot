@@ -1,0 +1,19 @@
+{
+  "experiment": "E-NAT1",
+  "execution_head": "2d672b5e3c9d56e54b21cc0a9211bab89f825f15",
+  "result_head": "c95a0190debe25276f57e631102cd76c7bfd6293",
+  "registration_comment_id": 5611778706,
+  "registration_readback_exact": true,
+  "result_comment_id": 5611860645,
+  "result_comment_url": "https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5611860645",
+  "created_at_utc": "2026-09-10T02:43:31Z",
+  "result_readback_exact": true,
+  "numeric_publication_validation_passed": true,
+  "independent_twenty_episode_contract_accepted": true,
+  "child_exit_code": 0,
+  "supervisor_exit_code": 0,
+  "attempts": 1,
+  "retries": 0,
+  "new_native_after_experiment": 0,
+  "background_experiment_running": false
+}
