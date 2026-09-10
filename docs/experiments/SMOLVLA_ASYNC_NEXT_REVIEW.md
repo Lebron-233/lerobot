@@ -7,6 +7,9 @@
 本次补全[运行与核验断点5611313602](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5611313602)，没有第二次实验。
 [完整结果](SMOLVLA_GRAPH_CAP_TRACE_RESULT.md)、[机器结果](SMOLVLA_GRAPH_CAP_TRACE_RESULT.json)、
 [冻结PLAN](SMOLVLA_GRAPH_CAP_TRACE_PLAN.md)、[原15项测试](SMOLVLA_GRAPH_CAP_TRACE_TESTS.md)。
+结果HEAD `83017092832a53b870aa3491ac4bd1835a10481d` 已推送；
+[正式结果评论5611585394](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5611585394)按POST返回实际ID单次GET，正文程序化exact。
+[独立发布与退出回执](SMOLVLA_GRAPH_CAP_TRACE_RECEIPT.md)另作提交，完整回执HEAD在提交后写入实际HANDOVER。
 
 两个disabled的paused request3接纳后raw14，快bootstrap request4/5均raw3但不入tracker；历史不变、后续planned0，cap_wait74/54。
 两个candidate各5个probe，request8将raw9→8；同epoch1/0的paused3→probe8→planned9→takeover index48→native49实际发送request9 row0。
@@ -30,7 +33,7 @@ child2847418 exit0、supervisor2847368 exit0均已确认；stop_reason和first_f
 首个收集器误读缺失elapsed、第二次误把外层journal和内层native时间要求相等，两个exit2原件保留。
 按冻结接口修正字段及区间关联后，仅JSON完成剩余检查exit0；已通过数组检查复用，最终独立接纳全部true、未解决差异为空。
 原运行器和旧结果没有被覆盖，冻结源码未改。原始目录 `outputs/smolvla_graph_cap_trace_563a8077/` 已到终点，不得再启动队列。
-当前工作只剩本报告的结果提交、正式发布及独立回执收尾；下方为历史结果。
+正式结果已提交推送、发布并完成exact回读；独立回执已落盘。本计划到此结束，下方为历史结果。
 
 ## 历史：E-RCV2已执行，两个候选恢复链成立，第四条模型超时，整体未通过
 
