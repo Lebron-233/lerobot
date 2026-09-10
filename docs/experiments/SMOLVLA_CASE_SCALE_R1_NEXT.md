@@ -20,3 +20,6 @@
 
 随后正式RESULT、结果评论与exact回读、发布回执分别提交。旧F-ACT1三份pending文档不动。
 当前无后台任务；生产默认、全部闭环资格false、risk_thresholds=null、confirmation保持。
+
+状态提交38181d37已推送，评论5616007958实际ID单次GET正文exact；
+独立状态发布回执见SMOLVLA_CASE_SCALE_R1_RECEIPT，不等于审计接纳。
