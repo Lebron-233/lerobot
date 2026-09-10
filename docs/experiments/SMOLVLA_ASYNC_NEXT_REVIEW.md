@@ -1,6 +1,31 @@
 # SmolVLA 异步接入：下一轮审阅差异
 
-## 当前：E-RCV3-trace独立核验通过，固定两对600ms受控暂停恢复机制对照接纳
+## 当前：E-NAT1完整20条正常运行调度对照通过，identity async测量wall减少3.858%
+
+2026-09-10。执行HEAD `2d672b5e3c9d56e54b21cc0a9211bab89f825f15`；
+预登记[5611778706](https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5611778706)实际ID一次GET exact后完成唯一新队列。
+[完整报告](SMOLVLA_GRAPH_NATURAL_RESULT.md)、[机器结果](SMOLVLA_GRAPH_NATURAL_RESULT.json)、
+[冻结PLAN](SMOLVLA_GRAPH_NATURAL_PLAN.md)、[5项新CPU准备](SMOLVLA_GRAPH_NATURAL_TESTS.md)。
+旧E和E-RCV3均未重跑；本轮原始目录 `outputs/smolvla_graph_natural_2d672b5e/` 已结束。
+
+20/20条完成、10/10初态exact，退出后独立CPU核验全部3670动作/150 planned接管/214请求历史与terminal通过。
+新`nat_native_closed_loop_contract_passed`、`nat_paired_scheduling_comparison_complete`及多行/重规划/重叠observed均true。
+两臂均8/10 success，task2/task5均TimeLimit；每对动作数相同，async十对wall均较短。
+serialized/async各1835动作、107主请求、75接管；测量wall95.342538100/91.663881869秒，减少3.678656231秒（3.858357775%）。
+无动作slots77/4，模型/native真实交集0/145；测量期完整chunk均值77.691/82.041ms。
+这是隐藏等待的描述性调度结果，不是模型推理本身变快、成功率改善或未来latent收益。
+
+Env20、settling200、measured3670、主214、capture40、内部40/120/40；7894 intent/7894 return、error/unknown0。
+20/20清理确认；child2857688和supervisor2857634均exit0，首错为空，独立外层282.169210750秒。
+数组2,971,610,852字节/初态checkpoint15,800,580字节，环境140项metadata不变。
+核验首轮Tensor/NumPy归档表示差异已修正读取方式并留日志；未改数据/判据或重跑native，最终CPU核验exit0。
+
+本轮没有probe，自然恢复observed仍false；不据此扩样或重新注入延迟。
+原生产默认disabled和全部科学资格false保持，旧确认队列不动。
+下一阶段应独立冻结原生predicted-context输入、state/action语义及收益对照；不再为已接纳的受控恢复机制重复做同一诊断。
+未来latent收益尚未开始，当前不能把identity调度结果写成predictor创新有效。
+
+## 历史：E-RCV3-trace独立核验通过，固定两对600ms受控暂停恢复机制对照接纳
 
 2026-09-10，执行HEAD `563a8077b69785e90763be98da4dbce1bea7a996`。
 原唯一队列已完成4/4条、2/2对；本次只完成退出后的CPU核验，新增model/Env/native/reference/predictor/训练均0，没有重跑15项准备测试。
