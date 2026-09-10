@@ -1,6 +1,26 @@
 # SmolVLA 异步接入：下一轮审阅差异
 
-## 当前：F-LAT2八条新初态与63例冻结评估完成，动作条件优势仍为混合结果
+## 当前：F-ACT1四组动作目标对照完整结束，联合监督选择回identity，未建立学习收益
+
+2026-09-10，执行HEAD `1666c067d9ea76dfb410dda0ac0c64334135ad38`，预登记5613998294单次正文exact。
+[报告](SMOLVLA_ACTION_OBJECTIVE_RESULT.md)、[机器摘要](SMOLVLA_ACTION_OBJECTIVE_RESULT.json)、
+[协议](SMOLVLA_ACTION_OBJECTIVE_PLAN.md)、[准备](SMOLVLA_ACTION_OBJECTIVE_TESTS.md)。
+12条新state46–47采集完成，train47/validation12/test30；旧state41–45/确认集和旧权重不读取。
+四组纯token/首动作joint × conditioned/no_action各69680参数、同seed、60步/batch1，VLA冻结。
+两个joint实际通过非零动作梯度和原生动作exact门，各完成60步，但共同验证标准选择0步，
+30/30 test token和完整50×32动作与identity exact；不是学到的改进或在线risk fallback。
+纯token两个选60步，测试token MSE好0.710243%/0.837526%，row0差4.890420%/9.978705%，chunk差5.123976%/3.976070%。
+运行器numeric `action_objective_row0_improved=true`只表示identity优于退化token模型；
+`nonidentity_joint_checkpoint_selected=false`、`learned_action_objective_benefit_demonstrated=false`、整体候选门false。
+独立核验一次通过2878动作/121接管/12初态/89prefix/834数值；另CPU确认联合检查点退回identity。
+Env12/settling120/main157/native capture24；encode101/decoder562/updates240/backward120/offline capture34。
+6117 intent/return、unknown0；child2884010/supervisor2883962 exit0、独立外层352.837374063s，无重试。
+当前唯一原件 `outputs/smolvla_action_objective_1666c067/` 已停止；不按负结果扩样或覆盖原登记。
+下一步先在训练/验证范围诊断同样本动作目标是否被优化、扩大训练初态覆盖；
+在验证选出优于identity的非零检查点之前，不继续消耗新的test，也不直接在线部署。
+本轮test30和旧test12/63都不用于接续选点；旧结论、生产默认、所有科学资格与confirmation保持。
+
+## 历史：F-LAT2八条新初态与63例冻结评估完成，动作条件优势仍为混合结果
 
 2026-09-10，执行HEAD `48e3c62a8fca3eb56d0f51e9027e31635957d6f7`，预登记5612668685正文exact后唯一运行。
 结果HEAD `dd44bb0cafcd3ff2e2c82015bffd6de90b76b89f`已推送；正式评论5612797920按实际ID单次GET正文exact。
