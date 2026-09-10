@@ -4,6 +4,8 @@
 `audit_final_reduction_contract` exit0，2558项数值检查通过、独立接纳true。
 仅对已知计算token尺度按冻结rtol1e-6/atol1e-7比较；其他字段exact，来源线程根因未确认且未重复被拒查询。
 完整指标见[正式RESULT](SMOLVLA_CASE_SCALE_R1_RESULT.md)及机器结果；旧STATUS和状态回执保留为历史。
+正式结果HEAD `e0897a1f6a4dd81c71dcf06735f5c4bda8e17623`已推送；评论5616215138已按实际ID单次GET正文exact。
+最终结果发布证据见[FINAL_RECEIPT](SMOLVLA_CASE_SCALE_R1_FINAL_RECEIPT.md)，与旧状态回执分开。
 
 case有动作选36步，首动作/整块相对identity低9.32%/25.65%；相对global有动作低2.34%/19.44%。
 但case无动作首动作更低约0.15%，开发候选门false。训练低误差18例受损由13降至9，
