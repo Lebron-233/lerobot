@@ -1,6 +1,8 @@
 # F-COV2后：独立评估负结果，回到开发，不直接部署
 
 本文件接续F-COV2完整报告，不修改旧F-ACT1待提交NEXT_REVIEW和回执。
+正式报告HEAD `4d98ad31e759172023dc6b83b9ead42f52ada432`已推送；
+正式评论5615328437已按实际ID单次GET，正文程序化exact。发布证据见本轮RECEIPT。
 执行HEAD 4ee28ccf；四episode/16例完成，独立审计接纳。
 multi_conditioned首动作比identity差11.465337%，比multi_no_action差2.349464%；
 整块比identity好5.148579%，但比multi_no_action差0.407573%。
