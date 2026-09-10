@@ -1,4 +1,4 @@
-"""F-SCL1: matched global versus per-case action scaling on development labels."""
+"""F-SCL1-r1: preserve verified mixed native delays in the fixed scale study."""
 
 import argparse
 import faulthandler
@@ -21,16 +21,34 @@ import libero_coverage_study as cov
 import torch
 
 e, pilot, opt = cov.e, cov.pilot, cov.opt
-PREP = e.REPO / "outputs/smolvla_case_scale_preparation_bb2931dd"
+PREP = e.REPO / "outputs/smolvla_case_scale_r1_preparation_eae8c863"
 OLD = e.REPO / "outputs/smolvla_action_objective_1666c067/development_labels.pt"
 NEW = e.REPO / "outputs/smolvla_coverage_6249b03d/new_labels.pt"
 ARMS = ("global_conditioned", "case_conditioned", "global_no_action", "case_no_action")
 SEED, UPDATES = 20260912, 72
+DELAY_FOUR_KEYS = frozenset(((3, 48, 6), (3, 49, 6), (4, 48, 6)))
 
 
 def file_digest(path):
     with path.open("rb") as stream:
         return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def validate_prefix(sample):
+    """Accept the exact source delay, not a blanket relaxation to mixed delays."""
+    expected = 4 if cov.sample_key(sample) in DELAY_FOUR_KEYS else 3
+    delay = sample["delay"]
+    if isinstance(delay, bool) or not isinstance(delay, int) or delay != expected:
+        raise ValueError("Native delay differs from the verified sample identity")
+    if sample["future_index"] != sample["current_index"] + delay:
+        raise ValueError("Future observation index differs from the committed prefix")
+    actions, mask = sample["actions"], sample["mask"]
+    if actions.shape != (1, 8, 7) or not actions.is_floating_point():
+        raise ValueError("Expected the unchanged padded normalized seven-dimensional prefix")
+    if mask.dtype != torch.bool or not torch.equal(mask, (torch.arange(8) < delay)[None]):
+        raise ValueError("Committed mask must match the verified delay")
+    if not torch.isfinite(actions).all() or torch.count_nonzero(actions[:, delay:]):
+        raise ValueError("Committed actions must be finite with original zero padding")
 
 
 def select_data(old, new):
@@ -42,8 +60,13 @@ def select_data(old, new):
     if {(s["task"], s["initial_state_id"]) for s in new} != expected:
         raise ValueError("Only the declared training/validation identities may be read")
     for s in new:
-        if s["split"] != ("train" if s["task"] < 6 else "validation") or s["delay"] != 3:
-            raise ValueError("Development split or native delay changed")
+        if s["split"] != ("train" if s["task"] < 6 else "validation"):
+            raise ValueError("Development split changed")
+        validate_prefix(s)
+    if {cov.sample_key(s) for s in new if s["delay"] == 4} != DELAY_FOUR_KEYS:
+        raise ValueError("The three source-verified four-step examples changed")
+    for s in selected:
+        validate_prefix(s)
     training = cov.pool_for(selected + [s for s in new if s["split"] == "train"], "multi_conditioned")
     validation = sorted((s for s in new if s["split"] == "validation"), key=cov.sample_key)
     groups = Counter((s["task"], s["initial_state_id"]) for s in training + validation)
@@ -247,15 +270,26 @@ def worker(args):
     faulthandler.register(signal.SIGUSR1, file=sys.stderr, all_threads=True)
     torch.set_num_threads(1)
     counts, runtime = Counter(), None
-    result = {"experiment": "F-SCL1", "status": "technical_failure", "first_failure": None}
+    result = {"experiment": "F-SCL1-r1", "status": "technical_failure", "first_failure": None}
     try:
         with pilot.phase(args.output, "load_development", 30):
             hashes = {str(p): file_digest(p) for p in (OLD, NEW)}
             if hashes != json.loads((PREP / "source_hashes.json").read_text()):
                 raise ValueError("Frozen development label bytes changed")
+            trace = json.loads((PREP / "source_trace.json").read_text())
+            if trace["source_trace_passed"] is not True or trace["label_sha256"] != hashes[str(NEW)]:
+                raise ValueError("CPU native source trace is missing or belongs to different labels")
             old = torch.load(OLD, map_location="cpu", weights_only=False)
             new = torch.load(NEW, map_location="cpu", weights_only=False)
             training, validation = select_data(old, new)
+            summary = {
+                "train": dict(Counter(str(s["delay"]) for s in training)),
+                "validation": dict(Counter(str(s["delay"]) for s in validation)),
+                "four_step_keys": sorted([list(cov.sample_key(s)) for s in training if s["delay"] == 4]),
+            }
+            if summary != json.loads((PREP / "data_summary.json").read_text()):
+                raise ValueError("Actual data differs from the CPU preparation snapshot")
+            result["actual_delay_summary"] = summary
             table = weight_table(training, cov.parent.train_scales(old))
             e.write_json(args.output / "training_weights.json", table)
             e.write_json(args.output / "source_hashes.json", hashes)
@@ -323,7 +357,7 @@ def worker(args):
 
 def supervise(args):
     opt.source_gate(args.execution_head)
-    expected = e.REPO / "outputs" / f"smolvla_case_scale_{args.execution_head[:8]}"
+    expected = e.REPO / "outputs" / f"smolvla_case_scale_r1_{args.execution_head[:8]}"
     if str(Path(sys.executable)) != e.PYTHON or args.output != expected or args.output.exists():
         raise ValueError("Use the fixed interpreter and unused output")
     registration = json.loads((PREP / "registration_readback.json").read_text())
@@ -354,7 +388,7 @@ def supervise(args):
         child = subprocess.Popen(
             cmd, cwd=e.REPO, stdout=log, stderr=subprocess.STDOUT, start_new_session=True
         )
-        print(f"F-SCL1 only worker pid={child.pid}", flush=True)
+        print(f"F-SCL1-r1 only worker pid={child.pid}", flush=True)
         try:
             while child.poll() is None:
                 cov.parent.previous.update_pending(args.output, cursors, pending, active)
