@@ -3,6 +3,8 @@
 ## 当前：F-LAT2八条新初态与63例冻结评估完成，动作条件优势仍为混合结果
 
 2026-09-10，执行HEAD `48e3c62a8fca3eb56d0f51e9027e31635957d6f7`，预登记5612668685正文exact后唯一运行。
+结果HEAD `dd44bb0cafcd3ff2e2c82015bffd6de90b76b89f`已推送；正式评论5612797920按实际ID单次GET正文exact。
+[独立发布回执](SMOLVLA_LIBERO_FROZEN_NEWSTATE_RECEIPT.md)另行提交。
 [完整报告](SMOLVLA_LIBERO_FROZEN_NEWSTATE_RESULT.md)、[机器摘要](SMOLVLA_LIBERO_FROZEN_NEWSTATE_RESULT.json)、
 [固定计划](SMOLVLA_LIBERO_FROZEN_NEWSTATE_PLAN.md)。八条task8/9×state42–45完成，63例全部delay3；
 原conditioned125/no_action175检查点冻结，训练0，预测器没有控制Env，旧state41与确认集21–40不动。

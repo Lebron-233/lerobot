@@ -1,0 +1,17 @@
+{
+  "execution_head": "48e3c62a8fca3eb56d0f51e9027e31635957d6f7",
+  "result_head": "dd44bb0cafcd3ff2e2c82015bffd6de90b76b89f",
+  "registration_comment_id": 5612668685,
+  "result_comment_id": 5612797920,
+  "result_comment_url": "https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5612797920",
+  "created_at_utc": "2026-09-10T04:03:27Z",
+  "readback_exact": true,
+  "independent_contract_accepted": true,
+  "frozen_action_increment_observed": false,
+  "new_forward_after_experiment": 0,
+  "new_native_after_experiment": 0,
+  "child_exit_code": 0,
+  "supervisor_exit_code": 0,
+  "attempts": 1,
+  "retries": 0
+}
