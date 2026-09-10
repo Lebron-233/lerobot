@@ -1,6 +1,27 @@
 # SmolVLA 异步接入：下一轮审阅差异
 
-## 当前：F-LAT1-r1离线预测及动作消融完成，动作条件优势尚未建立
+## 当前：F-LAT2八条新初态与63例冻结评估完成，动作条件优势仍为混合结果
+
+2026-09-10，执行HEAD `48e3c62a8fca3eb56d0f51e9027e31635957d6f7`，预登记5612668685正文exact后唯一运行。
+[完整报告](SMOLVLA_LIBERO_FROZEN_NEWSTATE_RESULT.md)、[机器摘要](SMOLVLA_LIBERO_FROZEN_NEWSTATE_RESULT.json)、
+[固定计划](SMOLVLA_LIBERO_FROZEN_NEWSTATE_PLAN.md)。八条task8/9×state42–45完成，63例全部delay3；
+原conditioned125/no_action175检查点冻结，训练0，预测器没有控制Env，旧state41与确认集21–40不动。
+独立CPU核验1528动作/63接管/8初态/63identity完整chunk和819数值比较通过，冻结权重前后exact。
+3279 intent/return，unknown0；71编码、3批predictor、315decoder、native/offline capture16/2；child和监督exit0。
+首轮审计遗漏metrics属性已补齐并留exit1原件；无新forward/native，最终独立接纳true。
+
+episode等权：conditioned相对identity token/row0/chunk误差降低0.834795%/1.658601%/18.725563%；
+no_action的chunk下降21.315643%，仍优于conditioned。conditioned row0仅3/8条优于identity，
+其task8宏平均差3.071427%、task9好3.669105%；按两个动作指标同时胜过两个基线的预设门，增量observed=false。
+错配动作改变63/63前缀及首动作；真实前缀相对错配row0/chunk误差低6.847592%/2.166029%，
+说明输出对动作敏感，但不是整体胜出或因果闭环证据。采集6/8 success不能归给predictor。
+
+下一步不是重复旧测试或直接上线，而是在独立训练/验证划分比较纯token与首动作相关监督，
+保留no_action基线；当前63例已用于报告，不用于后续选点/调参，新方案需新的评估数据。
+生产默认、baseline/realtime/predictor闭环资格false、risk_thresholds=null及旧confirmation保持。
+原件 `outputs/smolvla_frozen_newstate_48e3c62a/` 到达停止点，不能重跑或与旧12例拼作新留出集。
+
+## 历史：F-LAT1-r1离线预测及动作消融完成，动作条件优势尚未建立
 
 2026-09-10，执行HEAD `63f1f3064b4aae954e63a0149f85a7ca221afc3a`，预登记5612120361正文exact后唯一运行。
 [完整结果](SMOLVLA_LIBERO_FUTURE_LATENT_R1_RESULT.md)、[机器摘要](SMOLVLA_LIBERO_FUTURE_LATENT_R1_RESULT.json)、
