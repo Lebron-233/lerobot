@@ -1,4 +1,4 @@
-"""F-LAT1: one frozen offline pilot, using actual native committed prefixes.
+"""F-LAT1-r1: native-worker preprocessing for the frozen offline pilot.
 
 No Env is created. Future observations are supervision/privileged references,
 never predictor inputs. Both action comparisons keep the original current state.
@@ -21,14 +21,14 @@ from pathlib import Path
 import libero_graph_identity_native as e
 import numpy as np
 import torch
-from libero_reference_smoke import policy_observation
 from smolvla_graph_runtime import SmolVLAGraphRuntime
 
 from lerobot.policies.smolvla.configuration_future_latent import FutureLatentConfig
 from lerobot.policies.smolvla.future_latent import LightweightFutureLatentPredictor
 
 SOURCE = e.REPO / "outputs/smolvla_graph_natural_2d672b5e"
-PREPARATION = e.REPO / "outputs/smolvla_libero_future_latent_preparation_195ff5fa"
+PREPARATION = e.REPO / "outputs/smolvla_libero_future_latent_r1_preparation_c5950d51"
+PREPARED_PAIRS = e.REPO / "outputs/smolvla_libero_future_latent_preparation_195ff5fa/prepared_pairs.pt"
 ARMS = ("conditioned", "no_action")
 SEED = 20260910
 UPDATES = 200
@@ -121,17 +121,23 @@ def aligned_pairs(record, arrays):
     return pairs, excluded
 
 
-def raw_observation(saved):
-    return {
-        "pixels": {k: tensor(v).numpy() for k, v in saved["raw_pixels"].items()},
-        "robot_state": {
-            "eef": {
-                "pos": tensor(saved["raw_eef_position"]).numpy(),
-                "quat": tensor(saved["eef_quaternion_xyzw"]).numpy(),
-            },
-            "gripper": {"qpos": tensor(saved["raw_gripper_qpos"]).numpy()},
+def worker_batch(saved, language, device):
+    """Use the exact native worker path, including uint8 /255 on its device."""
+    observation = {
+        k: v.numpy().copy() if isinstance(v, torch.Tensor) else v
+        for k, v in saved["worker_observation"].items()
+    }
+    features = {
+        e.OBS_STATE: {"dtype": "float32", "shape": (8,), "names": [f"state_{i}" for i in range(8)]},
+        **{
+            key: {"dtype": "video", "shape": observation[key.rsplit(".", 1)[1]].shape}
+            for key in e.CAMERA_KEYS
         },
     }
+    batch = e.build_dataset_frame(features, observation, prefix="observation")
+    batch = e.prepare_observation_for_inference(batch, torch.device(device), language, "libero")
+    batch["task"] = [language]
+    return batch
 
 
 @contextmanager
@@ -158,7 +164,7 @@ def phase(output, name, limit=120):
 
 def extract(policy, pre, output, counts):
     samples, source_manifest = [], []
-    prepared = torch.load(PREPARATION / "prepared_pairs.pt", map_location="cpu", weights_only=False)
+    prepared = torch.load(PREPARED_PAIRS, map_location="cpu", weights_only=False)
     for case in prepared:
         spec = case["spec"]
         task, ordinal = spec["task_id"], spec["ordinal"]
@@ -183,15 +189,23 @@ def extract(policy, pre, output, counts):
                     with phase(output, f"encode_{task}_{pair['request_id']}_{kind}", 15):
                         counts["encoding_batches"] += 1
                         pre.reset()
-                        batch = pre(
-                            policy_observation(raw_observation(pair[f"{kind}_observation"]), language)
-                        )
+                        batch = pre(worker_batch(pair[f"{kind}_observation"], language, "cuda"))
                         images, masks = policy.prepare_images(batch)
                         z, zm = policy.model.encode_image_tokens(images, masks)
                         z = tuple(v.detach().cpu().clone() for v in z)
                         zm = tuple(v.detach().cpu().clone() for v in zm)
                         state = policy.prepare_state(batch).detach().cpu().clone()
                     if kind == "current":
+                        comparison = {
+                            "task": task,
+                            "request_id": pair["request_id"],
+                            "camera_max_abs": [
+                                (z[c].float() - inputs[c].float()).abs().max().item() for c in range(2)
+                            ],
+                            "state_exact": torch.equal(state, inputs[6]),
+                        }
+                        with (output / "current_input_comparisons.jsonl").open("a") as stream:
+                            stream.write(json.dumps(comparison) + "\n")
                         for camera in range(2):
                             require_equal(
                                 z[camera], inputs[camera], "Current-token extraction differs from archive"
@@ -411,7 +425,7 @@ def evaluate(samples, models, policy, output, counts, indices):
 
 def worker(args):
     counts = Counter()
-    result = {"status": "technical_failure", "first_failure": None, "experiment": "F-LAT1"}
+    result = {"status": "technical_failure", "first_failure": None, "experiment": "F-LAT1-r1"}
     try:
         e.require_source(args.execution_head)
         torch.set_num_threads(1)
@@ -463,7 +477,7 @@ def worker(args):
 
 def supervise(args):
     e.require_source(args.execution_head)
-    expected = e.REPO / "outputs" / f"smolvla_libero_future_latent_{args.execution_head[:8]}"
+    expected = e.REPO / "outputs" / f"smolvla_libero_future_latent_r1_{args.execution_head[:8]}"
     if args.output != expected or args.output.exists() or sys.executable != e.PYTHON:
         raise ValueError("Use the frozen Python and absent exclusive output")
     registration = json.loads((PREPARATION / "registration_readback.json").read_text())

@@ -141,3 +141,27 @@ def test_error_is_sample_mean_not_a_token_magnitude_proxy():
     t = (torch.zeros_like(p[0]),)
     m = (torch.tensor([[True, False], [True, True]]),)
     assert pilot.per_sample_mse(p, t, m).tolist() == [1, 4]
+
+
+def test_worker_batch_uses_saved_worker_uint8_and_original_features():
+    obs = {f"state_{i}": i / 10 for i in range(8)}
+    for key in pilot.e.CAMERA_KEYS:
+        obs[key.rsplit(".", 1)[1]] = torch.arange(18, dtype=torch.uint8).reshape(2, 3, 3)
+    saved = {"worker_observation": obs}
+    batch = pilot.worker_batch(saved, "pick up", "cpu")
+    assert batch["task"] == ["pick up"] and batch["robot_type"] == "libero"
+    assert batch[pilot.e.OBS_STATE].shape == (1, 8)
+    for key in pilot.e.CAMERA_KEYS:
+        image = obs[key.rsplit(".", 1)[1]]
+        assert torch.equal(batch[key], (image.float() / 255).permute(2, 0, 1)[None])
+        assert image.dtype == torch.uint8
+
+
+def test_worker_batch_does_not_reconstruct_or_double_rotate_raw_pixels():
+    obs = {f"state_{i}": 0.0 for i in range(8)}
+    for key in pilot.e.CAMERA_KEYS:
+        obs[key.rsplit(".", 1)[1]] = torch.zeros(2, 3, 3, dtype=torch.uint8)
+    obs[pilot.e.CAMERA_KEYS[0].rsplit(".", 1)[1]][0, 0, 0] = 255
+    batch = pilot.worker_batch({"worker_observation": obs, "raw_pixels": "not an input"}, "task", "cpu")
+    assert batch[pilot.e.CAMERA_KEYS[0]][0, 0, 0, 0] == 1
+    assert batch[pilot.e.CAMERA_KEYS[0]].sum() == 1
