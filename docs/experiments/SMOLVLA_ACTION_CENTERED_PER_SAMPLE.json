@@ -1,0 +1,7850 @@
+{
+  "experiment": "F-ACR1",
+  "execution_head": "2926678f0f1c0e62f53f1d4c46fcb71c9dd47cf5",
+  "source": {
+    "assessment_files": [
+      "assessment_selected_centered.pt",
+      "assessment_selected_ordinary.pt"
+    ],
+    "metrics": "worker FP32 saved metrics",
+    "independent_audit": {
+      "file": "independent_audit.json",
+      "accepted": true,
+      "gate_passed": true,
+      "comparison": "CPU reduction tolerance passed; aggregate values are not claimed to be bitwise or per-value identical"
+    }
+  },
+  "row_count": 522,
+  "rows": [
+    {
+      "key": [
+        0,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2454.01904296875,
+        "row0": 0.002850234741345048,
+        "chunk": 0.02471894584596157
+      }
+    },
+    {
+      "key": [
+        0,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2450.676025390625,
+        "row0": 0.0007496635662391782,
+        "chunk": 0.003630035324022174
+      }
+    },
+    {
+      "key": [
+        0,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2455.935791015625,
+        "row0": 0.004533412866294384,
+        "chunk": 0.04489516466856003
+      }
+    },
+    {
+      "key": [
+        0,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 1718.3148193359375,
+        "row0": 0.001656331936828792,
+        "chunk": 0.0025134265888482332
+      }
+    },
+    {
+      "key": [
+        0,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 1715.7578125,
+        "row0": 0.002363105770200491,
+        "chunk": 0.017728574573993683
+      }
+    },
+    {
+      "key": [
+        0,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1721.9239501953125,
+        "row0": 0.026697346940636635,
+        "chunk": 0.06637456268072128
+      }
+    },
+    {
+      "key": [
+        0,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2530.66748046875,
+        "row0": 0.04649990051984787,
+        "chunk": 0.009441535919904709
+      }
+    },
+    {
+      "key": [
+        0,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2531.9765625,
+        "row0": 0.1194419115781784,
+        "chunk": 0.06110618636012077
+      }
+    },
+    {
+      "key": [
+        0,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2533.8505859375,
+        "row0": 0.13043351471424103,
+        "chunk": 0.06973650306463242
+      }
+    },
+    {
+      "key": [
+        0,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 1232.3614501953125,
+        "row0": 0.0023460618685930967,
+        "chunk": 0.00285785342566669
+      }
+    },
+    {
+      "key": [
+        0,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 1232.0333251953125,
+        "row0": 0.005449498537927866,
+        "chunk": 0.0031774064991623163
+      }
+    },
+    {
+      "key": [
+        0,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1233.3046875,
+        "row0": 0.0012947933282703161,
+        "chunk": 0.016524210572242737
+      }
+    },
+    {
+      "key": [
+        0,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2884.572021484375,
+        "row0": 0.0034056100994348526,
+        "chunk": 0.018417172133922577
+      }
+    },
+    {
+      "key": [
+        0,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2882.69482421875,
+        "row0": 0.0018181554041802883,
+        "chunk": 0.037524979561567307
+      }
+    },
+    {
+      "key": [
+        0,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2885.61279296875,
+        "row0": 0.004828857723623514,
+        "chunk": 0.017286652699112892
+      }
+    },
+    {
+      "key": [
+        0,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2422.64599609375,
+        "row0": 0.007636328227818012,
+        "chunk": 0.014775000512599945
+      }
+    },
+    {
+      "key": [
+        0,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2419.71826171875,
+        "row0": 0.012514474801719189,
+        "chunk": 0.014120888896286488
+      }
+    },
+    {
+      "key": [
+        0,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2424.649658203125,
+        "row0": 0.03619538992643356,
+        "chunk": 0.0667320117354393
+      }
+    },
+    {
+      "key": [
+        0,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 1493.3460693359375,
+        "row0": 0.0016722047002986073,
+        "chunk": 0.021853607147932053
+      }
+    },
+    {
+      "key": [
+        0,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 1491.7371826171875,
+        "row0": 0.002325709443539381,
+        "chunk": 0.016259845346212387
+      }
+    },
+    {
+      "key": [
+        0,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1495.1439208984375,
+        "row0": 0.004803076386451721,
+        "chunk": 0.042081862688064575
+      }
+    },
+    {
+      "key": [
+        0,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 1452.57861328125,
+        "row0": 0.00830948818475008,
+        "chunk": 0.04005281254649162
+      }
+    },
+    {
+      "key": [
+        0,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 1451.005615234375,
+        "row0": 0.003214979311451316,
+        "chunk": 0.006771158427000046
+      }
+    },
+    {
+      "key": [
+        0,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1452.621337890625,
+        "row0": 0.008512347005307674,
+        "chunk": 0.041524700820446014
+      }
+    },
+    {
+      "key": [
+        0,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2848.568115234375,
+        "row0": 0.002502841642126441,
+        "chunk": 0.0026984186843037605
+      }
+    },
+    {
+      "key": [
+        0,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2848.238037109375,
+        "row0": 0.0004266123578418046,
+        "chunk": 0.004045299720019102
+      }
+    },
+    {
+      "key": [
+        0,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2849.40673828125,
+        "row0": 0.0062302942387759686,
+        "chunk": 0.003058909671381116
+      }
+    },
+    {
+      "key": [
+        0,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2556.246337890625,
+        "row0": 0.005014199297875166,
+        "chunk": 0.03335092216730118
+      }
+    },
+    {
+      "key": [
+        0,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2554.331298828125,
+        "row0": 0.01912727952003479,
+        "chunk": 0.07702451199293137
+      }
+    },
+    {
+      "key": [
+        0,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2561.501708984375,
+        "row0": 0.06308668851852417,
+        "chunk": 0.25044384598731995
+      }
+    },
+    {
+      "key": [
+        0,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 1672.71142578125,
+        "row0": 0.010033199563622475,
+        "chunk": 0.00512216379866004
+      }
+    },
+    {
+      "key": [
+        0,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 1670.6328125,
+        "row0": 0.006523918826133013,
+        "chunk": 0.007033531088382006
+      }
+    },
+    {
+      "key": [
+        0,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1671.1629638671875,
+        "row0": 0.0074770161882042885,
+        "chunk": 0.00322932843118906
+      }
+    },
+    {
+      "key": [
+        0,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 3696.992431640625,
+        "row0": 0.0007406587828882039,
+        "chunk": 0.002824725117534399
+      }
+    },
+    {
+      "key": [
+        0,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 3697.190673828125,
+        "row0": 0.0031970280688256025,
+        "chunk": 0.0033339569345116615
+      }
+    },
+    {
+      "key": [
+        0,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 3700.0771484375,
+        "row0": 0.0075316037982702255,
+        "chunk": 0.00506224948912859
+      }
+    },
+    {
+      "key": [
+        1,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2791.926513671875,
+        "row0": 0.013225560076534748,
+        "chunk": 0.03534048795700073
+      }
+    },
+    {
+      "key": [
+        1,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2788.958740234375,
+        "row0": 0.03389360383152962,
+        "chunk": 0.06154986843466759
+      }
+    },
+    {
+      "key": [
+        1,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2793.95361328125,
+        "row0": 0.007714543491601944,
+        "chunk": 0.019747411832213402
+      }
+    },
+    {
+      "key": [
+        1,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2836.18017578125,
+        "row0": 0.002571112010627985,
+        "chunk": 0.12012879550457001
+      }
+    },
+    {
+      "key": [
+        1,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2832.1552734375,
+        "row0": 0.01171787641942501,
+        "chunk": 0.13748155534267426
+      }
+    },
+    {
+      "key": [
+        1,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2837.51708984375,
+        "row0": 0.04939725250005722,
+        "chunk": 0.15072371065616608
+      }
+    },
+    {
+      "key": [
+        1,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2929.25634765625,
+        "row0": 0.011677148751914501,
+        "chunk": 0.011083082295954227
+      }
+    },
+    {
+      "key": [
+        1,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2927.76416015625,
+        "row0": 0.001331471255980432,
+        "chunk": 0.032708946615457535
+      }
+    },
+    {
+      "key": [
+        1,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2928.09326171875,
+        "row0": 0.010547676123678684,
+        "chunk": 0.007838530465960503
+      }
+    },
+    {
+      "key": [
+        1,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2630.888427734375,
+        "row0": 0.01904461160302162,
+        "chunk": 0.39803382754325867
+      }
+    },
+    {
+      "key": [
+        1,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2626.853271484375,
+        "row0": 0.015021019615232944,
+        "chunk": 0.2678176462650299
+      }
+    },
+    {
+      "key": [
+        1,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2629.691650390625,
+        "row0": 0.03581232577562332,
+        "chunk": 0.1433655470609665
+      }
+    },
+    {
+      "key": [
+        1,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 1972.715576171875,
+        "row0": 0.01240426953881979,
+        "chunk": 0.13004516065120697
+      }
+    },
+    {
+      "key": [
+        1,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 1971.45166015625,
+        "row0": 0.030737970024347305,
+        "chunk": 0.17855586111545563
+      }
+    },
+    {
+      "key": [
+        1,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1972.730224609375,
+        "row0": 0.011060711927711964,
+        "chunk": 0.12524302303791046
+      }
+    },
+    {
+      "key": [
+        1,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 3060.1552734375,
+        "row0": 0.003682424547150731,
+        "chunk": 0.023742076009511948
+      }
+    },
+    {
+      "key": [
+        1,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 3058.286865234375,
+        "row0": 0.0015025536995381117,
+        "chunk": 0.002497859764844179
+      }
+    },
+    {
+      "key": [
+        1,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 3063.28759765625,
+        "row0": 0.009392844513058662,
+        "chunk": 0.044156331568956375
+      }
+    },
+    {
+      "key": [
+        1,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2950.96728515625,
+        "row0": 0.03044939786195755,
+        "chunk": 0.40677621960639954
+      }
+    },
+    {
+      "key": [
+        1,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2947.24755859375,
+        "row0": 0.0794910117983818,
+        "chunk": 0.3255544602870941
+      }
+    },
+    {
+      "key": [
+        1,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2946.88037109375,
+        "row0": 0.07025222480297089,
+        "chunk": 0.40129968523979187
+      }
+    },
+    {
+      "key": [
+        1,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 1739.327392578125,
+        "row0": 0.002428848296403885,
+        "chunk": 0.0052540977485477924
+      }
+    },
+    {
+      "key": [
+        1,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 1739.29638671875,
+        "row0": 0.0005780206411145627,
+        "chunk": 0.003366998862475157
+      }
+    },
+    {
+      "key": [
+        1,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1741.286376953125,
+        "row0": 0.0019182279938831925,
+        "chunk": 0.0019832937978208065
+      }
+    },
+    {
+      "key": [
+        1,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2299.78369140625,
+        "row0": 0.007912078872323036,
+        "chunk": 0.040842339396476746
+      }
+    },
+    {
+      "key": [
+        1,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2298.210693359375,
+        "row0": 0.017667455598711967,
+        "chunk": 0.027828963473439217
+      }
+    },
+    {
+      "key": [
+        1,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2300.378173828125,
+        "row0": 0.007189338561147451,
+        "chunk": 0.04341534525156021
+      }
+    },
+    {
+      "key": [
+        1,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 1625.66845703125,
+        "row0": 0.006504758261144161,
+        "chunk": 0.204154372215271
+      }
+    },
+    {
+      "key": [
+        1,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 1624.3272705078125,
+        "row0": 0.007036817260086536,
+        "chunk": 0.21638695895671844
+      }
+    },
+    {
+      "key": [
+        1,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1630.80322265625,
+        "row0": 0.6402095556259155,
+        "chunk": 0.24462896585464478
+      }
+    },
+    {
+      "key": [
+        1,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2361.6767578125,
+        "row0": 0.018803855404257774,
+        "chunk": 0.007321925833821297
+      }
+    },
+    {
+      "key": [
+        1,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2362.92041015625,
+        "row0": 0.05489420145750046,
+        "chunk": 0.01865176297724247
+      }
+    },
+    {
+      "key": [
+        1,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2361.652099609375,
+        "row0": 0.0532713383436203,
+        "chunk": 0.01890823431313038
+      }
+    },
+    {
+      "key": [
+        1,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 1774.1707763671875,
+        "row0": 0.009891480207443237,
+        "chunk": 0.020123710855841637
+      }
+    },
+    {
+      "key": [
+        1,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 1774.724853515625,
+        "row0": 0.013757538050413132,
+        "chunk": 0.020688917487859726
+      }
+    },
+    {
+      "key": [
+        1,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1776.4708251953125,
+        "row0": 0.03341180086135864,
+        "chunk": 0.02344839833676815
+      }
+    },
+    {
+      "key": [
+        2,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2431.215087890625,
+        "row0": 0.001660707639530301,
+        "chunk": 0.08383180946111679
+      }
+    },
+    {
+      "key": [
+        2,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2431.130126953125,
+        "row0": 0.005687023978680372,
+        "chunk": 0.11117866635322571
+      }
+    },
+    {
+      "key": [
+        2,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2431.215576171875,
+        "row0": 0.0017085340805351734,
+        "chunk": 0.07302790880203247
+      }
+    },
+    {
+      "key": [
+        2,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2166.87744140625,
+        "row0": 0.0022793649695813656,
+        "chunk": 0.008105868473649025
+      }
+    },
+    {
+      "key": [
+        2,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2164.39501953125,
+        "row0": 0.00046376645332202315,
+        "chunk": 0.0060372850857675076
+      }
+    },
+    {
+      "key": [
+        2,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2167.531005859375,
+        "row0": 0.6088297367095947,
+        "chunk": 0.038521282374858856
+      }
+    },
+    {
+      "key": [
+        2,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 4415.673828125,
+        "row0": 1.0446223020553589,
+        "chunk": 0.1085657998919487
+      }
+    },
+    {
+      "key": [
+        2,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 4416.8623046875,
+        "row0": 1.077857494354248,
+        "chunk": 0.10862944275140762
+      }
+    },
+    {
+      "key": [
+        2,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 4418.05908203125,
+        "row0": 1.0975159406661987,
+        "chunk": 0.11213043332099915
+      }
+    },
+    {
+      "key": [
+        2,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2717.3359375,
+        "row0": 0.0049651735462248325,
+        "chunk": 0.015598127618432045
+      }
+    },
+    {
+      "key": [
+        2,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2717.2021484375,
+        "row0": 0.0058359368704259396,
+        "chunk": 0.013997494243085384
+      }
+    },
+    {
+      "key": [
+        2,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2717.92529296875,
+        "row0": 0.006227248813956976,
+        "chunk": 0.03545860946178436
+      }
+    },
+    {
+      "key": [
+        2,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 4010.63671875,
+        "row0": 0.022776762023568153,
+        "chunk": 0.00406982097774744
+      }
+    },
+    {
+      "key": [
+        2,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 4009.3623046875,
+        "row0": 0.018943168222904205,
+        "chunk": 0.0069607836194336414
+      }
+    },
+    {
+      "key": [
+        2,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 4012.5869140625,
+        "row0": 0.025746921077370644,
+        "chunk": 0.0035442011430859566
+      }
+    },
+    {
+      "key": [
+        2,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 1935.749267578125,
+        "row0": 0.0065280115231871605,
+        "chunk": 0.08861728757619858
+      }
+    },
+    {
+      "key": [
+        2,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 1934.5640869140625,
+        "row0": 0.002402885816991329,
+        "chunk": 0.007886662147939205
+      }
+    },
+    {
+      "key": [
+        2,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1938.8182373046875,
+        "row0": 0.009052963927388191,
+        "chunk": 0.05437878146767616
+      }
+    },
+    {
+      "key": [
+        2,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2374.08349609375,
+        "row0": 0.0036760573275387287,
+        "chunk": 0.007023119367659092
+      }
+    },
+    {
+      "key": [
+        2,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2371.902099609375,
+        "row0": 0.00046483296318911016,
+        "chunk": 0.0017192463856190443
+      }
+    },
+    {
+      "key": [
+        2,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2377.021240234375,
+        "row0": 0.00669260835275054,
+        "chunk": 0.011938328854739666
+      }
+    },
+    {
+      "key": [
+        2,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 3006.17236328125,
+        "row0": 0.005239690188318491,
+        "chunk": 0.0035123357083648443
+      }
+    },
+    {
+      "key": [
+        2,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 3000.555908203125,
+        "row0": 0.02774769440293312,
+        "chunk": 0.01809353195130825
+      }
+    },
+    {
+      "key": [
+        2,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 3001.516357421875,
+        "row0": 0.06481407582759857,
+        "chunk": 0.02318614348769188
+      }
+    },
+    {
+      "key": [
+        2,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 3261.757568359375,
+        "row0": 0.0017153159715235233,
+        "chunk": 0.013854198157787323
+      }
+    },
+    {
+      "key": [
+        2,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 3260.13427734375,
+        "row0": 0.0024887111503630877,
+        "chunk": 0.019123949110507965
+      }
+    },
+    {
+      "key": [
+        2,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 3262.77294921875,
+        "row0": 0.005117710214108229,
+        "chunk": 0.011642491444945335
+      }
+    },
+    {
+      "key": [
+        2,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 1034.8636474609375,
+        "row0": 0.009629380889236927,
+        "chunk": 0.03815383464097977
+      }
+    },
+    {
+      "key": [
+        2,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 1032.0909423828125,
+        "row0": 0.0034118201583623886,
+        "chunk": 0.022410990670323372
+      }
+    },
+    {
+      "key": [
+        2,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1035.276123046875,
+        "row0": 0.00675578135997057,
+        "chunk": 0.002679849974811077
+      }
+    },
+    {
+      "key": [
+        2,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 3323.50537109375,
+        "row0": 0.043263617902994156,
+        "chunk": 0.0064696138724684715
+      }
+    },
+    {
+      "key": [
+        2,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 3320.335205078125,
+        "row0": 0.03167157620191574,
+        "chunk": 0.04270743951201439
+      }
+    },
+    {
+      "key": [
+        2,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 3319.94970703125,
+        "row0": 0.029612530022859573,
+        "chunk": 0.02299126796424389
+      }
+    },
+    {
+      "key": [
+        2,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 878.8396606445312,
+        "row0": 0.008038552477955818,
+        "chunk": 0.003087193239480257
+      }
+    },
+    {
+      "key": [
+        2,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 879.2698974609375,
+        "row0": 0.0307612381875515,
+        "chunk": 0.011167929507791996
+      }
+    },
+    {
+      "key": [
+        2,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 881.4784545898438,
+        "row0": 0.08906318992376328,
+        "chunk": 0.024375267326831818
+      }
+    },
+    {
+      "key": [
+        3,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2620.46533203125,
+        "row0": 0.01768241822719574,
+        "chunk": 0.00985716562718153
+      }
+    },
+    {
+      "key": [
+        3,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2619.394287109375,
+        "row0": 0.02682209573686123,
+        "chunk": 0.015466281212866306
+      }
+    },
+    {
+      "key": [
+        3,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2621.64697265625,
+        "row0": 0.012803163379430771,
+        "chunk": 0.007854386232793331
+      }
+    },
+    {
+      "key": [
+        3,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 1065.4849853515625,
+        "row0": 0.0039007668383419514,
+        "chunk": 0.0017473013140261173
+      }
+    },
+    {
+      "key": [
+        3,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 1063.3905029296875,
+        "row0": 0.0007770720985718071,
+        "chunk": 0.015177436172962189
+      }
+    },
+    {
+      "key": [
+        3,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1068.3677978515625,
+        "row0": 0.0212697796523571,
+        "chunk": 0.08138822019100189
+      }
+    },
+    {
+      "key": [
+        3,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 1482.49609375,
+        "row0": 0.5887080430984497,
+        "chunk": 0.05969179421663284
+      }
+    },
+    {
+      "key": [
+        3,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 1479.9193115234375,
+        "row0": 0.598777174949646,
+        "chunk": 0.1087687686085701
+      }
+    },
+    {
+      "key": [
+        3,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1483.432861328125,
+        "row0": 0.6026976108551025,
+        "chunk": 0.15303488075733185
+      }
+    },
+    {
+      "key": [
+        3,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 1994.4627685546875,
+        "row0": 0.005702250637114048,
+        "chunk": 0.01502742525190115
+      }
+    },
+    {
+      "key": [
+        3,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 1992.381591796875,
+        "row0": 0.0009002971346490085,
+        "chunk": 0.0022683683782815933
+      }
+    },
+    {
+      "key": [
+        3,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1993.4581298828125,
+        "row0": 0.0025331731885671616,
+        "chunk": 0.0022567855194211006
+      }
+    },
+    {
+      "key": [
+        3,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2764.78955078125,
+        "row0": 0.028122752904891968,
+        "chunk": 0.03958746790885925
+      }
+    },
+    {
+      "key": [
+        3,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2763.9951171875,
+        "row0": 0.04595419391989708,
+        "chunk": 0.083951435983181
+      }
+    },
+    {
+      "key": [
+        3,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2766.12353515625,
+        "row0": 0.025178750976920128,
+        "chunk": 0.024422815069556236
+      }
+    },
+    {
+      "key": [
+        3,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 1118.394287109375,
+        "row0": 0.008693677373230457,
+        "chunk": 0.05199707671999931
+      }
+    },
+    {
+      "key": [
+        3,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 1114.9959716796875,
+        "row0": 0.002603464759886265,
+        "chunk": 0.10846570879220963
+      }
+    },
+    {
+      "key": [
+        3,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1117.1610107421875,
+        "row0": 0.017697617411613464,
+        "chunk": 0.1375354528427124
+      }
+    },
+    {
+      "key": [
+        3,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 1709.6500244140625,
+        "row0": 0.05532248318195343,
+        "chunk": 0.03740399703383446
+      }
+    },
+    {
+      "key": [
+        3,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 1709.82275390625,
+        "row0": 0.3423822522163391,
+        "chunk": 0.0736171156167984
+      }
+    },
+    {
+      "key": [
+        3,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1713.2281494140625,
+        "row0": 0.47397029399871826,
+        "chunk": 0.09598178416490555
+      }
+    },
+    {
+      "key": [
+        3,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 1097.335693359375,
+        "row0": 0.0009175237501040101,
+        "chunk": 0.06351760029792786
+      }
+    },
+    {
+      "key": [
+        3,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 1097.3370361328125,
+        "row0": 0.0011171536752954125,
+        "chunk": 0.061791542917490005
+      }
+    },
+    {
+      "key": [
+        3,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2192.47216796875,
+        "row0": 0.004435849376022816,
+        "chunk": 0.04131707549095154
+      }
+    },
+    {
+      "key": [
+        3,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2191.08740234375,
+        "row0": 0.00343636074103415,
+        "chunk": 0.053069453686475754
+      }
+    },
+    {
+      "key": [
+        3,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2192.13232421875,
+        "row0": 0.0035521346144378185,
+        "chunk": 0.04104235768318176
+      }
+    },
+    {
+      "key": [
+        3,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 742.8883666992188,
+        "row0": 0.005509919486939907,
+        "chunk": 0.03977836295962334
+      }
+    },
+    {
+      "key": [
+        3,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 741.2841796875,
+        "row0": 0.00043285329593345523,
+        "chunk": 0.029038572683930397
+      }
+    },
+    {
+      "key": [
+        3,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 743.1785278320312,
+        "row0": 0.01344102993607521,
+        "chunk": 0.057240698486566544
+      }
+    },
+    {
+      "key": [
+        3,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 1506.402099609375,
+        "row0": 0.016708970069885254,
+        "chunk": 0.02091478556394577
+      }
+    },
+    {
+      "key": [
+        3,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 1503.7176513671875,
+        "row0": 0.01595793478190899,
+        "chunk": 0.012534299865365028
+      }
+    },
+    {
+      "key": [
+        3,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1506.094482421875,
+        "row0": 0.01551196537911892,
+        "chunk": 0.030414747074246407
+      }
+    },
+    {
+      "key": [
+        3,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2111.241455078125,
+        "row0": 0.006727274972945452,
+        "chunk": 0.25936153531074524
+      }
+    },
+    {
+      "key": [
+        3,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2109.839111328125,
+        "row0": 0.01191195473074913,
+        "chunk": 0.27425798773765564
+      }
+    },
+    {
+      "key": [
+        4,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2510.39453125,
+        "row0": 0.007254543248564005,
+        "chunk": 0.04048847779631615
+      }
+    },
+    {
+      "key": [
+        4,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2507.965576171875,
+        "row0": 0.001778427860699594,
+        "chunk": 0.013842687010765076
+      }
+    },
+    {
+      "key": [
+        4,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2512.48974609375,
+        "row0": 0.013530912809073925,
+        "chunk": 0.047006383538246155
+      }
+    },
+    {
+      "key": [
+        4,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 1664.0487060546875,
+        "row0": 0.003915770910680294,
+        "chunk": 0.010967993177473545
+      }
+    },
+    {
+      "key": [
+        4,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 1660.9296875,
+        "row0": 0.003926882985979319,
+        "chunk": 0.015338041819632053
+      }
+    },
+    {
+      "key": [
+        4,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1662.5843505859375,
+        "row0": 0.011912963353097439,
+        "chunk": 0.05623859167098999
+      }
+    },
+    {
+      "key": [
+        4,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 1284.7054443359375,
+        "row0": 0.6441934704780579,
+        "chunk": 0.06028477102518082
+      }
+    },
+    {
+      "key": [
+        4,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 1284.490234375,
+        "row0": 0.020091459155082703,
+        "chunk": 0.03861711919307709
+      }
+    },
+    {
+      "key": [
+        4,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1287.634521484375,
+        "row0": 0.693774402141571,
+        "chunk": 0.07620715349912643
+      }
+    },
+    {
+      "key": [
+        4,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2257.788818359375,
+        "row0": 0.012151663191616535,
+        "chunk": 0.09822577983140945
+      }
+    },
+    {
+      "key": [
+        4,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2254.153076171875,
+        "row0": 0.0799839198589325,
+        "chunk": 0.070964515209198
+      }
+    },
+    {
+      "key": [
+        4,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2257.51416015625,
+        "row0": 0.14211149513721466,
+        "chunk": 0.098078653216362
+      }
+    },
+    {
+      "key": [
+        4,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2662.771728515625,
+        "row0": 0.006181963719427586,
+        "chunk": 0.08411579579114914
+      }
+    },
+    {
+      "key": [
+        4,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2661.163818359375,
+        "row0": 0.004329770337790251,
+        "chunk": 0.03992903232574463
+      }
+    },
+    {
+      "key": [
+        4,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2663.881103515625,
+        "row0": 0.007825479842722416,
+        "chunk": 0.08985678106546402
+      }
+    },
+    {
+      "key": [
+        4,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 1731.3472900390625,
+        "row0": 0.0027753408066928387,
+        "chunk": 0.00305097340606153
+      }
+    },
+    {
+      "key": [
+        4,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 1729.4840087890625,
+        "row0": 0.0009479558793827891,
+        "chunk": 0.010118812322616577
+      }
+    },
+    {
+      "key": [
+        4,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1735.1737060546875,
+        "row0": 0.013968010433018208,
+        "chunk": 0.08695957809686661
+      }
+    },
+    {
+      "key": [
+        4,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2835.932861328125,
+        "row0": 0.7216222882270813,
+        "chunk": 0.18533170223236084
+      }
+    },
+    {
+      "key": [
+        4,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2829.858154296875,
+        "row0": 0.691297709941864,
+        "chunk": 0.19703835248947144
+      }
+    },
+    {
+      "key": [
+        4,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2831.3798828125,
+        "row0": 0.668704092502594,
+        "chunk": 0.21267211437225342
+      }
+    },
+    {
+      "key": [
+        4,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 1907.27099609375,
+        "row0": 0.01722436212003231,
+        "chunk": 0.22733831405639648
+      }
+    },
+    {
+      "key": [
+        4,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 1906.570556640625,
+        "row0": 0.02465631812810898,
+        "chunk": 0.23061758279800415
+      }
+    },
+    {
+      "key": [
+        4,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2286.697021484375,
+        "row0": 0.007865434512495995,
+        "chunk": 0.0578712560236454
+      }
+    },
+    {
+      "key": [
+        4,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2285.46533203125,
+        "row0": 0.00417504645884037,
+        "chunk": 0.03935212641954422
+      }
+    },
+    {
+      "key": [
+        4,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2288.6455078125,
+        "row0": 0.010926504619419575,
+        "chunk": 0.07473696768283844
+      }
+    },
+    {
+      "key": [
+        4,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2366.2568359375,
+        "row0": 0.0034431603271514177,
+        "chunk": 0.1337379664182663
+      }
+    },
+    {
+      "key": [
+        4,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2365.368408203125,
+        "row0": 0.006024456117302179,
+        "chunk": 0.07623942941427231
+      }
+    },
+    {
+      "key": [
+        4,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2369.914306640625,
+        "row0": 0.02000410668551922,
+        "chunk": 0.07542135566473007
+      }
+    },
+    {
+      "key": [
+        4,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2254.4873046875,
+        "row0": 0.0028936106245964766,
+        "chunk": 0.06672818213701248
+      }
+    },
+    {
+      "key": [
+        4,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2252.8349609375,
+        "row0": 0.03297554329037666,
+        "chunk": 0.02170148305594921
+      }
+    },
+    {
+      "key": [
+        4,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2253.985107421875,
+        "row0": 0.657058835029602,
+        "chunk": 0.037987418472766876
+      }
+    },
+    {
+      "key": [
+        4,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2101.18310546875,
+        "row0": 0.007914649322628975,
+        "chunk": 0.7474990487098694
+      }
+    },
+    {
+      "key": [
+        4,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2100.677978515625,
+        "row0": 0.0045556435361504555,
+        "chunk": 0.7347382307052612
+      }
+    },
+    {
+      "key": [
+        4,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2101.578125,
+        "row0": 0.008940069004893303,
+        "chunk": 0.7524557113647461
+      }
+    },
+    {
+      "key": [
+        5,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2254.817626953125,
+        "row0": 0.0019334772368893027,
+        "chunk": 0.009222491644322872
+      }
+    },
+    {
+      "key": [
+        5,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2254.293701171875,
+        "row0": 0.001782662933692336,
+        "chunk": 0.009698363952338696
+      }
+    },
+    {
+      "key": [
+        5,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2258.84326171875,
+        "row0": 0.003755388781428337,
+        "chunk": 0.03034372627735138
+      }
+    },
+    {
+      "key": [
+        5,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 3424.6875,
+        "row0": 0.007340424228459597,
+        "chunk": 0.2038128674030304
+      }
+    },
+    {
+      "key": [
+        5,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 3423.2197265625,
+        "row0": 0.009370729327201843,
+        "chunk": 0.2013711780309677
+      }
+    },
+    {
+      "key": [
+        5,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 3431.05322265625,
+        "row0": 0.0296670813113451,
+        "chunk": 0.22193463146686554
+      }
+    },
+    {
+      "key": [
+        5,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 4100.3408203125,
+        "row0": 0.006677157245576382,
+        "chunk": 0.12903662025928497
+      }
+    },
+    {
+      "key": [
+        5,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 4098.9853515625,
+        "row0": 0.026042763143777847,
+        "chunk": 0.3144122362136841
+      }
+    },
+    {
+      "key": [
+        5,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 4104.70263671875,
+        "row0": 0.05197218805551529,
+        "chunk": 0.3697872459888458
+      }
+    },
+    {
+      "key": [
+        5,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2668.9326171875,
+        "row0": 0.0043781837448477745,
+        "chunk": 0.11381807178258896
+      }
+    },
+    {
+      "key": [
+        5,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2667.28466796875,
+        "row0": 0.0854756161570549,
+        "chunk": 0.04367057979106903
+      }
+    },
+    {
+      "key": [
+        5,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2667.222900390625,
+        "row0": 0.06547627598047256,
+        "chunk": 0.09212767332792282
+      }
+    },
+    {
+      "key": [
+        5,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2153.286376953125,
+        "row0": 0.008361008018255234,
+        "chunk": 0.03148820996284485
+      }
+    },
+    {
+      "key": [
+        5,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2152.95361328125,
+        "row0": 0.006568809039890766,
+        "chunk": 0.031970176845788956
+      }
+    },
+    {
+      "key": [
+        5,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2156.6318359375,
+        "row0": 0.009474607184529305,
+        "chunk": 0.00457643112167716
+      }
+    },
+    {
+      "key": [
+        5,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2761.613037109375,
+        "row0": 0.012712453491985798,
+        "chunk": 0.04488402232527733
+      }
+    },
+    {
+      "key": [
+        5,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2758.635009765625,
+        "row0": 0.0028119594790041447,
+        "chunk": 0.03628271445631981
+      }
+    },
+    {
+      "key": [
+        5,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2760.152099609375,
+        "row0": 0.009783110581338406,
+        "chunk": 0.03618821129202843
+      }
+    },
+    {
+      "key": [
+        5,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2078.6494140625,
+        "row0": 0.0028647605795413256,
+        "chunk": 0.5362523198127747
+      }
+    },
+    {
+      "key": [
+        5,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2076.249267578125,
+        "row0": 0.002246278105303645,
+        "chunk": 0.5467172861099243
+      }
+    },
+    {
+      "key": [
+        5,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2083.412353515625,
+        "row0": 0.012854989618062973,
+        "chunk": 0.5320175290107727
+      }
+    },
+    {
+      "key": [
+        5,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 3173.3056640625,
+        "row0": 0.36982622742652893,
+        "chunk": 0.061570532619953156
+      }
+    },
+    {
+      "key": [
+        5,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 3170.761962890625,
+        "row0": 0.7937380075454712,
+        "chunk": 0.10854435712099075
+      }
+    },
+    {
+      "key": [
+        5,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 3171.478271484375,
+        "row0": 0.8038698434829712,
+        "chunk": 0.11290309578180313
+      }
+    },
+    {
+      "key": [
+        5,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2388.773193359375,
+        "row0": 0.0017080254619941115,
+        "chunk": 0.08811044692993164
+      }
+    },
+    {
+      "key": [
+        5,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2388.3134765625,
+        "row0": 0.0015356370713561773,
+        "chunk": 0.08857027441263199
+      }
+    },
+    {
+      "key": [
+        5,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2391.85302734375,
+        "row0": 0.002422749064862728,
+        "chunk": 0.03322465345263481
+      }
+    },
+    {
+      "key": [
+        5,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2478.96240234375,
+        "row0": 0.0005502358544617891,
+        "chunk": 0.06303384900093079
+      }
+    },
+    {
+      "key": [
+        5,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2478.045166015625,
+        "row0": 0.0017632917733862996,
+        "chunk": 0.06471620500087738
+      }
+    },
+    {
+      "key": [
+        5,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2485.699462890625,
+        "row0": 0.01217096671462059,
+        "chunk": 0.10522546619176865
+      }
+    },
+    {
+      "key": [
+        5,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2710.814697265625,
+        "row0": 0.020193349570035934,
+        "chunk": 0.007766431197524071
+      }
+    },
+    {
+      "key": [
+        5,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2708.794189453125,
+        "row0": 0.10516195744276047,
+        "chunk": 0.07710497826337814
+      }
+    },
+    {
+      "key": [
+        5,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2710.496826171875,
+        "row0": 0.12780937552452087,
+        "chunk": 0.10307677090167999
+      }
+    },
+    {
+      "key": [
+        5,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2737.737060546875,
+        "row0": 0.0032194594386965036,
+        "chunk": 0.1020381897687912
+      }
+    },
+    {
+      "key": [
+        5,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2736.5322265625,
+        "row0": 0.003067872952669859,
+        "chunk": 0.12123715877532959
+      }
+    },
+    {
+      "key": [
+        5,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2736.991455078125,
+        "row0": 0.002754029119387269,
+        "chunk": 0.1231580525636673
+      }
+    },
+    {
+      "key": [
+        6,
+        48,
+        3
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 1994.248779296875,
+        "row0": 0.010816793888807297,
+        "chunk": 0.020124519243836403
+      }
+    },
+    {
+      "key": [
+        6,
+        48,
+        3
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 1991.882568359375,
+        "row0": 0.0071245646104216576,
+        "chunk": 0.0167281161993742
+      }
+    },
+    {
+      "key": [
+        6,
+        48,
+        3
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1995.6104736328125,
+        "row0": 0.01427628193050623,
+        "chunk": 0.02958686463534832
+      }
+    },
+    {
+      "key": [
+        6,
+        48,
+        4
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 3211.868408203125,
+        "row0": 0.0009706859127618372,
+        "chunk": 0.014721140265464783
+      }
+    },
+    {
+      "key": [
+        6,
+        48,
+        4
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 3210.97509765625,
+        "row0": 0.006923094391822815,
+        "chunk": 0.03856427222490311
+      }
+    },
+    {
+      "key": [
+        6,
+        48,
+        4
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 3219.4140625,
+        "row0": 0.03918386995792389,
+        "chunk": 0.09147624671459198
+      }
+    },
+    {
+      "key": [
+        6,
+        48,
+        5
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 1648.473876953125,
+        "row0": 0.03984185680747032,
+        "chunk": 0.004717277828603983
+      }
+    },
+    {
+      "key": [
+        6,
+        48,
+        5
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 1645.42529296875,
+        "row0": 0.10662368685007095,
+        "chunk": 0.030570130795240402
+      }
+    },
+    {
+      "key": [
+        6,
+        48,
+        5
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1648.7476806640625,
+        "row0": 0.036358706653118134,
+        "chunk": 0.00464509567245841
+      }
+    },
+    {
+      "key": [
+        6,
+        48,
+        6
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2505.868896484375,
+        "row0": 0.03340883553028107,
+        "chunk": 0.006916758604347706
+      }
+    },
+    {
+      "key": [
+        6,
+        48,
+        6
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2497.862060546875,
+        "row0": 0.002393726957961917,
+        "chunk": 0.0009780687978491187
+      }
+    },
+    {
+      "key": [
+        6,
+        48,
+        6
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2498.564697265625,
+        "row0": 0.0353732630610466,
+        "chunk": 0.003551531583070755
+      }
+    },
+    {
+      "key": [
+        6,
+        49,
+        3
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2168.75390625,
+        "row0": 0.0054630618542432785,
+        "chunk": 0.0059417057782411575
+      }
+    },
+    {
+      "key": [
+        6,
+        49,
+        3
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2165.9287109375,
+        "row0": 0.001994650810956955,
+        "chunk": 0.03165623918175697
+      }
+    },
+    {
+      "key": [
+        6,
+        49,
+        3
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2169.25390625,
+        "row0": 0.009877200238406658,
+        "chunk": 0.005189209710806608
+      }
+    },
+    {
+      "key": [
+        6,
+        49,
+        4
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2747.60107421875,
+        "row0": 0.012389778159558773,
+        "chunk": 0.02888769656419754
+      }
+    },
+    {
+      "key": [
+        6,
+        49,
+        4
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2744.001708984375,
+        "row0": 0.019533297047019005,
+        "chunk": 0.08842245489358902
+      }
+    },
+    {
+      "key": [
+        6,
+        49,
+        4
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2748.781982421875,
+        "row0": 0.06179637089371681,
+        "chunk": 0.22898568212985992
+      }
+    },
+    {
+      "key": [
+        6,
+        49,
+        5
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2181.897705078125,
+        "row0": 0.005056740250438452,
+        "chunk": 0.003449315670877695
+      }
+    },
+    {
+      "key": [
+        6,
+        49,
+        5
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2182.03369140625,
+        "row0": 0.012630490586161613,
+        "chunk": 0.021179037168622017
+      }
+    },
+    {
+      "key": [
+        6,
+        49,
+        5
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2181.199462890625,
+        "row0": 0.00497776921838522,
+        "chunk": 0.00438750721514225
+      }
+    },
+    {
+      "key": [
+        6,
+        49,
+        6
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2480.0556640625,
+        "row0": 0.004321777727454901,
+        "chunk": 0.0021768310107290745
+      }
+    },
+    {
+      "key": [
+        6,
+        49,
+        6
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2480.4833984375,
+        "row0": 0.007133652456104755,
+        "chunk": 0.0019784411415457726
+      }
+    },
+    {
+      "key": [
+        6,
+        49,
+        6
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2486.13330078125,
+        "row0": 0.018823865801095963,
+        "chunk": 0.004844191949814558
+      }
+    },
+    {
+      "key": [
+        7,
+        48,
+        3
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 3509.075927734375,
+        "row0": 0.0029839533381164074,
+        "chunk": 0.05700673907995224
+      }
+    },
+    {
+      "key": [
+        7,
+        48,
+        3
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 3507.75439453125,
+        "row0": 0.0026754136197268963,
+        "chunk": 0.1349239945411682
+      }
+    },
+    {
+      "key": [
+        7,
+        48,
+        3
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 3510.20556640625,
+        "row0": 0.004956500139087439,
+        "chunk": 0.0465400293469429
+      }
+    },
+    {
+      "key": [
+        7,
+        48,
+        4
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2862.25927734375,
+        "row0": 0.006018948275595903,
+        "chunk": 0.007405394222587347
+      }
+    },
+    {
+      "key": [
+        7,
+        48,
+        4
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2861.321044921875,
+        "row0": 0.021261651068925858,
+        "chunk": 0.022308720275759697
+      }
+    },
+    {
+      "key": [
+        7,
+        48,
+        4
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2870.232177734375,
+        "row0": 0.08732731640338898,
+        "chunk": 0.12216393649578094
+      }
+    },
+    {
+      "key": [
+        7,
+        48,
+        5
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 4229.333984375,
+        "row0": 0.012916314415633678,
+        "chunk": 0.09400933235883713
+      }
+    },
+    {
+      "key": [
+        7,
+        48,
+        5
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 4232.0341796875,
+        "row0": 0.006159409414976835,
+        "chunk": 0.1100444570183754
+      }
+    },
+    {
+      "key": [
+        7,
+        48,
+        5
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 4231.9560546875,
+        "row0": 0.006129350978881121,
+        "chunk": 0.11233125627040863
+      }
+    },
+    {
+      "key": [
+        7,
+        48,
+        6
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 1794.28076171875,
+        "row0": 0.002743358723819256,
+        "chunk": 0.0014422440435737371
+      }
+    },
+    {
+      "key": [
+        7,
+        48,
+        6
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 1794.343017578125,
+        "row0": 0.0024296892806887627,
+        "chunk": 0.0015293164178729057
+      }
+    },
+    {
+      "key": [
+        7,
+        48,
+        6
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1795.656494140625,
+        "row0": 0.0013112806482240558,
+        "chunk": 0.0028823830652981997
+      }
+    },
+    {
+      "key": [
+        7,
+        49,
+        3
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 2733.154541015625,
+        "row0": 0.010332721285521984,
+        "chunk": 0.0042509776540100574
+      }
+    },
+    {
+      "key": [
+        7,
+        49,
+        3
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 2731.683837890625,
+        "row0": 0.0012109423987567425,
+        "chunk": 0.012554768472909927
+      }
+    },
+    {
+      "key": [
+        7,
+        49,
+        3
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2733.83984375,
+        "row0": 0.015993382781744003,
+        "chunk": 0.004230032674968243
+      }
+    },
+    {
+      "key": [
+        7,
+        49,
+        4
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 3743.711669921875,
+        "row0": 0.005377235356718302,
+        "chunk": 0.022498561069369316
+      }
+    },
+    {
+      "key": [
+        7,
+        49,
+        4
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 3741.322998046875,
+        "row0": 0.014021205715835094,
+        "chunk": 0.037570852786302567
+      }
+    },
+    {
+      "key": [
+        7,
+        49,
+        4
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 3744.639892578125,
+        "row0": 0.06690152734518051,
+        "chunk": 0.1870676577091217
+      }
+    },
+    {
+      "key": [
+        7,
+        49,
+        5
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 3577.864501953125,
+        "row0": 0.057119593024253845,
+        "chunk": 0.025695187970995903
+      }
+    },
+    {
+      "key": [
+        7,
+        49,
+        5
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 3575.762939453125,
+        "row0": 0.2439166009426117,
+        "chunk": 0.0519939623773098
+      }
+    },
+    {
+      "key": [
+        7,
+        49,
+        5
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 3578.82568359375,
+        "row0": 0.29957419633865356,
+        "chunk": 0.07271705567836761
+      }
+    },
+    {
+      "key": [
+        7,
+        49,
+        6
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "true",
+      "metrics": {
+        "latent": 1385.19873046875,
+        "row0": 0.01204504445195198,
+        "chunk": 0.04415023326873779
+      }
+    },
+    {
+      "key": [
+        7,
+        49,
+        6
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "zero",
+      "metrics": {
+        "latent": 1383.4427490234375,
+        "row0": 0.0033423076383769512,
+        "chunk": 0.036204371601343155
+      }
+    },
+    {
+      "key": [
+        7,
+        49,
+        6
+      ],
+      "split": "validation",
+      "arm": "centered",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1384.9083251953125,
+        "row0": 0.011696715839207172,
+        "chunk": 0.04529527574777603
+      }
+    },
+    {
+      "key": [
+        0,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2450.027099609375,
+        "row0": 0.000599621154833585,
+        "chunk": 0.0024653032887727022
+      }
+    },
+    {
+      "key": [
+        0,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2449.961669921875,
+        "row0": 0.00045792025048285723,
+        "chunk": 0.0021827479358762503
+      }
+    },
+    {
+      "key": [
+        0,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2450.043701171875,
+        "row0": 0.0005016443319618702,
+        "chunk": 0.0021789944730699062
+      }
+    },
+    {
+      "key": [
+        0,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 1715.6981201171875,
+        "row0": 0.004021004773676395,
+        "chunk": 0.020760294049978256
+      }
+    },
+    {
+      "key": [
+        0,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 1715.7559814453125,
+        "row0": 0.004702889826148748,
+        "chunk": 0.022244323045015335
+      }
+    },
+    {
+      "key": [
+        0,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1716.027587890625,
+        "row0": 0.005146826151758432,
+        "chunk": 0.024061528965830803
+      }
+    },
+    {
+      "key": [
+        0,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2530.774169921875,
+        "row0": 0.09825731068849564,
+        "chunk": 0.023690465837717056
+      }
+    },
+    {
+      "key": [
+        0,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2530.901123046875,
+        "row0": 0.10919782519340515,
+        "chunk": 0.02669883705675602
+      }
+    },
+    {
+      "key": [
+        0,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2530.927001953125,
+        "row0": 0.11219144612550735,
+        "chunk": 0.02801031991839409
+      }
+    },
+    {
+      "key": [
+        0,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 1232.6258544921875,
+        "row0": 0.007390329148620367,
+        "chunk": 0.0053697312250733376
+      }
+    },
+    {
+      "key": [
+        0,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 1232.730712890625,
+        "row0": 0.007706320844590664,
+        "chunk": 0.005582083016633987
+      }
+    },
+    {
+      "key": [
+        0,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1232.4473876953125,
+        "row0": 0.007226189132779837,
+        "chunk": 0.004841074347496033
+      }
+    },
+    {
+      "key": [
+        0,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2883.05908203125,
+        "row0": 0.0016488356050103903,
+        "chunk": 0.04288869723677635
+      }
+    },
+    {
+      "key": [
+        0,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2883.38916015625,
+        "row0": 0.001663730712607503,
+        "chunk": 0.043154142796993256
+      }
+    },
+    {
+      "key": [
+        0,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2883.024658203125,
+        "row0": 0.0021341301035135984,
+        "chunk": 0.04106764495372772
+      }
+    },
+    {
+      "key": [
+        0,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2419.72314453125,
+        "row0": 0.014477740973234177,
+        "chunk": 0.0192488431930542
+      }
+    },
+    {
+      "key": [
+        0,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2419.981689453125,
+        "row0": 0.01591908186674118,
+        "chunk": 0.022482682019472122
+      }
+    },
+    {
+      "key": [
+        0,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2420.101318359375,
+        "row0": 0.016976501792669296,
+        "chunk": 0.024017982184886932
+      }
+    },
+    {
+      "key": [
+        0,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 1491.306396484375,
+        "row0": 0.0019094516756013036,
+        "chunk": 0.01718691922724247
+      }
+    },
+    {
+      "key": [
+        0,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 1491.2469482421875,
+        "row0": 0.001983355963602662,
+        "chunk": 0.016888484358787537
+      }
+    },
+    {
+      "key": [
+        0,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1491.2890625,
+        "row0": 0.002067450201138854,
+        "chunk": 0.01652364805340767
+      }
+    },
+    {
+      "key": [
+        0,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 1450.9058837890625,
+        "row0": 0.001662806491367519,
+        "chunk": 0.0038869339041411877
+      }
+    },
+    {
+      "key": [
+        0,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 1451.01171875,
+        "row0": 0.0017275699647143483,
+        "chunk": 0.0031603239476680756
+      }
+    },
+    {
+      "key": [
+        0,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1450.856201171875,
+        "row0": 0.0015925044426694512,
+        "chunk": 0.003995996899902821
+      }
+    },
+    {
+      "key": [
+        0,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2849.004638671875,
+        "row0": 0.0002663678315002471,
+        "chunk": 0.006005499046295881
+      }
+    },
+    {
+      "key": [
+        0,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2849.322509765625,
+        "row0": 0.00023423339007422328,
+        "chunk": 0.007913097739219666
+      }
+    },
+    {
+      "key": [
+        0,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2848.848388671875,
+        "row0": 0.0001644524309085682,
+        "chunk": 0.006772089749574661
+      }
+    },
+    {
+      "key": [
+        0,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2554.524169921875,
+        "row0": 0.023403940722346306,
+        "chunk": 0.10253476351499557
+      }
+    },
+    {
+      "key": [
+        0,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2555.04541015625,
+        "row0": 0.023778358474373817,
+        "chunk": 0.11057647317647934
+      }
+    },
+    {
+      "key": [
+        0,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2555.63525390625,
+        "row0": 0.02836846187710762,
+        "chunk": 0.1468428075313568
+      }
+    },
+    {
+      "key": [
+        0,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 1669.72998046875,
+        "row0": 0.004972029011696577,
+        "chunk": 0.002812321064993739
+      }
+    },
+    {
+      "key": [
+        0,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 1669.9283447265625,
+        "row0": 0.005123062524944544,
+        "chunk": 0.004064425826072693
+      }
+    },
+    {
+      "key": [
+        0,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1669.7178955078125,
+        "row0": 0.004804848227649927,
+        "chunk": 0.0030699889175593853
+      }
+    },
+    {
+      "key": [
+        0,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 3695.6611328125,
+        "row0": 0.0016014465363696218,
+        "chunk": 0.0034364538732916117
+      }
+    },
+    {
+      "key": [
+        0,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 3695.950439453125,
+        "row0": 0.0018552524270489812,
+        "chunk": 0.0029638572596013546
+      }
+    },
+    {
+      "key": [
+        0,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 3696.036865234375,
+        "row0": 0.0019220191752538085,
+        "chunk": 0.0031544778030365705
+      }
+    },
+    {
+      "key": [
+        1,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2788.417724609375,
+        "row0": 0.042902812361717224,
+        "chunk": 0.09181429445743561
+      }
+    },
+    {
+      "key": [
+        1,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2788.4326171875,
+        "row0": 0.04200221225619316,
+        "chunk": 0.09330090880393982
+      }
+    },
+    {
+      "key": [
+        1,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2788.367919921875,
+        "row0": 0.04258247837424278,
+        "chunk": 0.08223467320203781
+      }
+    },
+    {
+      "key": [
+        1,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2832.3828125,
+        "row0": 0.01470386516302824,
+        "chunk": 0.13593025505542755
+      }
+    },
+    {
+      "key": [
+        1,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2832.89794921875,
+        "row0": 0.016695115715265274,
+        "chunk": 0.13228024542331696
+      }
+    },
+    {
+      "key": [
+        1,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2833.18603515625,
+        "row0": 0.018748288974165916,
+        "chunk": 0.13428117334842682
+      }
+    },
+    {
+      "key": [
+        1,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2926.707275390625,
+        "row0": 0.004906618967652321,
+        "chunk": 0.019732588902115822
+      }
+    },
+    {
+      "key": [
+        1,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2926.734375,
+        "row0": 0.0027601539622992277,
+        "chunk": 0.022423619404435158
+      }
+    },
+    {
+      "key": [
+        1,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2926.70166015625,
+        "row0": 0.003952559549361467,
+        "chunk": 0.01976807788014412
+      }
+    },
+    {
+      "key": [
+        1,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2627.541748046875,
+        "row0": 0.008661752566695213,
+        "chunk": 0.17091752588748932
+      }
+    },
+    {
+      "key": [
+        1,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2627.314697265625,
+        "row0": 0.009944585151970387,
+        "chunk": 0.20868010818958282
+      }
+    },
+    {
+      "key": [
+        1,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2627.044677734375,
+        "row0": 0.010567108169198036,
+        "chunk": 0.17360903322696686
+      }
+    },
+    {
+      "key": [
+        1,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 1972.01171875,
+        "row0": 0.03365210443735123,
+        "chunk": 0.19699576497077942
+      }
+    },
+    {
+      "key": [
+        1,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 1972.157470703125,
+        "row0": 0.03764022886753082,
+        "chunk": 0.20322424173355103
+      }
+    },
+    {
+      "key": [
+        1,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1971.918701171875,
+        "row0": 0.03606116399168968,
+        "chunk": 0.2032240927219391
+      }
+    },
+    {
+      "key": [
+        1,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 3058.32177734375,
+        "row0": 0.0017226682975888252,
+        "chunk": 0.003853968810290098
+      }
+    },
+    {
+      "key": [
+        1,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 3058.6796875,
+        "row0": 0.001802176353521645,
+        "chunk": 0.004177159164100885
+      }
+    },
+    {
+      "key": [
+        1,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 3059.109619140625,
+        "row0": 0.0027560321614146233,
+        "chunk": 0.006200537551194429
+      }
+    },
+    {
+      "key": [
+        1,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2947.611083984375,
+        "row0": 0.07634367048740387,
+        "chunk": 0.5416523218154907
+      }
+    },
+    {
+      "key": [
+        1,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2947.277099609375,
+        "row0": 0.07640944421291351,
+        "chunk": 0.502504289150238
+      }
+    },
+    {
+      "key": [
+        1,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2947.384521484375,
+        "row0": 0.07924800366163254,
+        "chunk": 0.48773813247680664
+      }
+    },
+    {
+      "key": [
+        1,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 1739.81787109375,
+        "row0": 0.002366329077631235,
+        "chunk": 0.006851008161902428
+      }
+    },
+    {
+      "key": [
+        1,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 1739.7872314453125,
+        "row0": 0.0019675714429467916,
+        "chunk": 0.006184447091072798
+      }
+    },
+    {
+      "key": [
+        1,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1739.62841796875,
+        "row0": 0.0017679190495982766,
+        "chunk": 0.006668773479759693
+      }
+    },
+    {
+      "key": [
+        1,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2297.990966796875,
+        "row0": 0.026694051921367645,
+        "chunk": 0.03466593474149704
+      }
+    },
+    {
+      "key": [
+        1,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2298.0498046875,
+        "row0": 0.024724053218960762,
+        "chunk": 0.03207825869321823
+      }
+    },
+    {
+      "key": [
+        1,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2297.948486328125,
+        "row0": 0.022772042080760002,
+        "chunk": 0.02217239700257778
+      }
+    },
+    {
+      "key": [
+        1,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 1624.4923095703125,
+        "row0": 0.5939085483551025,
+        "chunk": 0.2307983785867691
+      }
+    },
+    {
+      "key": [
+        1,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 1624.62158203125,
+        "row0": 0.6192725896835327,
+        "chunk": 0.22917096316814423
+      }
+    },
+    {
+      "key": [
+        1,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1624.72021484375,
+        "row0": 0.6225485801696777,
+        "chunk": 0.19001470506191254
+      }
+    },
+    {
+      "key": [
+        1,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2361.568115234375,
+        "row0": 0.040206871926784515,
+        "chunk": 0.017558585852384567
+      }
+    },
+    {
+      "key": [
+        1,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2361.75146484375,
+        "row0": 0.04566279426217079,
+        "chunk": 0.01886170171201229
+      }
+    },
+    {
+      "key": [
+        1,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2361.66259765625,
+        "row0": 0.0423341803252697,
+        "chunk": 0.01828603260219097
+      }
+    },
+    {
+      "key": [
+        1,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 1774.0989990234375,
+        "row0": 0.004623053129762411,
+        "chunk": 0.016869043931365013
+      }
+    },
+    {
+      "key": [
+        1,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 1774.121337890625,
+        "row0": 0.005333726294338703,
+        "chunk": 0.01759786531329155
+      }
+    },
+    {
+      "key": [
+        1,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1774.118408203125,
+        "row0": 0.00666566239669919,
+        "chunk": 0.018130922690033913
+      }
+    },
+    {
+      "key": [
+        2,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2431.773193359375,
+        "row0": 0.010060768574476242,
+        "chunk": 0.11907210946083069
+      }
+    },
+    {
+      "key": [
+        2,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2432.097412109375,
+        "row0": 0.011048623360693455,
+        "chunk": 0.12405996769666672
+      }
+    },
+    {
+      "key": [
+        2,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2431.71533203125,
+        "row0": 0.008836597204208374,
+        "chunk": 0.1191193014383316
+      }
+    },
+    {
+      "key": [
+        2,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2163.770263671875,
+        "row0": 0.0016350108198821545,
+        "chunk": 0.014527369290590286
+      }
+    },
+    {
+      "key": [
+        2,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2163.678955078125,
+        "row0": 0.0022891454864293337,
+        "chunk": 0.013276167213916779
+      }
+    },
+    {
+      "key": [
+        2,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2163.763427734375,
+        "row0": 0.004878384992480278,
+        "chunk": 0.014533434063196182
+      }
+    },
+    {
+      "key": [
+        2,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 4414.0751953125,
+        "row0": 1.03957998752594,
+        "chunk": 0.10209920257329941
+      }
+    },
+    {
+      "key": [
+        2,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 4414.63037109375,
+        "row0": 1.0454387664794922,
+        "chunk": 0.10210534185171127
+      }
+    },
+    {
+      "key": [
+        2,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 4414.75927734375,
+        "row0": 1.043853759765625,
+        "chunk": 0.08923660218715668
+      }
+    },
+    {
+      "key": [
+        2,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2717.866943359375,
+        "row0": 0.006270299199968576,
+        "chunk": 0.0025171353481709957
+      }
+    },
+    {
+      "key": [
+        2,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2717.9296875,
+        "row0": 0.007367389276623726,
+        "chunk": 0.0024693082086741924
+      }
+    },
+    {
+      "key": [
+        2,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2717.681396484375,
+        "row0": 0.006159171927720308,
+        "chunk": 0.002219058806076646
+      }
+    },
+    {
+      "key": [
+        2,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 4008.9326171875,
+        "row0": 0.014260940253734589,
+        "chunk": 0.010800986550748348
+      }
+    },
+    {
+      "key": [
+        2,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 4009.010009765625,
+        "row0": 0.013787005096673965,
+        "chunk": 0.011327525600790977
+      }
+    },
+    {
+      "key": [
+        2,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 4008.85791015625,
+        "row0": 0.014437563717365265,
+        "chunk": 0.009706797078251839
+      }
+    },
+    {
+      "key": [
+        2,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 1934.862548828125,
+        "row0": 0.000969379092566669,
+        "chunk": 0.0616273395717144
+      }
+    },
+    {
+      "key": [
+        2,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 1935.092529296875,
+        "row0": 0.0010624413844197989,
+        "chunk": 0.06070924922823906
+      }
+    },
+    {
+      "key": [
+        2,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1935.335205078125,
+        "row0": 0.0011308672837913036,
+        "chunk": 0.06076723337173462
+      }
+    },
+    {
+      "key": [
+        2,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2372.0078125,
+        "row0": 0.001414839061908424,
+        "chunk": 0.00188945431727916
+      }
+    },
+    {
+      "key": [
+        2,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2371.86962890625,
+        "row0": 0.0014928189339116216,
+        "chunk": 0.0017215011175721884
+      }
+    },
+    {
+      "key": [
+        2,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2372.227294921875,
+        "row0": 0.0016778601566329598,
+        "chunk": 0.001904335804283619
+      }
+    },
+    {
+      "key": [
+        2,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 3000.935302734375,
+        "row0": 0.007528799585998058,
+        "chunk": 0.015402005054056644
+      }
+    },
+    {
+      "key": [
+        2,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 3000.710693359375,
+        "row0": 0.009892178699374199,
+        "chunk": 0.016669414937496185
+      }
+    },
+    {
+      "key": [
+        2,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 3000.60205078125,
+        "row0": 0.012186271138489246,
+        "chunk": 0.016127480193972588
+      }
+    },
+    {
+      "key": [
+        2,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 3260.10009765625,
+        "row0": 0.010007409378886223,
+        "chunk": 0.024332808330655098
+      }
+    },
+    {
+      "key": [
+        2,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 3260.054443359375,
+        "row0": 0.010850908234715462,
+        "chunk": 0.0254574753344059
+      }
+    },
+    {
+      "key": [
+        2,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 3259.918212890625,
+        "row0": 0.00853683054447174,
+        "chunk": 0.023662295192480087
+      }
+    },
+    {
+      "key": [
+        2,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 1031.808837890625,
+        "row0": 0.0016429428942501545,
+        "chunk": 0.014807278290390968
+      }
+    },
+    {
+      "key": [
+        2,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 1031.7938232421875,
+        "row0": 0.001380545669235289,
+        "chunk": 0.011377560906112194
+      }
+    },
+    {
+      "key": [
+        2,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1031.9510498046875,
+        "row0": 0.001165041234344244,
+        "chunk": 0.010699238628149033
+      }
+    },
+    {
+      "key": [
+        2,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 3319.213134765625,
+        "row0": 0.030528219416737556,
+        "chunk": 0.03760306164622307
+      }
+    },
+    {
+      "key": [
+        2,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 3319.418212890625,
+        "row0": 0.028528060764074326,
+        "chunk": 0.037939876317977905
+      }
+    },
+    {
+      "key": [
+        2,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 3319.36572265625,
+        "row0": 0.025317342951893806,
+        "chunk": 0.03468751534819603
+      }
+    },
+    {
+      "key": [
+        2,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 879.133056640625,
+        "row0": 0.01726423017680645,
+        "chunk": 0.005507333669811487
+      }
+    },
+    {
+      "key": [
+        2,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 879.092041015625,
+        "row0": 0.017636820673942566,
+        "chunk": 0.005845463369041681
+      }
+    },
+    {
+      "key": [
+        2,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 879.029541015625,
+        "row0": 0.01784973032772541,
+        "chunk": 0.005639161914587021
+      }
+    },
+    {
+      "key": [
+        3,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2619.348876953125,
+        "row0": 0.031409960240125656,
+        "chunk": 0.0312502384185791
+      }
+    },
+    {
+      "key": [
+        3,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2619.530029296875,
+        "row0": 0.03402138873934746,
+        "chunk": 0.033402252942323685
+      }
+    },
+    {
+      "key": [
+        3,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2619.303466796875,
+        "row0": 0.03405188396573067,
+        "chunk": 0.033072710037231445
+      }
+    },
+    {
+      "key": [
+        3,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 1063.610595703125,
+        "row0": 0.002590565476566553,
+        "chunk": 0.028420530259609222
+      }
+    },
+    {
+      "key": [
+        3,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 1063.7672119140625,
+        "row0": 0.0031538160983473063,
+        "chunk": 0.03436906635761261
+      }
+    },
+    {
+      "key": [
+        3,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1064.0125732421875,
+        "row0": 0.004137779586017132,
+        "chunk": 0.04282872751355171
+      }
+    },
+    {
+      "key": [
+        3,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 1479.53076171875,
+        "row0": 0.5901249647140503,
+        "chunk": 0.08128085732460022
+      }
+    },
+    {
+      "key": [
+        3,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 1479.5230712890625,
+        "row0": 0.5927979350090027,
+        "chunk": 0.08428635448217392
+      }
+    },
+    {
+      "key": [
+        3,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1479.49462890625,
+        "row0": 0.594542384147644,
+        "chunk": 0.0856051817536354
+      }
+    },
+    {
+      "key": [
+        3,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 1992.73828125,
+        "row0": 0.0017144918674603105,
+        "chunk": 0.02396230399608612
+      }
+    },
+    {
+      "key": [
+        3,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 1992.9576416015625,
+        "row0": 0.0018871617503464222,
+        "chunk": 0.02939009480178356
+      }
+    },
+    {
+      "key": [
+        3,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1992.7987060546875,
+        "row0": 0.0015324278501793742,
+        "chunk": 0.019067266955971718
+      }
+    },
+    {
+      "key": [
+        3,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2764.397216796875,
+        "row0": 0.06079205870628357,
+        "chunk": 0.10060565173625946
+      }
+    },
+    {
+      "key": [
+        3,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2764.56787109375,
+        "row0": 0.0598158985376358,
+        "chunk": 0.10121699422597885
+      }
+    },
+    {
+      "key": [
+        3,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2764.291748046875,
+        "row0": 0.059713639318943024,
+        "chunk": 0.10025264322757721
+      }
+    },
+    {
+      "key": [
+        3,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 1115.0587158203125,
+        "row0": 0.0039627524092793465,
+        "chunk": 0.12270531803369522
+      }
+    },
+    {
+      "key": [
+        3,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 1115.16455078125,
+        "row0": 0.006159075535833836,
+        "chunk": 0.14224658906459808
+      }
+    },
+    {
+      "key": [
+        3,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1115.320556640625,
+        "row0": 0.007303987629711628,
+        "chunk": 0.12982454895973206
+      }
+    },
+    {
+      "key": [
+        3,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 1708.64501953125,
+        "row0": 0.20520024001598358,
+        "chunk": 0.05559926480054855
+      }
+    },
+    {
+      "key": [
+        3,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 1708.6224365234375,
+        "row0": 0.2287708818912506,
+        "chunk": 0.05849811062216759
+      }
+    },
+    {
+      "key": [
+        3,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1708.7645263671875,
+        "row0": 0.2504737079143524,
+        "chunk": 0.061531126499176025
+      }
+    },
+    {
+      "key": [
+        3,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 1097.34814453125,
+        "row0": 0.0009939898736774921,
+        "chunk": 0.07884979993104935
+      }
+    },
+    {
+      "key": [
+        3,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 1097.3668212890625,
+        "row0": 0.0012040934525430202,
+        "chunk": 0.08088842034339905
+      }
+    },
+    {
+      "key": [
+        3,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2191.38671875,
+        "row0": 0.005105836316943169,
+        "chunk": 0.04262275621294975
+      }
+    },
+    {
+      "key": [
+        3,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2191.539794921875,
+        "row0": 0.006183724384754896,
+        "chunk": 0.04284847155213356
+      }
+    },
+    {
+      "key": [
+        3,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2191.380615234375,
+        "row0": 0.005251883529126644,
+        "chunk": 0.04298923909664154
+      }
+    },
+    {
+      "key": [
+        3,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 741.2000122070312,
+        "row0": 0.0015116081340238452,
+        "chunk": 0.029706278815865517
+      }
+    },
+    {
+      "key": [
+        3,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 741.2454223632812,
+        "row0": 0.002191535895690322,
+        "chunk": 0.029628319665789604
+      }
+    },
+    {
+      "key": [
+        3,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 741.3524169921875,
+        "row0": 0.0020099852699786425,
+        "chunk": 0.029320528730750084
+      }
+    },
+    {
+      "key": [
+        3,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 1504.0262451171875,
+        "row0": 0.017932351678609848,
+        "chunk": 0.02128561958670616
+      }
+    },
+    {
+      "key": [
+        3,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 1503.8614501953125,
+        "row0": 0.018702996894717216,
+        "chunk": 0.02221236564218998
+      }
+    },
+    {
+      "key": [
+        3,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1503.7161865234375,
+        "row0": 0.016774948686361313,
+        "chunk": 0.019977640360593796
+      }
+    },
+    {
+      "key": [
+        3,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2110.159423828125,
+        "row0": 0.013686424121260643,
+        "chunk": 0.29424425959587097
+      }
+    },
+    {
+      "key": [
+        3,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2110.479736328125,
+        "row0": 0.014185491017997265,
+        "chunk": 0.3215876817703247
+      }
+    },
+    {
+      "key": [
+        4,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2508.09765625,
+        "row0": 0.0012645325623452663,
+        "chunk": 0.011061153374612331
+      }
+    },
+    {
+      "key": [
+        4,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2508.22021484375,
+        "row0": 0.0011150415521115065,
+        "chunk": 0.004213573411107063
+      }
+    },
+    {
+      "key": [
+        4,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2508.10009765625,
+        "row0": 0.0013565135886892676,
+        "chunk": 0.012179980985820293
+      }
+    },
+    {
+      "key": [
+        4,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 1661.2860107421875,
+        "row0": 0.00513395806774497,
+        "chunk": 0.020105747506022453
+      }
+    },
+    {
+      "key": [
+        4,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 1661.765625,
+        "row0": 0.006176511757075787,
+        "chunk": 0.045909203588962555
+      }
+    },
+    {
+      "key": [
+        4,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1661.937255859375,
+        "row0": 0.006693835835903883,
+        "chunk": 0.049631569534540176
+      }
+    },
+    {
+      "key": [
+        4,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 1284.6336669921875,
+        "row0": 0.03687545284628868,
+        "chunk": 0.0455130971968174
+      }
+    },
+    {
+      "key": [
+        4,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 1284.476318359375,
+        "row0": 0.03305874019861221,
+        "chunk": 0.045140594244003296
+      }
+    },
+    {
+      "key": [
+        4,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1284.778076171875,
+        "row0": 0.03885236382484436,
+        "chunk": 0.049094557762145996
+      }
+    },
+    {
+      "key": [
+        4,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2254.581298828125,
+        "row0": 0.044113416224718094,
+        "chunk": 0.06063235178589821
+      }
+    },
+    {
+      "key": [
+        4,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2254.350830078125,
+        "row0": 0.04814979061484337,
+        "chunk": 0.06401754915714264
+      }
+    },
+    {
+      "key": [
+        4,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2254.073974609375,
+        "row0": 0.05647699907422066,
+        "chunk": 0.06480937451124191
+      }
+    },
+    {
+      "key": [
+        4,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2661.2841796875,
+        "row0": 0.0040955981239676476,
+        "chunk": 0.01478547789156437
+      }
+    },
+    {
+      "key": [
+        4,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2661.63818359375,
+        "row0": 0.004982669837772846,
+        "chunk": 0.015010103583335876
+      }
+    },
+    {
+      "key": [
+        4,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2661.254638671875,
+        "row0": 0.004823742434382439,
+        "chunk": 0.014757816679775715
+      }
+    },
+    {
+      "key": [
+        4,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 1729.7269287109375,
+        "row0": 0.0015677951741963625,
+        "chunk": 0.012234353460371494
+      }
+    },
+    {
+      "key": [
+        4,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 1729.89892578125,
+        "row0": 0.0018084067851305008,
+        "chunk": 0.012193330563604832
+      }
+    },
+    {
+      "key": [
+        4,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1730.2047119140625,
+        "row0": 0.0021086677443236113,
+        "chunk": 0.013721209950745106
+      }
+    },
+    {
+      "key": [
+        4,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2830.213134765625,
+        "row0": 0.6953923106193542,
+        "chunk": 0.18176567554473877
+      }
+    },
+    {
+      "key": [
+        4,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2829.93798828125,
+        "row0": 0.6965026259422302,
+        "chunk": 0.18474076688289642
+      }
+    },
+    {
+      "key": [
+        4,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2829.7802734375,
+        "row0": 0.6917489171028137,
+        "chunk": 0.18567369878292084
+      }
+    },
+    {
+      "key": [
+        4,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 1906.91748046875,
+        "row0": 0.025489987805485725,
+        "chunk": 0.26331451535224915
+      }
+    },
+    {
+      "key": [
+        4,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 1907.071044921875,
+        "row0": 0.027469506487250328,
+        "chunk": 0.263543963432312
+      }
+    },
+    {
+      "key": [
+        4,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2285.693115234375,
+        "row0": 0.0032911200542002916,
+        "chunk": 0.02504386380314827
+      }
+    },
+    {
+      "key": [
+        4,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2286.0458984375,
+        "row0": 0.002819811226800084,
+        "chunk": 0.014282888732850552
+      }
+    },
+    {
+      "key": [
+        4,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2285.658447265625,
+        "row0": 0.0032031149603426456,
+        "chunk": 0.014638027176260948
+      }
+    },
+    {
+      "key": [
+        4,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2366.173583984375,
+        "row0": 0.008005483075976372,
+        "chunk": 0.07095247507095337
+      }
+    },
+    {
+      "key": [
+        4,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2366.918212890625,
+        "row0": 0.008752182126045227,
+        "chunk": 0.06984924525022507
+      }
+    },
+    {
+      "key": [
+        4,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2367.316650390625,
+        "row0": 0.012238982133567333,
+        "chunk": 0.07058616727590561
+      }
+    },
+    {
+      "key": [
+        4,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2252.698974609375,
+        "row0": 0.009214687161147594,
+        "chunk": 0.03649531677365303
+      }
+    },
+    {
+      "key": [
+        4,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2252.605224609375,
+        "row0": 0.011608042754232883,
+        "chunk": 0.03500598296523094
+      }
+    },
+    {
+      "key": [
+        4,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2252.578125,
+        "row0": 0.0157456137239933,
+        "chunk": 0.03869735822081566
+      }
+    },
+    {
+      "key": [
+        4,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2100.799560546875,
+        "row0": 0.0033658749889582396,
+        "chunk": 0.7042139172554016
+      }
+    },
+    {
+      "key": [
+        4,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2100.9052734375,
+        "row0": 0.003349088365212083,
+        "chunk": 0.6920711994171143
+      }
+    },
+    {
+      "key": [
+        4,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2100.677490234375,
+        "row0": 0.00340502941980958,
+        "chunk": 0.7081930637359619
+      }
+    },
+    {
+      "key": [
+        5,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2253.9765625,
+        "row0": 0.0027053349185734987,
+        "chunk": 0.011099136434495449
+      }
+    },
+    {
+      "key": [
+        5,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2254.004150390625,
+        "row0": 0.0027358720544725657,
+        "chunk": 0.011852097697556019
+      }
+    },
+    {
+      "key": [
+        5,
+        46,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2253.966552734375,
+        "row0": 0.004084163811057806,
+        "chunk": 0.011101653799414635
+      }
+    },
+    {
+      "key": [
+        5,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 3423.770263671875,
+        "row0": 0.009839336387813091,
+        "chunk": 0.21078839898109436
+      }
+    },
+    {
+      "key": [
+        5,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 3424.125,
+        "row0": 0.011039902456104755,
+        "chunk": 0.20321457087993622
+      }
+    },
+    {
+      "key": [
+        5,
+        46,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 3424.742431640625,
+        "row0": 0.011415580287575722,
+        "chunk": 0.2023804634809494
+      }
+    },
+    {
+      "key": [
+        5,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 4097.59716796875,
+        "row0": 0.011562696658074856,
+        "chunk": 0.2506735324859619
+      }
+    },
+    {
+      "key": [
+        5,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 4097.705078125,
+        "row0": 0.014416821300983429,
+        "chunk": 0.25667041540145874
+      }
+    },
+    {
+      "key": [
+        5,
+        46,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 4097.6396484375,
+        "row0": 0.0181095190346241,
+        "chunk": 0.2624886929988861
+      }
+    },
+    {
+      "key": [
+        5,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2667.974365234375,
+        "row0": 0.10934896767139435,
+        "chunk": 0.07582071423530579
+      }
+    },
+    {
+      "key": [
+        5,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2668.43115234375,
+        "row0": 0.11435183882713318,
+        "chunk": 0.08428803086280823
+      }
+    },
+    {
+      "key": [
+        5,
+        46,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2668.1953125,
+        "row0": 0.10643579810857773,
+        "chunk": 0.10403447598218918
+      }
+    },
+    {
+      "key": [
+        5,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2152.957275390625,
+        "row0": 0.00723662693053484,
+        "chunk": 0.03506136313080788
+      }
+    },
+    {
+      "key": [
+        5,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2152.954833984375,
+        "row0": 0.007733466569334269,
+        "chunk": 0.03612392395734787
+      }
+    },
+    {
+      "key": [
+        5,
+        48,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2152.817138671875,
+        "row0": 0.006015800405293703,
+        "chunk": 0.03371385112404823
+      }
+    },
+    {
+      "key": [
+        5,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2758.596923828125,
+        "row0": 0.0033435472287237644,
+        "chunk": 0.03330082446336746
+      }
+    },
+    {
+      "key": [
+        5,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2758.740478515625,
+        "row0": 0.0037872670218348503,
+        "chunk": 0.03039722889661789
+      }
+    },
+    {
+      "key": [
+        5,
+        48,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2758.911376953125,
+        "row0": 0.0040290504693984985,
+        "chunk": 0.030372342094779015
+      }
+    },
+    {
+      "key": [
+        5,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2077.0224609375,
+        "row0": 0.0007442620117217302,
+        "chunk": 0.5265263319015503
+      }
+    },
+    {
+      "key": [
+        5,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2076.84765625,
+        "row0": 0.0005399351357482374,
+        "chunk": 0.5183074474334717
+      }
+    },
+    {
+      "key": [
+        5,
+        48,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2077.226806640625,
+        "row0": 0.0008336914470419288,
+        "chunk": 0.5125060677528381
+      }
+    },
+    {
+      "key": [
+        5,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 3170.307861328125,
+        "row0": 0.7056816816329956,
+        "chunk": 0.08285099267959595
+      }
+    },
+    {
+      "key": [
+        5,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 3170.356201171875,
+        "row0": 0.7557359337806702,
+        "chunk": 0.0889575257897377
+      }
+    },
+    {
+      "key": [
+        5,
+        48,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 3170.280517578125,
+        "row0": 0.7293112874031067,
+        "chunk": 0.08641635626554489
+      }
+    },
+    {
+      "key": [
+        5,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2387.752685546875,
+        "row0": 0.0016669961623847485,
+        "chunk": 0.09915370494127274
+      }
+    },
+    {
+      "key": [
+        5,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2387.72119140625,
+        "row0": 0.00175132614094764,
+        "chunk": 0.1010214239358902
+      }
+    },
+    {
+      "key": [
+        5,
+        49,
+        3
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2387.606689453125,
+        "row0": 0.0019507703837007284,
+        "chunk": 0.09905243664979935
+      }
+    },
+    {
+      "key": [
+        5,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2478.62890625,
+        "row0": 0.0023551019839942455,
+        "chunk": 0.06497938185930252
+      }
+    },
+    {
+      "key": [
+        5,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2479.193603515625,
+        "row0": 0.0027480244170874357,
+        "chunk": 0.06667779386043549
+      }
+    },
+    {
+      "key": [
+        5,
+        49,
+        4
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2479.564697265625,
+        "row0": 0.002846154849976301,
+        "chunk": 0.06665299832820892
+      }
+    },
+    {
+      "key": [
+        5,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2708.43896484375,
+        "row0": 0.07004569470882416,
+        "chunk": 0.02925858087837696
+      }
+    },
+    {
+      "key": [
+        5,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2708.355712890625,
+        "row0": 0.07330022007226944,
+        "chunk": 0.031873878091573715
+      }
+    },
+    {
+      "key": [
+        5,
+        49,
+        5
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2708.262451171875,
+        "row0": 0.08234171569347382,
+        "chunk": 0.04336604103446007
+      }
+    },
+    {
+      "key": [
+        5,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2736.520751953125,
+        "row0": 0.004727493040263653,
+        "chunk": 0.15679651498794556
+      }
+    },
+    {
+      "key": [
+        5,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2736.62841796875,
+        "row0": 0.005228888709098101,
+        "chunk": 0.1485176533460617
+      }
+    },
+    {
+      "key": [
+        5,
+        49,
+        6
+      ],
+      "split": "train",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2736.502197265625,
+        "row0": 0.004938813392072916,
+        "chunk": 0.14734987914562225
+      }
+    },
+    {
+      "key": [
+        6,
+        48,
+        3
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 1992.1015625,
+        "row0": 0.00880472082644701,
+        "chunk": 0.035439383238554
+      }
+    },
+    {
+      "key": [
+        6,
+        48,
+        3
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 1992.2152099609375,
+        "row0": 0.008975683711469173,
+        "chunk": 0.06655066460371017
+      }
+    },
+    {
+      "key": [
+        6,
+        48,
+        3
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1992.089111328125,
+        "row0": 0.007837730459868908,
+        "chunk": 0.034379810094833374
+      }
+    },
+    {
+      "key": [
+        6,
+        48,
+        4
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 3211.5537109375,
+        "row0": 0.010103825479745865,
+        "chunk": 0.058615341782569885
+      }
+    },
+    {
+      "key": [
+        6,
+        48,
+        4
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 3212.076904296875,
+        "row0": 0.010009616613388062,
+        "chunk": 0.058594316244125366
+      }
+    },
+    {
+      "key": [
+        6,
+        48,
+        4
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 3212.575927734375,
+        "row0": 0.011529984883964062,
+        "chunk": 0.05999535694718361
+      }
+    },
+    {
+      "key": [
+        6,
+        48,
+        5
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 1645.485107421875,
+        "row0": 0.10040690004825592,
+        "chunk": 0.02164030261337757
+      }
+    },
+    {
+      "key": [
+        6,
+        48,
+        5
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 1645.3973388671875,
+        "row0": 0.09377796947956085,
+        "chunk": 0.020580152049660683
+      }
+    },
+    {
+      "key": [
+        6,
+        48,
+        5
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1645.4788818359375,
+        "row0": 0.09786533564329147,
+        "chunk": 0.02057190239429474
+      }
+    },
+    {
+      "key": [
+        6,
+        48,
+        6
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2499.8046875,
+        "row0": 0.0020287074148654938,
+        "chunk": 0.0012393848737701774
+      }
+    },
+    {
+      "key": [
+        6,
+        48,
+        6
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2498.986572265625,
+        "row0": 0.0009582611382938921,
+        "chunk": 0.0010285250609740615
+      }
+    },
+    {
+      "key": [
+        6,
+        48,
+        6
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2498.59423828125,
+        "row0": 0.0006890803342685103,
+        "chunk": 0.000922747771255672
+      }
+    },
+    {
+      "key": [
+        6,
+        49,
+        3
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2166.000244140625,
+        "row0": 0.00489320233464241,
+        "chunk": 0.03741215914487839
+      }
+    },
+    {
+      "key": [
+        6,
+        49,
+        3
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2166.06396484375,
+        "row0": 0.008018412627279758,
+        "chunk": 0.057280413806438446
+      }
+    },
+    {
+      "key": [
+        6,
+        49,
+        3
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2165.9970703125,
+        "row0": 0.003871327731758356,
+        "chunk": 0.04475344344973564
+      }
+    },
+    {
+      "key": [
+        6,
+        49,
+        4
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2744.291259765625,
+        "row0": 0.022839365527033806,
+        "chunk": 0.10798902064561844
+      }
+    },
+    {
+      "key": [
+        6,
+        49,
+        4
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2744.3681640625,
+        "row0": 0.02418510988354683,
+        "chunk": 0.1154899075627327
+      }
+    },
+    {
+      "key": [
+        6,
+        49,
+        4
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2744.6337890625,
+        "row0": 0.02628624252974987,
+        "chunk": 0.11818530410528183
+      }
+    },
+    {
+      "key": [
+        6,
+        49,
+        5
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2180.557861328125,
+        "row0": 0.0075255827978253365,
+        "chunk": 0.013440742157399654
+      }
+    },
+    {
+      "key": [
+        6,
+        49,
+        5
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2180.717529296875,
+        "row0": 0.008034097030758858,
+        "chunk": 0.013935010880231857
+      }
+    },
+    {
+      "key": [
+        6,
+        49,
+        5
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2180.54541015625,
+        "row0": 0.006870735436677933,
+        "chunk": 0.012648933567106724
+      }
+    },
+    {
+      "key": [
+        6,
+        49,
+        6
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2479.45458984375,
+        "row0": 0.005251309834420681,
+        "chunk": 0.0015526064671576023
+      }
+    },
+    {
+      "key": [
+        6,
+        49,
+        6
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2479.601318359375,
+        "row0": 0.005081509705632925,
+        "chunk": 0.001624282100237906
+      }
+    },
+    {
+      "key": [
+        6,
+        49,
+        6
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2479.614013671875,
+        "row0": 0.006341189611703157,
+        "chunk": 0.001655185711570084
+      }
+    },
+    {
+      "key": [
+        7,
+        48,
+        3
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 3507.431884765625,
+        "row0": 0.0051402803510427475,
+        "chunk": 0.15461160242557526
+      }
+    },
+    {
+      "key": [
+        7,
+        48,
+        3
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 3507.618896484375,
+        "row0": 0.007010377012193203,
+        "chunk": 0.17546844482421875
+      }
+    },
+    {
+      "key": [
+        7,
+        48,
+        3
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 3507.450927734375,
+        "row0": 0.0063184704631567,
+        "chunk": 0.16070464253425598
+      }
+    },
+    {
+      "key": [
+        7,
+        48,
+        4
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2862.347900390625,
+        "row0": 0.031241973862051964,
+        "chunk": 0.05960758775472641
+      }
+    },
+    {
+      "key": [
+        7,
+        48,
+        4
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2862.883056640625,
+        "row0": 0.0321660190820694,
+        "chunk": 0.06217923387885094
+      }
+    },
+    {
+      "key": [
+        7,
+        48,
+        4
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2863.547607421875,
+        "row0": 0.0369245819747448,
+        "chunk": 0.0666179284453392
+      }
+    },
+    {
+      "key": [
+        7,
+        48,
+        5
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 4228.9638671875,
+        "row0": 0.004939494654536247,
+        "chunk": 0.08925637602806091
+      }
+    },
+    {
+      "key": [
+        7,
+        48,
+        5
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 4229.6708984375,
+        "row0": 0.0047499858774244785,
+        "chunk": 0.08341151475906372
+      }
+    },
+    {
+      "key": [
+        7,
+        48,
+        5
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 4229.6865234375,
+        "row0": 0.004993289243429899,
+        "chunk": 0.09175088256597519
+      }
+    },
+    {
+      "key": [
+        7,
+        48,
+        6
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 1794.822998046875,
+        "row0": 0.005510074086487293,
+        "chunk": 0.014970196411013603
+      }
+    },
+    {
+      "key": [
+        7,
+        48,
+        6
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 1794.8155517578125,
+        "row0": 0.006106371991336346,
+        "chunk": 0.01554536260664463
+      }
+    },
+    {
+      "key": [
+        7,
+        48,
+        6
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1794.757080078125,
+        "row0": 0.0047435942105948925,
+        "chunk": 0.005528209265321493
+      }
+    },
+    {
+      "key": [
+        7,
+        49,
+        3
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 2731.836669921875,
+        "row0": 0.001274135778658092,
+        "chunk": 0.02876020409166813
+      }
+    },
+    {
+      "key": [
+        7,
+        49,
+        3
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 2732.294189453125,
+        "row0": 0.001089919707737863,
+        "chunk": 0.029130617156624794
+      }
+    },
+    {
+      "key": [
+        7,
+        49,
+        3
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 2731.822021484375,
+        "row0": 0.0005433614132925868,
+        "chunk": 0.0266936756670475
+      }
+    },
+    {
+      "key": [
+        7,
+        49,
+        4
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 3741.21142578125,
+        "row0": 0.01861848309636116,
+        "chunk": 0.05122534930706024
+      }
+    },
+    {
+      "key": [
+        7,
+        49,
+        4
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 3741.405517578125,
+        "row0": 0.02055036649107933,
+        "chunk": 0.05354263260960579
+      }
+    },
+    {
+      "key": [
+        7,
+        49,
+        4
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 3741.572998046875,
+        "row0": 0.022801514714956284,
+        "chunk": 0.060040589421987534
+      }
+    },
+    {
+      "key": [
+        7,
+        49,
+        5
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 3574.64013671875,
+        "row0": 0.2052392214536667,
+        "chunk": 0.03752489015460014
+      }
+    },
+    {
+      "key": [
+        7,
+        49,
+        5
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 3574.79345703125,
+        "row0": 0.20696623623371124,
+        "chunk": 0.038731757551431656
+      }
+    },
+    {
+      "key": [
+        7,
+        49,
+        5
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 3574.92578125,
+        "row0": 0.21603378653526306,
+        "chunk": 0.041374947875738144
+      }
+    },
+    {
+      "key": [
+        7,
+        49,
+        6
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "true",
+      "metrics": {
+        "latent": 1383.8983154296875,
+        "row0": 0.004476975649595261,
+        "chunk": 0.040043383836746216
+      }
+    },
+    {
+      "key": [
+        7,
+        49,
+        6
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "zero",
+      "metrics": {
+        "latent": 1384.010009765625,
+        "row0": 0.004586449824273586,
+        "chunk": 0.04105578735470772
+      }
+    },
+    {
+      "key": [
+        7,
+        49,
+        6
+      ],
+      "split": "validation",
+      "arm": "ordinary",
+      "context": "mismatched",
+      "metrics": {
+        "latent": 1383.897705078125,
+        "row0": 0.004614583682268858,
+        "chunk": 0.03909590095281601
+      }
+    }
+  ]
+}

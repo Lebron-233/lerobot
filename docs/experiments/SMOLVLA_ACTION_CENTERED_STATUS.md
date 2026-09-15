@@ -1,4 +1,15 @@
-# F-ACR1：实现与CPU准备完成，GPU驱动版本不一致阻止正式启动
+# F-ACR1：唯一正式运行与独立审计完成，开发候选门通过
+
+2026-09-15，GPU驱动恢复后接续评论5628181305，预登记5683122737正文exact。
+execution HEAD `2926678f0f1c0e62f53f1d4c46fcb71c9dd47cf5`；唯一输出 `outputs/smolvla_action_centered_2926678f`。
+两组各72更新、850 decoder、1143支路前向、144反传全部完成；worker及监督入口exit0。
+独立CPU审计exit0，762条预测/2448项数值比较通过，开发候选门true；两组均选72步。
+验证中心化首动作MSE 0.013862918700；相对基底下降51.7155%，四episode均改善。
+[完整结果及已知问题](SMOLVLA_ACTION_CENTERED_RESULT.md)、[机器结果](SMOLVLA_ACTION_CENTERED_RESULT.json)、[续接](SMOLVLA_ACTION_CENTERED_NEXT.md)。
+当前没有待恢复的正式运行；唯一机会已使用。生产默认与闭环资格false、risk_thresholds=null、旧confirmation untouched。
+
+## 历史：2026-09-11实现与CPU准备完成、驱动阻塞
+
 
 2026-09-11，接续Issue #1评论5627262353。原F-PFX1独立审计783项接纳及主门false保持，未重跑。
 
