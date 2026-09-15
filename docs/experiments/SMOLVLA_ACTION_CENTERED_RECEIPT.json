@@ -1,0 +1,18 @@
+{
+  "experiment": "F-ACR1",
+  "execution_head": "2926678f0f1c0e62f53f1d4c46fcb71c9dd47cf5",
+  "result_head": "4f082062c359b08a8e76d6909d3ad518490feb66",
+  "publication_id": 5683274000,
+  "publication_url": "https://github.com/Lebron-233/lerobot/issues/1#issuecomment-5683274000",
+  "post_exit_code": 0,
+  "get_exit_code": 0,
+  "body_exact": true,
+  "registration_id": 5683122737,
+  "registration_body_exact": true,
+  "supervisor_exit_code": 0,
+  "worker_exit_code": 0,
+  "independent_audit_exit_code": 0,
+  "additional_model_forwards": 0,
+  "additional_env": 0,
+  "additional_test_reads": 0
+}
