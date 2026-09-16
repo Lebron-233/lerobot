@@ -1,0 +1,77 @@
+{
+  "result": {
+    "experiment": "F-ACQ1",
+    "status": "technical_failure",
+    "first_failure": "Traceback (most recent call last):\n  File \"/home/rp/Workspace/SmolVLA_RTC/lerobot/examples/advanced/predictive_async/libero_action_qualification.py\", line 471, in worker\n    factory = natural.trace.checkpoint_factory(e.reference.make_native_env_factory(), calls)\n                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/rp/Workspace/SmolVLA_RTC/lerobot/examples/advanced/predictive_async/libero_reference_qualification.py\", line 370, in make_native_env_factory\n    from libero.libero import benchmark, get_assets_path\n  File \"/home/rp/Workspace/SmolVLA_RTC/libero-reference-venv/lib/python3.12/site-packages/libero/libero/__init__.py\", line 104, in <module>\n    answer = input(\n             ^^^^^^\nEOFError: EOF when reading a line\n",
+    "graph_released": true,
+    "execution_head": "c1d1f65bfe3a102510529f0c500c58c046961665",
+    "counts": {
+      "predictor_loads": 3,
+      "vla_loads": 1,
+      "predictor": 64,
+      "decoder": 48,
+      "anchor_exact": 16,
+      "offline_captures": 2
+    },
+    "native_budget": {},
+    "episodes_completed": 0,
+    "predictor_controls_environment": false,
+    "training_updates": 0,
+    "backward": 0,
+    "real_robot": 0,
+    "old_test_reads": 0,
+    "baseline_qualified": false,
+    "realtime_qualified": false,
+    "predictor_benefit_tested": false,
+    "risk_thresholds": null,
+    "old_confirmation": "not_started_untouched",
+    "attempts": 1,
+    "retries": 0,
+    "execution": {
+      "command": [
+        "/home/rp/Workspace/SmolVLA_RTC/libero-reference-venv/bin/python",
+        "-u",
+        "-X",
+        "faulthandler",
+        "/home/rp/Workspace/SmolVLA_RTC/lerobot/examples/advanced/predictive_async/libero_action_qualification.py",
+        "--execution-head",
+        "c1d1f65bfe3a102510529f0c500c58c046961665",
+        "--output",
+        "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_action_qualification_c1d1f65b",
+        "--worker"
+      ],
+      "child_pid": 567236,
+      "child_exit_code": 2,
+      "exit_confirmed": true,
+      "started_at_utc": "2026-09-16T16:55:01.319990+00:00",
+      "finished_at_utc": "2026-09-16T16:55:17.558956+00:00",
+      "wall_seconds": 16.239000335001037,
+      "stop_reason": null,
+      "forced_termination": false,
+      "pending_calls_at_exit": [],
+      "active_phases_at_exit": {}
+    },
+    "accounting": {
+      "call_intents": {},
+      "call_returns": {},
+      "call_errors": {},
+      "unknown_calls": [],
+      "journal_consistent": true,
+      "measured_native_returns": 0,
+      "settling_native_returns": 0,
+      "request_snapshots": 0,
+      "last_model_phase": null,
+      "accounting_basis": "flushed_call_intent_return_error_journal"
+    },
+    "heldout_primary_gate_passed": false,
+    "heldout_robustness_gate_passed": false
+  },
+  "independent_audit": {
+    "independent_contract_accepted": false,
+    "heldout_primary_gate_passed": false,
+    "heldout_robustness_gate_passed": false,
+    "first_failure": "Traceback (most recent call last):\n  File \"/home/rp/Workspace/SmolVLA_RTC/lerobot/examples/advanced/predictive_async/audit_libero_action_qualification.py\", line 285, in main\n    result = audit(output)\n             ^^^^^^^^^^^^^\n  File \"/home/rp/Workspace/SmolVLA_RTC/lerobot/examples/advanced/predictive_async/audit_libero_action_qualification.py\", line 108, in audit\n    require(result[\"status\"] == \"completed\" and result[\"first_failure\"] is None, \"Run not completed\")\n  File \"/home/rp/Workspace/SmolVLA_RTC/lerobot/examples/advanced/predictive_async/audit_libero_action_qualification.py\", line 17, in require\n    raise ValueError(message)\nValueError: Run not completed\n",
+    "audit_wall_seconds": 0.00034543999936431646
+  },
+  "per_sample_metrics": []
+}

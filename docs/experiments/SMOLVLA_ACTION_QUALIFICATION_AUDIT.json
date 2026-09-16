@@ -1,0 +1,7 @@
+{
+  "independent_contract_accepted": false,
+  "heldout_primary_gate_passed": false,
+  "heldout_robustness_gate_passed": false,
+  "first_failure": "Traceback (most recent call last):\n  File \"/home/rp/Workspace/SmolVLA_RTC/lerobot/examples/advanced/predictive_async/audit_libero_action_qualification.py\", line 285, in main\n    result = audit(output)\n             ^^^^^^^^^^^^^\n  File \"/home/rp/Workspace/SmolVLA_RTC/lerobot/examples/advanced/predictive_async/audit_libero_action_qualification.py\", line 108, in audit\n    require(result[\"status\"] == \"completed\" and result[\"first_failure\"] is None, \"Run not completed\")\n  File \"/home/rp/Workspace/SmolVLA_RTC/lerobot/examples/advanced/predictive_async/audit_libero_action_qualification.py\", line 17, in require\n    raise ValueError(message)\nValueError: Run not completed\n",
+  "audit_wall_seconds": 0.00034543999936431646
+}

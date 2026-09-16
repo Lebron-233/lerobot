@@ -44,6 +44,17 @@ NATIVE_LIMITS = {"episodes": (1, 8), "settling": (10, 80), "measurement": (280, 
 # New N<=32, M<=N: 7N+2M decodes; 7N+3M predictor forwards.
 LIMITS = {"encoding": 40, "decoder": 336, "predictor": 384}
 SOFT_SECONDS, HARD_SECONDS = 1500, 1530
+# F-ACQ1-R1 restores the original native launch environment; no policy changes.
+RUNTIME_ENV = {
+    "HF_HUB_OFFLINE": "1", "TRANSFORMERS_OFFLINE": "1",
+    "MUJOCO_GL": "egl", "PYOPENGL_PLATFORM": "egl",
+    "LIBERO_CONFIG_PATH": str(e.REPO.parent / "libero-reference-cache/config"),
+    "LD_PRELOAD": "/usr/lib/x86_64-linux-gnu/libGLdispatch.so.0:/usr/lib/x86_64-linux-gnu/libGLX.so.0",
+}
+CONFIG_SHA256 = "1acadaf137bd6e0e9cc1c5130d4904f418f336aa912c417a74aa35be9335dc8b"
+ASSETS_LINK = e.REPO.parent / "libero-reference-venv/lib/python3.12/site-packages/libero/libero/assets"
+ASSETS_PATH = (e.REPO.parent / "libero-reference-cache/hub/datasets--lerobot--libero-assets/snapshots"
+               / "0b3ea86be5fe169d0fd036ae63d1070ec09e90f6")
 
 
 def digest(path):
@@ -52,6 +63,26 @@ def digest(path):
         for block in iter(lambda: stream.read(1024 * 1024), b""):
             h.update(block)
     return h.hexdigest()
+
+
+def runtime_environment():
+    """Read-only fail-fast gate; never creates a default LIBERO configuration."""
+    if str(Path(sys.executable)) != e.PYTHON or torch.cuda.is_initialized():
+        raise ValueError("Runtime environment gate requires fixed interpreter and uninitialized CUDA")
+    wrong = {k: os.environ.get(k) for k, v in RUNTIME_ENV.items() if os.environ.get(k) != v}
+    if wrong or "PYTHONPATH" in os.environ:
+        raise ValueError(f"Use the frozen offline/EGL launch environment; mismatches={wrong}; "
+                         f"PYTHONPATH_present={'PYTHONPATH' in os.environ}")
+    config = Path(RUNTIME_ENV["LIBERO_CONFIG_PATH"]) / "config.yaml"
+    if not config.is_file() or digest(config) != CONFIG_SHA256:
+        raise ValueError("Existing dedicated LIBERO configuration missing or changed; do not create one")
+    if not ASSETS_LINK.is_dir() or ASSETS_LINK.resolve() != ASSETS_PATH:
+        raise ValueError("Existing LIBERO assets link differs from the frozen snapshot")
+    if not all(Path(p).is_file() for p in RUNTIME_ENV["LD_PRELOAD"].split(":")):
+        raise ValueError("Registered system GL libraries are missing")
+    return {"variables": dict(RUNTIME_ENV), "pythonpath_absent": True,
+            "config_path": str(config), "config_sha256": digest(config),
+            "assets_path": str(ASSETS_LINK.resolve()), "cuda_initialized": False}
 
 
 def preparation_path(head):
@@ -114,6 +145,7 @@ def source_files():
 
 def prepare(head):
     acr.source_gate(head)
+    environment = runtime_environment()
     if str(Path(sys.executable)) != e.PYTHON:
         raise ValueError("Use the frozen reference interpreter")
     path = preparation_path(head)
@@ -131,7 +163,8 @@ def prepare(head):
     data = {"experiment": "F-ACQ1", "execution_head": head, "manifest": manifest(),
             "source_hashes": {str(p): digest(p) for p in source_files()},
             "history_scope": str(e.REPO / "outputs"), "history": history,
-            "cuda_initialized": False, "model_forwards": 0, "new_env": 0}
+            "cuda_initialized": False, "model_forwards": 0, "new_env": 0,
+            "runtime_environment": environment}
     path.mkdir()
     e.write_json(path / "preparation.json", data)
     print(json.dumps({"prepared": True, "path": str(path), "sha256": digest(path / "preparation.json"),
@@ -141,6 +174,8 @@ def prepare(head):
 def validate_preparation(head, registration=False):
     prep = preparation_path(head)
     saved = json.loads((prep / "preparation.json").read_text())
+    if saved.get("runtime_environment") != runtime_environment():
+        raise ValueError("Runtime environment differs from preparation")
     # Roundtrip makes tuple/list representation identical to persisted JSON.
     if saved["execution_head"] != head or saved["manifest"] != json.loads(json.dumps(manifest())):
         raise ValueError("Prepared contract differs")
@@ -447,6 +482,11 @@ def worker(args):
     calls = e.Calls(args.output / "calls.jsonl")
     result = {"experiment": "F-ACQ1", "status": "technical_failure", "first_failure": None}
     try:
+        with pilot.phase(args.output, "environment_preflight", 30):
+            result["runtime_environment"] = runtime_environment()
+            native_factory = e.reference.make_native_env_factory()
+            if torch.cuda.is_initialized():
+                raise ValueError("Native factory preflight initialized CUDA")
         with pilot.phase(args.output, "load", 90):
             if torch.cuda.get_device_name() != "NVIDIA GeForce RTX 4070 Ti SUPER":
                 raise ValueError("Registered GPU differs")
@@ -468,7 +508,7 @@ def worker(args):
             runtime = Runtime(policy.model)
         with torch.no_grad(), pilot.phase(args.output, "anchor_replay", 180):
             replay_anchors(models, runtime, args.output, counts)
-        factory = natural.trace.checkpoint_factory(e.reference.make_native_env_factory(), calls)
+        factory = natural.trace.checkpoint_factory(native_factory, calls)
         with pilot.phase(args.output, "native_collection", 960):
             for spec in manifest()["rows"]:
                 print(f"F-ACQ1 START {spec['ordinal']} task={spec['task_id']} state={spec['initial_state_id']}", flush=True)

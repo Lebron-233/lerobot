@@ -253,8 +253,10 @@ def test_preparation_readback_identity_and_digest(tmp_path, monkeypatch):
     monkeypatch.setattr(q, "output_path", lambda _: output)
     monkeypatch.setattr(q, "source_files", lambda: [source])
     monkeypatch.setattr(q, "history_inventory", lambda _: [])
+    monkeypatch.setattr(q, "runtime_environment", lambda: {"synthetic": True})
     (prep / "preparation.json").write_text(json.dumps({"execution_head": head, "manifest": q.manifest(),
-        "source_hashes": {str(source): q.digest(source)}, "history": []}))
+        "source_hashes": {str(source): q.digest(source)}, "history": [],
+        "runtime_environment": {"synthetic": True}}))
     body = f"F-ACQ1 {head} {output} {q.digest(prep / 'preparation.json')}"
     (prep / "registration.md").write_text(body)
     payload = {"id": 123, "body": body, "issue_url": "https://api.github.com/repos/Lebron-233/lerobot/issues/1"}

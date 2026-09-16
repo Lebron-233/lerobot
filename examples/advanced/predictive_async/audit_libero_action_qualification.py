@@ -119,6 +119,13 @@ def audit(output):
         require(result[name] is False, f"Qualification flag changed: {name}")
     require(result["risk_thresholds"] is None and result["old_confirmation"] == "not_started_untouched", "Safety scope changed")
     prepared = json.loads((q.preparation_path(head) / "preparation.json").read_text())
+    environment = prepared["runtime_environment"]
+    compare_json(environment, result["runtime_environment"], "runtime_environment")
+    require(environment["variables"] == q.RUNTIME_ENV and environment["pythonpath_absent"] is True
+            and environment["cuda_initialized"] is False, "Recorded launch environment differs")
+    require(environment["config_sha256"] == q.CONFIG_SHA256 == q.digest(environment["config_path"])
+            and environment["assets_path"] == str(q.ASSETS_PATH)
+            and q.ASSETS_LINK.resolve() == q.ASSETS_PATH, "Configuration/assets changed")
     require(prepared["source_hashes"] == {str(p): q.digest(p) for p in q.source_files()}, "Source bytes changed")
     compare_json(json.loads((output / "manifest.json").read_text()), prepared["manifest"], "manifest")
     q.check_unused(prepared["history"])
