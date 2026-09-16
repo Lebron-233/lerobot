@@ -69,6 +69,11 @@ def load_data():
     return samples, bases, residuals, donors, contract, weights, scales, refs
 
 
+def offline_metrics(visual, value, sample):
+    """Offline reporting is CPU-only; differentiable training metrics stay on CUDA."""
+    return p.metrics(q.cpu(visual), value.detach().cpu(), sample)
+
+
 def objective(metrics, identity, scales, weight, arm):
     require(arm in ARMS, "Unknown objective arm")
     latent, row0, chunk = metrics
@@ -273,7 +278,7 @@ def worker(args):
                     ("old_centered", "centered", ref["visual"]["centered"]), ("frozen", "identity_true", visual)):
                     value = decode(policy, runtime, sample, v, args.output, counts, f"initial_{name}")
                     pilot.require_equal(value, ref["outputs"][old_name], f"Initial {name} differs")
-                    outputs[name], scores[name] = value, p.metrics(v, value, sample)
+                    outputs[name], scores[name] = value, offline_metrics(v, value, sample)
                     counts[f"{name}_exact"] += 1
                 controls[key] = {"key": list(key), "outputs": outputs, "metrics": scores, "evidence": evidence}
                 torch.save(controls[key], args.output / "controls" / ("_".join(map(str, key))+".pt"))
@@ -330,7 +335,7 @@ def worker(args):
                                 pilot.require_equal(a, b.float(), "Zero raw invariant failed")
                             pilot.require_equal(value, controls[key]["outputs"]["identity"], "Zero output invariant failed")
                             counts["zero_exact"] += 1
-                        evidence[context], outputs[context], scores[context] = ev, value, p.metrics(visual, value, sample)
+                        evidence[context], outputs[context], scores[context] = ev, value, offline_metrics(visual, value, sample)
                     assessed[arm, key] = scores
                     torch.save({"key": list(key), "arm": arm, "donor": list(donors[key]) if donors[key] else None,
                                 "evidence": evidence, "outputs": outputs, "metrics": scores},

@@ -139,5 +139,24 @@ def test_budget_stops_before_extra_dispatch():
     assert counts == Counter(r.LIMITS)
 
 
+def test_offline_metrics_detach_and_cpu_boundary(monkeypatch):
+    visual = tuple(torch.ones(1, 2, 3, requires_grad=True) for _ in range(2))
+    value = torch.ones(1, 50, 32, requires_grad=True)
+    sample = {"inputs": (*visual, torch.ones(1, 2, dtype=torch.bool), torch.ones(1, 2, dtype=torch.bool)),
+              "future": tuple(torch.zeros(1, 2, 3) for _ in range(2)), "oracle": torch.zeros(1, 50, 32)}
+    original = r.p.metrics
+    seen = []
+
+    def cpu_only(v, out, source):
+        assert all(x.device.type == "cpu" and not x.requires_grad for x in (*v, out))
+        seen.append(True)
+        return original(v, out, source)
+
+    monkeypatch.setattr(r.p, "metrics", cpu_only)
+    assert r.offline_metrics(visual, value, sample) == {"row0": 1., "chunk": 1., "latent": 1.}
+    assert seen == [True]
+    assert all(x.requires_grad for x in visual) and value.requires_grad
+
+
 def test_cpu_only():
     assert not torch.cuda.is_initialized()
