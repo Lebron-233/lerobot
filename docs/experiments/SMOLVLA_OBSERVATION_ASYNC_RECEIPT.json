@@ -1,0 +1,19 @@
+{
+  "checked_at_utc": "2026-09-17T08:23:12.587539+00:00",
+  "execution_head": "7887dfe79f7afffe4a4e064af82060a7a1a54d44",
+  "formal_job": "ee774240-a4ca-4876-8e55-49819d60ede5",
+  "audit_job": "1499b8d3-0fe3-4e1b-9eaf-1ea50583fea4",
+  "registration_id": 5711192424,
+  "formal_exit_code": 0,
+  "audit_exit_code": 0,
+  "worker_proc_absent": true,
+  "old_pending_unchanged": 21,
+  "source_files_unchanged": 693,
+  "result_sha256": "dc02f344ff25b28174f8302be5486fad3a22cebc94c2d8e108e209d2fac34323",
+  "audit_sha256": "a04ac1b318d6e61f2a72e7134bcfb08b5aefd114b1f368468aa4bc0ffdcadb8c",
+  "descriptive_sha256": "670b3069ce77f11e9e48cc8843d6f204fcbf412746bffd4d3ab9ea3715e34aed",
+  "formal_attempts": 1,
+  "formal_retries": 0,
+  "github_connector_error": "ToolError: FORBIDDEN: This conversation is restricted to developer MCPs",
+  "blocked_latest_read_repeated": false
+}

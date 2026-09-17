@@ -1,0 +1,28 @@
+{
+  "analysis_kind": "posthoc saved JSON arithmetic, no new gate or execution",
+  "wall_reduction_percent": 12.989235788994517,
+  "wall_difference_s": -10.493183931976091,
+  "mean_ms_per_executed_action": {
+    "serialized": 61.10717827761891,
+    "async": 49.85142251846533
+  },
+  "success_discordance": {
+    "both_success": 5,
+    "serialized_only": 2,
+    "async_only": 1
+  },
+  "online_required_delay_steps_from_p99": {
+    "serialized": 7,
+    "async": 9
+  },
+  "max_observed_actual_delay": {
+    "serialized": 0,
+    "async": 8
+  },
+  "requests_above_350ms": {
+    "serialized": 0,
+    "async": 1
+  },
+  "new_model_forwards": 0,
+  "cuda_initialized": false
+}
