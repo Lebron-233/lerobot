@@ -156,7 +156,7 @@ class RTCProcessor:
               right-padded with zeros to match ``T``.
             - Prefix weights are constructed via ``get_prefix_weights(inference_delay, execution_horizon, T)``
               and broadcast to ``(B, T, A)``.
-            - Guidance correction is computed via autograd using ``x1_t = x_t + time * v_t`` and
+            - Guidance correction is computed via autograd using ``x1_t = x_t - time * v_t`` and
               ``error = (prev_chunk_left_over - x1_t) * weights``.
             - The final guidance weight is clamped by ``max_guidance_weight`` from the config.
 
@@ -198,8 +198,9 @@ class RTCProcessor:
         action_chunk_size = x_t.shape[1]
         action_dim = x_t.shape[2]
 
-        if prev_chunk_left_over.shape[1] < action_chunk_size or prev_chunk_left_over.shape[2] < action_dim:
-            padded = torch.zeros(batch_size, action_chunk_size, action_dim).to(x_t.device)
+        prefix_action_dim = prev_chunk_left_over.shape[2]
+        if prev_chunk_left_over.shape[1] < action_chunk_size or prefix_action_dim < action_dim:
+            padded = x_t.new_zeros(batch_size, action_chunk_size, action_dim)
             padded[:, : prev_chunk_left_over.shape[1], : prev_chunk_left_over.shape[2]] = prev_chunk_left_over
             prev_chunk_left_over = padded
 
@@ -215,11 +216,17 @@ class RTCProcessor:
         )
 
         with torch.enable_grad():
-            v_t = original_denoise_step_partial(x_t)
+            # Record the denoiser Jacobian even when policy parameters are frozen.
+            # Enabling this after the forward silently drops dv_t/dx_t from the VJP.
             x_t.requires_grad_(True)
+            v_t = original_denoise_step_partial(x_t)
 
             x1_t = x_t - time * v_t  # noqa: N806
             err = (prev_chunk_left_over - x1_t) * weights
+            # Missing action coordinates are padding, not observed zero targets.
+            if prefix_action_dim < action_dim:
+                valid_dims = torch.arange(action_dim, device=x_t.device) < prefix_action_dim
+                err = err * valid_dims
             grad_outputs = err.clone().detach()
             correction = torch.autograd.grad(x1_t, x_t, grad_outputs, retain_graph=False)[0]
 

@@ -444,6 +444,8 @@ def test_denoise_step_with_prev_chunk(rtc_processor_debug_disabled):
         ]
     )
 
+    # For v(x)=0.5*x and t=0.5, dx_clean/dx=0.75, not identity.
+    expected_result = 0.5 + 0.75 * (expected_result - 0.5)
     assert torch.allclose(result, expected_result, atol=1e-4)
 
 
@@ -519,6 +521,8 @@ def test_denoise_step_uses_custom_execution_horizon():
         ]
     )
 
+    # Apply the analytic Jacobian to the previously tabulated error term.
+    expected_result = 0.5 + 0.75 * (expected_result - 0.5)
     assert torch.allclose(result, expected_result, atol=1e-4)
 
 
