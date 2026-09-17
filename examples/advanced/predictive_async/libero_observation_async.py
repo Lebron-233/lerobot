@@ -159,8 +159,10 @@ def should_submit(remaining, inflight, delay):
 class InferenceOwner:
     """Single model owner. Completion is installed only by the Env-boundary controller."""
 
-    def __init__(self, predict, calls, spec, budget):
+    def __init__(self, predict, calls, spec, budget, *, on_owner_close=None, request_kind='eager_request'):
         self.predict, self.calls, self.spec, self.budget = predict, calls, spec, budget
+        self.on_owner_close, self.request_kind = on_owner_close, request_kind
+        self.cleanup_error, self.cleanup_evidence = None, None
         self.queue = RTCExecutionQueue(max_delay=8)
         self.tasks, self.results = queue.Queue(maxsize=1), queue.Queue(maxsize=1)
         self.pending = None
@@ -183,12 +185,26 @@ class InferenceOwner:
         return stamp
 
     def _run(self):
+        try:
+            self._serve()
+        finally:
+            if self.on_owner_close is not None:
+                began = time.perf_counter()
+                try:
+                    self.on_owner_close()
+                except BaseException:
+                    self.cleanup_error = traceback.format_exc()
+                self.cleanup_evidence = {'owner_thread': threading.get_ident(), 'started_at': began,
+                    'completed_at': time.perf_counter(), 'first_failure': self.cleanup_error}
+                self.calls.emit('owner_resources_closed', ordinal=self.spec['ordinal'], **self.cleanup_evidence)
+
+    def _serve(self):
         while True:
             task = self.tasks.get()
             if task is None:
                 return
             stamp, observation, row = task
-            call_id = self.calls.start('eager_request', self.spec['ordinal'], limit=15,
+            call_id = self.calls.start(self.request_kind, self.spec['ordinal'], limit=15,
                                       request_id=stamp.request_id, observation_index=stamp.observation_index)
             started = time.perf_counter()
             try:
@@ -237,6 +253,7 @@ class InferenceOwner:
         check(not self.thread.is_alive(), 'Owner thread did not exit')
         self.receive(block=False)
         check(self.pending is None, 'Pending request missing its terminal completion')
+        check(self.cleanup_error is None, self.cleanup_error or 'Owner resource cleanup failed')
 
 
 class EagerPredictor:
@@ -364,7 +381,8 @@ def control_loop(owner, native, spec, first, observe, clock=e.Clock):
     return result
 
 
-def episode(spec, output, policy, pre, post, factory, budget, calls, paired):
+def episode(spec, output, policy, pre, post, factory, budget, calls, paired, *,
+            predictor_factory=EagerPredictor, request_kind='eager_request'):
     folder = output / f"episode_{spec['ordinal']:03d}"
     folder.mkdir()
     write(folder / 'started.json', {'spec': spec, 'started_at_utc': datetime.now(UTC).isoformat()})
@@ -372,7 +390,8 @@ def episode(spec, output, policy, pre, post, factory, budget, calls, paired):
     native, owner, observations, control = e.NativeSession(spec, budget, calls, factory), None, [], None
     result = {'spec': spec, 'status': 'technical_failure', 'first_failure': None,
               'worker_joined': False, 'environment_closed': False, 'initial_pair_exact': None}
-    initial = None
+    initial, predict = None, None
+    result['controller_thread'] = threading.get_ident()
     try:
         raw = native.create_reset()
         def observe(raw, index, returned):
@@ -384,7 +403,9 @@ def episode(spec, output, policy, pre, post, factory, budget, calls, paired):
         if paired is not None:
             check(e.initial_difference(paired, initial) is None, 'Paired initial observation differs')
             result['initial_pair_exact'] = True
-        owner = InferenceOwner(EagerPredictor(policy, pre, post, spec), calls, spec, budget)
+        predict = predictor_factory(policy, pre, post, spec)
+        owner = InferenceOwner(predict, calls, spec, budget,
+                               on_owner_close=getattr(predict, 'close', None), request_kind=request_kind)
         started = time.perf_counter()
         owner.submit(initial, 0)
         owner.receive(block=True)
@@ -410,6 +431,9 @@ def episode(spec, output, policy, pre, post, factory, budget, calls, paired):
                 result['status'] = 'technical_failure'
             if owner is not None:
                 result['requests'] = owner.rows
+                if owner.on_owner_close is not None:
+                    result['owner_cleanup'] = owner.cleanup_evidence
+                    result['predictor_cleanup'] = getattr(predict, 'receipt', None)
                 torch.save({'observations': observations, 'control': control, 'outputs': owner.outputs}, folder / 'arrays.pt')
         if not result['worker_joined'] or not result['environment_closed']:
             result['status'] = 'technical_failure'
@@ -480,12 +504,13 @@ def worker(args):
     return 0 if result['status'] == 'completed' else 2
 
 
-def supervise(args):
-    validate(args.execution_head)
-    check(args.output == paths(args.execution_head)[1] and not args.output.exists(), 'Unique output required')
+def supervise(args, *, validate_run=validate, paths_for=paths, manifest_for=manifest,
+              worker_script=__file__, experiment='E-OBS1'):
+    validate_run(args.execution_head)
+    check(args.output == paths_for(args.execution_head)[1] and not args.output.exists(), 'Unique output required')
     args.output.mkdir()
-    write(args.output / 'manifest.json', manifest())
-    command = [sys.executable, '-u', __file__, '--execution-head', args.execution_head,
+    write(args.output / 'manifest.json', manifest_for())
+    command = [sys.executable, '-u', worker_script, '--execution-head', args.execution_head,
                '--output', str(args.output), '--worker']
     start, utc = time.perf_counter(), datetime.now(UTC).isoformat()
     cursors, pending, active = {}, {}, {}
@@ -521,7 +546,7 @@ def supervise(args):
             code = child.wait()
     q.cov.parent.previous.update_pending(args.output, cursors, pending, active)
     path = args.output / 'worker_result.json'
-    result = json.loads(path.read_text()) if path.exists() else {'experiment': 'E-OBS1',
+    result = json.loads(path.read_text()) if path.exists() else {'experiment': experiment,
         'execution_head': args.execution_head, 'status': 'technical_failure', 'first_failure': 'Worker receipt absent'}
     result['execution'] = {'child_pid': child.pid, 'exit_code': code, 'exit_confirmed': True,
         'started_utc': utc, 'finished_utc': datetime.now(UTC).isoformat(), 'wall_s': time.perf_counter()-start,

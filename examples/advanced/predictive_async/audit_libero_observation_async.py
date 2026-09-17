@@ -33,7 +33,7 @@ def quantiles(values):
             **{f'p{int(p*100)}': float(a[int(np.ceil(p*len(a)))-1]) for p in (.5, .95, .99)}}
 
 
-def audit_episode(spec, result, arrays, checkpoint):
+def audit_episode(spec, result, arrays, checkpoint, *, output_checker=None):
     check(result['spec'] == spec and result['status'] == 'completed' and result['first_failure'] is None,
           'Episode incomplete or spec differs')
     check(result['worker_joined'] and result['environment_closed'], 'Cleanup incomplete')
@@ -63,7 +63,10 @@ def audit_episode(spec, result, arrays, checkpoint):
         for field in ('original', 'processed', 'full', 'noise'):
             check(torch.isfinite(out[field]).all(), 'Nonfinite evidence')
         exact(out['original'], out['full'][0, :, :7], 'Unpadding mismatch')
-        check(out['projection_shapes'] == [[1, 50, 32]]*10 and out['vision_encodes'] == 1, 'Model calls mismatch')
+        if output_checker is None:
+            check(out['projection_shapes'] == [[1, 50, 32]]*10 and out['vision_encodes'] == 1, 'Model calls mismatch')
+        else:
+            output_checker(out, req, result)
         check(req['started_at'] <= out['model_started_at'] <= out['model_returned_at'] <= req['completed_at'], 'Model interval not nested')
         prefix_source = req['prefix_source']
         if prefix_source is None:
