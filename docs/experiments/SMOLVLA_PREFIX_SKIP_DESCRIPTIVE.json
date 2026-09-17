@@ -1,0 +1,80 @@
+{
+  "analysis_kind": "Posthoc saved-array description only; no new model, Env, acceptance threshold or candidate change",
+  "same_old_actions_different_new_start_comparisons": [
+    {
+      "left_ordinal": 0,
+      "right_ordinal": 2,
+      "first_different_command_index": 20,
+      "common_physical_observations_prefix": 21,
+      "request2_all_inputs_and_outputs_exact": true,
+      "left_source_at_difference": [
+        2,
+        0
+      ],
+      "right_source_at_difference": [
+        2,
+        2
+      ]
+    },
+    {
+      "left_ordinal": 1,
+      "right_ordinal": 3,
+      "first_different_command_index": 22,
+      "common_physical_observations_prefix": 23,
+      "request2_all_inputs_and_outputs_exact": true,
+      "left_source_at_difference": [
+        2,
+        2
+      ],
+      "right_source_at_difference": [
+        2,
+        0
+      ]
+    },
+    {
+      "left_ordinal": 5,
+      "right_ordinal": 7,
+      "first_different_command_index": 20,
+      "common_physical_observations_prefix": 21,
+      "request2_all_inputs_and_outputs_exact": true,
+      "left_source_at_difference": [
+        2,
+        0
+      ],
+      "right_source_at_difference": [
+        2,
+        2
+      ]
+    },
+    {
+      "left_ordinal": 4,
+      "right_ordinal": 6,
+      "first_different_command_index": 22,
+      "common_physical_observations_prefix": 23,
+      "request2_all_inputs_and_outputs_exact": true,
+      "left_source_at_difference": [
+        2,
+        2
+      ],
+      "right_source_at_difference": [
+        2,
+        0
+      ]
+    }
+  ],
+  "anchors": {
+    "commands_exact": 753,
+    "physical_observations_exact": 757,
+    "requests_exact": 40
+  },
+  "explicit_nonaligned_actions": 76,
+  "capture_preparation_sum_s": 10.056341693969443,
+  "capture_preparation_max_s": 1.5120708880131133,
+  "startup_min_s": 1.2746798219741322,
+  "startup_max_s": 1.8380560469813645,
+  "nonbootstrap_max_s_diagnostic_only": 0.09173826198093593,
+  "new_model_forwards": 0,
+  "new_env": 0,
+  "cuda_initialized": false,
+  "interpretation": "Changing S shifts selected new rows for the remainder of the first replanning segment; no unique contact mechanism or general instruction to disable trimming follows."
+}

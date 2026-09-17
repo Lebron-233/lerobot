@@ -1,0 +1,226 @@
+{
+  "independent_contract_accepted": true,
+  "candidate_unchanged": true,
+  "complete_anchor_trajectories_exact": 4,
+  "anchors": [
+    {
+      "ordinal": 0,
+      "reference": 0,
+      "commands_exact": 190,
+      "observations_exact": 191,
+      "requests_exact": 10,
+      "complete_trajectory_reproduced": true
+    },
+    {
+      "ordinal": 1,
+      "reference": 3,
+      "commands_exact": 280,
+      "observations_exact": 281,
+      "requests_exact": 14,
+      "complete_trajectory_reproduced": true
+    },
+    {
+      "ordinal": 4,
+      "reference": 6,
+      "commands_exact": 142,
+      "observations_exact": 143,
+      "requests_exact": 8,
+      "complete_trajectory_reproduced": true
+    },
+    {
+      "ordinal": 5,
+      "reference": 5,
+      "commands_exact": 141,
+      "observations_exact": 142,
+      "requests_exact": 8,
+      "complete_trajectory_reproduced": true
+    }
+  ],
+  "common_first_two_requests_exact": 16,
+  "episodes": 8,
+  "native_actions_checked": 1487,
+  "request_outputs_checked": 78,
+  "calls_closed": 3188,
+  "phases": {
+    "started": 10,
+    "returned": 10
+  },
+  "graph_captures": 8,
+  "runtime_closed": 8,
+  "rows": [
+    {
+      "ordinal": 0,
+      "identity": [
+        7,
+        19
+      ],
+      "arm": "consume0_skip0",
+      "success": true,
+      "actions": 190,
+      "requests": 10,
+      "terminal_reason": "native_success",
+      "nonaligned_actions_explicit": 0,
+      "startup_s": 1.8380560469813645,
+      "capture_seconds": 1.5120708880131133,
+      "cancelled_at_stop": 0,
+      "max_nonbootstrap_s": 0.08575845099403523,
+      "control_wall_s_descriptive": 9.920841740997275
+    },
+    {
+      "ordinal": 1,
+      "identity": [
+        7,
+        19
+      ],
+      "arm": "consume2_skip2",
+      "success": false,
+      "actions": 280,
+      "requests": 14,
+      "terminal_reason": "time_limit",
+      "nonaligned_actions_explicit": 0,
+      "startup_s": 1.287135563994525,
+      "capture_seconds": 1.2146760070172604,
+      "cancelled_at_stop": 0,
+      "max_nonbootstrap_s": 0.09173826198093593,
+      "control_wall_s_descriptive": 14.571952894009883
+    },
+    {
+      "ordinal": 2,
+      "identity": [
+        7,
+        19
+      ],
+      "arm": "consume0_skip2",
+      "success": false,
+      "actions": 280,
+      "requests": 14,
+      "terminal_reason": "time_limit",
+      "nonaligned_actions_explicit": 20,
+      "startup_s": 1.2974079299892765,
+      "capture_seconds": 1.2263145689794328,
+      "cancelled_at_stop": 0,
+      "max_nonbootstrap_s": 0.08265070102061145,
+      "control_wall_s_descriptive": 14.61405022200779
+    },
+    {
+      "ordinal": 3,
+      "identity": [
+        7,
+        19
+      ],
+      "arm": "consume2_skip0",
+      "success": true,
+      "actions": 138,
+      "requests": 7,
+      "terminal_reason": "native_success",
+      "nonaligned_actions_explicit": 18,
+      "startup_s": 1.2834426109911874,
+      "capture_seconds": 1.2107040449918713,
+      "cancelled_at_stop": 0,
+      "max_nonbootstrap_s": 0.08034960000077263,
+      "control_wall_s_descriptive": 7.119185315998038
+    },
+    {
+      "ordinal": 4,
+      "identity": [
+        7,
+        18
+      ],
+      "arm": "consume2_skip2",
+      "success": true,
+      "actions": 142,
+      "requests": 8,
+      "terminal_reason": "native_success",
+      "nonaligned_actions_explicit": 0,
+      "startup_s": 1.2779192430025432,
+      "capture_seconds": 1.2052274649904575,
+      "cancelled_at_stop": 0,
+      "max_nonbootstrap_s": 0.08613016598974355,
+      "control_wall_s_descriptive": 7.363959457987221
+    },
+    {
+      "ordinal": 5,
+      "identity": [
+        7,
+        18
+      ],
+      "arm": "consume0_skip0",
+      "success": true,
+      "actions": 141,
+      "requests": 8,
+      "terminal_reason": "native_success",
+      "nonaligned_actions_explicit": 0,
+      "startup_s": 1.2746798219741322,
+      "capture_seconds": 1.2025850350037217,
+      "cancelled_at_stop": 0,
+      "max_nonbootstrap_s": 0.08345432201167569,
+      "control_wall_s_descriptive": 7.395765555993421
+    },
+    {
+      "ordinal": 6,
+      "identity": [
+        7,
+        18
+      ],
+      "arm": "consume2_skip0",
+      "success": true,
+      "actions": 148,
+      "requests": 8,
+      "terminal_reason": "native_success",
+      "nonaligned_actions_explicit": 18,
+      "startup_s": 1.3433724560018163,
+      "capture_seconds": 1.2700774269760586,
+      "cancelled_at_stop": 0,
+      "max_nonbootstrap_s": 0.08663683899794705,
+      "control_wall_s_descriptive": 7.671453838003799
+    },
+    {
+      "ordinal": 7,
+      "identity": [
+        7,
+        18
+      ],
+      "arm": "consume0_skip2",
+      "success": true,
+      "actions": 168,
+      "requests": 9,
+      "terminal_reason": "native_success",
+      "nonaligned_actions_explicit": 20,
+      "startup_s": 1.2886048189830035,
+      "capture_seconds": 1.2146862579975277,
+      "cancelled_at_stop": 0,
+      "max_nonbootstrap_s": 0.08198609200189821,
+      "control_wall_s_descriptive": 8.769043086009333
+    }
+  ],
+  "factorial_contrasts": {
+    "19": {
+      "old_execution_effect_with_skip0": 0,
+      "old_execution_effect_with_skip2": 0,
+      "skip_effect_with_old0": -1,
+      "skip_effect_with_old2": -1,
+      "interaction_success": 0,
+      "population_effect_claimed": false
+    },
+    "18": {
+      "old_execution_effect_with_skip0": 0,
+      "old_execution_effect_with_skip2": 0,
+      "skip_effect_with_old0": 0,
+      "skip_effect_with_old2": 0,
+      "interaction_success": 0,
+      "population_effect_claimed": false
+    }
+  },
+  "qualification_claimed": false,
+  "deployment_claimed": false,
+  "confirmation_result_unchanged": true,
+  "audit_model_forwards": 0,
+  "cuda_initialized": false,
+  "first_failure": null,
+  "limitations": [
+    "Two selected known states; single realization per cell.",
+    "Off-diagonal rows intentionally violate the original timing association; not deployment candidates.",
+    "Physical feedback and contact mechanisms are not individually isolated.",
+    "CPU audit does not rerun RGB encoding, model, postprocessing or physics."
+  ]
+}
