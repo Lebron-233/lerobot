@@ -1,0 +1,297 @@
+{
+  "experiment": "E-GFB1",
+  "execution_head": "8112f8d7e672a2462639c7f612a0c03e444c7e21",
+  "status": "completed",
+  "first_failure": null,
+  "vla_loads": 1,
+  "vla_frozen": true,
+  "pairs": [
+    {
+      "pair_index": 0,
+      "task_state": [
+        0,
+        10
+      ],
+      "arms": {
+        "serialized": {
+          "success": true,
+          "measured_actions": 143,
+          "wall_s": 7.472862449998502,
+          "no_action_slots": 7,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.7970637679973152
+        },
+        "async": {
+          "success": true,
+          "measured_actions": 143,
+          "wall_s": 7.118012883991469,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.2237466920050792
+        }
+      }
+    },
+    {
+      "pair_index": 1,
+      "task_state": [
+        2,
+        10
+      ],
+      "arms": {
+        "async": {
+          "success": true,
+          "measured_actions": 117,
+          "wall_s": 5.826449118001619,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.1982182429928798
+        },
+        "serialized": {
+          "success": false,
+          "measured_actions": 280,
+          "wall_s": 14.622669906006195,
+          "no_action_slots": 13,
+          "underflows": 0,
+          "terminal_reason": "time_limit",
+          "startup_s": 1.21256252398598
+        }
+      }
+    },
+    {
+      "pair_index": 2,
+      "task_state": [
+        6,
+        10
+      ],
+      "arms": {
+        "serialized": {
+          "success": true,
+          "measured_actions": 146,
+          "wall_s": 7.6171984169923235,
+          "no_action_slots": 7,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.2339211750077084
+        },
+        "async": {
+          "success": true,
+          "measured_actions": 142,
+          "wall_s": 7.066690389008727,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.2239991899987217
+        }
+      }
+    },
+    {
+      "pair_index": 3,
+      "task_state": [
+        7,
+        10
+      ],
+      "arms": {
+        "async": {
+          "success": true,
+          "measured_actions": 126,
+          "wall_s": 6.274112703016726,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.2252841540030204
+        },
+        "serialized": {
+          "success": true,
+          "measured_actions": 124,
+          "wall_s": 6.4706842149898876,
+          "no_action_slots": 6,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.254543953022221
+        }
+      }
+    },
+    {
+      "pair_index": 4,
+      "task_state": [
+        7,
+        11
+      ],
+      "arms": {
+        "serialized": {
+          "success": true,
+          "measured_actions": 116,
+          "wall_s": 6.01573884501704,
+          "no_action_slots": 5,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.2218852229998447
+        },
+        "async": {
+          "success": true,
+          "measured_actions": 117,
+          "wall_s": 5.822655810014112,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.1983638780075125
+        }
+      }
+    },
+    {
+      "pair_index": 5,
+      "task_state": [
+        6,
+        11
+      ],
+      "arms": {
+        "async": {
+          "success": true,
+          "measured_actions": 149,
+          "wall_s": 7.423211162997177,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.2325265899999067
+        },
+        "serialized": {
+          "success": true,
+          "measured_actions": 140,
+          "wall_s": 7.271227165008895,
+          "no_action_slots": 6,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.2292613269819412
+        }
+      }
+    },
+    {
+      "pair_index": 6,
+      "task_state": [
+        2,
+        11
+      ],
+      "arms": {
+        "serialized": {
+          "success": true,
+          "measured_actions": 119,
+          "wall_s": 6.173981125000864,
+          "no_action_slots": 5,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.2375928169931285
+        },
+        "async": {
+          "success": true,
+          "measured_actions": 119,
+          "wall_s": 5.922999041998992,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.2331070850195829
+        }
+      }
+    },
+    {
+      "pair_index": 7,
+      "task_state": [
+        0,
+        11
+      ],
+      "arms": {
+        "async": {
+          "success": true,
+          "measured_actions": 137,
+          "wall_s": 6.820634298986988,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.2087024089996703
+        },
+        "serialized": {
+          "success": true,
+          "measured_actions": 121,
+          "wall_s": 6.34427872300148,
+          "no_action_slots": 6,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.2013909600209445
+        }
+      }
+    }
+  ],
+  "complete_pairs": 8,
+  "statistical_noninferiority_claimed": false,
+  "episodes_completed": 16,
+  "native_budget": {
+    "episodes": 16,
+    "settling": 160,
+    "model": 119,
+    "measurement": 2239
+  },
+  "graph_captures": 16,
+  "capture_internal": {
+    "setup": 16,
+    "warmup": 48,
+    "capture": 16
+  },
+  "attempts": 1,
+  "retries": 0,
+  "training_updates": 0,
+  "qualification_reads": 0,
+  "rtc_steps": 0,
+  "predictor_forwards": 0,
+  "real_robot": 0,
+  "replay_commands": false,
+  "realtime_qualified": false,
+  "risk_thresholds": null,
+  "execution": {
+    "child_pid": 738797,
+    "exit_code": 0,
+    "exit_confirmed": true,
+    "started_utc": "2026-09-17T11:27:31.645622+00:00",
+    "finished_utc": "2026-09-17T11:30:25.869935+00:00",
+    "wall_s": 174.22435548398062,
+    "stop_reason": null,
+    "forced": false,
+    "pending": {},
+    "active": {}
+  },
+  "accounting": {
+    "call_intents": {
+      "environment_factory": 16,
+      "environment_ensure_and_initial_reset": 16,
+      "environment_reset": 16,
+      "native_seed": 16,
+      "native_reset": 16,
+      "native_set_init_state": 16,
+      "native_step": 2399,
+      "graph_request": 119,
+      "environment_step": 2239,
+      "environment_close": 16
+    },
+    "call_returns": {
+      "environment_factory": 16,
+      "environment_ensure_and_initial_reset": 16,
+      "environment_reset": 16,
+      "native_seed": 16,
+      "native_reset": 16,
+      "native_set_init_state": 16,
+      "native_step": 2399,
+      "graph_request": 119,
+      "environment_step": 2239,
+      "environment_close": 16
+    },
+    "call_errors": {},
+    "unknown_calls": [],
+    "journal_consistent": true,
+    "measured_native_returns": 2239,
+    "settling_native_returns": 160,
+    "request_snapshots": 0,
+    "last_model_phase": null,
+    "accounting_basis": "flushed_call_intent_return_error_journal"
+  }
+}

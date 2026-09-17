@@ -1,0 +1,32 @@
+{
+  "checked_at_utc": "2026-09-17T11:34:42.480213+00:00",
+  "execution_head": "8112f8d7e672a2462639c7f612a0c03e444c7e21",
+  "registration_comment_id": 5713573753,
+  "formal_job_id": "ae9ca176-7546-4e88-9f96-8194c4f34f14",
+  "audit_job_id": "dbcf056f-0479-46cb-9659-124e3101aefe",
+  "formal_exit_code": 0,
+  "audit_exit_code": 0,
+  "worker_proc_absent": true,
+  "old_pending_unchanged": 21,
+  "source_files_unchanged": 702,
+  "independent_contract_accepted": true,
+  "online_latency_budget_passed": true,
+  "no_serialized_success_lost_in_pilot": true,
+  "new_model_execution_during_archival": 0,
+  "cuda_initialized": false,
+  "safety_interceptions_this_turn": 0,
+  "copied_docs": {
+    "docs/experiments/SMOLVLA_GRAPH_FEEDBACK_RESULT.json": {
+      "sha256": "35bb4e040a56e2bdf4526a56a30beda4a635176d86a47bdeb8d626c2f99e454f",
+      "bytes": 7459
+    },
+    "docs/experiments/SMOLVLA_GRAPH_FEEDBACK_AUDIT.json": {
+      "sha256": "32b91edee5f913bbd8726583a07c30eabd694f32fffaf801e0142fccdc3c5d23",
+      "bytes": 59734
+    },
+    "docs/experiments/SMOLVLA_GRAPH_FEEDBACK_DESCRIPTIVE.json": {
+      "sha256": "20c9ab936350e8635fb459f9fd8a127b148dcbf579936529359942d9222cea15",
+      "bytes": 2124
+    }
+  }
+}

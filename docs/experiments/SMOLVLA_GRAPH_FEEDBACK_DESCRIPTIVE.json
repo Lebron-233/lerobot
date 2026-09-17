@@ -1,0 +1,96 @@
+{
+  "analysis_kind": "posthoc saved-evidence arithmetic, no additional rollout or new acceptance gate",
+  "wall_reduction_s": 9.713875437999377,
+  "wall_reduction_percent": 15.670412039085402,
+  "actions_difference_async_minus_serialized": -139,
+  "wall_slot_accounting_s": {
+    "avoided_empty_slots": 2.75,
+    "fewer_executed_actions": 6.95
+  },
+  "pairs_async_faster": 6,
+  "both_success_secondary": {
+    "n": 7,
+    "serialized_wall_s": 47.36597094000899,
+    "async_wall_s": 46.44831629001419,
+    "reduction_percent": 1.9373711375135771,
+    "not_primary_all_8_pairs_retained": true
+  },
+  "per_pair": [
+    {
+      "task_state": [
+        0,
+        10
+      ],
+      "async_minus_serialized_wall_s": -0.354849566007033
+    },
+    {
+      "task_state": [
+        2,
+        10
+      ],
+      "async_minus_serialized_wall_s": -8.796220788004575
+    },
+    {
+      "task_state": [
+        6,
+        10
+      ],
+      "async_minus_serialized_wall_s": -0.5505080279835965
+    },
+    {
+      "task_state": [
+        7,
+        10
+      ],
+      "async_minus_serialized_wall_s": -0.19657151197316125
+    },
+    {
+      "task_state": [
+        7,
+        11
+      ],
+      "async_minus_serialized_wall_s": -0.19308303500292823
+    },
+    {
+      "task_state": [
+        6,
+        11
+      ],
+      "async_minus_serialized_wall_s": 0.15198399798828177
+    },
+    {
+      "task_state": [
+        2,
+        11
+      ],
+      "async_minus_serialized_wall_s": -0.2509820830018725
+    },
+    {
+      "task_state": [
+        0,
+        11
+      ],
+      "async_minus_serialized_wall_s": 0.47635557598550804
+    }
+  ],
+  "stop_cancellations": [
+    {
+      "task": 6,
+      "state": 10,
+      "arm": "async",
+      "request_id": 8,
+      "complete_s": 0.07836483299615793,
+      "decision": {
+        "accepted": false,
+        "reason": "stale_or_closed"
+      }
+    }
+  ],
+  "capture_preparation_sum_s": 18.739565397059778,
+  "capture_preparation_max_s": 1.4734857600124087,
+  "source_files_unchanged": 702,
+  "old_pending_unchanged": 21,
+  "worker_proc_absent": true,
+  "cuda_initialized": false,
+  "new_model_forwards": 0
+}
