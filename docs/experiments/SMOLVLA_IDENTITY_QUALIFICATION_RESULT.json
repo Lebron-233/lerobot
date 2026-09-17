@@ -1,0 +1,3069 @@
+{
+  "result": {
+    "experiment": "F-IQ1",
+    "status": "completed",
+    "first_failure": null,
+    "heldout_primary_gate_passed": false,
+    "heldout_robustness_gate_passed": false,
+    "runtime_environment": {
+      "variables": {
+        "HF_HUB_OFFLINE": "1",
+        "TRANSFORMERS_OFFLINE": "1",
+        "MUJOCO_GL": "egl",
+        "PYOPENGL_PLATFORM": "egl",
+        "LIBERO_CONFIG_PATH": "/home/rp/Workspace/SmolVLA_RTC/libero-reference-cache/config",
+        "LD_PRELOAD": "/usr/lib/x86_64-linux-gnu/libGLdispatch.so.0:/usr/lib/x86_64-linux-gnu/libGLX.so.0"
+      },
+      "pythonpath_absent": true,
+      "config_path": "/home/rp/Workspace/SmolVLA_RTC/libero-reference-cache/config/config.yaml",
+      "config_sha256": "1acadaf137bd6e0e9cc1c5130d4904f418f336aa912c417a74aa35be9335dc8b",
+      "assets_path": "/home/rp/Workspace/SmolVLA_RTC/libero-reference-cache/hub/datasets--lerobot--libero-assets/snapshots/0b3ea86be5fe169d0fd036ae63d1070ec09e90f6",
+      "cuda_initialized": false
+    },
+    "samples": 32,
+    "mismatched_samples": 30,
+    "frozen_weights_unchanged": true,
+    "vla_frozen": true,
+    "expected_counts": {
+      "encoding": 40,
+      "decoder": 190,
+      "predictor": 220,
+      "anchor_exact": 16,
+      "current_exact": 8,
+      "identity_exact": 32,
+      "zero_exact": 32,
+      "vla_loads": 1,
+      "predictor_loads": 1
+    },
+    "metrics": {
+      "identity": {
+        "samples": 32,
+        "episodes": {
+          "6/4": {
+            "row0": 0.015481831164833901,
+            "chunk": 0.09926413686122143,
+            "latent": 2445.4333741541445
+          },
+          "6/5": {
+            "row0": 0.010261292808279596,
+            "chunk": 0.020603760120367434,
+            "latent": 2780.8236976071807
+          },
+          "6/6": {
+            "row0": 0.18622973038347712,
+            "chunk": 0.14096671215416676,
+            "latent": 3060.0257844523458
+          },
+          "6/7": {
+            "row0": 0.015255489726759401,
+            "chunk": 0.02542681845421521,
+            "latent": 2201.053571173772
+          },
+          "7/4": {
+            "row0": 0.01381042823363255,
+            "chunk": 0.020465820228765735,
+            "latent": 2327.9302468783885
+          },
+          "7/5": {
+            "row0": 0.024925399590354256,
+            "chunk": 0.06164480251545898,
+            "latent": 2855.1496569089963
+          },
+          "7/6": {
+            "row0": 0.016892021348935207,
+            "chunk": 0.038699725298053586,
+            "latent": 2242.71934096302
+          },
+          "7/7": {
+            "row0": 0.004794186860120951,
+            "chunk": 0.012669449455821234,
+            "latent": 2382.664080698679
+          }
+        },
+        "macro": {
+          "row0": 0.035956297514549124,
+          "chunk": 0.0524676531360088,
+          "latent": 2536.974969104566
+        }
+      },
+      "iar_true": {
+        "samples": 32,
+        "episodes": {
+          "6/4": {
+            "row0": 0.010361460208335989,
+            "chunk": 0.07772133298713518,
+            "latent": 2447.199558438077
+          },
+          "6/5": {
+            "row0": 0.08821436011628367,
+            "chunk": 0.025657651555375516,
+            "latent": 2784.901858795937
+          },
+          "6/6": {
+            "row0": 0.18632560892914476,
+            "chunk": 0.07125831050524209,
+            "latent": 3062.2582869656617
+          },
+          "6/7": {
+            "row0": 0.010290969939076881,
+            "chunk": 0.012883047915116477,
+            "latent": 2203.7931798207555
+          },
+          "7/4": {
+            "row0": 0.01656594422371678,
+            "chunk": 0.02608625881714546,
+            "latent": 2329.1111536449416
+          },
+          "7/5": {
+            "row0": 0.016465827317605507,
+            "chunk": 0.02176276797732903,
+            "latent": 2857.1283954862593
+          },
+          "7/6": {
+            "row0": 0.02181803005982271,
+            "chunk": 0.021784461002425343,
+            "latent": 2244.014102410754
+          },
+          "7/7": {
+            "row0": 0.0038875120723917723,
+            "chunk": 0.004405764224803982,
+            "latent": 2383.7274763928576
+          }
+        },
+        "macro": {
+          "row0": 0.04424121410829726,
+          "chunk": 0.03269494937307164,
+          "latent": 2539.0167514944055
+        }
+      },
+      "iar_zero": {
+        "samples": 32,
+        "episodes": {
+          "6/4": {
+            "row0": 0.015481831164833901,
+            "chunk": 0.09926413686122143,
+            "latent": 2445.4333741541445
+          },
+          "6/5": {
+            "row0": 0.010261292808279596,
+            "chunk": 0.020603760120367434,
+            "latent": 2780.8236976071807
+          },
+          "6/6": {
+            "row0": 0.18622973038347712,
+            "chunk": 0.14096671215416676,
+            "latent": 3060.0257844523458
+          },
+          "6/7": {
+            "row0": 0.015255489726759401,
+            "chunk": 0.02542681845421521,
+            "latent": 2201.053571173772
+          },
+          "7/4": {
+            "row0": 0.01381042823363255,
+            "chunk": 0.020465820228765735,
+            "latent": 2327.9302468783885
+          },
+          "7/5": {
+            "row0": 0.024925399590354256,
+            "chunk": 0.06164480251545898,
+            "latent": 2855.1496569089963
+          },
+          "7/6": {
+            "row0": 0.016892021348935207,
+            "chunk": 0.038699725298053586,
+            "latent": 2242.71934096302
+          },
+          "7/7": {
+            "row0": 0.004794186860120951,
+            "chunk": 0.012669449455821234,
+            "latent": 2382.664080698679
+          }
+        },
+        "macro": {
+          "row0": 0.035956297514549124,
+          "chunk": 0.0524676531360088,
+          "latent": 2536.974969104566
+        }
+      },
+      "iar_mismatched": {
+        "samples": 30,
+        "episodes": {
+          "6/4": {
+            "row0": 0.023826327804838707,
+            "chunk": 0.15673871428545427,
+            "latent": 2448.795901595553
+          },
+          "6/5": {
+            "row0": 0.07272097105798352,
+            "chunk": 0.06315060932553544,
+            "latent": 2785.593077501642
+          },
+          "6/6": {
+            "row0": 0.1892959366042132,
+            "chunk": 0.16732161079909127,
+            "latent": 3063.2388646416234
+          },
+          "6/7": {
+            "row0": 0.02747663184547501,
+            "chunk": 0.03523337413546512,
+            "latent": 2205.70876408168
+          },
+          "7/4": {
+            "row0": 0.02364331684212925,
+            "chunk": 0.08038439075788295,
+            "latent": 2329.6775622704245
+          },
+          "7/5": {
+            "row0": 0.03243253614743143,
+            "chunk": 0.055584549011342695,
+            "latent": 2906.1919710101015
+          },
+          "7/6": {
+            "row0": 0.03182951458992558,
+            "chunk": 0.057602676870017605,
+            "latent": 2655.9554585797964
+          },
+          "7/7": {
+            "row0": 0.011155359701807347,
+            "chunk": 0.04054007780429247,
+            "latent": 2384.3900764627397
+          }
+        },
+        "macro": {
+          "row0": 0.051547574324225506,
+          "chunk": 0.08206950037363522,
+          "latent": 2597.443959517945
+        }
+      }
+    },
+    "contrasts": {
+      "identity": {
+        "paired_samples": 32,
+        "paired_episodes": 8,
+        "episodes": {
+          "6/4": {
+            "candidate": 0.010361460208335989,
+            "control": 0.015481831164833901,
+            "benefit": 0.005120370956497913
+          },
+          "6/5": {
+            "candidate": 0.08821436011628367,
+            "control": 0.010261292808279596,
+            "benefit": -0.07795306730800407
+          },
+          "6/6": {
+            "candidate": 0.18632560892914476,
+            "control": 0.18622973038347712,
+            "benefit": -9.587854566764364e-05
+          },
+          "6/7": {
+            "candidate": 0.010290969939076881,
+            "control": 0.015255489726759401,
+            "benefit": 0.0049645197876825205
+          },
+          "7/4": {
+            "candidate": 0.01656594422371678,
+            "control": 0.01381042823363255,
+            "benefit": -0.00275551599008423
+          },
+          "7/5": {
+            "candidate": 0.016465827317605507,
+            "control": 0.024925399590354256,
+            "benefit": 0.00845957227274875
+          },
+          "7/6": {
+            "candidate": 0.02181803005982271,
+            "control": 0.016892021348935207,
+            "benefit": -0.004926008710887504
+          },
+          "7/7": {
+            "candidate": 0.0038875120723917723,
+            "control": 0.004794186860120951,
+            "benefit": 0.0009066747877291784
+          }
+        },
+        "macro_benefit": -0.008284916593748136,
+        "per_sample": [
+          {
+            "key": [
+              6,
+              4,
+              3
+            ],
+            "benefit": 0.006305603720711262,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              6,
+              4,
+              4
+            ],
+            "benefit": 0.011019967582124385,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              6,
+              4,
+              5
+            ],
+            "benefit": -0.002548480148749104,
+            "direction": "worsened"
+          },
+          {
+            "key": [
+              6,
+              4,
+              6
+            ],
+            "benefit": 0.005704392671905106,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              6,
+              5,
+              3
+            ],
+            "benefit": -0.0030158910730480673,
+            "direction": "worsened"
+          },
+          {
+            "key": [
+              6,
+              5,
+              4
+            ],
+            "benefit": 0.005930617320602429,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              6,
+              5,
+              5
+            ],
+            "benefit": -0.14022329907427147,
+            "direction": "worsened"
+          },
+          {
+            "key": [
+              6,
+              5,
+              6
+            ],
+            "benefit": -0.17450369640529922,
+            "direction": "worsened"
+          },
+          {
+            "key": [
+              6,
+              6,
+              3
+            ],
+            "benefit": 0.0028428884618652266,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              6,
+              6,
+              4
+            ],
+            "benefit": 0.016399063493898317,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              6,
+              6,
+              5
+            ],
+            "benefit": -0.04780443273523072,
+            "direction": "worsened"
+          },
+          {
+            "key": [
+              6,
+              6,
+              6
+            ],
+            "benefit": 0.028178966596796657,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              6,
+              7,
+              3
+            ],
+            "benefit": 0.0024035354564193832,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              6,
+              7,
+              4
+            ],
+            "benefit": 0.013424803359903512,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              6,
+              7,
+              5
+            ],
+            "benefit": 0.013499499718176902,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              6,
+              7,
+              6
+            ],
+            "benefit": -0.009469759383769708,
+            "direction": "worsened"
+          },
+          {
+            "key": [
+              7,
+              4,
+              3
+            ],
+            "benefit": -0.008337259925722812,
+            "direction": "worsened"
+          },
+          {
+            "key": [
+              7,
+              4,
+              4
+            ],
+            "benefit": 0.0010642430627976762,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              7,
+              4,
+              5
+            ],
+            "benefit": -0.003530023459427346,
+            "direction": "worsened"
+          },
+          {
+            "key": [
+              7,
+              4,
+              6
+            ],
+            "benefit": -0.00021902363798443594,
+            "direction": "worsened"
+          },
+          {
+            "key": [
+              7,
+              5,
+              3
+            ],
+            "benefit": 0.01709709039525275,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              7,
+              5,
+              4
+            ],
+            "benefit": 0.002774411305450586,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              7,
+              5,
+              5
+            ],
+            "benefit": -0.0067096557986980245,
+            "direction": "worsened"
+          },
+          {
+            "key": [
+              7,
+              5,
+              6
+            ],
+            "benefit": 0.02067644318898968,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              7,
+              6,
+              3
+            ],
+            "benefit": 0.014004260224146591,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              7,
+              6,
+              4
+            ],
+            "benefit": 0.006269562177765181,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              7,
+              6,
+              5
+            ],
+            "benefit": -0.03967554816244902,
+            "direction": "worsened"
+          },
+          {
+            "key": [
+              7,
+              6,
+              6
+            ],
+            "benefit": -0.00030230908301276394,
+            "direction": "worsened"
+          },
+          {
+            "key": [
+              7,
+              7,
+              3
+            ],
+            "benefit": 0.00074440922200417,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              7,
+              7,
+              4
+            ],
+            "benefit": 0.005262245031044976,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              7,
+              7,
+              5
+            ],
+            "benefit": -0.0019479975101289397,
+            "direction": "worsened"
+          },
+          {
+            "key": [
+              7,
+              7,
+              6
+            ],
+            "benefit": -0.00043195759200349046,
+            "direction": "worsened"
+          }
+        ],
+        "sample_improved": 18,
+        "episode_improved": 4,
+        "leave_one_out": {
+          "6/4": -0.010199957672354713,
+          "6/5": 0.0016676763654312834,
+          "6/6": -0.009454779172045348,
+          "6/7": -0.0101776932196668,
+          "7/4": -0.009074830965700121,
+          "7/5": -0.01067698643181912,
+          "7/6": -0.00876476057701394,
+          "7/7": -0.009598001076816324
+        },
+        "largest_episode_net_share": null
+      },
+      "iar_mismatched": {
+        "paired_samples": 30,
+        "paired_episodes": 8,
+        "episodes": {
+          "6/4": {
+            "candidate": 0.010361460208335989,
+            "control": 0.023826327804838707,
+            "benefit": 0.013464867596502719
+          },
+          "6/5": {
+            "candidate": 0.08821436011628367,
+            "control": 0.07272097105798352,
+            "benefit": -0.015493389058300153
+          },
+          "6/6": {
+            "candidate": 0.18632560892914476,
+            "control": 0.1892959366042132,
+            "benefit": 0.0029703276750684404
+          },
+          "6/7": {
+            "candidate": 0.010290969939076881,
+            "control": 0.02747663184547501,
+            "benefit": 0.017185661906398128
+          },
+          "7/4": {
+            "candidate": 0.01656594422371678,
+            "control": 0.02364331684212925,
+            "benefit": 0.007077372618412469
+          },
+          "7/5": {
+            "candidate": 0.019311469748261142,
+            "control": 0.03243253614743143,
+            "benefit": 0.013121066399170291
+          },
+          "7/6": {
+            "candidate": 0.027630388980756596,
+            "control": 0.03182951458992558,
+            "benefit": 0.004199125609168981
+          },
+          "7/7": {
+            "candidate": 0.0038875120723917723,
+            "control": 0.011155359701807347,
+            "benefit": 0.007267847629415574
+          }
+        },
+        "macro_benefit": 0.006224110046979556,
+        "per_sample": [
+          {
+            "key": [
+              6,
+              4,
+              3
+            ],
+            "benefit": 0.0030829898033385887,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              6,
+              4,
+              4
+            ],
+            "benefit": 0.029854396435327044,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              6,
+              4,
+              5
+            ],
+            "benefit": 0.00289783138549057,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              6,
+              4,
+              6
+            ],
+            "benefit": 0.018024252761854678,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              6,
+              5,
+              3
+            ],
+            "benefit": 0.007491897361505335,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              6,
+              5,
+              4
+            ],
+            "benefit": 0.030243886357251743,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              6,
+              5,
+              5
+            ],
+            "benefit": 0.04122476473924791,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              6,
+              5,
+              6
+            ],
+            "benefit": -0.14093410469120563,
+            "direction": "worsened"
+          },
+          {
+            "key": [
+              6,
+              6,
+              3
+            ],
+            "benefit": 0.0010867105764909655,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              6,
+              6,
+              4
+            ],
+            "benefit": 0.06378539948168996,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              6,
+              6,
+              5
+            ],
+            "benefit": -0.057323516974197575,
+            "direction": "worsened"
+          },
+          {
+            "key": [
+              6,
+              6,
+              6
+            ],
+            "benefit": 0.004332717616290425,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              6,
+              7,
+              3
+            ],
+            "benefit": -0.0012087392479435775,
+            "direction": "worsened"
+          },
+          {
+            "key": [
+              6,
+              7,
+              4
+            ],
+            "benefit": 0.062489280614276825,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              6,
+              7,
+              5
+            ],
+            "benefit": -0.002438366216407195,
+            "direction": "worsened"
+          },
+          {
+            "key": [
+              6,
+              7,
+              6
+            ],
+            "benefit": 0.009900472475666467,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              7,
+              4,
+              3
+            ],
+            "benefit": -0.008013185934152237,
+            "direction": "worsened"
+          },
+          {
+            "key": [
+              7,
+              4,
+              4
+            ],
+            "benefit": 0.03569410962942667,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              7,
+              4,
+              5
+            ],
+            "benefit": -0.0017454357176686554,
+            "direction": "worsened"
+          },
+          {
+            "key": [
+              7,
+              4,
+              6
+            ],
+            "benefit": 0.0023740024960441043,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              7,
+              5,
+              3
+            ],
+            "benefit": -0.002937465163477246,
+            "direction": "worsened"
+          },
+          {
+            "key": [
+              7,
+              5,
+              4
+            ],
+            "benefit": 0.03400337565360028,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              7,
+              5,
+              5
+            ],
+            "benefit": 0.008297288707387829,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              7,
+              6,
+              3
+            ],
+            "benefit": 0.0017992822335730178,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              7,
+              6,
+              4
+            ],
+            "benefit": 0.05234973757269623,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              7,
+              6,
+              5
+            ],
+            "benefit": -0.04155164297876232,
+            "direction": "worsened"
+          },
+          {
+            "key": [
+              7,
+              7,
+              3
+            ],
+            "benefit": -0.0006981986948596058,
+            "direction": "worsened"
+          },
+          {
+            "key": [
+              7,
+              7,
+              4
+            ],
+            "benefit": 0.017370646856774544,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              7,
+              7,
+              5
+            ],
+            "benefit": 0.011653529355515077,
+            "direction": "improved"
+          },
+          {
+            "key": [
+              7,
+              7,
+              6
+            ],
+            "benefit": 0.0007454130002322809,
+            "direction": "improved"
+          }
+        ],
+        "sample_improved": 21,
+        "episode_improved": 7,
+        "leave_one_out": {
+          "6/4": 0.00518971611133339,
+          "6/5": 0.00932660991916237,
+          "6/6": 0.006688936100109716,
+          "6/7": 0.004658174067062618,
+          "7/4": 0.006102215393917712,
+          "7/5": 0.005238830568095166,
+          "7/6": 0.006513393538095352,
+          "7/7": 0.006075004678060125
+        },
+        "largest_episode_net_share": 0.3451429557133635
+      }
+    },
+    "primary_checks": {
+      "eight_episodes": true,
+      "identity_coverage": true,
+      "row0_better_identity": false,
+      "six_episodes_identity": false,
+      "iar_mismatched_coverage": true,
+      "row0_better_iar_mismatched": true,
+      "six_episodes_iar_mismatched": true,
+      "chunk_not_worse_identity": true
+    },
+    "robustness_checks": {
+      "sample_majority_identity": true,
+      "sample_majority_iar_mismatched": true,
+      "all_leave_one_positive": false
+    },
+    "worst_excess_vs_identity": 0.17450369640529922,
+    "delay_counts": {
+      "3": 30,
+      "4": 2
+    },
+    "statistical_significance_claimed": false,
+    "graph_released": true,
+    "execution_head": "71e5510c0463bca8e0a992d75015209445dde70a",
+    "counts": {
+      "predictor_loads": 1,
+      "vla_loads": 1,
+      "predictor": 220,
+      "decoder": 190,
+      "anchor_exact": 16,
+      "encoding": 40,
+      "current_exact": 8,
+      "identity_exact": 32,
+      "zero_exact": 32,
+      "offline_captures": 4
+    },
+    "native_budget": {
+      "episodes": 8,
+      "settling": 80,
+      "model": 96,
+      "capture": 16,
+      "measurement": 1717
+    },
+    "episodes_completed": 8,
+    "predictor_controls_environment": false,
+    "training_updates": 0,
+    "backward": 0,
+    "real_robot": 0,
+    "old_qualification_reads": 0,
+    "baseline_qualified": false,
+    "realtime_qualified": false,
+    "predictor_benefit_tested": false,
+    "risk_thresholds": null,
+    "old_confirmation": "not_started_untouched",
+    "attempts": 1,
+    "retries": 0,
+    "execution": {
+      "child_pid": 667044,
+      "child_exit_code": 0,
+      "exit_confirmed": true,
+      "started_at_utc": "2026-09-17T02:21:10.625672+00:00",
+      "finished_at_utc": "2026-09-17T02:23:41.119078+00:00",
+      "wall_seconds": 150.49343772500288,
+      "stop_reason": null,
+      "forced_termination": false,
+      "pending": {},
+      "active": {}
+    },
+    "accounting": {
+      "call_intents": {
+        "environment_factory": 8,
+        "environment_ensure_and_initial_reset": 8,
+        "environment_reset": 8,
+        "native_seed": 8,
+        "native_reset": 8,
+        "native_set_init_state": 8,
+        "native_step": 1797,
+        "model_request": 96,
+        "environment_step": 1717,
+        "environment_close": 8
+      },
+      "call_returns": {
+        "environment_factory": 8,
+        "environment_ensure_and_initial_reset": 8,
+        "environment_reset": 8,
+        "native_seed": 8,
+        "native_reset": 8,
+        "native_set_init_state": 8,
+        "native_step": 1797,
+        "model_request": 96,
+        "environment_step": 1717,
+        "environment_close": 8
+      },
+      "call_errors": {},
+      "unknown_calls": [],
+      "journal_consistent": true,
+      "measured_native_returns": 1717,
+      "settling_native_returns": 80,
+      "request_snapshots": 96,
+      "last_model_phase": {
+        "event": "model_phase",
+        "timestamp": 150836.997274764,
+        "ordinal": 7,
+        "request_id": 9,
+        "reset_epoch": 1,
+        "task_epoch": 0,
+        "phase": "engine_stop",
+        "boundary": "returned"
+      },
+      "accounting_basis": "flushed_call_intent_return_error_journal"
+    }
+  },
+  "audit": {
+    "independent_contract_accepted": true,
+    "heldout_primary_gate_passed": false,
+    "heldout_robustness_gate_passed": false,
+    "samples": 32,
+    "mismatched_samples": 30,
+    "native_actions_reaudited": 1717,
+    "native_takeovers_reaudited": 70,
+    "numerical_comparisons": 378,
+    "phases": {
+      "started": 283,
+      "returned": 283
+    },
+    "cuda_initialized": false,
+    "audit_model_forwards": 0,
+    "new_env": 0,
+    "summary": {
+      "metrics": {
+        "identity": {
+          "samples": 32,
+          "episodes": {
+            "6/4": {
+              "row0": 0.015481831164833901,
+              "chunk": 0.09926413686122144,
+              "latent": 2445.433374154144
+            },
+            "6/5": {
+              "row0": 0.010261292808279596,
+              "chunk": 0.020603760120367437,
+              "latent": 2780.8236976071807
+            },
+            "6/6": {
+              "row0": 0.18622973038347712,
+              "chunk": 0.14096671215416676,
+              "latent": 3060.0257844523458
+            },
+            "6/7": {
+              "row0": 0.015255489726759403,
+              "chunk": 0.02542681845421521,
+              "latent": 2201.053571173772
+            },
+            "7/4": {
+              "row0": 0.01381042823363255,
+              "chunk": 0.020465820228765735,
+              "latent": 2327.9302468783885
+            },
+            "7/5": {
+              "row0": 0.024925399590354256,
+              "chunk": 0.06164480251545898,
+              "latent": 2855.1496569089963
+            },
+            "7/6": {
+              "row0": 0.016892021348935207,
+              "chunk": 0.038699725298053586,
+              "latent": 2242.71934096302
+            },
+            "7/7": {
+              "row0": 0.004794186860120951,
+              "chunk": 0.012669449455821234,
+              "latent": 2382.6640806986784
+            }
+          },
+          "macro": {
+            "row0": 0.035956297514549124,
+            "chunk": 0.0524676531360088,
+            "latent": 2536.974969104566
+          }
+        },
+        "iar_true": {
+          "samples": 32,
+          "episodes": {
+            "6/4": {
+              "row0": 0.010361460208335989,
+              "chunk": 0.07772133298713518,
+              "latent": 2447.199558438077
+            },
+            "6/5": {
+              "row0": 0.08821436011628367,
+              "chunk": 0.025657651555375516,
+              "latent": 2784.9018587959367
+            },
+            "6/6": {
+              "row0": 0.18632560892914476,
+              "chunk": 0.07125831050524209,
+              "latent": 3062.2582869656617
+            },
+            "6/7": {
+              "row0": 0.010290969939076881,
+              "chunk": 0.012883047915116477,
+              "latent": 2203.7931798207555
+            },
+            "7/4": {
+              "row0": 0.01656594422371678,
+              "chunk": 0.02608625881714546,
+              "latent": 2329.111153644941
+            },
+            "7/5": {
+              "row0": 0.016465827317605507,
+              "chunk": 0.02176276797732903,
+              "latent": 2857.128395486259
+            },
+            "7/6": {
+              "row0": 0.02181803005982271,
+              "chunk": 0.021784461002425343,
+              "latent": 2244.014102410754
+            },
+            "7/7": {
+              "row0": 0.0038875120723917723,
+              "chunk": 0.004405764224803981,
+              "latent": 2383.727476392857
+            }
+          },
+          "macro": {
+            "row0": 0.04424121410829726,
+            "chunk": 0.03269494937307164,
+            "latent": 2539.016751494405
+          }
+        },
+        "iar_zero": {
+          "samples": 32,
+          "episodes": {
+            "6/4": {
+              "row0": 0.015481831164833901,
+              "chunk": 0.09926413686122144,
+              "latent": 2445.433374154144
+            },
+            "6/5": {
+              "row0": 0.010261292808279596,
+              "chunk": 0.020603760120367437,
+              "latent": 2780.8236976071807
+            },
+            "6/6": {
+              "row0": 0.18622973038347712,
+              "chunk": 0.14096671215416676,
+              "latent": 3060.0257844523458
+            },
+            "6/7": {
+              "row0": 0.015255489726759403,
+              "chunk": 0.02542681845421521,
+              "latent": 2201.053571173772
+            },
+            "7/4": {
+              "row0": 0.01381042823363255,
+              "chunk": 0.020465820228765735,
+              "latent": 2327.9302468783885
+            },
+            "7/5": {
+              "row0": 0.024925399590354256,
+              "chunk": 0.06164480251545898,
+              "latent": 2855.1496569089963
+            },
+            "7/6": {
+              "row0": 0.016892021348935207,
+              "chunk": 0.038699725298053586,
+              "latent": 2242.71934096302
+            },
+            "7/7": {
+              "row0": 0.004794186860120951,
+              "chunk": 0.012669449455821234,
+              "latent": 2382.6640806986784
+            }
+          },
+          "macro": {
+            "row0": 0.035956297514549124,
+            "chunk": 0.0524676531360088,
+            "latent": 2536.974969104566
+          }
+        },
+        "iar_mismatched": {
+          "samples": 30,
+          "episodes": {
+            "6/4": {
+              "row0": 0.023826327804838707,
+              "chunk": 0.15673871428545427,
+              "latent": 2448.795901595553
+            },
+            "6/5": {
+              "row0": 0.07272097105798352,
+              "chunk": 0.06315060932553544,
+              "latent": 2785.593077501642
+            },
+            "6/6": {
+              "row0": 0.1892959366042132,
+              "chunk": 0.16732161079909127,
+              "latent": 3063.2388646416234
+            },
+            "6/7": {
+              "row0": 0.02747663184547501,
+              "chunk": 0.035233374135465116,
+              "latent": 2205.70876408168
+            },
+            "7/4": {
+              "row0": 0.02364331684212925,
+              "chunk": 0.08038439075788295,
+              "latent": 2329.6775622704245
+            },
+            "7/5": {
+              "row0": 0.032432536147431426,
+              "chunk": 0.055584549011342695,
+              "latent": 2906.1919710101015
+            },
+            "7/6": {
+              "row0": 0.03182951458992558,
+              "chunk": 0.057602676870017605,
+              "latent": 2655.9554585797973
+            },
+            "7/7": {
+              "row0": 0.011155359701807347,
+              "chunk": 0.04054007780429247,
+              "latent": 2384.3900764627397
+            }
+          },
+          "macro": {
+            "row0": 0.051547574324225506,
+            "chunk": 0.08206950037363522,
+            "latent": 2597.443959517945
+          }
+        }
+      },
+      "contrasts": {
+        "identity": {
+          "paired_samples": 32,
+          "paired_episodes": 8,
+          "episodes": {
+            "6/4": {
+              "candidate": 0.010361460208335989,
+              "control": 0.015481831164833901,
+              "benefit": 0.005120370956497913
+            },
+            "6/5": {
+              "candidate": 0.08821436011628367,
+              "control": 0.010261292808279596,
+              "benefit": -0.07795306730800407
+            },
+            "6/6": {
+              "candidate": 0.18632560892914476,
+              "control": 0.18622973038347712,
+              "benefit": -9.587854566764364e-05
+            },
+            "6/7": {
+              "candidate": 0.010290969939076881,
+              "control": 0.015255489726759403,
+              "benefit": 0.004964519787682522
+            },
+            "7/4": {
+              "candidate": 0.01656594422371678,
+              "control": 0.01381042823363255,
+              "benefit": -0.00275551599008423
+            },
+            "7/5": {
+              "candidate": 0.016465827317605507,
+              "control": 0.024925399590354256,
+              "benefit": 0.00845957227274875
+            },
+            "7/6": {
+              "candidate": 0.02181803005982271,
+              "control": 0.016892021348935207,
+              "benefit": -0.004926008710887504
+            },
+            "7/7": {
+              "candidate": 0.0038875120723917723,
+              "control": 0.004794186860120951,
+              "benefit": 0.0009066747877291784
+            }
+          },
+          "macro_benefit": -0.008284916593748136,
+          "per_sample": [
+            {
+              "key": [
+                6,
+                4,
+                3
+              ],
+              "benefit": 0.006305603720711262,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                6,
+                4,
+                4
+              ],
+              "benefit": 0.011019967582124385,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                6,
+                4,
+                5
+              ],
+              "benefit": -0.002548480148749104,
+              "direction": "worsened"
+            },
+            {
+              "key": [
+                6,
+                4,
+                6
+              ],
+              "benefit": 0.005704392671905106,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                6,
+                5,
+                3
+              ],
+              "benefit": -0.0030158910730480673,
+              "direction": "worsened"
+            },
+            {
+              "key": [
+                6,
+                5,
+                4
+              ],
+              "benefit": 0.005930617320602429,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                6,
+                5,
+                5
+              ],
+              "benefit": -0.14022329907427147,
+              "direction": "worsened"
+            },
+            {
+              "key": [
+                6,
+                5,
+                6
+              ],
+              "benefit": -0.17450369640529922,
+              "direction": "worsened"
+            },
+            {
+              "key": [
+                6,
+                6,
+                3
+              ],
+              "benefit": 0.0028428884618652266,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                6,
+                6,
+                4
+              ],
+              "benefit": 0.016399063493898317,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                6,
+                6,
+                5
+              ],
+              "benefit": -0.04780443273523072,
+              "direction": "worsened"
+            },
+            {
+              "key": [
+                6,
+                6,
+                6
+              ],
+              "benefit": 0.028178966596796657,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                6,
+                7,
+                3
+              ],
+              "benefit": 0.0024035354564193867,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                6,
+                7,
+                4
+              ],
+              "benefit": 0.013424803359903512,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                6,
+                7,
+                5
+              ],
+              "benefit": 0.013499499718176902,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                6,
+                7,
+                6
+              ],
+              "benefit": -0.009469759383769708,
+              "direction": "worsened"
+            },
+            {
+              "key": [
+                7,
+                4,
+                3
+              ],
+              "benefit": -0.008337259925722812,
+              "direction": "worsened"
+            },
+            {
+              "key": [
+                7,
+                4,
+                4
+              ],
+              "benefit": 0.0010642430627976762,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                7,
+                4,
+                5
+              ],
+              "benefit": -0.003530023459427346,
+              "direction": "worsened"
+            },
+            {
+              "key": [
+                7,
+                4,
+                6
+              ],
+              "benefit": -0.00021902363798443594,
+              "direction": "worsened"
+            },
+            {
+              "key": [
+                7,
+                5,
+                3
+              ],
+              "benefit": 0.01709709039525275,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                7,
+                5,
+                4
+              ],
+              "benefit": 0.002774411305450586,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                7,
+                5,
+                5
+              ],
+              "benefit": -0.0067096557986980245,
+              "direction": "worsened"
+            },
+            {
+              "key": [
+                7,
+                5,
+                6
+              ],
+              "benefit": 0.02067644318898968,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                7,
+                6,
+                3
+              ],
+              "benefit": 0.014004260224146591,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                7,
+                6,
+                4
+              ],
+              "benefit": 0.006269562177765181,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                7,
+                6,
+                5
+              ],
+              "benefit": -0.03967554816244902,
+              "direction": "worsened"
+            },
+            {
+              "key": [
+                7,
+                6,
+                6
+              ],
+              "benefit": -0.00030230908301276394,
+              "direction": "worsened"
+            },
+            {
+              "key": [
+                7,
+                7,
+                3
+              ],
+              "benefit": 0.00074440922200417,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                7,
+                7,
+                4
+              ],
+              "benefit": 0.005262245031044976,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                7,
+                7,
+                5
+              ],
+              "benefit": -0.0019479975101289397,
+              "direction": "worsened"
+            },
+            {
+              "key": [
+                7,
+                7,
+                6
+              ],
+              "benefit": -0.00043195759200349046,
+              "direction": "worsened"
+            }
+          ],
+          "sample_improved": 18,
+          "episode_improved": 4,
+          "leave_one_out": {
+            "6/4": -0.010199957672354713,
+            "6/5": 0.0016676763654312836,
+            "6/6": -0.009454779172045348,
+            "6/7": -0.0101776932196668,
+            "7/4": -0.009074830965700121,
+            "7/5": -0.01067698643181912,
+            "7/6": -0.00876476057701394,
+            "7/7": -0.009598001076816323
+          },
+          "largest_episode_net_share": null
+        },
+        "iar_mismatched": {
+          "paired_samples": 30,
+          "paired_episodes": 8,
+          "episodes": {
+            "6/4": {
+              "candidate": 0.010361460208335989,
+              "control": 0.023826327804838707,
+              "benefit": 0.013464867596502719
+            },
+            "6/5": {
+              "candidate": 0.08821436011628367,
+              "control": 0.07272097105798352,
+              "benefit": -0.015493389058300153
+            },
+            "6/6": {
+              "candidate": 0.18632560892914476,
+              "control": 0.1892959366042132,
+              "benefit": 0.0029703276750684404
+            },
+            "6/7": {
+              "candidate": 0.010290969939076881,
+              "control": 0.02747663184547501,
+              "benefit": 0.017185661906398128
+            },
+            "7/4": {
+              "candidate": 0.01656594422371678,
+              "control": 0.02364331684212925,
+              "benefit": 0.007077372618412469
+            },
+            "7/5": {
+              "candidate": 0.019311469748261142,
+              "control": 0.032432536147431426,
+              "benefit": 0.013121066399170284
+            },
+            "7/6": {
+              "candidate": 0.027630388980756596,
+              "control": 0.03182951458992558,
+              "benefit": 0.004199125609168981
+            },
+            "7/7": {
+              "candidate": 0.0038875120723917723,
+              "control": 0.011155359701807347,
+              "benefit": 0.007267847629415574
+            }
+          },
+          "macro_benefit": 0.006224110046979555,
+          "per_sample": [
+            {
+              "key": [
+                6,
+                4,
+                3
+              ],
+              "benefit": 0.0030829898033385887,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                6,
+                4,
+                4
+              ],
+              "benefit": 0.029854396435327044,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                6,
+                4,
+                5
+              ],
+              "benefit": 0.00289783138549057,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                6,
+                4,
+                6
+              ],
+              "benefit": 0.018024252761854678,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                6,
+                5,
+                3
+              ],
+              "benefit": 0.007491897361505335,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                6,
+                5,
+                4
+              ],
+              "benefit": 0.030243886357251743,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                6,
+                5,
+                5
+              ],
+              "benefit": 0.04122476473924791,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                6,
+                5,
+                6
+              ],
+              "benefit": -0.14093410469120563,
+              "direction": "worsened"
+            },
+            {
+              "key": [
+                6,
+                6,
+                3
+              ],
+              "benefit": 0.0010867105764909655,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                6,
+                6,
+                4
+              ],
+              "benefit": 0.06378539948168996,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                6,
+                6,
+                5
+              ],
+              "benefit": -0.057323516974197575,
+              "direction": "worsened"
+            },
+            {
+              "key": [
+                6,
+                6,
+                6
+              ],
+              "benefit": 0.004332717616290425,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                6,
+                7,
+                3
+              ],
+              "benefit": -0.0012087392479435775,
+              "direction": "worsened"
+            },
+            {
+              "key": [
+                6,
+                7,
+                4
+              ],
+              "benefit": 0.062489280614276825,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                6,
+                7,
+                5
+              ],
+              "benefit": -0.002438366216407195,
+              "direction": "worsened"
+            },
+            {
+              "key": [
+                6,
+                7,
+                6
+              ],
+              "benefit": 0.009900472475666467,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                7,
+                4,
+                3
+              ],
+              "benefit": -0.008013185934152237,
+              "direction": "worsened"
+            },
+            {
+              "key": [
+                7,
+                4,
+                4
+              ],
+              "benefit": 0.03569410962942667,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                7,
+                4,
+                5
+              ],
+              "benefit": -0.0017454357176686554,
+              "direction": "worsened"
+            },
+            {
+              "key": [
+                7,
+                4,
+                6
+              ],
+              "benefit": 0.0023740024960441043,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                7,
+                5,
+                3
+              ],
+              "benefit": -0.0029374651634772528,
+              "direction": "worsened"
+            },
+            {
+              "key": [
+                7,
+                5,
+                4
+              ],
+              "benefit": 0.03400337565360028,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                7,
+                5,
+                5
+              ],
+              "benefit": 0.008297288707387829,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                7,
+                6,
+                3
+              ],
+              "benefit": 0.0017992822335730178,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                7,
+                6,
+                4
+              ],
+              "benefit": 0.05234973757269623,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                7,
+                6,
+                5
+              ],
+              "benefit": -0.04155164297876232,
+              "direction": "worsened"
+            },
+            {
+              "key": [
+                7,
+                7,
+                3
+              ],
+              "benefit": -0.0006981986948596058,
+              "direction": "worsened"
+            },
+            {
+              "key": [
+                7,
+                7,
+                4
+              ],
+              "benefit": 0.017370646856774544,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                7,
+                7,
+                5
+              ],
+              "benefit": 0.011653529355515077,
+              "direction": "improved"
+            },
+            {
+              "key": [
+                7,
+                7,
+                6
+              ],
+              "benefit": 0.0007454130002322809,
+              "direction": "improved"
+            }
+          ],
+          "sample_improved": 21,
+          "episode_improved": 7,
+          "leave_one_out": {
+            "6/4": 0.005189716111333389,
+            "6/5": 0.00932660991916237,
+            "6/6": 0.006688936100109714,
+            "6/7": 0.004658174067062616,
+            "7/4": 0.00610221539391771,
+            "7/5": 0.005238830568095166,
+            "7/6": 0.006513393538095352,
+            "7/7": 0.006075004678060124
+          },
+          "largest_episode_net_share": 0.34514295571336356
+        }
+      },
+      "primary_checks": {
+        "eight_episodes": true,
+        "identity_coverage": true,
+        "row0_better_identity": false,
+        "six_episodes_identity": false,
+        "iar_mismatched_coverage": true,
+        "row0_better_iar_mismatched": true,
+        "six_episodes_iar_mismatched": true,
+        "chunk_not_worse_identity": true
+      },
+      "robustness_checks": {
+        "sample_majority_identity": true,
+        "sample_majority_iar_mismatched": true,
+        "all_leave_one_positive": false
+      },
+      "heldout_primary_gate_passed": false,
+      "heldout_robustness_gate_passed": false,
+      "worst_excess_vs_identity": 0.17450369640529922,
+      "delay_counts": {
+        "3": 30,
+        "4": 2
+      },
+      "statistical_significance_claimed": false
+    },
+    "per_sample": [
+      {
+        "key": [
+          6,
+          4,
+          3
+        ],
+        "delay": 3,
+        "donor": [
+          6,
+          4,
+          4
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.013570056911141447,
+            "chunk": 0.07764874562997015,
+            "latent": 2388.978856224111
+          },
+          "iar_true": {
+            "row0": 0.007264453190430185,
+            "chunk": 0.011746490277813828,
+            "latent": 2389.471832931653
+          },
+          "iar_zero": {
+            "row0": 0.013570056911141447,
+            "chunk": 0.07764874562997015,
+            "latent": 2388.978856224111
+          },
+          "iar_mismatched": {
+            "row0": 0.010347442993768774,
+            "chunk": 0.022952214085632708,
+            "latent": 2390.3559843615194
+          }
+        }
+      },
+      {
+        "key": [
+          6,
+          4,
+          4
+        ],
+        "delay": 3,
+        "donor": [
+          6,
+          4,
+          5
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.02893613969428573,
+            "chunk": 0.2763155303945759,
+            "latent": 3857.2543916150275
+          },
+          "iar_true": {
+            "row0": 0.017916172112161344,
+            "chunk": 0.22885913630368349,
+            "latent": 3856.7322940157396
+          },
+          "iar_zero": {
+            "row0": 0.02893613969428573,
+            "chunk": 0.2763155303945759,
+            "latent": 3857.2543916150275
+          },
+          "iar_mismatched": {
+            "row0": 0.04777056854748839,
+            "chunk": 0.330303150108572,
+            "latent": 3862.0767613041235
+          }
+        }
+      },
+      {
+        "key": [
+          6,
+          4,
+          5
+        ],
+        "delay": 3,
+        "donor": [
+          6,
+          4,
+          6
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.01133340181356358,
+            "chunk": 0.006067841490595688,
+            "latent": 1423.3554133366654
+          },
+          "iar_true": {
+            "row0": 0.013881881962312683,
+            "chunk": 0.06312098112766246,
+            "latent": 1424.4511124165006
+          },
+          "iar_zero": {
+            "row0": 0.01133340181356358,
+            "chunk": 0.006067841490595688,
+            "latent": 1423.3554133366654
+          },
+          "iar_mismatched": {
+            "row0": 0.016779713347803253,
+            "chunk": 0.2236841752246702,
+            "latent": 1428.2655056994388
+          }
+        }
+      },
+      {
+        "key": [
+          6,
+          4,
+          6
+        ],
+        "delay": 3,
+        "donor": [
+          6,
+          4,
+          3
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.008087726240344848,
+            "chunk": 0.03702442992974406,
+            "latent": 2112.144835440773
+          },
+          "iar_true": {
+            "row0": 0.002383333568439742,
+            "chunk": 0.007158724239380979,
+            "latent": 2118.1429943884154
+          },
+          "iar_zero": {
+            "row0": 0.008087726240344848,
+            "chunk": 0.03702442992974406,
+            "latent": 2112.144835440773
+          },
+          "iar_mismatched": {
+            "row0": 0.02040758633029442,
+            "chunk": 0.05001531772294222,
+            "latent": 2114.485355017131
+          }
+        }
+      },
+      {
+        "key": [
+          6,
+          5,
+          3
+        ],
+        "delay": 3,
+        "donor": [
+          6,
+          5,
+          4
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.005089039193699558,
+            "chunk": 0.0034987735438570438,
+            "latent": 2891.9346199743654
+          },
+          "iar_true": {
+            "row0": 0.008104930266747625,
+            "chunk": 0.04088060706945145,
+            "latent": 2892.068110009139
+          },
+          "iar_zero": {
+            "row0": 0.005089039193699558,
+            "chunk": 0.0034987735438570438,
+            "latent": 2891.9346199743654
+          },
+          "iar_mismatched": {
+            "row0": 0.01559682762825296,
+            "chunk": 0.07766288251732331,
+            "latent": 2893.987452925476
+          }
+        }
+      },
+      {
+        "key": [
+          6,
+          5,
+          4
+        ],
+        "delay": 3,
+        "donor": [
+          6,
+          5,
+          5
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.007199120730164488,
+            "chunk": 0.07155777043484866,
+            "latent": 3968.1608814109427
+          },
+          "iar_true": {
+            "row0": 0.001268503409562059,
+            "chunk": 0.01376361176148733,
+            "latent": 3969.9964892752687
+          },
+          "iar_zero": {
+            "row0": 0.007199120730164488,
+            "chunk": 0.07155777043484866,
+            "latent": 3968.1608814109427
+          },
+          "iar_mismatched": {
+            "row0": 0.0315123897668138,
+            "chunk": 0.12406720442535303,
+            "latent": 3975.985555890619
+          }
+        }
+      },
+      {
+        "key": [
+          6,
+          5,
+          5
+        ],
+        "delay": 3,
+        "donor": [
+          6,
+          5,
+          6
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.016392578543336762,
+            "chunk": 0.00561789174406491,
+            "latent": 2497.683415231007
+          },
+          "iar_true": {
+            "row0": 0.15661587761760823,
+            "chunk": 0.03495886076308257,
+            "latent": 2503.5678298910934
+          },
+          "iar_zero": {
+            "row0": 0.016392578543336762,
+            "chunk": 0.00561789174406491,
+            "latent": 2497.683415231007
+          },
+          "iar_mismatched": {
+            "row0": 0.19784064235685614,
+            "chunk": 0.04445090667663005,
+            "latent": 2506.052394241722
+          }
+        }
+      },
+      {
+        "key": [
+          6,
+          5,
+          6
+        ],
+        "delay": 3,
+        "donor": [
+          6,
+          5,
+          3
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.012364432765917574,
+            "chunk": 0.0017406047586991367,
+            "latent": 1765.5158738124078
+          },
+          "iar_true": {
+            "row0": 0.18686812917121678,
+            "chunk": 0.013027526627480713,
+            "latent": 1773.9750060082456
+          },
+          "iar_zero": {
+            "row0": 0.012364432765917574,
+            "chunk": 0.0017406047586991367,
+            "latent": 1765.5158738124078
+          },
+          "iar_mismatched": {
+            "row0": 0.04593402448001116,
+            "chunk": 0.006421443682835363,
+            "latent": 1766.3469069487498
+          }
+        }
+      },
+      {
+        "key": [
+          6,
+          6,
+          3
+        ],
+        "delay": 3,
+        "donor": [
+          6,
+          6,
+          4
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.01190869136908855,
+            "chunk": 0.040197886557209454,
+            "latent": 2462.986813220835
+          },
+          "iar_true": {
+            "row0": 0.009065802907223324,
+            "chunk": 0.010141272030944792,
+            "latent": 2464.809917344035
+          },
+          "iar_zero": {
+            "row0": 0.01190869136908855,
+            "chunk": 0.040197886557209454,
+            "latent": 2462.986813220835
+          },
+          "iar_mismatched": {
+            "row0": 0.01015251348371429,
+            "chunk": 0.007276983876840418,
+            "latent": 2466.45569044483
+          }
+        }
+      },
+      {
+        "key": [
+          6,
+          6,
+          4
+        ],
+        "delay": 3,
+        "donor": [
+          6,
+          6,
+          5
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.025002012724944147,
+            "chunk": 0.0608009101210242,
+            "latent": 3204.1640887595195
+          },
+          "iar_true": {
+            "row0": 0.008602949231045832,
+            "chunk": 0.017847220445475074,
+            "latent": 3205.2578172363355
+          },
+          "iar_zero": {
+            "row0": 0.025002012724944147,
+            "chunk": 0.0608009101210242,
+            "latent": 3204.1640887595195
+          },
+          "iar_mismatched": {
+            "row0": 0.07238834871273579,
+            "chunk": 0.16223972228059275,
+            "latent": 3212.026343402452
+          }
+        }
+      },
+      {
+        "key": [
+          6,
+          6,
+          5
+        ],
+        "delay": 3,
+        "donor": [
+          6,
+          6,
+          6
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.6524352028985094,
+            "chunk": 0.1668027539109679,
+            "latent": 2849.1049305236024
+          },
+          "iar_true": {
+            "row0": 0.7002396356337401,
+            "chunk": 0.08093161542512779,
+            "latent": 2855.3902932130063
+          },
+          "iar_zero": {
+            "row0": 0.6524352028985094,
+            "chunk": 0.1668027539109679,
+            "latent": 2849.1049305236024
+          },
+          "iar_mismatched": {
+            "row0": 0.6429161186595426,
+            "chunk": 0.3111802386933767,
+            "latent": 2851.100174882168
+          }
+        }
+      },
+      {
+        "key": [
+          6,
+          6,
+          6
+        ],
+        "delay": 3,
+        "donor": [
+          6,
+          6,
+          3
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.055573014541366365,
+            "chunk": 0.2960652980274655,
+            "latent": 3723.8473053054254
+          },
+          "iar_true": {
+            "row0": 0.02739404794456971,
+            "chunk": 0.17611313411942073,
+            "latent": 3723.5751200692707
+          },
+          "iar_zero": {
+            "row0": 0.055573014541366365,
+            "chunk": 0.2960652980274655,
+            "latent": 3723.8473053054254
+          },
+          "iar_mismatched": {
+            "row0": 0.03172676556086013,
+            "chunk": 0.18858949834555522,
+            "latent": 3723.373249837044
+          }
+        }
+      },
+      {
+        "key": [
+          6,
+          7,
+          3
+        ],
+        "delay": 3,
+        "donor": [
+          6,
+          7,
+          4
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.015436358743490372,
+            "chunk": 0.019910588951210492,
+            "latent": 2755.955744335428
+          },
+          "iar_true": {
+            "row0": 0.013032823287070986,
+            "chunk": 0.004382513595438667,
+            "latent": 2757.426670736645
+          },
+          "iar_zero": {
+            "row0": 0.015436358743490372,
+            "chunk": 0.019910588951210492,
+            "latent": 2755.955744335428
+          },
+          "iar_mismatched": {
+            "row0": 0.011824084039127408,
+            "chunk": 0.004677977717845274,
+            "latent": 2758.495931488848
+          }
+        }
+      },
+      {
+        "key": [
+          6,
+          7,
+          4
+        ],
+        "delay": 3,
+        "donor": [
+          6,
+          7,
+          5
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.018534411507184125,
+            "chunk": 0.0681247077278444,
+            "latent": 3165.3123608953083
+          },
+          "iar_true": {
+            "row0": 0.005109608147280614,
+            "chunk": 0.038200516499447924,
+            "latent": 3165.706113438615
+          },
+          "iar_zero": {
+            "row0": 0.018534411507184125,
+            "chunk": 0.0681247077278444,
+            "latent": 3165.3123608953083
+          },
+          "iar_mismatched": {
+            "row0": 0.06759888876155744,
+            "chunk": 0.12703756073372255,
+            "latent": 3175.3906356662615
+          }
+        }
+      },
+      {
+        "key": [
+          6,
+          7,
+          5
+        ],
+        "delay": 3,
+        "donor": [
+          6,
+          7,
+          6
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.025735701970107383,
+            "chunk": 0.012513523851977482,
+            "latent": 1353.1955787816037
+          },
+          "iar_true": {
+            "row0": 0.012236202251930482,
+            "chunk": 0.006197679638226877,
+            "latent": 1357.6952686353354
+          },
+          "iar_zero": {
+            "row0": 0.025735701970107383,
+            "chunk": 0.012513523851977482,
+            "latent": 1353.1955787816037
+          },
+          "iar_mismatched": {
+            "row0": 0.009797836035523286,
+            "chunk": 0.005063324195927372,
+            "latent": 1357.064554968426
+          }
+        }
+      },
+      {
+        "key": [
+          6,
+          7,
+          6
+        ],
+        "delay": 3,
+        "donor": [
+          6,
+          7,
+          3
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.0013154866862557315,
+            "chunk": 0.0011584532858284608,
+            "latent": 1529.750600682749
+          },
+          "iar_true": {
+            "row0": 0.01078524607002544,
+            "chunk": 0.002751481927352444,
+            "latent": 1534.3446664724277
+          },
+          "iar_zero": {
+            "row0": 0.0013154866862557315,
+            "chunk": 0.0011584532858284608,
+            "latent": 1529.750600682749
+          },
+          "iar_mismatched": {
+            "row0": 0.020685718545691907,
+            "chunk": 0.00415463389436526,
+            "latent": 1531.8839342031836
+          }
+        }
+      },
+      {
+        "key": [
+          7,
+          4,
+          3
+        ],
+        "delay": 3,
+        "donor": [
+          7,
+          4,
+          4
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.003735234456786823,
+            "chunk": 0.00254877320096774,
+            "latent": 1905.8120873404703
+          },
+          "iar_true": {
+            "row0": 0.012072494382509635,
+            "chunk": 0.03296861357492905,
+            "latent": 1907.0973367110623
+          },
+          "iar_zero": {
+            "row0": 0.003735234456786823,
+            "chunk": 0.00254877320096774,
+            "latent": 1905.8120873404703
+          },
+          "iar_mismatched": {
+            "row0": 0.004059308448357398,
+            "chunk": 0.002892883684694758,
+            "latent": 1905.8096264927437
+          }
+        }
+      },
+      {
+        "key": [
+          7,
+          4,
+          4
+        ],
+        "delay": 3,
+        "donor": [
+          7,
+          4,
+          5
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.043824809909088845,
+            "chunk": 0.06566610504055753,
+            "latent": 3350.0920911023236
+          },
+          "iar_true": {
+            "row0": 0.04276056684629117,
+            "chunk": 0.06395474128460393,
+            "latent": 3350.09240107299
+          },
+          "iar_zero": {
+            "row0": 0.043824809909088845,
+            "chunk": 0.06566610504055753,
+            "latent": 3350.0920911023236
+          },
+          "iar_mismatched": {
+            "row0": 0.07845467647571784,
+            "chunk": 0.306271584685001,
+            "latent": 3355.854667184812
+          }
+        }
+      },
+      {
+        "key": [
+          7,
+          4,
+          5
+        ],
+        "delay": 3,
+        "donor": [
+          7,
+          4,
+          6
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.006126416989107204,
+            "chunk": 0.008059624685660504,
+            "latent": 2236.720393409246
+          },
+          "iar_true": {
+            "row0": 0.00965644044853455,
+            "chunk": 0.003679160062728234,
+            "latent": 2240.0894255127787
+          },
+          "iar_zero": {
+            "row0": 0.006126416989107204,
+            "chunk": 0.008059624685660504,
+            "latent": 2236.720393409246
+          },
+          "iar_mismatched": {
+            "row0": 0.007911004730865895,
+            "chunk": 0.01011447892052417,
+            "latent": 2237.273363932735
+          }
+        }
+      },
+      {
+        "key": [
+          7,
+          4,
+          6
+        ],
+        "delay": 3,
+        "donor": [
+          7,
+          4,
+          3
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.0015552515795473263,
+            "chunk": 0.005588777987877158,
+            "latent": 1819.0964156615146
+          },
+          "iar_true": {
+            "row0": 0.0017742752175317622,
+            "chunk": 0.003742520346320628,
+            "latent": 1819.1654512829336
+          },
+          "iar_zero": {
+            "row0": 0.0015552515795473263,
+            "chunk": 0.005588777987877158,
+            "latent": 1819.0964156615146
+          },
+          "iar_mismatched": {
+            "row0": 0.0041482777135758665,
+            "chunk": 0.002258615741311877,
+            "latent": 1819.772591471408
+          }
+        }
+      },
+      {
+        "key": [
+          7,
+          5,
+          3
+        ],
+        "delay": 3,
+        "donor": [
+          7,
+          5,
+          4
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.05521207190048004,
+            "chunk": 0.12062877231815747,
+            "latent": 3302.5052774051214
+          },
+          "iar_true": {
+            "row0": 0.03811498150522729,
+            "chunk": 0.03048419842134566,
+            "latent": 3303.055353079103
+          },
+          "iar_zero": {
+            "row0": 0.05521207190048004,
+            "chunk": 0.12062877231815747,
+            "latent": 3302.5052774051214
+          },
+          "iar_mismatched": {
+            "row0": 0.03517751634175004,
+            "chunk": 0.026972978479952527,
+            "latent": 3303.1309485115435
+          }
+        }
+      },
+      {
+        "key": [
+          7,
+          5,
+          4
+        ],
+        "delay": 3,
+        "donor": [
+          7,
+          5,
+          5
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.0036504924826765172,
+            "chunk": 0.021338021496193644,
+            "latent": 3168.1111086489377
+          },
+          "iar_true": {
+            "row0": 0.0008760811772259311,
+            "chunk": 0.003372586907753737,
+            "latent": 3171.5620708017373
+          },
+          "iar_zero": {
+            "row0": 0.0036504924826765172,
+            "chunk": 0.021338021496193644,
+            "latent": 3168.1111086489377
+          },
+          "iar_mismatched": {
+            "row0": 0.03487945683082621,
+            "chunk": 0.0659379409686741,
+            "latent": 3170.8649977179225
+          }
+        }
+      },
+      {
+        "key": [
+          7,
+          5,
+          5
+        ],
+        "delay": 3,
+        "donor": [
+          7,
+          5,
+          3
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.012233690763632179,
+            "chunk": 0.06417365247442838,
+            "latent": 2240.914250744139
+          },
+          "iar_true": {
+            "row0": 0.018943346562330203,
+            "chunk": 0.04681332867497072,
+            "latent": 2243.150052201409
+          },
+          "iar_zero": {
+            "row0": 0.012233690763632179,
+            "chunk": 0.06417365247442838,
+            "latent": 2240.914250744139
+          },
+          "iar_mismatched": {
+            "row0": 0.027240635269718032,
+            "chunk": 0.07384272758540147,
+            "latent": 2244.579966800839
+          }
+        }
+      },
+      {
+        "key": [
+          7,
+          5,
+          6
+        ],
+        "delay": 4,
+        "donor": null,
+        "metrics": {
+          "identity": {
+            "row0": 0.02860534321462829,
+            "chunk": 0.04043876377305642,
+            "latent": 2709.0679908377874
+          },
+          "iar_true": {
+            "row0": 0.007928900025638607,
+            "chunk": 0.006380957905246005,
+            "latent": 2710.7461058627864
+          },
+          "iar_zero": {
+            "row0": 0.02860534321462829,
+            "chunk": 0.04043876377305642,
+            "latent": 2709.0679908377874
+          }
+        }
+      },
+      {
+        "key": [
+          7,
+          6,
+          3
+        ],
+        "delay": 3,
+        "donor": [
+          7,
+          6,
+          4
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.03384945583866932,
+            "chunk": 0.08397709442295198,
+            "latent": 2166.212418323299
+          },
+          "iar_true": {
+            "row0": 0.01984519561452273,
+            "chunk": 0.047736404979251724,
+            "latent": 2166.4227389510497
+          },
+          "iar_zero": {
+            "row0": 0.03384945583866932,
+            "chunk": 0.08397709442295198,
+            "latent": 2166.212418323299
+          },
+          "iar_mismatched": {
+            "row0": 0.02164447784809575,
+            "chunk": 0.049020231431896856,
+            "latent": 2166.4540580894427
+          }
+        }
+      },
+      {
+        "key": [
+          7,
+          6,
+          4
+        ],
+        "delay": 3,
+        "donor": [
+          7,
+          6,
+          5
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.011343714852750628,
+            "chunk": 0.01598418626303313,
+            "latent": 2471.1500006206156
+          },
+          "iar_true": {
+            "row0": 0.005074152674985447,
+            "chunk": 0.005632750731566737,
+            "latent": 2471.640071190247
+          },
+          "iar_zero": {
+            "row0": 0.011343714852750628,
+            "chunk": 0.01598418626303313,
+            "latent": 2471.1500006206156
+          },
+          "iar_mismatched": {
+            "row0": 0.05742389024768168,
+            "chunk": 0.0637774745283786,
+            "latent": 2477.576520275703
+          }
+        }
+      },
+      {
+        "key": [
+          7,
+          6,
+          5
+        ],
+        "delay": 3,
+        "donor": [
+          7,
+          6,
+          3
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.01829627049031259,
+            "chunk": 0.05379704535972177,
+            "latent": 3322.6809698414822
+          },
+          "iar_true": {
+            "row0": 0.05797181865276161,
+            "chunk": 0.03182201525729448,
+            "latent": 3327.0615864060433
+          },
+          "iar_zero": {
+            "row0": 0.01829627049031259,
+            "chunk": 0.05379704535972177,
+            "latent": 3322.6809698414822
+          },
+          "iar_mismatched": {
+            "row0": 0.01642017567399929,
+            "chunk": 0.06001032464977736,
+            "latent": 3323.8357973742454
+          }
+        }
+      },
+      {
+        "key": [
+          7,
+          6,
+          6
+        ],
+        "delay": 4,
+        "donor": null,
+        "metrics": {
+          "identity": {
+            "row0": 0.004078644214008291,
+            "chunk": 0.0010405751465074776,
+            "latent": 1010.8339750666829
+          },
+          "iar_true": {
+            "row0": 0.004380953297021055,
+            "chunk": 0.0019466730415884242,
+            "latent": 1010.9320130956756
+          },
+          "iar_zero": {
+            "row0": 0.004078644214008291,
+            "chunk": 0.0010405751465074776,
+            "latent": 1010.8339750666829
+          }
+        }
+      },
+      {
+        "key": [
+          7,
+          7,
+          3
+        ],
+        "delay": 3,
+        "donor": [
+          7,
+          7,
+          4
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.005137812862190402,
+            "chunk": 0.0186485055239719,
+            "latent": 2654.3566705256762
+          },
+          "iar_true": {
+            "row0": 0.004393403640186232,
+            "chunk": 0.004258406011270294,
+            "latent": 2653.965818710179
+          },
+          "iar_zero": {
+            "row0": 0.005137812862190402,
+            "chunk": 0.0186485055239719,
+            "latent": 2654.3566705256762
+          },
+          "iar_mismatched": {
+            "row0": 0.003695204945326626,
+            "chunk": 0.002587196323644435,
+            "latent": 2654.2481601470804
+          }
+        }
+      },
+      {
+        "key": [
+          7,
+          7,
+          4
+        ],
+        "delay": 3,
+        "donor": [
+          7,
+          7,
+          5
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.01194143074900324,
+            "chunk": 0.021449067042268247,
+            "latent": 2760.527181805609
+          },
+          "iar_true": {
+            "row0": 0.006679185717958265,
+            "chunk": 0.005355482245304663,
+            "latent": 2760.9476508032344
+          },
+          "iar_zero": {
+            "row0": 0.01194143074900324,
+            "chunk": 0.021449067042268247,
+            "latent": 2760.527181805609
+          },
+          "iar_mismatched": {
+            "row0": 0.02404983257473281,
+            "chunk": 0.1442021663306195,
+            "latent": 2763.349369450765
+          }
+        }
+      },
+      {
+        "key": [
+          7,
+          7,
+          5
+        ],
+        "delay": 3,
+        "donor": [
+          7,
+          7,
+          6
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.0014183146268216807,
+            "chunk": 0.003214886634685492,
+            "latent": 1234.3889491835844
+          },
+          "iar_true": {
+            "row0": 0.0033663121369506203,
+            "chunk": 0.0024616345555166104,
+            "latent": 1235.5625388635635
+          },
+          "iar_zero": {
+            "row0": 0.0014183146268216807,
+            "chunk": 0.003214886634685492,
+            "latent": 1234.3889491835844
+          },
+          "iar_mismatched": {
+            "row0": 0.015019841492465697,
+            "chunk": 0.0063056153487261336,
+            "latent": 1237.9726056845946
+          }
+        }
+      },
+      {
+        "key": [
+          7,
+          7,
+          6
+        ],
+        "delay": 3,
+        "donor": [
+          7,
+          7,
+          3
+        ],
+        "metrics": {
+          "identity": {
+            "row0": 0.0006791892024684812,
+            "chunk": 0.0073653386223593,
+            "latent": 2881.383521279844
+          },
+          "iar_true": {
+            "row0": 0.0011111467944719716,
+            "chunk": 0.005547534087124359,
+            "latent": 2884.4338971944517
+          },
+          "iar_zero": {
+            "row0": 0.0006791892024684812,
+            "chunk": 0.0073653386223593,
+            "latent": 2881.383521279844
+          },
+          "iar_mismatched": {
+            "row0": 0.0018565597947042525,
+            "chunk": 0.009065333214179815,
+            "latent": 2881.9901705685193
+          }
+        }
+      }
+    ],
+    "first_failure": null,
+    "wall_seconds": 2.538503371994011
+  }
+}
