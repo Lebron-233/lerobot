@@ -1,0 +1,995 @@
+{
+  "experiment": "E-GFC1",
+  "execution_head": "fc5da9d2634c7a43bba05802128efa92b81779b2",
+  "candidate_head": "a5e9fddefc0cfa03ea1509493e8b304ec7c06d92",
+  "status": "completed",
+  "first_failure": null,
+  "vla_loads": 1,
+  "vla_frozen": true,
+  "pairs": [
+    {
+      "pair_index": 0,
+      "task_state": [
+        0,
+        12
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "serialized": {
+          "success": true,
+          "measured_actions": 131,
+          "wall_s": 6.826349749986548,
+          "no_action_slots": 6,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.9363474400015548
+        },
+        "async": {
+          "success": true,
+          "measured_actions": 134,
+          "wall_s": 6.667224978009472,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3388813489873428
+        }
+      }
+    },
+    {
+      "pair_index": 1,
+      "task_state": [
+        2,
+        12
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "async": {
+          "success": true,
+          "measured_actions": 113,
+          "wall_s": 5.622578779992182,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3835422650154214
+        },
+        "serialized": {
+          "success": true,
+          "measured_actions": 112,
+          "wall_s": 5.824883525987389,
+          "no_action_slots": 5,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3921899439883418
+        }
+      }
+    },
+    {
+      "pair_index": 2,
+      "task_state": [
+        6,
+        12
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "serialized": {
+          "success": true,
+          "measured_actions": 155,
+          "wall_s": 8.075088546000188,
+          "no_action_slots": 7,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3182844530092552
+        },
+        "async": {
+          "success": true,
+          "measured_actions": 140,
+          "wall_s": 6.9747528200095985,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3199677830270957
+        }
+      }
+    },
+    {
+      "pair_index": 3,
+      "task_state": [
+        7,
+        12
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "async": {
+          "success": true,
+          "measured_actions": 118,
+          "wall_s": 5.870856285007903,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3783548890205566
+        },
+        "serialized": {
+          "success": true,
+          "measured_actions": 120,
+          "wall_s": 6.216711932007456,
+          "no_action_slots": 5,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.34452710399637
+        }
+      }
+    },
+    {
+      "pair_index": 4,
+      "task_state": [
+        7,
+        13
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "serialized": {
+          "success": true,
+          "measured_actions": 136,
+          "wall_s": 7.072776918997988,
+          "no_action_slots": 6,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3530569089925848
+        },
+        "async": {
+          "success": true,
+          "measured_actions": 132,
+          "wall_s": 6.569874811975751,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3102301110047847
+        }
+      }
+    },
+    {
+      "pair_index": 5,
+      "task_state": [
+        6,
+        13
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "async": {
+          "success": true,
+          "measured_actions": 139,
+          "wall_s": 6.924071628018282,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3197062149993144
+        },
+        "serialized": {
+          "success": true,
+          "measured_actions": 141,
+          "wall_s": 7.384325865015853,
+          "no_action_slots": 7,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.392229249002412
+        }
+      }
+    },
+    {
+      "pair_index": 6,
+      "task_state": [
+        2,
+        13
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "serialized": {
+          "success": true,
+          "measured_actions": 121,
+          "wall_s": 6.336948990006931,
+          "no_action_slots": 6,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.311147656000685
+        },
+        "async": {
+          "success": true,
+          "measured_actions": 121,
+          "wall_s": 6.028791146993171,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3060756759950891
+        }
+      }
+    },
+    {
+      "pair_index": 7,
+      "task_state": [
+        0,
+        13
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "async": {
+          "success": true,
+          "measured_actions": 130,
+          "wall_s": 6.4699388860026374,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3375038910016883
+        },
+        "serialized": {
+          "success": true,
+          "measured_actions": 129,
+          "wall_s": 6.727330331981648,
+          "no_action_slots": 6,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3299726739933249
+        }
+      }
+    },
+    {
+      "pair_index": 8,
+      "task_state": [
+        0,
+        14
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "serialized": {
+          "success": true,
+          "measured_actions": 136,
+          "wall_s": 7.067163260013331,
+          "no_action_slots": 6,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.315850479004439
+        },
+        "async": {
+          "success": true,
+          "measured_actions": 137,
+          "wall_s": 6.8242057809839025,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3879689289897215
+        }
+      }
+    },
+    {
+      "pair_index": 9,
+      "task_state": [
+        2,
+        14
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "async": {
+          "success": true,
+          "measured_actions": 115,
+          "wall_s": 5.721362362004584,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.35392077601864
+        },
+        "serialized": {
+          "success": true,
+          "measured_actions": 120,
+          "wall_s": 6.217672678991221,
+          "no_action_slots": 5,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3444918600143865
+        }
+      }
+    },
+    {
+      "pair_index": 10,
+      "task_state": [
+        6,
+        14
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "serialized": {
+          "success": true,
+          "measured_actions": 136,
+          "wall_s": 7.070327569002984,
+          "no_action_slots": 6,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3156762050057296
+        },
+        "async": {
+          "success": true,
+          "measured_actions": 129,
+          "wall_s": 6.423390302981716,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.347372632008046
+        }
+      }
+    },
+    {
+      "pair_index": 11,
+      "task_state": [
+        7,
+        14
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "async": {
+          "success": true,
+          "measured_actions": 132,
+          "wall_s": 6.574677751021227,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3219983519811649
+        },
+        "serialized": {
+          "success": true,
+          "measured_actions": 137,
+          "wall_s": 7.115902071993332,
+          "no_action_slots": 6,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3456959080067463
+        }
+      }
+    },
+    {
+      "pair_index": 12,
+      "task_state": [
+        7,
+        15
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "serialized": {
+          "success": true,
+          "measured_actions": 134,
+          "wall_s": 6.969346961006522,
+          "no_action_slots": 6,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3266360519919544
+        },
+        "async": {
+          "success": true,
+          "measured_actions": 138,
+          "wall_s": 6.875973178015556,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3438541580107994
+        }
+      }
+    },
+    {
+      "pair_index": 13,
+      "task_state": [
+        6,
+        15
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "async": {
+          "success": true,
+          "measured_actions": 144,
+          "wall_s": 7.165916606987594,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.4337384669925086
+        },
+        "serialized": {
+          "success": true,
+          "measured_actions": 148,
+          "wall_s": 7.719677004992263,
+          "no_action_slots": 7,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.4026504610083066
+        }
+      }
+    },
+    {
+      "pair_index": 14,
+      "task_state": [
+        2,
+        15
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "serialized": {
+          "success": true,
+          "measured_actions": 125,
+          "wall_s": 6.521473472996149,
+          "no_action_slots": 6,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3625722109864
+        },
+        "async": {
+          "success": true,
+          "measured_actions": 127,
+          "wall_s": 6.322549706004793,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.4070346950029489
+        }
+      }
+    },
+    {
+      "pair_index": 15,
+      "task_state": [
+        0,
+        15
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "async": {
+          "success": true,
+          "measured_actions": 148,
+          "wall_s": 7.3756409420166165,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3532975720008835
+        },
+        "serialized": {
+          "success": true,
+          "measured_actions": 136,
+          "wall_s": 7.067581968993181,
+          "no_action_slots": 6,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3837999789975584
+        }
+      }
+    },
+    {
+      "pair_index": 16,
+      "task_state": [
+        0,
+        16
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "serialized": {
+          "success": true,
+          "measured_actions": 155,
+          "wall_s": 8.068541990011,
+          "no_action_slots": 7,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.4082473710004706
+        },
+        "async": {
+          "success": true,
+          "measured_actions": 174,
+          "wall_s": 8.674410018022172,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3290376059885602
+        }
+      }
+    },
+    {
+      "pair_index": 17,
+      "task_state": [
+        2,
+        16
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "async": {
+          "success": true,
+          "measured_actions": 113,
+          "wall_s": 5.624737022008048,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3802985989896115
+        },
+        "serialized": {
+          "success": true,
+          "measured_actions": 115,
+          "wall_s": 5.973023918981198,
+          "no_action_slots": 5,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3590551000088453
+        }
+      }
+    },
+    {
+      "pair_index": 18,
+      "task_state": [
+        6,
+        16
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "serialized": {
+          "success": true,
+          "measured_actions": 137,
+          "wall_s": 7.1146089380199555,
+          "no_action_slots": 6,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3014550600200891
+        },
+        "async": {
+          "success": true,
+          "measured_actions": 130,
+          "wall_s": 6.474546937010018,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.284167516976595
+        }
+      }
+    },
+    {
+      "pair_index": 19,
+      "task_state": [
+        7,
+        16
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "async": {
+          "success": true,
+          "measured_actions": 136,
+          "wall_s": 6.772012788016582,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3211360310087912
+        },
+        "serialized": {
+          "success": true,
+          "measured_actions": 135,
+          "wall_s": 7.021632341988152,
+          "no_action_slots": 6,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3169656670070253
+        }
+      }
+    },
+    {
+      "pair_index": 20,
+      "task_state": [
+        7,
+        17
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "serialized": {
+          "success": true,
+          "measured_actions": 138,
+          "wall_s": 7.173043325979961,
+          "no_action_slots": 6,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3074312320095487
+        },
+        "async": {
+          "success": true,
+          "measured_actions": 141,
+          "wall_s": 7.034894331998657,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3223662069940474
+        }
+      }
+    },
+    {
+      "pair_index": 21,
+      "task_state": [
+        6,
+        17
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "async": {
+          "success": true,
+          "measured_actions": 147,
+          "wall_s": 7.320535615988774,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3084367330011446
+        },
+        "serialized": {
+          "success": true,
+          "measured_actions": 152,
+          "wall_s": 7.923656297993148,
+          "no_action_slots": 7,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3885695289936848
+        }
+      }
+    },
+    {
+      "pair_index": 22,
+      "task_state": [
+        2,
+        17
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "serialized": {
+          "success": true,
+          "measured_actions": 122,
+          "wall_s": 6.367860673984978,
+          "no_action_slots": 6,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.294191116001457
+        },
+        "async": {
+          "success": true,
+          "measured_actions": 123,
+          "wall_s": 6.114917122002225,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3377239530091174
+        }
+      }
+    },
+    {
+      "pair_index": 23,
+      "task_state": [
+        0,
+        17
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "async": {
+          "success": true,
+          "measured_actions": 149,
+          "wall_s": 7.4229704389872495,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3204824889835436
+        },
+        "serialized": {
+          "success": true,
+          "measured_actions": 156,
+          "wall_s": 8.12172668799758,
+          "no_action_slots": 7,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3031086430128198
+        }
+      }
+    },
+    {
+      "pair_index": 24,
+      "task_state": [
+        0,
+        18
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "serialized": {
+          "success": true,
+          "measured_actions": 142,
+          "wall_s": 7.417311700002756,
+          "no_action_slots": 7,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.315331560006598
+        },
+        "async": {
+          "success": true,
+          "measured_actions": 137,
+          "wall_s": 6.823667025018949,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3407837309932802
+        }
+      }
+    },
+    {
+      "pair_index": 25,
+      "task_state": [
+        2,
+        18
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "async": {
+          "success": true,
+          "measured_actions": 112,
+          "wall_s": 5.569755904987687,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3801252790144645
+        },
+        "serialized": {
+          "success": true,
+          "measured_actions": 116,
+          "wall_s": 6.018151611002395,
+          "no_action_slots": 5,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3259072660002857
+        }
+      }
+    },
+    {
+      "pair_index": 26,
+      "task_state": [
+        6,
+        18
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "serialized": {
+          "success": true,
+          "measured_actions": 152,
+          "wall_s": 7.915101817983668,
+          "no_action_slots": 7,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3162876740098
+        },
+        "async": {
+          "success": true,
+          "measured_actions": 144,
+          "wall_s": 7.17188142897794,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.37059051200049
+        }
+      }
+    },
+    {
+      "pair_index": 27,
+      "task_state": [
+        7,
+        18
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "async": {
+          "success": true,
+          "measured_actions": 141,
+          "wall_s": 7.038008378003724,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3046775319962762
+        },
+        "serialized": {
+          "success": true,
+          "measured_actions": 141,
+          "wall_s": 7.395214115007548,
+          "no_action_slots": 7,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3269687209976837
+        }
+      }
+    },
+    {
+      "pair_index": 28,
+      "task_state": [
+        7,
+        19
+      ],
+      "outcome": "serialized_only",
+      "arms": {
+        "serialized": {
+          "success": true,
+          "measured_actions": 190,
+          "wall_s": 9.921648743009428,
+          "no_action_slots": 9,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3143916650151368
+        },
+        "async": {
+          "success": false,
+          "measured_actions": 280,
+          "wall_s": 13.974375648016576,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "time_limit",
+          "startup_s": 1.3167287060059607
+        }
+      }
+    },
+    {
+      "pair_index": 29,
+      "task_state": [
+        6,
+        19
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "async": {
+          "success": true,
+          "measured_actions": 142,
+          "wall_s": 7.0670521419961005,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3066031990165357
+        },
+        "serialized": {
+          "success": true,
+          "measured_actions": 142,
+          "wall_s": 7.415470120002283,
+          "no_action_slots": 7,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3247515359835234
+        }
+      }
+    },
+    {
+      "pair_index": 30,
+      "task_state": [
+        2,
+        19
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "serialized": {
+          "success": true,
+          "measured_actions": 116,
+          "wall_s": 6.021616601006826,
+          "no_action_slots": 5,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3104041189944837
+        },
+        "async": {
+          "success": true,
+          "measured_actions": 115,
+          "wall_s": 5.722783602017444,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.368559404014377
+        }
+      }
+    },
+    {
+      "pair_index": 31,
+      "task_state": [
+        0,
+        19
+      ],
+      "outcome": "both_success",
+      "arms": {
+        "async": {
+          "success": true,
+          "measured_actions": 140,
+          "wall_s": 6.9656409099989105,
+          "no_action_slots": 0,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.2783350440149661
+        },
+        "serialized": {
+          "success": true,
+          "measured_actions": 141,
+          "wall_s": 7.3865934729983564,
+          "no_action_slots": 7,
+          "underflows": 0,
+          "terminal_reason": "native_success",
+          "startup_s": 1.3089380659803282
+        }
+      }
+    }
+  ],
+  "complete_pairs": 32,
+  "discordance": {
+    "both_success": 31,
+    "serialized_only": 1
+  },
+  "retention": {
+    "lost_pairs": 1,
+    "gained_pairs": 0,
+    "n": 32,
+    "observed_success_difference": -0.03125,
+    "regression_probability_upper95": 0.1667291646406565,
+    "success_difference_lower95_conservative": -0.1667291646406565,
+    "margin": 0.1,
+    "alpha": 0.05,
+    "bounded_task_retention_passed": false,
+    "interpretation_requires_independent_pairs": true,
+    "scope": "fixed_four_tasks_new_states12_to19"
+  },
+  "episodes_completed": 64,
+  "native_budget": {
+    "episodes": 64,
+    "settling": 640,
+    "model": 467,
+    "measurement": 8788
+  },
+  "graph_captures": 64,
+  "capture_internal": {
+    "setup": 64,
+    "warmup": 192,
+    "capture": 64
+  },
+  "attempts": 1,
+  "retries": 0,
+  "training_updates": 0,
+  "qualification_reads": 0,
+  "rtc_steps": 0,
+  "predictor_forwards": 0,
+  "real_robot": 0,
+  "replay_commands": false,
+  "realtime_qualified": false,
+  "broad_generalization_claimed": false,
+  "risk_thresholds": null,
+  "execution": {
+    "child_pid": 760836,
+    "exit_code": 0,
+    "exit_confirmed": true,
+    "started_utc": "2026-09-17T13:45:38.763834+00:00",
+    "finished_utc": "2026-09-17T13:56:50.408475+00:00",
+    "wall_s": 671.6446603990044,
+    "stop_reason": null,
+    "forced": false,
+    "pending": {},
+    "active": {}
+  },
+  "accounting": {
+    "call_intents": {
+      "environment_factory": 64,
+      "environment_ensure_and_initial_reset": 64,
+      "environment_reset": 64,
+      "native_seed": 64,
+      "native_reset": 64,
+      "native_set_init_state": 64,
+      "native_step": 9428,
+      "graph_request": 467,
+      "environment_step": 8788,
+      "environment_close": 64
+    },
+    "call_returns": {
+      "environment_factory": 64,
+      "environment_ensure_and_initial_reset": 64,
+      "environment_reset": 64,
+      "native_seed": 64,
+      "native_reset": 64,
+      "native_set_init_state": 64,
+      "native_step": 9428,
+      "graph_request": 467,
+      "environment_step": 8788,
+      "environment_close": 64
+    },
+    "call_errors": {},
+    "unknown_calls": [],
+    "journal_consistent": true,
+    "measured_native_returns": 8788,
+    "settling_native_returns": 640,
+    "request_snapshots": 0,
+    "last_model_phase": null,
+    "accounting_basis": "flushed_call_intent_return_error_journal"
+  }
+}

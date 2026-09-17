@@ -1,0 +1,202 @@
+{
+  "analysis_kind": "Posthoc arithmetic and saved-trace comparison only; no new model or Env; not a new acceptance gate",
+  "wall_reduction_s": 7.284767924866173,
+  "wall_reduction_percent": 3.202535514001477,
+  "extra_async_actions": 54,
+  "avoided_empty_slot_seconds": 10.0,
+  "extra_action_seconds": 2.7,
+  "pairs_async_faster": 29,
+  "capture_seconds_sum": 81.37566690417589,
+  "capture_seconds_max": 1.5941482989874203,
+  "stop_cancellations": [
+    {
+      "task": 2,
+      "state": 13,
+      "arm": "async",
+      "request": 7,
+      "complete_s": 0.07595763701829128
+    },
+    {
+      "task": 7,
+      "state": 17,
+      "arm": "async",
+      "request": 8,
+      "complete_s": 0.08163945400156081
+    },
+    {
+      "task": 7,
+      "state": 18,
+      "arm": "async",
+      "request": 8,
+      "complete_s": 0.08343840498127975
+    },
+    {
+      "task": 6,
+      "state": 19,
+      "arm": "async",
+      "request": 8,
+      "complete_s": 0.08457259699935094
+    }
+  ],
+  "failed_pair": {
+    "identity": [
+      7,
+      19
+    ],
+    "arms": {
+      "serialized": {
+        "task_name": "pick_up_the_milk_and_place_it_in_the_basket",
+        "success": true,
+        "terminal_reason": "native_success",
+        "actions": 190,
+        "wall_s": 9.921648743009428,
+        "requests": 10,
+        "nonbootstrap_max_s": 0.09234645398100838,
+        "max_actual_delay": 0,
+        "underflows": 0,
+        "expired": 0,
+        "worker_joined": true,
+        "environment_closed": true
+      },
+      "async": {
+        "task_name": "pick_up_the_milk_and_place_it_in_the_basket",
+        "success": false,
+        "terminal_reason": "time_limit",
+        "actions": 280,
+        "wall_s": 13.974375648016576,
+        "requests": 14,
+        "nonbootstrap_max_s": 0.094354017986916,
+        "max_actual_delay": 2,
+        "underflows": 0,
+        "expired": 0,
+        "worker_joined": true,
+        "environment_closed": true
+      }
+    },
+    "first_different_command": {
+      "action_index": 20,
+      "serialized_source": [
+        2,
+        0
+      ],
+      "async_source": [
+        1,
+        20
+      ],
+      "serialized_command": [
+        0.3153340220451355,
+        -0.7619935274124146,
+        -0.03159162774682045,
+        0.011705832555890083,
+        -0.0096585089340806,
+        0.005707208067178726,
+        -0.9823760986328125
+      ],
+      "async_command": [
+        0.3282753825187683,
+        -0.6502054929733276,
+        0.03131798654794693,
+        0.0015988298691809177,
+        0.009507312439382076,
+        -0.009819351136684418,
+        -1.001905918121338
+      ]
+    },
+    "matching_observation_request_comparisons": [
+      {
+        "request_id": 1,
+        "observation_index": 0,
+        "all_model_inputs_exact": true,
+        "full_output_exact": true,
+        "noise_exact": true,
+        "serialized_delay": 0,
+        "async_delay": 0
+      },
+      {
+        "request_id": 2,
+        "observation_index": 20,
+        "all_model_inputs_exact": true,
+        "full_output_exact": true,
+        "noise_exact": true,
+        "serialized_delay": 0,
+        "async_delay": 2
+      },
+      {
+        "request_id": 3,
+        "observation_index": 40,
+        "all_model_inputs_exact": false,
+        "full_output_exact": false,
+        "noise_exact": true,
+        "serialized_delay": 0,
+        "async_delay": 2
+      },
+      {
+        "request_id": 4,
+        "observation_index": 60,
+        "all_model_inputs_exact": false,
+        "full_output_exact": false,
+        "noise_exact": true,
+        "serialized_delay": 0,
+        "async_delay": 2
+      },
+      {
+        "request_id": 5,
+        "observation_index": 80,
+        "all_model_inputs_exact": false,
+        "full_output_exact": false,
+        "noise_exact": true,
+        "serialized_delay": 0,
+        "async_delay": 2
+      },
+      {
+        "request_id": 6,
+        "observation_index": 100,
+        "all_model_inputs_exact": false,
+        "full_output_exact": false,
+        "noise_exact": true,
+        "serialized_delay": 0,
+        "async_delay": 2
+      },
+      {
+        "request_id": 7,
+        "observation_index": 120,
+        "all_model_inputs_exact": false,
+        "full_output_exact": false,
+        "noise_exact": true,
+        "serialized_delay": 0,
+        "async_delay": 2
+      },
+      {
+        "request_id": 8,
+        "observation_index": 140,
+        "all_model_inputs_exact": false,
+        "full_output_exact": false,
+        "noise_exact": true,
+        "serialized_delay": 0,
+        "async_delay": 2
+      },
+      {
+        "request_id": 9,
+        "observation_index": 160,
+        "all_model_inputs_exact": false,
+        "full_output_exact": false,
+        "noise_exact": true,
+        "serialized_delay": 0,
+        "async_delay": 2
+      },
+      {
+        "request_id": 10,
+        "observation_index": 180,
+        "all_model_inputs_exact": false,
+        "full_output_exact": false,
+        "noise_exact": true,
+        "serialized_delay": 0,
+        "async_delay": 2
+      }
+    ],
+    "limitation": "Expected scheduling divergence is not proof of a unique cause of final task failure; no counterfactual rollout performed."
+  },
+  "new_model_forwards": 0,
+  "new_env": 0,
+  "cuda_initialized": false
+}

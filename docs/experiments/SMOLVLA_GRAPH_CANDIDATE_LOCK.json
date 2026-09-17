@@ -1,0 +1,58 @@
+{
+  "candidate_head": "a5e9fddefc0cfa03ea1509493e8b304ec7c06d92",
+  "candidate_implementation_head": "8112f8d7e672a2462639c7f612a0c03e444c7e21",
+  "confirmation_execution_head": "fc5da9d2634c7a43bba05802128efa92b81779b2",
+  "registration_id": 5715376427,
+  "mode": "frozen_candidate_not_promoted_to_production",
+  "core_sha256": {
+    "src/lerobot/policies/smolvla/modeling_smolvla.py": "4ba07311ae6eadafc5f797e69858573bebf45a7fda8488d229f05e9d406cc315",
+    "examples/advanced/predictive_async/libero_graph_feedback.py": "31051c2e18dcab0d342cc07d941869b8791ba49aba68f54be9ad0128cb8e2327",
+    "examples/advanced/predictive_async/libero_observation_async.py": "1a310ce719099ff088f1f0a5a4a4223346a4d594785fad751abed1c3822356f8",
+    "examples/advanced/predictive_async/rtc_execution_queue.py": "b25b47dea26004d3bc3a21aa7d0f088e11ea5de60755a83cc734b149bac9e966",
+    "examples/advanced/predictive_async/libero_graph_replay.py": "0a1ce4a7a31b29f338e592cfb9109c7689a910b57a4629661b474154b96d2d2d",
+    "examples/advanced/predictive_async/smolvla_graph_runtime.py": "deafa1fee7e328ea37827f3b60591fb4354aeabeab05e24bc86be8ede7d6aa7e",
+    "examples/advanced/predictive_async/libero_graph_identity_native.py": "2fae5c681475a66673e69b2e5eb34dc9d01a8474d5fc17ba051a8ecf9f7854b8",
+    "examples/advanced/predictive_async/libero_reference_smoke.py": "c0bc9846a3fe6d23c450b1ba93953503198f454b66d2f4ab063a3cd3c88061bd"
+  },
+  "policy_snapshot": "6721902bc4d61e50a3bfdb11dfb4cb626f05d102",
+  "vlm_snapshot": "7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+  "weights_sha256": {
+    "/home/rp/Workspace/SmolVLA_RTC/libero-reference-cache/hub/models--HuggingFaceVLA--smolvla_libero/snapshots/6721902bc4d61e50a3bfdb11dfb4cb626f05d102/model.safetensors": "71d9563c8295284acba8fc2d5c19de000d6fe9ba58a406832af7ef3d221ed52f",
+    "/home/rp/Workspace/SmolVLA_RTC/libero-reference-cache/hub/models--HuggingFaceVLA--smolvla_libero/snapshots/6721902bc4d61e50a3bfdb11dfb4cb626f05d102/policy_postprocessor_step_1_unnormalizer_processor.safetensors": "7008ba73c73887e5a7e631d478de9563ec5a0c51b7f0327f2530d7326c4b039e",
+    "/home/rp/Workspace/SmolVLA_RTC/libero-reference-cache/hub/models--HuggingFaceVLA--smolvla_libero/snapshots/6721902bc4d61e50a3bfdb11dfb4cb626f05d102/policy_preprocessor_step_5_normalizer_processor.safetensors": "7008ba73c73887e5a7e631d478de9563ec5a0c51b7f0327f2530d7326c4b039e",
+    "/home/rp/Workspace/SmolVLA_RTC/libero-reference-cache/hub/models--HuggingFaceTB--SmolVLM2-500M-Video-Instruct/snapshots/7b375e1b73b11138ff12fe22c8f2822d8fe03467/model.safetensors": "b9bfd456c9472c0acd5719d6e514c4b859891af205ee1a736552fd3497b8b0c3"
+  },
+  "configuration": {
+    "sampler": "Graph",
+    "chunk": 50,
+    "denoising_steps": 10,
+    "fps": 20,
+    "cap": 8,
+    "margin": 1,
+    "guard": 2,
+    "threshold": 30,
+    "latency_quantile": 0.9,
+    "latency_window": 50,
+    "initial_delay": 7,
+    "rtc": false,
+    "training": false,
+    "live_feedback": true,
+    "origin": "observation_index",
+    "trim": "actual_consumed_once"
+  },
+  "independent_confirmation": {
+    "pairs": 32,
+    "technical_accepted": true,
+    "latency_passed": true,
+    "all_nonbootstrap_within_budget": true,
+    "task_retention_passed": false,
+    "bounded_confirmation_passed": false,
+    "loss_upper95": 0.16672916464065646,
+    "margin": 0.1
+  },
+  "qualification": {
+    "realtime_qualified": false,
+    "broad_generalization_claimed": false,
+    "risk_thresholds": null
+  }
+}

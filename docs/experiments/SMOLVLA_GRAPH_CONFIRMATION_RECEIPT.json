@@ -1,0 +1,32 @@
+{
+  "checked_at_utc": "2026-09-17T13:59:46.286589+00:00",
+  "candidate_head": "a5e9fddefc0cfa03ea1509493e8b304ec7c06d92",
+  "execution_head": "fc5da9d2634c7a43bba05802128efa92b81779b2",
+  "registration_id": 5715376427,
+  "formal_job": "2ec8ecb2-50b5-422d-8753-aced60378de7",
+  "audit_job": "89ad2be1-9adf-4771-94bf-dc95f2526358",
+  "formal_exit_code": 0,
+  "audit_exit_code": 0,
+  "execution": {
+    "child_pid": 760836,
+    "exit_code": 0,
+    "exit_confirmed": true,
+    "started_utc": "2026-09-17T13:45:38.763834+00:00",
+    "finished_utc": "2026-09-17T13:56:50.408475+00:00",
+    "wall_s": 671.6446603990044,
+    "stop_reason": null,
+    "forced": false,
+    "pending": {},
+    "active": {}
+  },
+  "candidate_unchanged": true,
+  "source_hashes_unchanged": 711,
+  "old_pending_unchanged": 21,
+  "worker_proc_absent": true,
+  "result_sha256": "e4b975ffea79283cb4be2848a1d36e4f03179816385ae89a96ee0b4266a52055",
+  "audit_sha256": "df7f1caca59ff5d25bf65bdf31d0350d5757194b23663598d63e81847f72f8b1",
+  "descriptive_sha256": "d638c5b1c4cf3b024d69ac05b5563b783a3cefbb73fa4f8bf17f470d684f2ac2",
+  "attempts": 1,
+  "retries": 0,
+  "safety_interceptions_this_turn": 0
+}
