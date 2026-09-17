@@ -1,0 +1,243 @@
+{
+  "independent_contract_accepted": true,
+  "fixed_output_exact": true,
+  "request_outputs_checked": 206,
+  "fixed_timing": {
+    "eager": {
+      "n": 16,
+      "mean_s": 0.2761167498083523,
+      "max_s": 0.29104718900634907,
+      "p50_s": 0.2736777449899819,
+      "p95_s": 0.29104718900634907,
+      "p99_s": 0.29104718900634907,
+      "required_delay_steps": 7
+    },
+    "graph": {
+      "n": 16,
+      "mean_s": 0.06945279400133586,
+      "max_s": 0.07083359299576841,
+      "p50_s": 0.06951018699328415,
+      "p95_s": 0.07083359299576841,
+      "p99_s": 0.07083359299576841,
+      "required_delay_steps": 3
+    }
+  },
+  "concurrent_timing": {
+    "eager": {
+      "n": 63,
+      "mean_s": 0.3391934392219853,
+      "max_s": 0.40061322398833,
+      "p50_s": 0.3364533869898878,
+      "p95_s": 0.3721242900064681,
+      "p99_s": 0.40061322398833,
+      "required_delay_steps": 10
+    },
+    "graph": {
+      "n": 63,
+      "mean_s": 0.09346339974824029,
+      "max_s": 0.12237398800789379,
+      "p50_s": 0.09337452199542895,
+      "p95_s": 0.10950631200103089,
+      "p99_s": 0.12237398800789379,
+      "required_delay_steps": 4
+    }
+  },
+  "replay_episodes": 16,
+  "native_commands_checked": 2820,
+  "initials_exact": 16,
+  "model_native_intersections": {
+    "eager": 450,
+    "graph": 143
+  },
+  "captures": 12,
+  "phases": {
+    "started": 223,
+    "returned": 223
+  },
+  "calls_closed": 6118,
+  "runtime_restored_count": 20,
+  "graph_concurrent_budget_passed": true,
+  "new_policy_rollout": false,
+  "task_success_gain_claimed": false,
+  "audit_model_forwards": 0,
+  "cuda_initialized": false,
+  "first_failure": null,
+  "per_episode": [
+    {
+      "ordinal": 0,
+      "mode": "eager",
+      "source_task_state": [
+        0,
+        8
+      ],
+      "commands": 128,
+      "requests": 7,
+      "control_wall_s": 6.366656352009159
+    },
+    {
+      "ordinal": 1,
+      "mode": "graph",
+      "source_task_state": [
+        0,
+        8
+      ],
+      "commands": 128,
+      "requests": 7,
+      "control_wall_s": 6.363769498013426
+    },
+    {
+      "ordinal": 2,
+      "mode": "graph",
+      "source_task_state": [
+        2,
+        8
+      ],
+      "commands": 280,
+      "requests": 14,
+      "control_wall_s": 13.970852655009367
+    },
+    {
+      "ordinal": 3,
+      "mode": "eager",
+      "source_task_state": [
+        2,
+        8
+      ],
+      "commands": 280,
+      "requests": 14,
+      "control_wall_s": 13.974484514008509
+    },
+    {
+      "ordinal": 4,
+      "mode": "eager",
+      "source_task_state": [
+        6,
+        8
+      ],
+      "commands": 280,
+      "requests": 14,
+      "control_wall_s": 13.967652174003888
+    },
+    {
+      "ordinal": 5,
+      "mode": "graph",
+      "source_task_state": [
+        6,
+        8
+      ],
+      "commands": 280,
+      "requests": 14,
+      "control_wall_s": 13.96669298998313
+    },
+    {
+      "ordinal": 6,
+      "mode": "graph",
+      "source_task_state": [
+        7,
+        8
+      ],
+      "commands": 197,
+      "requests": 10,
+      "control_wall_s": 9.813120215985691
+    },
+    {
+      "ordinal": 7,
+      "mode": "eager",
+      "source_task_state": [
+        7,
+        8
+      ],
+      "commands": 197,
+      "requests": 10,
+      "control_wall_s": 9.822949653986143
+    },
+    {
+      "ordinal": 8,
+      "mode": "eager",
+      "source_task_state": [
+        7,
+        9
+      ],
+      "commands": 131,
+      "requests": 7,
+      "control_wall_s": 6.516628908982966
+    },
+    {
+      "ordinal": 9,
+      "mode": "graph",
+      "source_task_state": [
+        7,
+        9
+      ],
+      "commands": 131,
+      "requests": 7,
+      "control_wall_s": 6.52699944601045
+    },
+    {
+      "ordinal": 10,
+      "mode": "graph",
+      "source_task_state": [
+        6,
+        9
+      ],
+      "commands": 145,
+      "requests": 6,
+      "control_wall_s": 7.217279383999994
+    },
+    {
+      "ordinal": 11,
+      "mode": "eager",
+      "source_task_state": [
+        6,
+        9
+      ],
+      "commands": 145,
+      "requests": 6,
+      "control_wall_s": 7.223804472974734
+    },
+    {
+      "ordinal": 12,
+      "mode": "eager",
+      "source_task_state": [
+        2,
+        9
+      ],
+      "commands": 115,
+      "requests": 6,
+      "control_wall_s": 5.721293207985582
+    },
+    {
+      "ordinal": 13,
+      "mode": "graph",
+      "source_task_state": [
+        2,
+        9
+      ],
+      "commands": 115,
+      "requests": 6,
+      "control_wall_s": 5.724679439997999
+    },
+    {
+      "ordinal": 14,
+      "mode": "graph",
+      "source_task_state": [
+        0,
+        9
+      ],
+      "commands": 134,
+      "requests": 7,
+      "control_wall_s": 6.663636796991341
+    },
+    {
+      "ordinal": 15,
+      "mode": "eager",
+      "source_task_state": [
+        0,
+        9
+      ],
+      "commands": 134,
+      "requests": 7,
+      "control_wall_s": 6.676836730999639
+    }
+  ]
+}

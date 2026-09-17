@@ -1,0 +1,42 @@
+{
+  "analysis_kind": "posthoc CPU description of already-audited saved evidence, no new gate",
+  "mean_reduction_percent": 72.44539871920308,
+  "p99_reduction_percent": 69.45333287064469,
+  "mean_speed_ratio": 3.629157939211082,
+  "p99_speed_ratio": 3.2736795663020173,
+  "paired_graph_faster": 63,
+  "paired_n": 63,
+  "bootstrap": {
+    "eager": {
+      "n": 8,
+      "mean_s": 0.27631306550028967,
+      "max_s": 0.2940624710172415,
+      "p50_s": 0.27247717897989787,
+      "p95_s": 0.2940624710172415,
+      "p99_s": 0.2940624710172415,
+      "required_delay_steps": 7
+    },
+    "graph": {
+      "n": 8,
+      "mean_s": 1.3752587866219983,
+      "max_s": 1.4037834420159925,
+      "p50_s": 1.376483736996306,
+      "p95_s": 1.4037834420159925,
+      "p99_s": 1.4037834420159925,
+      "required_delay_steps": 30
+    }
+  },
+  "capture_seconds": {
+    "n": 12,
+    "sum": 15.771194494038355,
+    "max": 1.3827944020158611,
+    "internal_setup": 12,
+    "internal_warmup": 36,
+    "internal_capture": 12
+  },
+  "new_model_forwards": 0,
+  "source_files_unchanged": 725,
+  "old_pending_unchanged": 21,
+  "worker_proc_absent": true,
+  "cuda_initialized": false
+}

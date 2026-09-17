@@ -1,0 +1,30 @@
+{
+  "at_utc": "2026-09-17T09:01:25.247460+00:00",
+  "execution_head": "b293f66133429969984efc39f3c4f49eae9ecf92",
+  "registration_id": 5711657045,
+  "formal_job": "2e7ab876-4067-490e-9b9c-0d82230a7a12",
+  "audit_job": "200bd776-d349-4736-9d86-4c03e50d132a",
+  "formal_exit_code": 0,
+  "audit_exit_code": 0,
+  "independent_contract_accepted": true,
+  "graph_concurrent_budget_passed": true,
+  "new_task_rollout": false,
+  "old_pending_unchanged": 21,
+  "source_files_unchanged": 725,
+  "worker_proc_absent": true,
+  "safety_interceptions_this_turn": 0,
+  "copied_docs": {
+    "docs/experiments/SMOLVLA_GRAPH_REPLAY_RESULT.json": {
+      "sha256": "33a3e45005118ce6e587c540fa6e0cfdfa516a995587abba2bfbe0f16468a3dd",
+      "bytes": 3018
+    },
+    "docs/experiments/SMOLVLA_GRAPH_REPLAY_AUDIT.json": {
+      "sha256": "1ad9639ffa577acc1ccd23c802ade075fbf13d19fbf29bfcd040537547f251bf",
+      "bytes": 4888
+    },
+    "docs/experiments/SMOLVLA_GRAPH_REPLAY_DESCRIPTIVE.json": {
+      "sha256": "3d587dba3d8dbc7c5e232738ed83045bf1ded2ddb0268da2911964a19481b1c6",
+      "bytes": 1161
+    }
+  }
+}

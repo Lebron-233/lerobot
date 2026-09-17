@@ -1,0 +1,115 @@
+{
+  "experiment": "E-GCR1",
+  "head": "b293f66133429969984efc39f3c4f49eae9ecf92",
+  "status": "completed",
+  "first_failure": null,
+  "fixed_timing": {
+    "eager": {
+      "n": 16,
+      "mean_s": 0.2761167498083523,
+      "max_s": 0.29104718900634907,
+      "p50_s": 0.2736777449899819,
+      "p95_s": 0.29104718900634907,
+      "p99_s": 0.29104718900634907,
+      "required_delay_steps": 7
+    },
+    "graph": {
+      "n": 16,
+      "mean_s": 0.06945279400133586,
+      "max_s": 0.07083359299576841,
+      "p50_s": 0.06951018699328415,
+      "p95_s": 0.07083359299576841,
+      "p99_s": 0.07083359299576841,
+      "required_delay_steps": 3
+    }
+  },
+  "fixed_gate_passed": true,
+  "replay_started": true,
+  "replay_timing": {
+    "eager": {
+      "n": 63,
+      "mean_s": 0.3391934392219853,
+      "max_s": 0.40061322398833,
+      "p50_s": 0.3364533869898878,
+      "p95_s": 0.3721242900064681,
+      "p99_s": 0.40061322398833,
+      "required_delay_steps": 10
+    },
+    "graph": {
+      "n": 63,
+      "mean_s": 0.09346339974824029,
+      "max_s": 0.12237398800789379,
+      "p50_s": 0.09337452199542895,
+      "p95_s": 0.10950631200103089,
+      "p99_s": 0.12237398800789379,
+      "required_delay_steps": 4
+    }
+  },
+  "concurrent_graph_latency_passed": true,
+  "vla_frozen": true,
+  "replay_episodes": 16,
+  "completed_requests": 206,
+  "counts": {
+    "exact_requests": 206,
+    "replay_requests_dispatched": 142
+  },
+  "native_budget": {
+    "episodes": 16,
+    "settling": 160,
+    "measurement": 2820
+  },
+  "attempts": 1,
+  "retries": 0,
+  "training_updates": 0,
+  "rtc_steps": 0,
+  "qualification_reads": 0,
+  "real_robot": 0,
+  "new_task_success_claim": false,
+  "realtime_qualified": false,
+  "execution": {
+    "pid": 718733,
+    "exit_code": 0,
+    "exit_confirmed": true,
+    "started_utc": "2026-09-17T08:53:36.373179+00:00",
+    "finished_utc": "2026-09-17T08:57:09.330786+00:00",
+    "wall_s": 212.95762832299806,
+    "stop_reason": null,
+    "forced": false,
+    "pending": {},
+    "active": {}
+  },
+  "accounting": {
+    "call_intents": {
+      "model_request": 206,
+      "environment_factory": 16,
+      "environment_ensure_and_initial_reset": 16,
+      "environment_reset": 16,
+      "native_seed": 16,
+      "native_reset": 16,
+      "native_set_init_state": 16,
+      "native_step": 2980,
+      "environment_step": 2820,
+      "environment_close": 16
+    },
+    "call_returns": {
+      "model_request": 206,
+      "environment_factory": 16,
+      "environment_ensure_and_initial_reset": 16,
+      "environment_reset": 16,
+      "native_seed": 16,
+      "native_reset": 16,
+      "native_set_init_state": 16,
+      "native_step": 2980,
+      "environment_step": 2820,
+      "environment_close": 16
+    },
+    "call_errors": {},
+    "unknown_calls": [],
+    "journal_consistent": true,
+    "measured_native_returns": 2820,
+    "settling_native_returns": 160,
+    "request_snapshots": 0,
+    "last_model_phase": null,
+    "accounting_basis": "flushed_call_intent_return_error_journal"
+  }
+}
