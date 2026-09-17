@@ -1,0 +1,28 @@
+{
+  "analysis_kind": "posthoc descriptive saved-output arithmetic only; not a new scientific gate",
+  "mean_rtc_over_base": 2.3555149045022135,
+  "p99_rtc_over_base": 2.500631735054642,
+  "complete_extra_ms": 379.81373978509504,
+  "flow_extra_ms": 372.4322462243435,
+  "flow_extra_fraction": 0.9805654909563616,
+  "prefix_consistency": {
+    "base": {
+      "samples": 16,
+      "pairs": 80,
+      "mean_first3_normalized_mse_to_old_committed_prefix": 0.290375341724302
+    },
+    "rtc": {
+      "samples": 16,
+      "pairs": 80,
+      "mean_first3_normalized_mse_to_old_committed_prefix": 0.0028675579131741727
+    },
+    "limitation": "Old committed prefix agreement only, not expert action accuracy, future observation accuracy, actual takeover quality or closed-loop success. Archived inference_delay=3 does not match measured RTC delay requirement=16."
+  },
+  "all_5_repeats_full_output_exact": {
+    "base": true,
+    "rtc": true
+  },
+  "posthoc_only_new_models_env_or_forward": 0,
+  "cuda_initialized": false,
+  "worker_proc_absent": true
+}

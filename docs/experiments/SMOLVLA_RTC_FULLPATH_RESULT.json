@@ -1,0 +1,76 @@
+{
+  "experiment": "RTC-FULLPATH1",
+  "execution_head": "92c3981234e85d97f0ba398db071746b4376162a",
+  "status": "completed",
+  "first_failure": null,
+  "vla_frozen": true,
+  "timing": {
+    "base": {
+      "n": 80,
+      "p50_s": 0.2799628519860562,
+      "p95_s": 0.29189863201463595,
+      "p99_s": 0.29269229600322433,
+      "max_s": 0.29269229600322433,
+      "mean_s": 0.2801988665145473,
+      "required_delay_steps": 7,
+      "component_mean_s": {
+        "preprocess_transfer_s": 0.0007950025508762337,
+        "vision_encode_s": 0.012053089199980604,
+        "prefix_prefill_s": 0.026255097898683744,
+        "flow_matching_s": 0.23761359589952918,
+        "public_predict_total_s": 0.27925703657638223,
+        "postprocess_transfer_s": 0.00014682738728879485
+      }
+    },
+    "rtc": {
+      "n": 80,
+      "p50_s": 0.6599355859798379,
+      "p95_s": 0.6728673059842549,
+      "p99_s": 0.7319156439916696,
+      "max_s": 0.7319156439916696,
+      "mean_s": 0.6600126062996423,
+      "required_delay_steps": 16,
+      "component_mean_s": {
+        "preprocess_transfer_s": 0.0008463174861390143,
+        "vision_encode_s": 0.01209614413746749,
+        "prefix_prefill_s": 0.025994328150409272,
+        "flow_matching_s": 0.6100458421238727,
+        "public_predict_total_s": 0.6588852122502431,
+        "postprocess_transfer_s": 0.0002810765632602852
+      }
+    }
+  },
+  "latency_gate_passed": false,
+  "counts": {
+    "vla_loads": 1,
+    "chunks_started": 192,
+    "vision_encodes": 192,
+    "chunks_returned": 192,
+    "input_exact": 192,
+    "no_guidance_exact": 112,
+    "rtc_steps": 960,
+    "guided_vjps_returned": 800,
+    "no_prefix_pair_exact": 16
+  },
+  "completed_requests": 192,
+  "attempts": 1,
+  "retries": 0,
+  "training_updates": 0,
+  "new_env": 0,
+  "qualification_reads": 0,
+  "graph_captures": 0,
+  "realtime_qualified": false,
+  "risk_thresholds": null,
+  "execution": {
+    "child_pid": 678227,
+    "exit_code": 0,
+    "exit_confirmed": true,
+    "started_utc": "2026-09-17T03:16:27.195526+00:00",
+    "finished_utc": "2026-09-17T03:18:05.020540+00:00",
+    "wall_s": 97.82505817999481,
+    "stop_reason": null,
+    "forced": false,
+    "active": {},
+    "pending": {}
+  }
+}

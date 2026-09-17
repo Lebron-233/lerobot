@@ -1,0 +1,35 @@
+{
+  "independent_contract_accepted": true,
+  "latency_gate_passed": false,
+  "timing": {
+    "base": {
+      "n": 80,
+      "p50_s": 0.2799628519860562,
+      "p95_s": 0.29189863201463595,
+      "p99_s": 0.29269229600322433,
+      "max_s": 0.29269229600322433,
+      "mean_s": 0.2801988665145473,
+      "required_delay_steps": 7
+    },
+    "rtc": {
+      "n": 80,
+      "p50_s": 0.6599355859798379,
+      "p95_s": 0.6728673059842549,
+      "p99_s": 0.7319156439916696,
+      "max_s": 0.7319156439916696,
+      "mean_s": 0.6600126062996423,
+      "required_delay_steps": 16
+    }
+  },
+  "requests_checked": 192,
+  "no_guidance_exact": 112,
+  "no_prefix_pair_exact": 16,
+  "phases": {
+    "started": 193,
+    "returned": 193
+  },
+  "audit_model_forwards": 0,
+  "cuda_initialized": false,
+  "first_failure": null,
+  "limitation": "CPU audit does not rerun model, vision encoding or VJPs."
+}
