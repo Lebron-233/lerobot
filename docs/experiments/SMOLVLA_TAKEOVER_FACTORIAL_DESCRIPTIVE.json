@@ -1,0 +1,155 @@
+{
+  "analysis_kind": "Posthoc description of already audited saved evidence; no new run, gate or tuning",
+  "first_divergences": [
+    {
+      "baseline_ordinal": 0,
+      "intervention_ordinal": 3,
+      "first_different_command_index": 20,
+      "request_at_first_scheduled_difference": 2,
+      "all_8_inputs_exact": true,
+      "full_output_exact": true,
+      "noise_exact": true,
+      "baseline_source_at_difference": [
+        2,
+        0
+      ],
+      "intervention_source_at_difference": [
+        1,
+        20
+      ]
+    },
+    {
+      "baseline_ordinal": 0,
+      "intervention_ordinal": 2,
+      "first_different_command_index": 40,
+      "request_at_first_scheduled_difference": 3,
+      "all_8_inputs_exact": true,
+      "full_output_exact": true,
+      "noise_exact": true,
+      "baseline_source_at_difference": [
+        3,
+        0
+      ],
+      "intervention_source_at_difference": [
+        2,
+        20
+      ]
+    },
+    {
+      "baseline_ordinal": 5,
+      "intervention_ordinal": 6,
+      "first_different_command_index": 20,
+      "request_at_first_scheduled_difference": 2,
+      "all_8_inputs_exact": true,
+      "full_output_exact": true,
+      "noise_exact": true,
+      "baseline_source_at_difference": [
+        2,
+        0
+      ],
+      "intervention_source_at_difference": [
+        1,
+        20
+      ]
+    },
+    {
+      "baseline_ordinal": 5,
+      "intervention_ordinal": 7,
+      "first_different_command_index": 40,
+      "request_at_first_scheduled_difference": 3,
+      "all_8_inputs_exact": true,
+      "full_output_exact": true,
+      "noise_exact": true,
+      "baseline_source_at_difference": [
+        3,
+        0
+      ],
+      "intervention_source_at_difference": [
+        2,
+        20
+      ]
+    }
+  ],
+  "per_episode_costs": [
+    {
+      "ordinal": 0,
+      "state": 19,
+      "arm": "first0_later0",
+      "startup_s": 2.1009000490012113,
+      "request_max_s": 0.07888809501309879
+    },
+    {
+      "ordinal": 1,
+      "state": 19,
+      "arm": "first2_later2",
+      "startup_s": 1.4484247099899221,
+      "request_max_s": 0.07967684100731276
+    },
+    {
+      "ordinal": 2,
+      "state": 19,
+      "arm": "first0_later2",
+      "startup_s": 1.409300537983654,
+      "request_max_s": 0.08268045898876153
+    },
+    {
+      "ordinal": 3,
+      "state": 19,
+      "arm": "first2_later0",
+      "startup_s": 1.3968319400155451,
+      "request_max_s": 0.07724419899750501
+    },
+    {
+      "ordinal": 4,
+      "state": 18,
+      "arm": "first2_later2",
+      "startup_s": 1.4596840989834163,
+      "request_max_s": 0.09177549599553458
+    },
+    {
+      "ordinal": 5,
+      "state": 18,
+      "arm": "first0_later0",
+      "startup_s": 1.4290795249980874,
+      "request_max_s": 0.07683932600775734
+    },
+    {
+      "ordinal": 6,
+      "state": 18,
+      "arm": "first2_later0",
+      "startup_s": 1.4831689480051864,
+      "request_max_s": 0.07978840300347656
+    },
+    {
+      "ordinal": 7,
+      "state": 18,
+      "arm": "first0_later2",
+      "startup_s": 1.3821872440166771,
+      "request_max_s": 0.08440435599186458
+    }
+  ],
+  "capture_preparation_sum_s": 11.12639660196146,
+  "capture_preparation_max_s": 1.6602055249968544,
+  "capture_internal": {
+    "setup": 8,
+    "warmup": 24,
+    "capture": 8
+  },
+  "verified_counts": {
+    "live_requests": 84,
+    "rgb_encodings": 84,
+    "runtime_closed": 8
+  },
+  "stop_cancellations": [
+    {
+      "ordinal": 4,
+      "request_id": 8,
+      "complete_s": 0.07519405300263315,
+      "reason": "stale_or_closed"
+    }
+  ],
+  "new_model_forwards": 0,
+  "new_env": 0,
+  "cuda_initialized": false,
+  "limitation": "Delay intervention jointly changes incumbent command execution, omission of elapsed new rows, and later feedback; it does not isolate a unique physical contact mechanism."
+}

@@ -1,0 +1,208 @@
+{
+  "independent_contract_accepted": true,
+  "candidate_unchanged": true,
+  "complete_anchor_trajectories_exact": 4,
+  "anchors": [
+    {
+      "ordinal": 0,
+      "reference": 56,
+      "commands_exact": 190,
+      "observations_exact": 191,
+      "requests_exact": 10,
+      "complete_trajectory_reproduced": true
+    },
+    {
+      "ordinal": 1,
+      "reference": 57,
+      "commands_exact": 280,
+      "observations_exact": 281,
+      "requests_exact": 14,
+      "complete_trajectory_reproduced": true
+    },
+    {
+      "ordinal": 4,
+      "reference": 54,
+      "commands_exact": 141,
+      "observations_exact": 142,
+      "requests_exact": 8,
+      "complete_trajectory_reproduced": true
+    },
+    {
+      "ordinal": 5,
+      "reference": 55,
+      "commands_exact": 141,
+      "observations_exact": 142,
+      "requests_exact": 8,
+      "complete_trajectory_reproduced": true
+    }
+  ],
+  "common_first_two_requests_exact": 16,
+  "episodes": 8,
+  "native_actions_checked": 1597,
+  "request_outputs_checked": 84,
+  "calls_closed": 3414,
+  "phases": {
+    "started": 10,
+    "returned": 10
+  },
+  "graph_captures": 8,
+  "rows": [
+    {
+      "ordinal": 0,
+      "identity": [
+        7,
+        19
+      ],
+      "arm": "first0_later0",
+      "success": true,
+      "actions": 190,
+      "terminal_reason": "native_success",
+      "requests": 10,
+      "max_actual_delay": 0,
+      "underflows": 0,
+      "cancelled_at_stop": 0,
+      "control_wall_s_descriptive": 9.915124788996764
+    },
+    {
+      "ordinal": 1,
+      "identity": [
+        7,
+        19
+      ],
+      "arm": "first2_later2",
+      "success": false,
+      "actions": 280,
+      "terminal_reason": "time_limit",
+      "requests": 14,
+      "max_actual_delay": 2,
+      "underflows": 0,
+      "cancelled_at_stop": 0,
+      "control_wall_s_descriptive": 13.966867605980951
+    },
+    {
+      "ordinal": 2,
+      "identity": [
+        7,
+        19
+      ],
+      "arm": "first0_later2",
+      "success": false,
+      "actions": 280,
+      "terminal_reason": "time_limit",
+      "requests": 14,
+      "max_actual_delay": 2,
+      "underflows": 0,
+      "cancelled_at_stop": 0,
+      "control_wall_s_descriptive": 14.014951507997466
+    },
+    {
+      "ordinal": 3,
+      "identity": [
+        7,
+        19
+      ],
+      "arm": "first2_later0",
+      "success": false,
+      "actions": 280,
+      "terminal_reason": "time_limit",
+      "requests": 14,
+      "max_actual_delay": 2,
+      "underflows": 0,
+      "cancelled_at_stop": 0,
+      "control_wall_s_descriptive": 14.567120918014552
+    },
+    {
+      "ordinal": 4,
+      "identity": [
+        7,
+        18
+      ],
+      "arm": "first2_later2",
+      "success": true,
+      "actions": 141,
+      "terminal_reason": "native_success",
+      "requests": 8,
+      "max_actual_delay": 2,
+      "underflows": 0,
+      "cancelled_at_stop": 1,
+      "control_wall_s_descriptive": 7.018855970993172
+    },
+    {
+      "ordinal": 5,
+      "identity": [
+        7,
+        18
+      ],
+      "arm": "first0_later0",
+      "success": true,
+      "actions": 141,
+      "terminal_reason": "native_success",
+      "requests": 8,
+      "max_actual_delay": 0,
+      "underflows": 0,
+      "cancelled_at_stop": 0,
+      "control_wall_s_descriptive": 7.3858428340172395
+    },
+    {
+      "ordinal": 6,
+      "identity": [
+        7,
+        18
+      ],
+      "arm": "first2_later0",
+      "success": true,
+      "actions": 142,
+      "terminal_reason": "native_success",
+      "requests": 8,
+      "max_actual_delay": 2,
+      "underflows": 0,
+      "cancelled_at_stop": 0,
+      "control_wall_s_descriptive": 7.364578634005738
+    },
+    {
+      "ordinal": 7,
+      "identity": [
+        7,
+        18
+      ],
+      "arm": "first0_later2",
+      "success": true,
+      "actions": 143,
+      "terminal_reason": "native_success",
+      "requests": 8,
+      "max_actual_delay": 2,
+      "underflows": 0,
+      "cancelled_at_stop": 0,
+      "control_wall_s_descriptive": 7.1664728020259645
+    }
+  ],
+  "factorial_contrasts": {
+    "19": {
+      "first_delay_effect_when_later_zero": -1,
+      "first_delay_effect_when_later_two": 0,
+      "later_delay_effect_when_first_zero": -1,
+      "later_delay_effect_when_first_two": 0,
+      "interaction_contrast_success": 1,
+      "interpretation": "Deterministic selected-state contrasts only; not population effect estimates."
+    },
+    "18": {
+      "first_delay_effect_when_later_zero": 0,
+      "first_delay_effect_when_later_two": 0,
+      "later_delay_effect_when_first_zero": 0,
+      "later_delay_effect_when_first_two": 0,
+      "interaction_contrast_success": 0,
+      "interpretation": "Deterministic selected-state contrasts only; not population effect estimates."
+    }
+  },
+  "qualification_claimed": false,
+  "deployment_claimed": false,
+  "audit_model_forwards": 0,
+  "cuda_initialized": false,
+  "confirmation_result_unchanged": true,
+  "first_failure": null,
+  "limitations": [
+    "Known selected cases, one realization per cell; no new independent validation.",
+    "Imposed consumed-action delays may wait; not a deployable real-time policy or speed test.",
+    "Audit does not rerun model, encoding, postprocessing or physics."
+  ]
+}
