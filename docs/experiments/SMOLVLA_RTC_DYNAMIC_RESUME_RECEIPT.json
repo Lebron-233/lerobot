@@ -1,0 +1,59 @@
+{
+  "checked_utc": "2026-09-22T01:49:22.965851+00:00",
+  "session": "wc_sess_11b1167166154b039bb168a7c7acd99c",
+  "execution_head": "fa80d0b5f70f94bce04b9e0c320e5cd31d375a5b",
+  "stages": {
+    "inputs": {
+      "execution": {
+        "child_pid": 1644749,
+        "exit_code": 0,
+        "exit_confirmed": true,
+        "started_utc": "2026-09-22T01:24:45.675284+00:00",
+        "finished_utc": "2026-09-22T01:28:08.679516+00:00",
+        "wall_s": 203.00428467104211,
+        "stop_reason": null,
+        "forced": false,
+        "pending": {},
+        "active": {}
+      },
+      "registration_id": 5769903555,
+      "worker_proc_absent": true,
+      "hashes": {
+        "result.json": "40b3f0a5d3427195fea3ce21697123658b002cf8f376fd952ceb8c748cd9cd55",
+        "independent_audit.json": "55df7249145ace2e8c4371ee068c5ecd36144559e27af473aa284fdbea9d862d"
+      },
+      "preparation_sha256": "84fa9154e88311503df4cce26411e1ee03d60ff4053186be4ca17214d6e0182f"
+    },
+    "feedback": {
+      "execution": {
+        "child_pid": 1646575,
+        "exit_code": 0,
+        "exit_confirmed": true,
+        "started_utc": "2026-09-22T01:34:57.779283+00:00",
+        "finished_utc": "2026-09-22T01:42:39.541652+00:00",
+        "wall_s": 461.7623876199359,
+        "stop_reason": null,
+        "forced": false,
+        "pending": {},
+        "active": {}
+      },
+      "registration_id": 5769963414,
+      "worker_proc_absent": true,
+      "hashes": {
+        "result.json": "45e477f5c6d98e3de34c833ef1425586e53ee3c757ab7ba2700eace798c7a1fc",
+        "independent_audit.json": "023b772c9bc5786715f534a2d9123b6e4892e25796c52b9f778ee453940f5bc3"
+      },
+      "preparation_sha256": "37723cfd3660e3aabbf6287c7ed14274072f12032c77dcad34678253cc5961c3"
+    }
+  },
+  "feedback_audit_job": "0608bd49-ad0d-405e-a8f7-f22aa97863c7",
+  "feedback_audit_exit": 0,
+  "source_hashes_unchanged": 728,
+  "old_pending_unchanged": 21,
+  "new_model_forwards_this_resume": 0,
+  "new_env_this_resume": 0,
+  "new_formal_runs_this_resume": 0,
+  "scope": "Completed existing unfinished feedback CPU audit and archival; both formal stages pre-existed at resume.",
+  "github_read_error": "ToolError: FORBIDDEN: This conversation is restricted to developer MCPs",
+  "blocked_registration_read_repeated": false
+}

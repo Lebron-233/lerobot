@@ -1,0 +1,5185 @@
+{
+  "independent_contract_accepted": true,
+  "frozen_baseline_unchanged": true,
+  "episodes": 30,
+  "initial_triples_exact": 10,
+  "native_actions_checked": 4850,
+  "request_outputs_checked": 256,
+  "arms": {
+    "serialized": {
+      "episodes": 10,
+      "successes": 9,
+      "actions": 1520,
+      "wall_s": 79.35287922411226,
+      "no_action_slots": 73,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "request_count": 81,
+      "guided_requests": 0,
+      "capture_seconds": 47.71992962085642,
+      "request_time_s": {
+        "n": 71,
+        "mean": 0.07616437052074872,
+        "max": 0.08679370803292841,
+        "p50": 0.07585733698215336,
+        "p95": 0.08519194601103663,
+        "p99": 0.08679370803292841,
+        "above350ms": 0,
+        "required_delay_steps": 3
+      },
+      "bootstrap_s": {
+        "n": 10,
+        "mean": 4.891041040606797,
+        "max": 5.746691367006861,
+        "p50": 4.782752471975982,
+        "p95": 5.746691367006861,
+        "p99": 5.746691367006861
+      },
+      "model_native_intersections": 0,
+      "expected_actual_prefix": {
+        "[7, 0, 30]": 10,
+        "[3, 0, 30]": 61
+      }
+    },
+    "aligned_async": {
+      "episodes": 10,
+      "successes": 8,
+      "actions": 1630,
+      "wall_s": 81.22736709215678,
+      "no_action_slots": 0,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 2,
+      "request_count": 86,
+      "guided_requests": 0,
+      "capture_seconds": 47.40526276710443,
+      "request_time_s": {
+        "n": 76,
+        "mean": 0.08372998549020849,
+        "max": 0.11385074502322823,
+        "p50": 0.08288941602222621,
+        "p95": 0.10027121705934405,
+        "p99": 0.11385074502322823,
+        "above350ms": 0,
+        "required_delay_steps": 4
+      },
+      "bootstrap_s": {
+        "n": 10,
+        "mean": 4.819139741989784,
+        "max": 5.022204136010259,
+        "p50": 4.819292510976084,
+        "p95": 5.022204136010259,
+        "p99": 5.022204136010259
+      },
+      "model_native_intersections": 155,
+      "expected_actual_prefix": {
+        "[7, 2, 30]": 8,
+        "[3, 3, 30]": 2,
+        "[3, 2, 30]": 44,
+        "[7, 3, 30]": 2,
+        "[4, 2, 30]": 17,
+        "[4, 3, 30]": 1
+      }
+    },
+    "rtc_async": {
+      "episodes": 10,
+      "successes": 8,
+      "actions": 1700,
+      "wall_s": 84.71040109801106,
+      "no_action_slots": 0,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "request_count": 89,
+      "guided_requests": 79,
+      "capture_seconds": 47.04191615595482,
+      "request_time_s": {
+        "n": 79,
+        "mean": 0.12729626492732735,
+        "max": 0.15684569801669568,
+        "p50": 0.12809693103190511,
+        "p95": 0.14523887098766863,
+        "p99": 0.15684569801669568,
+        "above350ms": 0,
+        "required_delay_steps": 5
+      },
+      "bootstrap_s": {
+        "n": 10,
+        "mean": 4.782842902990524,
+        "max": 5.0335646090097725,
+        "p50": 4.743880496011116,
+        "p95": 5.0335646090097725,
+        "p99": 5.0335646090097725
+      },
+      "model_native_intersections": 238,
+      "expected_actual_prefix": {
+        "[7, 3, 30]": 9,
+        "[4, 3, 30]": 62,
+        "[7, 4, 30]": 1,
+        "[4, 4, 30]": 1,
+        "[5, 3, 30]": 6
+      }
+    }
+  },
+  "triples": [
+    {
+      "identity": [
+        0,
+        10
+      ],
+      "arms": {
+        "serialized": {
+          "success": true,
+          "actions": 143,
+          "wall_s": 7.476421355037019
+        },
+        "aligned_async": {
+          "success": true,
+          "actions": 144,
+          "wall_s": 7.173823512042873
+        },
+        "rtc_async": {
+          "success": true,
+          "actions": 185,
+          "wall_s": 9.224407998030074
+        }
+      }
+    },
+    {
+      "identity": [
+        2,
+        10
+      ],
+      "arms": {
+        "aligned_async": {
+          "success": true,
+          "actions": 117,
+          "wall_s": 5.821060743997805
+        },
+        "rtc_async": {
+          "success": true,
+          "actions": 116,
+          "wall_s": 5.766099652973935
+        },
+        "serialized": {
+          "success": false,
+          "actions": 280,
+          "wall_s": 14.615114435902797
+        }
+      }
+    },
+    {
+      "identity": [
+        6,
+        10
+      ],
+      "arms": {
+        "rtc_async": {
+          "success": true,
+          "actions": 148,
+          "wall_s": 7.373421752010472
+        },
+        "serialized": {
+          "success": true,
+          "actions": 146,
+          "wall_s": 7.615412901039235
+        },
+        "aligned_async": {
+          "success": true,
+          "actions": 142,
+          "wall_s": 7.067200006102212
+        }
+      }
+    },
+    {
+      "identity": [
+        7,
+        10
+      ],
+      "arms": {
+        "serialized": {
+          "success": true,
+          "actions": 124,
+          "wall_s": 6.484417519997805
+        },
+        "aligned_async": {
+          "success": true,
+          "actions": 124,
+          "wall_s": 6.171928915078752
+        },
+        "rtc_async": {
+          "success": true,
+          "actions": 124,
+          "wall_s": 6.169062839937396
+        }
+      }
+    },
+    {
+      "identity": [
+        7,
+        11
+      ],
+      "arms": {
+        "aligned_async": {
+          "success": true,
+          "actions": 117,
+          "wall_s": 5.822994812973775
+        },
+        "rtc_async": {
+          "success": true,
+          "actions": 118,
+          "wall_s": 5.873059659032151
+        },
+        "serialized": {
+          "success": true,
+          "actions": 116,
+          "wall_s": 6.022055553039536
+        }
+      }
+    },
+    {
+      "identity": [
+        6,
+        11
+      ],
+      "arms": {
+        "rtc_async": {
+          "success": true,
+          "actions": 146,
+          "wall_s": 7.271633372991346
+        },
+        "serialized": {
+          "success": true,
+          "actions": 140,
+          "wall_s": 7.271437326911837
+        },
+        "aligned_async": {
+          "success": true,
+          "actions": 149,
+          "wall_s": 7.42035256291274
+        }
+      }
+    },
+    {
+      "identity": [
+        2,
+        11
+      ],
+      "arms": {
+        "serialized": {
+          "success": true,
+          "actions": 119,
+          "wall_s": 6.179040793096647
+        },
+        "aligned_async": {
+          "success": false,
+          "actions": 280,
+          "wall_s": 13.964778930065222
+        },
+        "rtc_async": {
+          "success": false,
+          "actions": 280,
+          "wall_s": 13.97140922001563
+        }
+      }
+    },
+    {
+      "identity": [
+        0,
+        11
+      ],
+      "arms": {
+        "aligned_async": {
+          "success": true,
+          "actions": 136,
+          "wall_s": 6.772179155959748
+        },
+        "rtc_async": {
+          "success": true,
+          "actions": 134,
+          "wall_s": 6.6667477149749175
+        },
+        "serialized": {
+          "success": true,
+          "actions": 121,
+          "wall_s": 6.357070247060619
+        }
+      }
+    },
+    {
+      "identity": [
+        7,
+        18
+      ],
+      "arms": {
+        "rtc_async": {
+          "success": false,
+          "actions": 280,
+          "wall_s": 13.972699185018428
+        },
+        "serialized": {
+          "success": true,
+          "actions": 141,
+          "wall_s": 7.40918804006651
+        },
+        "aligned_async": {
+          "success": true,
+          "actions": 141,
+          "wall_s": 7.03934181202203
+        }
+      }
+    },
+    {
+      "identity": [
+        7,
+        19
+      ],
+      "arms": {
+        "serialized": {
+          "success": true,
+          "actions": 190,
+          "wall_s": 9.922721051960252
+        },
+        "aligned_async": {
+          "success": false,
+          "actions": 280,
+          "wall_s": 13.973706641001627
+        },
+        "rtc_async": {
+          "success": true,
+          "actions": 169,
+          "wall_s": 8.421859703026712
+        }
+      }
+    }
+  ],
+  "lost_success_identities": {
+    "serialized": [
+      [
+        2,
+        11
+      ],
+      [
+        7,
+        18
+      ]
+    ],
+    "aligned_async": [
+      [
+        7,
+        18
+      ]
+    ]
+  },
+  "development_gates": {
+    "no_lost_vs_serialized": false,
+    "no_lost_vs_aligned": false,
+    "all_requests_budget": true,
+    "rtc_overlap": true,
+    "rtc_wait_reduced": true,
+    "rtc_no_queue_fault": true,
+    "rtc_prefix_applied": true
+  },
+  "development_followup_supported": false,
+  "per_episode": [
+    {
+      "ordinal": 0,
+      "pair_index": 0,
+      "arm": "serialized",
+      "success": true,
+      "terminal_reason": "native_success",
+      "wall_s": 7.476421355037019,
+      "actions": 143,
+      "no_action_slots": 7,
+      "takeovers": 7,
+      "underflows": 0,
+      "request_count": 8,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [],
+      "actual_delays": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "request_seconds": [
+        0.07126310898456722,
+        0.08488675800617784,
+        0.08454354398418218,
+        0.08679370803292841,
+        0.0833285889821127,
+        0.08176277996972203,
+        0.08017874299548566
+      ],
+      "queue_wait_seconds": [
+        0.0006741679972037673,
+        0.0013984879478812218,
+        0.001416289946064353,
+        0.0015217679319903255,
+        0.001333637977950275,
+        0.0007079049246385694,
+        0.0011486749863252044
+      ],
+      "bootstrap_s": 5.746691367006861,
+      "identity": [
+        0,
+        10
+      ],
+      "cohort": "pilot_development",
+      "delay_pairs": [
+        [
+          7,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ]
+      ],
+      "guided_requests": 0,
+      "capture_seconds": 5.263179695932195
+    },
+    {
+      "ordinal": 1,
+      "pair_index": 0,
+      "arm": "aligned_async",
+      "success": true,
+      "terminal_reason": "native_success",
+      "wall_s": 7.173823512042873,
+      "actions": 144,
+      "no_action_slots": 0,
+      "takeovers": 7,
+      "underflows": 0,
+      "request_count": 8,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [
+        {
+          "request": 2,
+          "action_index": 20,
+          "seconds": 0.01345398707780987
+        },
+        {
+          "request": 2,
+          "action_index": 21,
+          "seconds": 0.01361671497579664
+        },
+        {
+          "request": 3,
+          "action_index": 40,
+          "seconds": 0.036559387925080955
+        },
+        {
+          "request": 3,
+          "action_index": 41,
+          "seconds": 0.014290723018348217
+        },
+        {
+          "request": 4,
+          "action_index": 60,
+          "seconds": 0.030258989077992737
+        },
+        {
+          "request": 4,
+          "action_index": 61,
+          "seconds": 0.016976211918517947
+        },
+        {
+          "request": 5,
+          "action_index": 80,
+          "seconds": 0.03048371197655797
+        },
+        {
+          "request": 5,
+          "action_index": 81,
+          "seconds": 0.016386409988626838
+        },
+        {
+          "request": 6,
+          "action_index": 100,
+          "seconds": 0.02338723698630929
+        },
+        {
+          "request": 6,
+          "action_index": 101,
+          "seconds": 0.02004785800818354
+        },
+        {
+          "request": 7,
+          "action_index": 120,
+          "seconds": 0.016834674985148013
+        },
+        {
+          "request": 7,
+          "action_index": 121,
+          "seconds": 0.015463615069165826
+        },
+        {
+          "request": 8,
+          "action_index": 140,
+          "seconds": 0.026399576920084655
+        },
+        {
+          "request": 8,
+          "action_index": 141,
+          "seconds": 0.015001424006186426
+        }
+      ],
+      "actual_delays": [
+        0,
+        2,
+        3,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "request_seconds": [
+        0.07579231692943722,
+        0.09680443094111979,
+        0.08733972790651023,
+        0.08601168601308018,
+        0.07793720695190132,
+        0.0703474129550159,
+        0.08360220293980092
+      ],
+      "queue_wait_seconds": [
+        0.0007327500497922301,
+        0.0028784250607714057,
+        0.002795045031234622,
+        0.0008711870759725571,
+        0.0019522369839251041,
+        0.0007733120582997799,
+        0.0019129180582240224
+      ],
+      "bootstrap_s": 4.832735834061168,
+      "identity": [
+        0,
+        10
+      ],
+      "cohort": "pilot_development",
+      "delay_pairs": [
+        [
+          7,
+          2,
+          30
+        ],
+        [
+          3,
+          3,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ]
+      ],
+      "guided_requests": 0,
+      "capture_seconds": 4.753782909014262
+    },
+    {
+      "ordinal": 2,
+      "pair_index": 0,
+      "arm": "rtc_async",
+      "success": true,
+      "terminal_reason": "native_success",
+      "wall_s": 9.224407998030074,
+      "actions": 185,
+      "no_action_slots": 0,
+      "takeovers": 9,
+      "underflows": 0,
+      "request_count": 10,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [
+        {
+          "request": 2,
+          "action_index": 20,
+          "seconds": 0.025977908982895315
+        },
+        {
+          "request": 2,
+          "action_index": 21,
+          "seconds": 0.013909260975196958
+        },
+        {
+          "request": 2,
+          "action_index": 22,
+          "seconds": 0.013472513994202018
+        },
+        {
+          "request": 3,
+          "action_index": 40,
+          "seconds": 0.028947204002179205
+        },
+        {
+          "request": 3,
+          "action_index": 41,
+          "seconds": 0.01246968493796885
+        },
+        {
+          "request": 3,
+          "action_index": 42,
+          "seconds": 0.013073568930849433
+        },
+        {
+          "request": 4,
+          "action_index": 60,
+          "seconds": 0.02859968296252191
+        },
+        {
+          "request": 4,
+          "action_index": 61,
+          "seconds": 0.01221169694326818
+        },
+        {
+          "request": 4,
+          "action_index": 62,
+          "seconds": 0.012469128938391805
+        },
+        {
+          "request": 5,
+          "action_index": 80,
+          "seconds": 0.02533156704157591
+        },
+        {
+          "request": 5,
+          "action_index": 81,
+          "seconds": 0.015484627918340266
+        },
+        {
+          "request": 5,
+          "action_index": 82,
+          "seconds": 0.012579226982779801
+        },
+        {
+          "request": 6,
+          "action_index": 100,
+          "seconds": 0.03879909997340292
+        },
+        {
+          "request": 6,
+          "action_index": 101,
+          "seconds": 0.016480601974762976
+        },
+        {
+          "request": 6,
+          "action_index": 102,
+          "seconds": 0.01487037492915988
+        },
+        {
+          "request": 7,
+          "action_index": 120,
+          "seconds": 0.020038948976434767
+        },
+        {
+          "request": 7,
+          "action_index": 121,
+          "seconds": 0.017239000997506082
+        },
+        {
+          "request": 7,
+          "action_index": 122,
+          "seconds": 0.01416425604838878
+        },
+        {
+          "request": 8,
+          "action_index": 140,
+          "seconds": 0.018817131989635527
+        },
+        {
+          "request": 8,
+          "action_index": 141,
+          "seconds": 0.016112364013679326
+        },
+        {
+          "request": 8,
+          "action_index": 142,
+          "seconds": 0.01392709300853312
+        },
+        {
+          "request": 9,
+          "action_index": 160,
+          "seconds": 0.018923731055110693
+        },
+        {
+          "request": 9,
+          "action_index": 161,
+          "seconds": 0.017764295917004347
+        },
+        {
+          "request": 9,
+          "action_index": 162,
+          "seconds": 0.011725993012078106
+        },
+        {
+          "request": 10,
+          "action_index": 180,
+          "seconds": 0.02104206499643624
+        },
+        {
+          "request": 10,
+          "action_index": 181,
+          "seconds": 0.01646724995225668
+        },
+        {
+          "request": 10,
+          "action_index": 182,
+          "seconds": 0.015174846048466861
+        }
+      ],
+      "actual_delays": [
+        0,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "request_seconds": [
+        0.13784645800478756,
+        0.13467295398004353,
+        0.13390593300573528,
+        0.12977772601880133,
+        0.13735374493990093,
+        0.11531554302200675,
+        0.11562994495034218,
+        0.11253845505416393,
+        0.12507241498678923
+      ],
+      "queue_wait_seconds": [
+        0.0013135219924151897,
+        0.0025935330195352435,
+        0.002635683980770409,
+        0.0016981589142233133,
+        0.0015219880733639002,
+        0.0013740269932895899,
+        0.0007378000300377607,
+        0.0007940470241010189,
+        0.0008553690277040005
+      ],
+      "bootstrap_s": 4.999095187988132,
+      "identity": [
+        0,
+        10
+      ],
+      "cohort": "pilot_development",
+      "delay_pairs": [
+        [
+          7,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ]
+      ],
+      "guided_requests": 9,
+      "capture_seconds": 4.917045254027471
+    },
+    {
+      "ordinal": 3,
+      "pair_index": 1,
+      "arm": "aligned_async",
+      "success": true,
+      "terminal_reason": "native_success",
+      "wall_s": 5.821060743997805,
+      "actions": 117,
+      "no_action_slots": 0,
+      "takeovers": 5,
+      "underflows": 0,
+      "request_count": 6,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [
+        {
+          "request": 2,
+          "action_index": 20,
+          "seconds": 0.028708298923447728
+        },
+        {
+          "request": 2,
+          "action_index": 21,
+          "seconds": 0.015096657094545662
+        },
+        {
+          "request": 3,
+          "action_index": 40,
+          "seconds": 0.013713320018723607
+        },
+        {
+          "request": 3,
+          "action_index": 41,
+          "seconds": 0.01434495602734387
+        },
+        {
+          "request": 4,
+          "action_index": 60,
+          "seconds": 0.01828218495938927
+        },
+        {
+          "request": 4,
+          "action_index": 61,
+          "seconds": 0.015019129030406475
+        },
+        {
+          "request": 5,
+          "action_index": 80,
+          "seconds": 0.017987613915465772
+        },
+        {
+          "request": 5,
+          "action_index": 81,
+          "seconds": 0.014861539006233215
+        },
+        {
+          "request": 6,
+          "action_index": 100,
+          "seconds": 0.019453289918601513
+        },
+        {
+          "request": 6,
+          "action_index": 101,
+          "seconds": 0.01830345403868705
+        }
+      ],
+      "actual_delays": [
+        0,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "request_seconds": [
+        0.09383888600859791,
+        0.07618278299923986,
+        0.0747418999671936,
+        0.07448865508195013,
+        0.07780985196586698
+      ],
+      "queue_wait_seconds": [
+        0.0020015189656987786,
+        0.0008857130305841565,
+        0.0006995860021561384,
+        0.0006635349709540606,
+        0.0007182899862527847
+      ],
+      "bootstrap_s": 5.005177996936254,
+      "identity": [
+        2,
+        10
+      ],
+      "cohort": "pilot_development",
+      "delay_pairs": [
+        [
+          7,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ]
+      ],
+      "guided_requests": 0,
+      "capture_seconds": 4.926087524043396
+    },
+    {
+      "ordinal": 4,
+      "pair_index": 1,
+      "arm": "rtc_async",
+      "success": true,
+      "terminal_reason": "native_success",
+      "wall_s": 5.766099652973935,
+      "actions": 116,
+      "no_action_slots": 0,
+      "takeovers": 5,
+      "underflows": 0,
+      "request_count": 6,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [
+        {
+          "request": 2,
+          "action_index": 20,
+          "seconds": 0.01149879302829504
+        },
+        {
+          "request": 2,
+          "action_index": 21,
+          "seconds": 0.012963612098246813
+        },
+        {
+          "request": 2,
+          "action_index": 22,
+          "seconds": 0.013210945995524526
+        },
+        {
+          "request": 3,
+          "action_index": 40,
+          "seconds": 0.01220916397869587
+        },
+        {
+          "request": 3,
+          "action_index": 41,
+          "seconds": 0.014108560048043728
+        },
+        {
+          "request": 3,
+          "action_index": 42,
+          "seconds": 0.012292664963752031
+        },
+        {
+          "request": 4,
+          "action_index": 60,
+          "seconds": 0.021562653011642396
+        },
+        {
+          "request": 4,
+          "action_index": 61,
+          "seconds": 0.015298931975848973
+        },
+        {
+          "request": 4,
+          "action_index": 62,
+          "seconds": 0.01564370794221759
+        },
+        {
+          "request": 5,
+          "action_index": 80,
+          "seconds": 0.01688343402929604
+        },
+        {
+          "request": 5,
+          "action_index": 81,
+          "seconds": 0.014405612018890679
+        },
+        {
+          "request": 5,
+          "action_index": 82,
+          "seconds": 0.015077478950843215
+        },
+        {
+          "request": 6,
+          "action_index": 100,
+          "seconds": 0.017839014064520597
+        },
+        {
+          "request": 6,
+          "action_index": 101,
+          "seconds": 0.016237586038187146
+        },
+        {
+          "request": 6,
+          "action_index": 102,
+          "seconds": 0.013723462936468422
+        }
+      ],
+      "actual_delays": [
+        0,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "request_seconds": [
+        0.12809693103190511,
+        0.11390209000092,
+        0.116465053986758,
+        0.11748826992698014,
+        0.11672028293833137
+      ],
+      "queue_wait_seconds": [
+        0.0007042930228635669,
+        0.0006485319463536143,
+        0.0009250070434063673,
+        0.0007384989876300097,
+        0.0007499150233343244
+      ],
+      "bootstrap_s": 4.808395182946697,
+      "identity": [
+        2,
+        10
+      ],
+      "cohort": "pilot_development",
+      "delay_pairs": [
+        [
+          7,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ]
+      ],
+      "guided_requests": 5,
+      "capture_seconds": 4.730832904926501
+    },
+    {
+      "ordinal": 5,
+      "pair_index": 1,
+      "arm": "serialized",
+      "success": false,
+      "terminal_reason": "time_limit",
+      "wall_s": 14.615114435902797,
+      "actions": 280,
+      "no_action_slots": 13,
+      "takeovers": 13,
+      "underflows": 0,
+      "request_count": 14,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [],
+      "actual_delays": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "request_seconds": [
+        0.06892703205812722,
+        0.07903013506438583,
+        0.06961414904799312,
+        0.06946016906294972,
+        0.07014015503227711,
+        0.07005173899233341,
+        0.07240487704984844,
+        0.07094072201289237,
+        0.07585733698215336,
+        0.06843185797333717,
+        0.0682016460923478,
+        0.06908419297542423,
+        0.06946084904484451
+      ],
+      "queue_wait_seconds": [
+        0.0005968440091237426,
+        0.00225608900655061,
+        0.0006381539860740304,
+        0.0006722869584336877,
+        0.0008887420408427715,
+        0.0008478009840473533,
+        0.0009092639666050673,
+        0.0007541360100731254,
+        0.0007296260446310043,
+        0.0010150360176339746,
+        0.0007877079769968987,
+        0.0008289460092782974,
+        0.0009742069523781538
+      ],
+      "bootstrap_s": 4.997095194994472,
+      "identity": [
+        2,
+        10
+      ],
+      "cohort": "pilot_development",
+      "delay_pairs": [
+        [
+          7,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ]
+      ],
+      "guided_requests": 0,
+      "capture_seconds": 4.9167662729742005
+    },
+    {
+      "ordinal": 6,
+      "pair_index": 2,
+      "arm": "rtc_async",
+      "success": true,
+      "terminal_reason": "native_success",
+      "wall_s": 7.373421752010472,
+      "actions": 148,
+      "no_action_slots": 0,
+      "takeovers": 7,
+      "underflows": 0,
+      "request_count": 8,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [
+        {
+          "request": 2,
+          "action_index": 20,
+          "seconds": 0.015882870997302234
+        },
+        {
+          "request": 2,
+          "action_index": 21,
+          "seconds": 0.013007623027078807
+        },
+        {
+          "request": 2,
+          "action_index": 22,
+          "seconds": 0.01185914792586118
+        },
+        {
+          "request": 3,
+          "action_index": 40,
+          "seconds": 0.013665869948454201
+        },
+        {
+          "request": 3,
+          "action_index": 41,
+          "seconds": 0.012906276038847864
+        },
+        {
+          "request": 3,
+          "action_index": 42,
+          "seconds": 0.012870721984654665
+        },
+        {
+          "request": 4,
+          "action_index": 60,
+          "seconds": 0.01636398397386074
+        },
+        {
+          "request": 4,
+          "action_index": 61,
+          "seconds": 0.015660790959373116
+        },
+        {
+          "request": 4,
+          "action_index": 62,
+          "seconds": 0.012465755105949938
+        },
+        {
+          "request": 5,
+          "action_index": 80,
+          "seconds": 0.016422569984570146
+        },
+        {
+          "request": 5,
+          "action_index": 81,
+          "seconds": 0.015412891050800681
+        },
+        {
+          "request": 5,
+          "action_index": 82,
+          "seconds": 0.012014309060759842
+        },
+        {
+          "request": 6,
+          "action_index": 100,
+          "seconds": 0.016160541912540793
+        },
+        {
+          "request": 6,
+          "action_index": 101,
+          "seconds": 0.01428512204438448
+        },
+        {
+          "request": 6,
+          "action_index": 102,
+          "seconds": 0.010482467943802476
+        },
+        {
+          "request": 7,
+          "action_index": 120,
+          "seconds": 0.016872817068360746
+        },
+        {
+          "request": 7,
+          "action_index": 121,
+          "seconds": 0.014868127065710723
+        },
+        {
+          "request": 7,
+          "action_index": 122,
+          "seconds": 0.012080876040272415
+        },
+        {
+          "request": 8,
+          "action_index": 140,
+          "seconds": 0.01941358402837068
+        },
+        {
+          "request": 8,
+          "action_index": 141,
+          "seconds": 0.015944017912261188
+        },
+        {
+          "request": 8,
+          "action_index": 142,
+          "seconds": 0.011526616988703609
+        }
+      ],
+      "actual_delays": [
+        0,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "request_seconds": [
+        0.13133516302332282,
+        0.1159424789948389,
+        0.11396450898610055,
+        0.11444737995043397,
+        0.11328043893445283,
+        0.11336579697672278,
+        0.11507182801142335
+      ],
+      "queue_wait_seconds": [
+        0.003024894976988435,
+        0.0008645550115033984,
+        0.0009071659296751022,
+        0.0007265839958563447,
+        0.0006558919558301568,
+        0.0008205340709537268,
+        0.0007820080500096083
+      ],
+      "bootstrap_s": 4.734776049037464,
+      "identity": [
+        6,
+        10
+      ],
+      "cohort": "pilot_development",
+      "delay_pairs": [
+        [
+          7,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ]
+      ],
+      "guided_requests": 7,
+      "capture_seconds": 4.6568263119552284
+    },
+    {
+      "ordinal": 7,
+      "pair_index": 2,
+      "arm": "serialized",
+      "success": true,
+      "terminal_reason": "native_success",
+      "wall_s": 7.615412901039235,
+      "actions": 146,
+      "no_action_slots": 7,
+      "takeovers": 7,
+      "underflows": 0,
+      "request_count": 8,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [],
+      "actual_delays": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "request_seconds": [
+        0.07064247399102896,
+        0.06863546092063189,
+        0.06959129695314914,
+        0.06900707900058478,
+        0.06867915694601834,
+        0.06956669292412698,
+        0.07096142310183495
+      ],
+      "queue_wait_seconds": [
+        0.0006195839960128069,
+        0.0005910730687901378,
+        0.0005813890602439642,
+        0.0006850659847259521,
+        0.0005556190153583884,
+        0.0006027250783517957,
+        0.0006226949626579881
+      ],
+      "bootstrap_s": 4.925654812948778,
+      "identity": [
+        6,
+        10
+      ],
+      "cohort": "pilot_development",
+      "delay_pairs": [
+        [
+          7,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ]
+      ],
+      "guided_requests": 0,
+      "capture_seconds": 4.84827469906304
+    },
+    {
+      "ordinal": 8,
+      "pair_index": 2,
+      "arm": "aligned_async",
+      "success": true,
+      "terminal_reason": "native_success",
+      "wall_s": 7.067200006102212,
+      "actions": 142,
+      "no_action_slots": 0,
+      "takeovers": 6,
+      "underflows": 0,
+      "request_count": 8,
+      "expired": 0,
+      "cancelled_at_stop": 1,
+      "overlaps": [
+        {
+          "request": 2,
+          "action_index": 20,
+          "seconds": 0.01602414797525853
+        },
+        {
+          "request": 2,
+          "action_index": 21,
+          "seconds": 0.014023899100720882
+        },
+        {
+          "request": 3,
+          "action_index": 40,
+          "seconds": 0.01570702192839235
+        },
+        {
+          "request": 3,
+          "action_index": 41,
+          "seconds": 0.013730054954066873
+        },
+        {
+          "request": 4,
+          "action_index": 60,
+          "seconds": 0.017445157980546355
+        },
+        {
+          "request": 4,
+          "action_index": 61,
+          "seconds": 0.016074339975602925
+        },
+        {
+          "request": 5,
+          "action_index": 80,
+          "seconds": 0.017765127937309444
+        },
+        {
+          "request": 5,
+          "action_index": 81,
+          "seconds": 0.014719107071869075
+        },
+        {
+          "request": 6,
+          "action_index": 100,
+          "seconds": 0.020679395063780248
+        },
+        {
+          "request": 6,
+          "action_index": 101,
+          "seconds": 0.013092853012494743
+        },
+        {
+          "request": 7,
+          "action_index": 120,
+          "seconds": 0.01757330901455134
+        },
+        {
+          "request": 7,
+          "action_index": 121,
+          "seconds": 0.01348335889633745
+        },
+        {
+          "request": 8,
+          "action_index": 140,
+          "seconds": 0.01234396395739168
+        },
+        {
+          "request": 8,
+          "action_index": 141,
+          "seconds": 0.011918304953724146
+        }
+      ],
+      "actual_delays": [
+        0,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "request_seconds": [
+        0.0799661970231682,
+        0.07945920492056757,
+        0.08012278296519071,
+        0.07375178101938218,
+        0.07699976803269237,
+        0.07248135306872427,
+        0.07135565998032689
+      ],
+      "queue_wait_seconds": [
+        0.0006536140572279692,
+        0.0007927489932626486,
+        0.0007090229773893952,
+        0.0008815289475023746,
+        0.0007536540506407619,
+        0.0007359660230576992,
+        0.0006327660521492362
+      ],
+      "bootstrap_s": 4.85647528397385,
+      "identity": [
+        6,
+        10
+      ],
+      "cohort": "pilot_development",
+      "delay_pairs": [
+        [
+          7,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ]
+      ],
+      "guided_requests": 0,
+      "capture_seconds": 4.774659228976816
+    },
+    {
+      "ordinal": 9,
+      "pair_index": 3,
+      "arm": "serialized",
+      "success": true,
+      "terminal_reason": "native_success",
+      "wall_s": 6.484417519997805,
+      "actions": 124,
+      "no_action_slots": 6,
+      "takeovers": 6,
+      "underflows": 0,
+      "request_count": 7,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [],
+      "actual_delays": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "request_seconds": [
+        0.07455180503893644,
+        0.07853345107287169,
+        0.08181518490891904,
+        0.08050727099180222,
+        0.0815436530392617,
+        0.08004559797700495
+      ],
+      "queue_wait_seconds": [
+        0.0006325819995254278,
+        0.00127412099391222,
+        0.0013837680453434587,
+        0.0011164189781993628,
+        0.0010222860146313906,
+        0.001433591009117663
+      ],
+      "bootstrap_s": 4.86702568596229,
+      "identity": [
+        7,
+        10
+      ],
+      "cohort": "pilot_development",
+      "delay_pairs": [
+        [
+          7,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ]
+      ],
+      "guided_requests": 0,
+      "capture_seconds": 4.786561275017448
+    },
+    {
+      "ordinal": 10,
+      "pair_index": 3,
+      "arm": "aligned_async",
+      "success": true,
+      "terminal_reason": "native_success",
+      "wall_s": 6.171928915078752,
+      "actions": 124,
+      "no_action_slots": 0,
+      "takeovers": 6,
+      "underflows": 0,
+      "request_count": 7,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [
+        {
+          "request": 2,
+          "action_index": 20,
+          "seconds": 0.03539455391000956
+        },
+        {
+          "request": 2,
+          "action_index": 21,
+          "seconds": 0.012327318894676864
+        },
+        {
+          "request": 2,
+          "action_index": 22,
+          "seconds": 0.0013185839634388685
+        },
+        {
+          "request": 3,
+          "action_index": 40,
+          "seconds": 0.019212550949305296
+        },
+        {
+          "request": 3,
+          "action_index": 41,
+          "seconds": 0.01699347503017634
+        },
+        {
+          "request": 4,
+          "action_index": 60,
+          "seconds": 0.028356987982988358
+        },
+        {
+          "request": 4,
+          "action_index": 61,
+          "seconds": 0.014249162981286645
+        },
+        {
+          "request": 5,
+          "action_index": 80,
+          "seconds": 0.031215480994433165
+        },
+        {
+          "request": 5,
+          "action_index": 81,
+          "seconds": 0.013508692034520209
+        },
+        {
+          "request": 6,
+          "action_index": 100,
+          "seconds": 0.027954555000178516
+        },
+        {
+          "request": 6,
+          "action_index": 101,
+          "seconds": 0.01712742494419217
+        },
+        {
+          "request": 7,
+          "action_index": 120,
+          "seconds": 0.02235039696097374
+        },
+        {
+          "request": 7,
+          "action_index": 121,
+          "seconds": 0.017348382039926946
+        }
+      ],
+      "actual_delays": [
+        0,
+        3,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "request_seconds": [
+        0.10027121705934405,
+        0.07343022804707289,
+        0.08841672295238823,
+        0.09455011901445687,
+        0.08797081594821066,
+        0.08294609293807298
+      ],
+      "queue_wait_seconds": [
+        0.0022273289505392313,
+        0.0008598270360380411,
+        0.0017824460519477725,
+        0.001817889977246523,
+        0.0016956779872998595,
+        0.0017620279686525464
+      ],
+      "bootstrap_s": 4.819292510976084,
+      "identity": [
+        7,
+        10
+      ],
+      "cohort": "pilot_development",
+      "delay_pairs": [
+        [
+          7,
+          3,
+          30
+        ],
+        [
+          4,
+          2,
+          30
+        ],
+        [
+          4,
+          2,
+          30
+        ],
+        [
+          4,
+          2,
+          30
+        ],
+        [
+          4,
+          2,
+          30
+        ],
+        [
+          4,
+          2,
+          30
+        ]
+      ],
+      "guided_requests": 0,
+      "capture_seconds": 4.739881722023711
+    },
+    {
+      "ordinal": 11,
+      "pair_index": 3,
+      "arm": "rtc_async",
+      "success": true,
+      "terminal_reason": "native_success",
+      "wall_s": 6.169062839937396,
+      "actions": 124,
+      "no_action_slots": 0,
+      "takeovers": 6,
+      "underflows": 0,
+      "request_count": 7,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [
+        {
+          "request": 2,
+          "action_index": 20,
+          "seconds": 0.019349781097844243
+        },
+        {
+          "request": 2,
+          "action_index": 21,
+          "seconds": 0.013517325976863503
+        },
+        {
+          "request": 2,
+          "action_index": 22,
+          "seconds": 0.0139293730026111
+        },
+        {
+          "request": 3,
+          "action_index": 40,
+          "seconds": 0.018778508994728327
+        },
+        {
+          "request": 3,
+          "action_index": 41,
+          "seconds": 0.01721217599697411
+        },
+        {
+          "request": 3,
+          "action_index": 42,
+          "seconds": 0.012569948914460838
+        },
+        {
+          "request": 4,
+          "action_index": 60,
+          "seconds": 0.03144410694949329
+        },
+        {
+          "request": 4,
+          "action_index": 61,
+          "seconds": 0.014730976894497871
+        },
+        {
+          "request": 4,
+          "action_index": 62,
+          "seconds": 0.014012714964337647
+        },
+        {
+          "request": 5,
+          "action_index": 80,
+          "seconds": 0.02647299796808511
+        },
+        {
+          "request": 5,
+          "action_index": 81,
+          "seconds": 0.014760316000320017
+        },
+        {
+          "request": 5,
+          "action_index": 82,
+          "seconds": 0.014898335910402238
+        },
+        {
+          "request": 6,
+          "action_index": 100,
+          "seconds": 0.02629798697307706
+        },
+        {
+          "request": 6,
+          "action_index": 101,
+          "seconds": 0.016614198917523026
+        },
+        {
+          "request": 6,
+          "action_index": 102,
+          "seconds": 0.016940818051807582
+        },
+        {
+          "request": 7,
+          "action_index": 120,
+          "seconds": 0.025698608020320535
+        },
+        {
+          "request": 7,
+          "action_index": 121,
+          "seconds": 0.014419369981624186
+        },
+        {
+          "request": 7,
+          "action_index": 122,
+          "seconds": 0.014010227052494884
+        }
+      ],
+      "actual_delays": [
+        0,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "request_seconds": [
+        0.13616474205628037,
+        0.12186316901352257,
+        0.13767233199905604,
+        0.13097607903182507,
+        0.1301644219784066,
+        0.12991904001682997
+      ],
+      "queue_wait_seconds": [
+        0.002186693949624896,
+        0.0013801009627059102,
+        0.002136767958290875,
+        0.0013771209632977843,
+        0.001718520070426166,
+        0.0014472040347754955
+      ],
+      "bootstrap_s": 5.0335646090097725,
+      "identity": [
+        7,
+        10
+      ],
+      "cohort": "pilot_development",
+      "delay_pairs": [
+        [
+          7,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ]
+      ],
+      "guided_requests": 6,
+      "capture_seconds": 4.951795142958872
+    },
+    {
+      "ordinal": 12,
+      "pair_index": 4,
+      "arm": "aligned_async",
+      "success": true,
+      "terminal_reason": "native_success",
+      "wall_s": 5.822994812973775,
+      "actions": 117,
+      "no_action_slots": 0,
+      "takeovers": 5,
+      "underflows": 0,
+      "request_count": 6,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [
+        {
+          "request": 2,
+          "action_index": 20,
+          "seconds": 0.018215545918792486
+        },
+        {
+          "request": 2,
+          "action_index": 21,
+          "seconds": 0.015272453078068793
+        },
+        {
+          "request": 3,
+          "action_index": 40,
+          "seconds": 0.029619415989145637
+        },
+        {
+          "request": 3,
+          "action_index": 41,
+          "seconds": 0.012634792015887797
+        },
+        {
+          "request": 4,
+          "action_index": 60,
+          "seconds": 0.02216357598081231
+        },
+        {
+          "request": 4,
+          "action_index": 61,
+          "seconds": 0.013891372946090996
+        },
+        {
+          "request": 5,
+          "action_index": 80,
+          "seconds": 0.023019296932034194
+        },
+        {
+          "request": 5,
+          "action_index": 81,
+          "seconds": 0.01528934296220541
+        },
+        {
+          "request": 6,
+          "action_index": 100,
+          "seconds": 0.028069071006029844
+        },
+        {
+          "request": 6,
+          "action_index": 101,
+          "seconds": 0.013421054929494858
+        }
+      ],
+      "actual_delays": [
+        0,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "request_seconds": [
+        0.08126739296130836,
+        0.08875381597317755,
+        0.08075049996841699,
+        0.07814267103094608,
+        0.08400057698599994
+      ],
+      "queue_wait_seconds": [
+        0.0006920939777046442,
+        0.002034225035458803,
+        0.0013598239747807384,
+        0.0013698290567845106,
+        0.0017585059395059943
+      ],
+      "bootstrap_s": 4.714723373996094,
+      "identity": [
+        7,
+        11
+      ],
+      "cohort": "pilot_development",
+      "delay_pairs": [
+        [
+          7,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ]
+      ],
+      "guided_requests": 0,
+      "capture_seconds": 4.638742765062489
+    },
+    {
+      "ordinal": 13,
+      "pair_index": 4,
+      "arm": "rtc_async",
+      "success": true,
+      "terminal_reason": "native_success",
+      "wall_s": 5.873059659032151,
+      "actions": 118,
+      "no_action_slots": 0,
+      "takeovers": 5,
+      "underflows": 0,
+      "request_count": 6,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [
+        {
+          "request": 2,
+          "action_index": 20,
+          "seconds": 0.02547309489455074
+        },
+        {
+          "request": 2,
+          "action_index": 21,
+          "seconds": 0.014507529907859862
+        },
+        {
+          "request": 2,
+          "action_index": 22,
+          "seconds": 0.014228273998014629
+        },
+        {
+          "request": 3,
+          "action_index": 40,
+          "seconds": 0.030806181021034718
+        },
+        {
+          "request": 3,
+          "action_index": 41,
+          "seconds": 0.012916760053485632
+        },
+        {
+          "request": 3,
+          "action_index": 42,
+          "seconds": 0.01424651697743684
+        },
+        {
+          "request": 4,
+          "action_index": 60,
+          "seconds": 0.022113093989901245
+        },
+        {
+          "request": 4,
+          "action_index": 61,
+          "seconds": 0.01559719699434936
+        },
+        {
+          "request": 4,
+          "action_index": 62,
+          "seconds": 0.01596093608532101
+        },
+        {
+          "request": 5,
+          "action_index": 80,
+          "seconds": 0.026952292071655393
+        },
+        {
+          "request": 5,
+          "action_index": 81,
+          "seconds": 0.014872387051582336
+        },
+        {
+          "request": 5,
+          "action_index": 82,
+          "seconds": 0.01595722301863134
+        },
+        {
+          "request": 6,
+          "action_index": 100,
+          "seconds": 0.029684415902011096
+        },
+        {
+          "request": 6,
+          "action_index": 101,
+          "seconds": 0.015506813069805503
+        },
+        {
+          "request": 6,
+          "action_index": 102,
+          "seconds": 0.015299090999178588
+        }
+      ],
+      "actual_delays": [
+        0,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "request_seconds": [
+        0.13613264309242368,
+        0.14523887098766863,
+        0.13006494392175227,
+        0.1319529339671135,
+        0.13520898297429085
+      ],
+      "queue_wait_seconds": [
+        0.0015113269910216331,
+        0.0018720310181379318,
+        0.0019227711018174887,
+        0.0013428559759631753,
+        0.002301948028616607
+      ],
+      "bootstrap_s": 4.76031071098987,
+      "identity": [
+        7,
+        11
+      ],
+      "cohort": "pilot_development",
+      "delay_pairs": [
+        [
+          7,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ]
+      ],
+      "guided_requests": 5,
+      "capture_seconds": 4.681464858003892
+    },
+    {
+      "ordinal": 14,
+      "pair_index": 4,
+      "arm": "serialized",
+      "success": true,
+      "terminal_reason": "native_success",
+      "wall_s": 6.022055553039536,
+      "actions": 116,
+      "no_action_slots": 5,
+      "takeovers": 5,
+      "underflows": 0,
+      "request_count": 6,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [],
+      "actual_delays": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "request_seconds": [
+        0.08221591298934072,
+        0.07294835103675723,
+        0.08302840602118522,
+        0.08206266292836517,
+        0.08587689604610205
+      ],
+      "queue_wait_seconds": [
+        0.0014842540258541703,
+        0.0007853809511289,
+        0.0015130089595913887,
+        0.0012960870517417789,
+        0.00127585104200989
+      ],
+      "bootstrap_s": 4.782752471975982,
+      "identity": [
+        7,
+        11
+      ],
+      "cohort": "pilot_development",
+      "delay_pairs": [
+        [
+          7,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ]
+      ],
+      "guided_requests": 0,
+      "capture_seconds": 4.705639456980862
+    },
+    {
+      "ordinal": 15,
+      "pair_index": 5,
+      "arm": "rtc_async",
+      "success": true,
+      "terminal_reason": "native_success",
+      "wall_s": 7.271633372991346,
+      "actions": 146,
+      "no_action_slots": 0,
+      "takeovers": 7,
+      "underflows": 0,
+      "request_count": 8,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [
+        {
+          "request": 2,
+          "action_index": 20,
+          "seconds": 0.02431550296023488
+        },
+        {
+          "request": 2,
+          "action_index": 21,
+          "seconds": 0.01451012899633497
+        },
+        {
+          "request": 2,
+          "action_index": 22,
+          "seconds": 0.01150162797421217
+        },
+        {
+          "request": 3,
+          "action_index": 40,
+          "seconds": 0.03989416698459536
+        },
+        {
+          "request": 3,
+          "action_index": 41,
+          "seconds": 0.015542423934675753
+        },
+        {
+          "request": 3,
+          "action_index": 42,
+          "seconds": 0.013274615979753435
+        },
+        {
+          "request": 4,
+          "action_index": 60,
+          "seconds": 0.040367665933445096
+        },
+        {
+          "request": 4,
+          "action_index": 61,
+          "seconds": 0.014966087997891009
+        },
+        {
+          "request": 4,
+          "action_index": 62,
+          "seconds": 0.01812667108606547
+        },
+        {
+          "request": 5,
+          "action_index": 80,
+          "seconds": 0.025700796046294272
+        },
+        {
+          "request": 5,
+          "action_index": 81,
+          "seconds": 0.01612275990191847
+        },
+        {
+          "request": 5,
+          "action_index": 82,
+          "seconds": 0.015404692036099732
+        },
+        {
+          "request": 6,
+          "action_index": 100,
+          "seconds": 0.03170820197556168
+        },
+        {
+          "request": 6,
+          "action_index": 101,
+          "seconds": 0.014155913959257305
+        },
+        {
+          "request": 6,
+          "action_index": 102,
+          "seconds": 0.017430040054023266
+        },
+        {
+          "request": 7,
+          "action_index": 120,
+          "seconds": 0.026501877000555396
+        },
+        {
+          "request": 7,
+          "action_index": 121,
+          "seconds": 0.01851015107240528
+        },
+        {
+          "request": 7,
+          "action_index": 122,
+          "seconds": 0.017290604999288917
+        },
+        {
+          "request": 8,
+          "action_index": 140,
+          "seconds": 0.018173974007368088
+        },
+        {
+          "request": 8,
+          "action_index": 141,
+          "seconds": 0.018237162963487208
+        },
+        {
+          "request": 8,
+          "action_index": 142,
+          "seconds": 0.013398946961387992
+        }
+      ],
+      "actual_delays": [
+        0,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "request_seconds": [
+        0.1383623779984191,
+        0.1447336319833994,
+        0.14537329599261284,
+        0.12562296900432557,
+        0.1299888549838215,
+        0.12424745305906981,
+        0.11572348303161561
+      ],
+      "queue_wait_seconds": [
+        0.0019260360859334469,
+        0.00190917297732085,
+        0.00160876102745533,
+        0.0018221139907836914,
+        0.0016729839844629169,
+        0.0016721009742468596,
+        0.0007746609626337886
+      ],
+      "bootstrap_s": 4.736690541962162,
+      "identity": [
+        6,
+        11
+      ],
+      "cohort": "pilot_development",
+      "delay_pairs": [
+        [
+          7,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ]
+      ],
+      "guided_requests": 7,
+      "capture_seconds": 4.659176005166955
+    },
+    {
+      "ordinal": 16,
+      "pair_index": 5,
+      "arm": "serialized",
+      "success": true,
+      "terminal_reason": "native_success",
+      "wall_s": 7.271437326911837,
+      "actions": 140,
+      "no_action_slots": 6,
+      "takeovers": 6,
+      "underflows": 0,
+      "request_count": 7,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [],
+      "actual_delays": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "request_seconds": [
+        0.0832741119666025,
+        0.08510202390607446,
+        0.06757022801321,
+        0.07970787200611085,
+        0.07941172900609672,
+        0.07691224594600499
+      ],
+      "queue_wait_seconds": [
+        0.0016658620443195105,
+        0.0023887600982561707,
+        0.0006184550002217293,
+        0.0016701469430699944,
+        0.0018138320883736014,
+        0.0014267610386013985
+      ],
+      "bootstrap_s": 4.751144231995568,
+      "identity": [
+        6,
+        11
+      ],
+      "cohort": "pilot_development",
+      "delay_pairs": [
+        [
+          7,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ]
+      ],
+      "guided_requests": 0,
+      "capture_seconds": 4.674326044041663
+    },
+    {
+      "ordinal": 17,
+      "pair_index": 5,
+      "arm": "aligned_async",
+      "success": true,
+      "terminal_reason": "native_success",
+      "wall_s": 7.42035256291274,
+      "actions": 149,
+      "no_action_slots": 0,
+      "takeovers": 7,
+      "underflows": 0,
+      "request_count": 8,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [
+        {
+          "request": 2,
+          "action_index": 20,
+          "seconds": 0.01765779103152454
+        },
+        {
+          "request": 2,
+          "action_index": 21,
+          "seconds": 0.012153208954259753
+        },
+        {
+          "request": 3,
+          "action_index": 40,
+          "seconds": 0.03162373893428594
+        },
+        {
+          "request": 3,
+          "action_index": 41,
+          "seconds": 0.012078531086444855
+        },
+        {
+          "request": 4,
+          "action_index": 60,
+          "seconds": 0.024775570956990123
+        },
+        {
+          "request": 4,
+          "action_index": 61,
+          "seconds": 0.016490809037350118
+        },
+        {
+          "request": 5,
+          "action_index": 80,
+          "seconds": 0.029389366041868925
+        },
+        {
+          "request": 5,
+          "action_index": 81,
+          "seconds": 0.015148465987294912
+        },
+        {
+          "request": 6,
+          "action_index": 100,
+          "seconds": 0.02270824194420129
+        },
+        {
+          "request": 6,
+          "action_index": 101,
+          "seconds": 0.014013099018484354
+        },
+        {
+          "request": 7,
+          "action_index": 120,
+          "seconds": 0.01621860102750361
+        },
+        {
+          "request": 7,
+          "action_index": 121,
+          "seconds": 0.013910603942349553
+        },
+        {
+          "request": 8,
+          "action_index": 140,
+          "seconds": 0.030081944074481726
+        },
+        {
+          "request": 8,
+          "action_index": 141,
+          "seconds": 0.013164967996999621
+        }
+      ],
+      "actual_delays": [
+        0,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "request_seconds": [
+        0.08405630302149802,
+        0.09418682497926056,
+        0.08288941602222621,
+        0.08707417908590287,
+        0.07901707803830504,
+        0.07118586695287377,
+        0.08675613394007087
+      ],
+      "queue_wait_seconds": [
+        0.002342261024750769,
+        0.002330046030692756,
+        0.0022218310041353106,
+        0.002207930898293853,
+        0.001282186945900321,
+        0.0007761750603094697,
+        0.002424239064566791
+      ],
+      "bootstrap_s": 4.858427581959404,
+      "identity": [
+        6,
+        11
+      ],
+      "cohort": "pilot_development",
+      "delay_pairs": [
+        [
+          7,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ]
+      ],
+      "guided_requests": 0,
+      "capture_seconds": 4.779193426016718
+    },
+    {
+      "ordinal": 18,
+      "pair_index": 6,
+      "arm": "serialized",
+      "success": true,
+      "terminal_reason": "native_success",
+      "wall_s": 6.179040793096647,
+      "actions": 119,
+      "no_action_slots": 5,
+      "takeovers": 5,
+      "underflows": 0,
+      "request_count": 6,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [],
+      "actual_delays": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "request_seconds": [
+        0.08080077997874469,
+        0.08519194601103663,
+        0.07068822300061584,
+        0.07955532695632428,
+        0.08312079298775643
+      ],
+      "queue_wait_seconds": [
+        0.002247342956252396,
+        0.0021581100299954414,
+        0.000675674993544817,
+        0.00281044899020344,
+        0.0020959910470992327
+      ],
+      "bootstrap_s": 4.791225843015127,
+      "identity": [
+        2,
+        11
+      ],
+      "cohort": "pilot_development",
+      "delay_pairs": [
+        [
+          7,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ]
+      ],
+      "guided_requests": 0,
+      "capture_seconds": 4.713950564037077
+    },
+    {
+      "ordinal": 19,
+      "pair_index": 6,
+      "arm": "aligned_async",
+      "success": false,
+      "terminal_reason": "time_limit",
+      "wall_s": 13.964778930065222,
+      "actions": 280,
+      "no_action_slots": 0,
+      "takeovers": 13,
+      "underflows": 0,
+      "request_count": 14,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [
+        {
+          "request": 2,
+          "action_index": 20,
+          "seconds": 0.04685269494075328
+        },
+        {
+          "request": 2,
+          "action_index": 21,
+          "seconds": 0.012378292041830719
+        },
+        {
+          "request": 2,
+          "action_index": 22,
+          "seconds": 0.010386924957856536
+        },
+        {
+          "request": 3,
+          "action_index": 40,
+          "seconds": 0.02846989198587835
+        },
+        {
+          "request": 3,
+          "action_index": 41,
+          "seconds": 0.01455148495733738
+        },
+        {
+          "request": 4,
+          "action_index": 60,
+          "seconds": 0.03215628594625741
+        },
+        {
+          "request": 4,
+          "action_index": 61,
+          "seconds": 0.015884118038229644
+        },
+        {
+          "request": 5,
+          "action_index": 80,
+          "seconds": 0.04401320300530642
+        },
+        {
+          "request": 5,
+          "action_index": 81,
+          "seconds": 0.014865616918541491
+        },
+        {
+          "request": 5,
+          "action_index": 82,
+          "seconds": 0.004711091984063387
+        },
+        {
+          "request": 6,
+          "action_index": 100,
+          "seconds": 0.02342404890805483
+        },
+        {
+          "request": 6,
+          "action_index": 101,
+          "seconds": 0.01402322098147124
+        },
+        {
+          "request": 7,
+          "action_index": 120,
+          "seconds": 0.029749806970357895
+        },
+        {
+          "request": 7,
+          "action_index": 121,
+          "seconds": 0.012927522067911923
+        },
+        {
+          "request": 8,
+          "action_index": 140,
+          "seconds": 0.02845988399349153
+        },
+        {
+          "request": 8,
+          "action_index": 141,
+          "seconds": 0.013971347943879664
+        },
+        {
+          "request": 9,
+          "action_index": 160,
+          "seconds": 0.013365922961384058
+        },
+        {
+          "request": 9,
+          "action_index": 161,
+          "seconds": 0.012235108995810151
+        },
+        {
+          "request": 10,
+          "action_index": 180,
+          "seconds": 0.028077946975827217
+        },
+        {
+          "request": 10,
+          "action_index": 181,
+          "seconds": 0.014369432930834591
+        },
+        {
+          "request": 11,
+          "action_index": 200,
+          "seconds": 0.023901313077658415
+        },
+        {
+          "request": 11,
+          "action_index": 201,
+          "seconds": 0.014363950002007186
+        },
+        {
+          "request": 12,
+          "action_index": 220,
+          "seconds": 0.0258480969350785
+        },
+        {
+          "request": 12,
+          "action_index": 221,
+          "seconds": 0.013340728008188307
+        },
+        {
+          "request": 13,
+          "action_index": 240,
+          "seconds": 0.019365871092304587
+        },
+        {
+          "request": 13,
+          "action_index": 241,
+          "seconds": 0.014838447910733521
+        },
+        {
+          "request": 14,
+          "action_index": 260,
+          "seconds": 0.022988205077126622
+        },
+        {
+          "request": 14,
+          "action_index": 261,
+          "seconds": 0.01749813708011061
+        }
+      ],
+      "actual_delays": [
+        0,
+        3,
+        2,
+        2,
+        3,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "request_seconds": [
+        0.11053089902270585,
+        0.08841318602208048,
+        0.09085555793717504,
+        0.10471305798273534,
+        0.0805142370518297,
+        0.08612002700101584,
+        0.08763472200371325,
+        0.0718253820668906,
+        0.0866384640103206,
+        0.08165499696042389,
+        0.08134289493318647,
+        0.07900821801740676,
+        0.08006656891666353
+      ],
+      "queue_wait_seconds": [
+        0.0015786149306222796,
+        0.001897668931633234,
+        0.0020313060376793146,
+        0.0024249469861388206,
+        0.001887995982542634,
+        0.0015843210276216269,
+        0.001959244953468442,
+        0.0006530429236590862,
+        0.0015913189854472876,
+        0.0016178189544007182,
+        0.0009227510308846831,
+        0.0019499630434438586,
+        0.0014398330822587013
+      ],
+      "bootstrap_s": 5.022204136010259,
+      "identity": [
+        2,
+        11
+      ],
+      "cohort": "pilot_development",
+      "delay_pairs": [
+        [
+          7,
+          3,
+          30
+        ],
+        [
+          4,
+          2,
+          30
+        ],
+        [
+          4,
+          2,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          2,
+          30
+        ],
+        [
+          4,
+          2,
+          30
+        ],
+        [
+          4,
+          2,
+          30
+        ],
+        [
+          4,
+          2,
+          30
+        ],
+        [
+          4,
+          2,
+          30
+        ],
+        [
+          4,
+          2,
+          30
+        ],
+        [
+          4,
+          2,
+          30
+        ],
+        [
+          4,
+          2,
+          30
+        ],
+        [
+          4,
+          2,
+          30
+        ]
+      ],
+      "guided_requests": 0,
+      "capture_seconds": 4.944023282965645
+    },
+    {
+      "ordinal": 20,
+      "pair_index": 6,
+      "arm": "rtc_async",
+      "success": false,
+      "terminal_reason": "time_limit",
+      "wall_s": 13.97140922001563,
+      "actions": 280,
+      "no_action_slots": 0,
+      "takeovers": 13,
+      "underflows": 0,
+      "request_count": 14,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [
+        {
+          "request": 2,
+          "action_index": 20,
+          "seconds": 0.03423436207231134
+        },
+        {
+          "request": 2,
+          "action_index": 21,
+          "seconds": 0.013848620001226664
+        },
+        {
+          "request": 2,
+          "action_index": 22,
+          "seconds": 0.01717549900058657
+        },
+        {
+          "request": 3,
+          "action_index": 40,
+          "seconds": 0.02489935897756368
+        },
+        {
+          "request": 3,
+          "action_index": 41,
+          "seconds": 0.012615651008673012
+        },
+        {
+          "request": 3,
+          "action_index": 42,
+          "seconds": 0.016084276023320854
+        },
+        {
+          "request": 4,
+          "action_index": 60,
+          "seconds": 0.018736712052486837
+        },
+        {
+          "request": 4,
+          "action_index": 61,
+          "seconds": 0.013260244973935187
+        },
+        {
+          "request": 4,
+          "action_index": 62,
+          "seconds": 0.014733897056430578
+        },
+        {
+          "request": 5,
+          "action_index": 80,
+          "seconds": 0.04073929903097451
+        },
+        {
+          "request": 5,
+          "action_index": 81,
+          "seconds": 0.014585129916667938
+        },
+        {
+          "request": 5,
+          "action_index": 82,
+          "seconds": 0.012907566968351603
+        },
+        {
+          "request": 5,
+          "action_index": 83,
+          "seconds": 0.00622552796266973
+        },
+        {
+          "request": 6,
+          "action_index": 100,
+          "seconds": 0.03409781598020345
+        },
+        {
+          "request": 6,
+          "action_index": 101,
+          "seconds": 0.012983581982553005
+        },
+        {
+          "request": 6,
+          "action_index": 102,
+          "seconds": 0.013576574041508138
+        },
+        {
+          "request": 7,
+          "action_index": 120,
+          "seconds": 0.02462048304732889
+        },
+        {
+          "request": 7,
+          "action_index": 121,
+          "seconds": 0.013941496959887445
+        },
+        {
+          "request": 7,
+          "action_index": 122,
+          "seconds": 0.013334614923223853
+        },
+        {
+          "request": 8,
+          "action_index": 140,
+          "seconds": 0.0161685599014163
+        },
+        {
+          "request": 8,
+          "action_index": 141,
+          "seconds": 0.01266916305758059
+        },
+        {
+          "request": 8,
+          "action_index": 142,
+          "seconds": 0.0178308910690248
+        },
+        {
+          "request": 9,
+          "action_index": 160,
+          "seconds": 0.03197720507159829
+        },
+        {
+          "request": 9,
+          "action_index": 161,
+          "seconds": 0.016317169065587223
+        },
+        {
+          "request": 9,
+          "action_index": 162,
+          "seconds": 0.01598610309883952
+        },
+        {
+          "request": 10,
+          "action_index": 180,
+          "seconds": 0.016569599974900484
+        },
+        {
+          "request": 10,
+          "action_index": 181,
+          "seconds": 0.014195601921528578
+        },
+        {
+          "request": 10,
+          "action_index": 182,
+          "seconds": 0.0122097049606964
+        },
+        {
+          "request": 11,
+          "action_index": 200,
+          "seconds": 0.020044773002155125
+        },
+        {
+          "request": 11,
+          "action_index": 201,
+          "seconds": 0.025731825036928058
+        },
+        {
+          "request": 11,
+          "action_index": 202,
+          "seconds": 0.024145609000697732
+        },
+        {
+          "request": 12,
+          "action_index": 220,
+          "seconds": 0.028553568990901113
+        },
+        {
+          "request": 12,
+          "action_index": 221,
+          "seconds": 0.012127890950068831
+        },
+        {
+          "request": 12,
+          "action_index": 222,
+          "seconds": 0.013060320052318275
+        },
+        {
+          "request": 13,
+          "action_index": 240,
+          "seconds": 0.031103224027901888
+        },
+        {
+          "request": 13,
+          "action_index": 241,
+          "seconds": 0.012604010989889503
+        },
+        {
+          "request": 13,
+          "action_index": 242,
+          "seconds": 0.014163107029162347
+        },
+        {
+          "request": 14,
+          "action_index": 260,
+          "seconds": 0.02856536698527634
+        },
+        {
+          "request": 14,
+          "action_index": 261,
+          "seconds": 0.01668868795968592
+        },
+        {
+          "request": 14,
+          "action_index": 262,
+          "seconds": 0.016663996037095785
+        }
+      ],
+      "actual_delays": [
+        0,
+        4,
+        3,
+        3,
+        4,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "request_seconds": [
+        0.14862966700457036,
+        0.12923164200037718,
+        0.11628163198474795,
+        0.15684569801669568,
+        0.14197892392985523,
+        0.13108569802716374,
+        0.12421387701760978,
+        0.13900895591359586,
+        0.12339924997650087,
+        0.13096837396733463,
+        0.13083537796046585,
+        0.13163908699061722,
+        0.13127033691853285
+      ],
+      "queue_wait_seconds": [
+        0.0017633599927648902,
+        0.0013875599252060056,
+        0.000786507036536932,
+        0.0017795239109545946,
+        0.0020537340315058827,
+        0.0014843830140307546,
+        0.001993199926801026,
+        0.0018634890438988805,
+        0.0013753430685028434,
+        0.001692689023911953,
+        0.0016675350489094853,
+        0.0021346750436350703,
+        0.001966197043657303
+      ],
+      "bootstrap_s": 4.7039117210078984,
+      "identity": [
+        2,
+        11
+      ],
+      "cohort": "pilot_development",
+      "delay_pairs": [
+        [
+          7,
+          4,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          4,
+          30
+        ],
+        [
+          5,
+          3,
+          30
+        ],
+        [
+          5,
+          3,
+          30
+        ],
+        [
+          5,
+          3,
+          30
+        ],
+        [
+          5,
+          3,
+          30
+        ],
+        [
+          5,
+          3,
+          30
+        ],
+        [
+          5,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ]
+      ],
+      "guided_requests": 13,
+      "capture_seconds": 4.626323779928498
+    },
+    {
+      "ordinal": 21,
+      "pair_index": 7,
+      "arm": "aligned_async",
+      "success": true,
+      "terminal_reason": "native_success",
+      "wall_s": 6.772179155959748,
+      "actions": 136,
+      "no_action_slots": 0,
+      "takeovers": 6,
+      "underflows": 0,
+      "request_count": 7,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [
+        {
+          "request": 2,
+          "action_index": 20,
+          "seconds": 0.01691643602680415
+        },
+        {
+          "request": 2,
+          "action_index": 21,
+          "seconds": 0.015239261090755463
+        },
+        {
+          "request": 3,
+          "action_index": 40,
+          "seconds": 0.02208081795834005
+        },
+        {
+          "request": 3,
+          "action_index": 41,
+          "seconds": 0.02151256799697876
+        },
+        {
+          "request": 4,
+          "action_index": 60,
+          "seconds": 0.04007285903207958
+        },
+        {
+          "request": 4,
+          "action_index": 61,
+          "seconds": 0.016997216967865825
+        },
+        {
+          "request": 5,
+          "action_index": 80,
+          "seconds": 0.02668190305121243
+        },
+        {
+          "request": 5,
+          "action_index": 81,
+          "seconds": 0.01411089301109314
+        },
+        {
+          "request": 6,
+          "action_index": 100,
+          "seconds": 0.054753203061409295
+        },
+        {
+          "request": 6,
+          "action_index": 101,
+          "seconds": 0.016107831965200603
+        },
+        {
+          "request": 6,
+          "action_index": 102,
+          "seconds": 0.01372744794934988
+        },
+        {
+          "request": 7,
+          "action_index": 120,
+          "seconds": 0.023888407973572612
+        },
+        {
+          "request": 7,
+          "action_index": 121,
+          "seconds": 0.019776444067247212
+        }
+      ],
+      "actual_delays": [
+        0,
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "request_seconds": [
+        0.08213888201862574,
+        0.07871457701548934,
+        0.09297968493774533,
+        0.08318443200550973,
+        0.11385074502322823,
+        0.0712790999095887
+      ],
+      "queue_wait_seconds": [
+        0.0022450790274888277,
+        0.0008351650321856141,
+        0.002143395016901195,
+        0.0015906229382380843,
+        0.002233596984297037,
+        0.0007281450089067221
+      ],
+      "bootstrap_s": 4.770619758986868,
+      "identity": [
+        0,
+        11
+      ],
+      "cohort": "pilot_development",
+      "delay_pairs": [
+        [
+          7,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          3,
+          30
+        ],
+        [
+          4,
+          2,
+          30
+        ]
+      ],
+      "guided_requests": 0,
+      "capture_seconds": 4.692773676011711
+    },
+    {
+      "ordinal": 22,
+      "pair_index": 7,
+      "arm": "rtc_async",
+      "success": true,
+      "terminal_reason": "native_success",
+      "wall_s": 6.6667477149749175,
+      "actions": 134,
+      "no_action_slots": 0,
+      "takeovers": 6,
+      "underflows": 0,
+      "request_count": 7,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [
+        {
+          "request": 2,
+          "action_index": 20,
+          "seconds": 0.013471037964336574
+        },
+        {
+          "request": 2,
+          "action_index": 21,
+          "seconds": 0.013009961927309632
+        },
+        {
+          "request": 2,
+          "action_index": 22,
+          "seconds": 0.013760939007624984
+        },
+        {
+          "request": 3,
+          "action_index": 40,
+          "seconds": 0.017748618964105844
+        },
+        {
+          "request": 3,
+          "action_index": 41,
+          "seconds": 0.013408246100880206
+        },
+        {
+          "request": 3,
+          "action_index": 42,
+          "seconds": 0.013801683089695871
+        },
+        {
+          "request": 4,
+          "action_index": 60,
+          "seconds": 0.024415392079390585
+        },
+        {
+          "request": 4,
+          "action_index": 61,
+          "seconds": 0.015428762999363244
+        },
+        {
+          "request": 4,
+          "action_index": 62,
+          "seconds": 0.019616812001913786
+        },
+        {
+          "request": 5,
+          "action_index": 80,
+          "seconds": 0.017372638918459415
+        },
+        {
+          "request": 5,
+          "action_index": 81,
+          "seconds": 0.01588868407998234
+        },
+        {
+          "request": 5,
+          "action_index": 82,
+          "seconds": 0.015186512959189713
+        },
+        {
+          "request": 6,
+          "action_index": 100,
+          "seconds": 0.02347127697430551
+        },
+        {
+          "request": 6,
+          "action_index": 101,
+          "seconds": 0.0155350900022313
+        },
+        {
+          "request": 6,
+          "action_index": 102,
+          "seconds": 0.01648107694927603
+        },
+        {
+          "request": 7,
+          "action_index": 120,
+          "seconds": 0.02634947607293725
+        },
+        {
+          "request": 7,
+          "action_index": 121,
+          "seconds": 0.018391184974461794
+        },
+        {
+          "request": 7,
+          "action_index": 122,
+          "seconds": 0.017821533954702318
+        }
+      ],
+      "actual_delays": [
+        0,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "request_seconds": [
+        0.12781362794339657,
+        0.11711061897221953,
+        0.12665132503025234,
+        0.11656934500206262,
+        0.12073634401895106,
+        0.11792858701664954
+      ],
+      "queue_wait_seconds": [
+        0.0007401240291073918,
+        0.000860232044942677,
+        0.0015754720661789179,
+        0.0008429320296272635,
+        0.001677399966865778,
+        0.001272466965019703
+      ],
+      "bootstrap_s": 4.743880496011116,
+      "identity": [
+        0,
+        11
+      ],
+      "cohort": "pilot_development",
+      "delay_pairs": [
+        [
+          7,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ]
+      ],
+      "guided_requests": 6,
+      "capture_seconds": 4.664126183022745
+    },
+    {
+      "ordinal": 23,
+      "pair_index": 7,
+      "arm": "serialized",
+      "success": true,
+      "terminal_reason": "native_success",
+      "wall_s": 6.357070247060619,
+      "actions": 121,
+      "no_action_slots": 7,
+      "takeovers": 6,
+      "underflows": 0,
+      "request_count": 7,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [],
+      "actual_delays": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "request_seconds": [
+        0.06930723111145198,
+        0.07547258294653147,
+        0.07252763700671494,
+        0.07434086897410452,
+        0.0755480770021677,
+        0.08070133195724338
+      ],
+      "queue_wait_seconds": [
+        0.000603373977355659,
+        0.001694703008979559,
+        0.0007358239963650703,
+        0.002495252061635256,
+        0.0009762480622157454,
+        0.000988285057246685
+      ],
+      "bootstrap_s": 4.673993866075762,
+      "identity": [
+        0,
+        11
+      ],
+      "cohort": "pilot_development",
+      "delay_pairs": [
+        [
+          7,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ]
+      ],
+      "guided_requests": 0,
+      "capture_seconds": 4.59443023998756
+    },
+    {
+      "ordinal": 24,
+      "pair_index": 8,
+      "arm": "rtc_async",
+      "success": false,
+      "terminal_reason": "time_limit",
+      "wall_s": 13.972699185018428,
+      "actions": 280,
+      "no_action_slots": 0,
+      "takeovers": 13,
+      "underflows": 0,
+      "request_count": 14,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [
+        {
+          "request": 2,
+          "action_index": 20,
+          "seconds": 0.016674408921971917
+        },
+        {
+          "request": 2,
+          "action_index": 21,
+          "seconds": 0.015893795061856508
+        },
+        {
+          "request": 2,
+          "action_index": 22,
+          "seconds": 0.015695236041210592
+        },
+        {
+          "request": 3,
+          "action_index": 40,
+          "seconds": 0.018687297008000314
+        },
+        {
+          "request": 3,
+          "action_index": 41,
+          "seconds": 0.012443961924873292
+        },
+        {
+          "request": 3,
+          "action_index": 42,
+          "seconds": 0.014973983052186668
+        },
+        {
+          "request": 4,
+          "action_index": 60,
+          "seconds": 0.01762780302669853
+        },
+        {
+          "request": 4,
+          "action_index": 61,
+          "seconds": 0.013968494953587651
+        },
+        {
+          "request": 4,
+          "action_index": 62,
+          "seconds": 0.012579913018271327
+        },
+        {
+          "request": 5,
+          "action_index": 80,
+          "seconds": 0.032521822955459356
+        },
+        {
+          "request": 5,
+          "action_index": 81,
+          "seconds": 0.01257651497144252
+        },
+        {
+          "request": 5,
+          "action_index": 82,
+          "seconds": 0.014649786986410618
+        },
+        {
+          "request": 6,
+          "action_index": 100,
+          "seconds": 0.02318291401024908
+        },
+        {
+          "request": 6,
+          "action_index": 101,
+          "seconds": 0.012465453008189797
+        },
+        {
+          "request": 6,
+          "action_index": 102,
+          "seconds": 0.012181349098682404
+        },
+        {
+          "request": 7,
+          "action_index": 120,
+          "seconds": 0.019132904009893537
+        },
+        {
+          "request": 7,
+          "action_index": 121,
+          "seconds": 0.015210299985483289
+        },
+        {
+          "request": 7,
+          "action_index": 122,
+          "seconds": 0.014538645977154374
+        },
+        {
+          "request": 8,
+          "action_index": 140,
+          "seconds": 0.016607291996479034
+        },
+        {
+          "request": 8,
+          "action_index": 141,
+          "seconds": 0.016560239950194955
+        },
+        {
+          "request": 8,
+          "action_index": 142,
+          "seconds": 0.015484116971492767
+        },
+        {
+          "request": 9,
+          "action_index": 160,
+          "seconds": 0.015782442991621792
+        },
+        {
+          "request": 9,
+          "action_index": 161,
+          "seconds": 0.013857669080607593
+        },
+        {
+          "request": 9,
+          "action_index": 162,
+          "seconds": 0.010948091046884656
+        },
+        {
+          "request": 10,
+          "action_index": 180,
+          "seconds": 0.02669999294448644
+        },
+        {
+          "request": 10,
+          "action_index": 181,
+          "seconds": 0.012985997018404305
+        },
+        {
+          "request": 10,
+          "action_index": 182,
+          "seconds": 0.012368950992822647
+        },
+        {
+          "request": 11,
+          "action_index": 200,
+          "seconds": 0.020020470954477787
+        },
+        {
+          "request": 11,
+          "action_index": 201,
+          "seconds": 0.013213188969530165
+        },
+        {
+          "request": 11,
+          "action_index": 202,
+          "seconds": 0.013526192051358521
+        },
+        {
+          "request": 12,
+          "action_index": 220,
+          "seconds": 0.032239077030681074
+        },
+        {
+          "request": 12,
+          "action_index": 221,
+          "seconds": 0.012833037064410746
+        },
+        {
+          "request": 12,
+          "action_index": 222,
+          "seconds": 0.015237797982990742
+        },
+        {
+          "request": 13,
+          "action_index": 240,
+          "seconds": 0.03145061002578586
+        },
+        {
+          "request": 13,
+          "action_index": 241,
+          "seconds": 0.0131109090289101
+        },
+        {
+          "request": 13,
+          "action_index": 242,
+          "seconds": 0.012778391013853252
+        },
+        {
+          "request": 14,
+          "action_index": 260,
+          "seconds": 0.03614994010422379
+        },
+        {
+          "request": 14,
+          "action_index": 261,
+          "seconds": 0.014304421027190983
+        },
+        {
+          "request": 14,
+          "action_index": 262,
+          "seconds": 0.013852218980900943
+        }
+      ],
+      "actual_delays": [
+        0,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "request_seconds": [
+        0.13622443203348666,
+        0.11662145995069295,
+        0.11752409697510302,
+        0.13582281197886914,
+        0.12705831392668188,
+        0.12300010398030281,
+        0.12471907900180668,
+        0.1122456609737128,
+        0.13368782307952642,
+        0.12845689104869962,
+        0.13314275396987796,
+        0.13285383000038564,
+        0.1381176169961691
+      ],
+      "queue_wait_seconds": [
+        0.0018986329669132829,
+        0.0008214040426537395,
+        0.0008746270323172212,
+        0.0032836360624060035,
+        0.0018772740149870515,
+        0.0014045099960640073,
+        0.0015776919899508357,
+        0.0009975379798561335,
+        0.0014734079595655203,
+        0.0038012240547686815,
+        0.002763867028988898,
+        0.0025824710028246045,
+        0.0026256770361214876
+      ],
+      "bootstrap_s": 4.8099149169866,
+      "identity": [
+        7,
+        18
+      ],
+      "cohort": "known_diagnostic",
+      "delay_pairs": [
+        [
+          7,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ]
+      ],
+      "guided_requests": 13,
+      "capture_seconds": 4.7312902309931815
+    },
+    {
+      "ordinal": 25,
+      "pair_index": 8,
+      "arm": "serialized",
+      "success": true,
+      "terminal_reason": "native_success",
+      "wall_s": 7.40918804006651,
+      "actions": 141,
+      "no_action_slots": 8,
+      "takeovers": 7,
+      "underflows": 0,
+      "request_count": 8,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [],
+      "actual_delays": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "request_seconds": [
+        0.08204442798160017,
+        0.08190107007976621,
+        0.0701742919627577,
+        0.07121317298151553,
+        0.07270538003649563,
+        0.0829777120379731,
+        0.08601899002678692
+      ],
+      "queue_wait_seconds": [
+        0.001568555017001927,
+        0.002757639973424375,
+        0.0009982120245695114,
+        0.0006799129769206047,
+        0.0005975400563329458,
+        0.001646767952479422,
+        0.0011788540286943316
+      ],
+      "bootstrap_s": 4.78031279402785,
+      "identity": [
+        7,
+        18
+      ],
+      "cohort": "known_diagnostic",
+      "delay_pairs": [
+        [
+          7,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ]
+      ],
+      "guided_requests": 0,
+      "capture_seconds": 4.700783538981341
+    },
+    {
+      "ordinal": 26,
+      "pair_index": 8,
+      "arm": "aligned_async",
+      "success": true,
+      "terminal_reason": "native_success",
+      "wall_s": 7.03934181202203,
+      "actions": 141,
+      "no_action_slots": 0,
+      "takeovers": 6,
+      "underflows": 0,
+      "request_count": 8,
+      "expired": 0,
+      "cancelled_at_stop": 1,
+      "overlaps": [
+        {
+          "request": 2,
+          "action_index": 20,
+          "seconds": 0.026369237923063338
+        },
+        {
+          "request": 2,
+          "action_index": 21,
+          "seconds": 0.015918802935630083
+        },
+        {
+          "request": 3,
+          "action_index": 40,
+          "seconds": 0.019848626921884716
+        },
+        {
+          "request": 3,
+          "action_index": 41,
+          "seconds": 0.012743592029437423
+        },
+        {
+          "request": 4,
+          "action_index": 60,
+          "seconds": 0.01934908307157457
+        },
+        {
+          "request": 4,
+          "action_index": 61,
+          "seconds": 0.01923790294677019
+        },
+        {
+          "request": 5,
+          "action_index": 80,
+          "seconds": 0.02633221703581512
+        },
+        {
+          "request": 5,
+          "action_index": 81,
+          "seconds": 0.018232999951578677
+        },
+        {
+          "request": 6,
+          "action_index": 100,
+          "seconds": 0.017342817969620228
+        },
+        {
+          "request": 6,
+          "action_index": 101,
+          "seconds": 0.015252890065312386
+        },
+        {
+          "request": 7,
+          "action_index": 120,
+          "seconds": 0.023797388072125614
+        },
+        {
+          "request": 7,
+          "action_index": 121,
+          "seconds": 0.016633055987767875
+        },
+        {
+          "request": 8,
+          "action_index": 140,
+          "seconds": 0.02767530595883727
+        }
+      ],
+      "actual_delays": [
+        0,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "request_seconds": [
+        0.09042345394846052,
+        0.08530837402213365,
+        0.07593544700648636,
+        0.08259000407997519,
+        0.07628466608002782,
+        0.07843491202220321,
+        0.09012008993886411
+      ],
+      "queue_wait_seconds": [
+        0.0022214960772544146,
+        0.002335189958103001,
+        0.0007981749949976802,
+        0.00150001491419971,
+        0.0007905779639258981,
+        0.0016708889743313193,
+        0.0009712160099297762
+      ],
+      "bootstrap_s": 4.775406682980247,
+      "identity": [
+        7,
+        18
+      ],
+      "cohort": "known_diagnostic",
+      "delay_pairs": [
+        [
+          7,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ]
+      ],
+      "guided_requests": 0,
+      "capture_seconds": 4.695456442073919
+    },
+    {
+      "ordinal": 27,
+      "pair_index": 9,
+      "arm": "serialized",
+      "success": true,
+      "terminal_reason": "native_success",
+      "wall_s": 9.922721051960252,
+      "actions": 190,
+      "no_action_slots": 9,
+      "takeovers": 9,
+      "underflows": 0,
+      "request_count": 10,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [],
+      "actual_delays": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "request_seconds": [
+        0.06939287099521607,
+        0.07845036091748625,
+        0.07238548900932074,
+        0.07866677700076252,
+        0.07989252603147179,
+        0.07145556493196636,
+        0.08058201393578202,
+        0.06717029900755733,
+        0.07883148302789778
+      ],
+      "queue_wait_seconds": [
+        0.0006173980655148625,
+        0.0013867090456187725,
+        0.001729278010316193,
+        0.002002913039177656,
+        0.0017149250488728285,
+        0.0015592860290780663,
+        0.0017524200957268476,
+        0.0006901660235598683,
+        0.0014940269757062197
+      ],
+      "bootstrap_s": 4.5945141380652785,
+      "identity": [
+        7,
+        19
+      ],
+      "cohort": "known_diagnostic",
+      "delay_pairs": [
+        [
+          7,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          3,
+          0,
+          30
+        ]
+      ],
+      "guided_requests": 0,
+      "capture_seconds": 4.516017833841033
+    },
+    {
+      "ordinal": 28,
+      "pair_index": 9,
+      "arm": "aligned_async",
+      "success": false,
+      "terminal_reason": "time_limit",
+      "wall_s": 13.973706641001627,
+      "actions": 280,
+      "no_action_slots": 0,
+      "takeovers": 13,
+      "underflows": 0,
+      "request_count": 14,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [
+        {
+          "request": 2,
+          "action_index": 20,
+          "seconds": 0.01146204606629908
+        },
+        {
+          "request": 2,
+          "action_index": 21,
+          "seconds": 0.013777495943941176
+        },
+        {
+          "request": 3,
+          "action_index": 40,
+          "seconds": 0.023845021962188184
+        },
+        {
+          "request": 3,
+          "action_index": 41,
+          "seconds": 0.011550651048310101
+        },
+        {
+          "request": 4,
+          "action_index": 60,
+          "seconds": 0.028823727974668145
+        },
+        {
+          "request": 4,
+          "action_index": 61,
+          "seconds": 0.012330084922723472
+        },
+        {
+          "request": 5,
+          "action_index": 80,
+          "seconds": 0.02315203903708607
+        },
+        {
+          "request": 5,
+          "action_index": 81,
+          "seconds": 0.013826592941768467
+        },
+        {
+          "request": 6,
+          "action_index": 100,
+          "seconds": 0.028843565960414708
+        },
+        {
+          "request": 6,
+          "action_index": 101,
+          "seconds": 0.013012754963710904
+        },
+        {
+          "request": 7,
+          "action_index": 120,
+          "seconds": 0.03876686003059149
+        },
+        {
+          "request": 7,
+          "action_index": 121,
+          "seconds": 0.013577495003119111
+        },
+        {
+          "request": 8,
+          "action_index": 140,
+          "seconds": 0.029539374983869493
+        },
+        {
+          "request": 8,
+          "action_index": 141,
+          "seconds": 0.013050111941993237
+        },
+        {
+          "request": 9,
+          "action_index": 160,
+          "seconds": 0.030932686990126967
+        },
+        {
+          "request": 9,
+          "action_index": 161,
+          "seconds": 0.011965246987529099
+        },
+        {
+          "request": 10,
+          "action_index": 180,
+          "seconds": 0.026394871063530445
+        },
+        {
+          "request": 10,
+          "action_index": 181,
+          "seconds": 0.013542524073272943
+        },
+        {
+          "request": 11,
+          "action_index": 200,
+          "seconds": 0.026656468980945647
+        },
+        {
+          "request": 11,
+          "action_index": 201,
+          "seconds": 0.013662197045050561
+        },
+        {
+          "request": 12,
+          "action_index": 220,
+          "seconds": 0.02571589802391827
+        },
+        {
+          "request": 12,
+          "action_index": 221,
+          "seconds": 0.012416323996149004
+        },
+        {
+          "request": 13,
+          "action_index": 240,
+          "seconds": 0.029348158976063132
+        },
+        {
+          "request": 13,
+          "action_index": 241,
+          "seconds": 0.012725737993605435
+        },
+        {
+          "request": 14,
+          "action_index": 260,
+          "seconds": 0.02098520507570356
+        },
+        {
+          "request": 14,
+          "action_index": 261,
+          "seconds": 0.015719471033662558
+        }
+      ],
+      "actual_delays": [
+        0,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "request_seconds": [
+        0.07023768301587552,
+        0.08167885395232588,
+        0.08640064904466271,
+        0.08444920496549457,
+        0.08522306091617793,
+        0.0960172499762848,
+        0.0848918929696083,
+        0.0896739480085671,
+        0.08598613692447543,
+        0.08427237696014345,
+        0.08243044896516949,
+        0.08627768896985799,
+        0.08067736006341875
+      ],
+      "queue_wait_seconds": [
+        0.0008792439475655556,
+        0.002185728051699698,
+        0.0025471349945291877,
+        0.0017705541104078293,
+        0.0017345370724797249,
+        0.001909230020828545,
+        0.001771531067788601,
+        0.0018506929045543075,
+        0.0021257520420476794,
+        0.0019476549932733178,
+        0.002232559025287628,
+        0.002602249034680426,
+        0.0024598949821665883
+      ],
+      "bootstrap_s": 4.536334260017611,
+      "identity": [
+        7,
+        19
+      ],
+      "cohort": "known_diagnostic",
+      "delay_pairs": [
+        [
+          7,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ],
+        [
+          3,
+          2,
+          30
+        ]
+      ],
+      "guided_requests": 0,
+      "capture_seconds": 4.460661790915765
+    },
+    {
+      "ordinal": 29,
+      "pair_index": 9,
+      "arm": "rtc_async",
+      "success": true,
+      "terminal_reason": "native_success",
+      "wall_s": 8.421859703026712,
+      "actions": 169,
+      "no_action_slots": 0,
+      "takeovers": 8,
+      "underflows": 0,
+      "request_count": 9,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "overlaps": [
+        {
+          "request": 2,
+          "action_index": 20,
+          "seconds": 0.024590831948444247
+        },
+        {
+          "request": 2,
+          "action_index": 21,
+          "seconds": 0.01266690797638148
+        },
+        {
+          "request": 2,
+          "action_index": 22,
+          "seconds": 0.01443220698274672
+        },
+        {
+          "request": 3,
+          "action_index": 40,
+          "seconds": 0.012729692040011287
+        },
+        {
+          "request": 3,
+          "action_index": 41,
+          "seconds": 0.013537444057874382
+        },
+        {
+          "request": 3,
+          "action_index": 42,
+          "seconds": 0.012809501960873604
+        },
+        {
+          "request": 4,
+          "action_index": 60,
+          "seconds": 0.02612385991960764
+        },
+        {
+          "request": 4,
+          "action_index": 61,
+          "seconds": 0.012557231006212533
+        },
+        {
+          "request": 4,
+          "action_index": 62,
+          "seconds": 0.01386035094037652
+        },
+        {
+          "request": 5,
+          "action_index": 80,
+          "seconds": 0.03004079300444573
+        },
+        {
+          "request": 5,
+          "action_index": 81,
+          "seconds": 0.015471155988052487
+        },
+        {
+          "request": 5,
+          "action_index": 82,
+          "seconds": 0.011977510992437601
+        },
+        {
+          "request": 6,
+          "action_index": 100,
+          "seconds": 0.025598785025067627
+        },
+        {
+          "request": 6,
+          "action_index": 101,
+          "seconds": 0.014088017982430756
+        },
+        {
+          "request": 6,
+          "action_index": 102,
+          "seconds": 0.013137181056663394
+        },
+        {
+          "request": 7,
+          "action_index": 120,
+          "seconds": 0.0151193329365924
+        },
+        {
+          "request": 7,
+          "action_index": 121,
+          "seconds": 0.014631378930062056
+        },
+        {
+          "request": 7,
+          "action_index": 122,
+          "seconds": 0.013808874995447695
+        },
+        {
+          "request": 8,
+          "action_index": 140,
+          "seconds": 0.0304810949601233
+        },
+        {
+          "request": 8,
+          "action_index": 141,
+          "seconds": 0.01412906707264483
+        },
+        {
+          "request": 8,
+          "action_index": 142,
+          "seconds": 0.01396733894944191
+        },
+        {
+          "request": 9,
+          "action_index": 160,
+          "seconds": 0.026838927064090967
+        },
+        {
+          "request": 9,
+          "action_index": 161,
+          "seconds": 0.01264066994190216
+        },
+        {
+          "request": 9,
+          "action_index": 162,
+          "seconds": 0.014282393967732787
+        }
+      ],
+      "actual_delays": [
+        0,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "request_seconds": [
+        0.13741738896351308,
+        0.11396764405071735,
+        0.12301180593203753,
+        0.12872513791080564,
+        0.12287206598557532,
+        0.11500910902395844,
+        0.12801335100084543,
+        0.12411156296730042
+      ],
+      "queue_wait_seconds": [
+        0.0021727170096710324,
+        0.0008052890188992023,
+        0.001985516049899161,
+        0.001810964080505073,
+        0.0018619330367073417,
+        0.0008094629738479853,
+        0.0018428799230605364,
+        0.0017003020038828254
+      ],
+      "bootstrap_s": 4.497889613965526,
+      "identity": [
+        7,
+        19
+      ],
+      "cohort": "known_diagnostic",
+      "delay_pairs": [
+        [
+          7,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ],
+        [
+          4,
+          3,
+          30
+        ]
+      ],
+      "guided_requests": 8,
+      "capture_seconds": 4.423035484971479
+    }
+  ],
+  "calls_closed": 10466,
+  "phases": {
+    "started": 32,
+    "returned": 32
+  },
+  "kinds": {
+    "environment_factory": 30,
+    "environment_ensure_and_initial_reset": 30,
+    "environment_reset": 30,
+    "native_seed": 30,
+    "native_reset": 30,
+    "native_set_init_state": 30,
+    "native_step": 5150,
+    "dynamic_graph_request": 256,
+    "environment_step": 4850,
+    "environment_close": 30
+  },
+  "stage": "feedback",
+  "first_failure": null,
+  "audit_model_forwards": 0,
+  "cuda_initialized": false,
+  "new_qualification_claimed": false,
+  "deployment_qualified": false,
+  "limitations": [
+    "Old development data; no independent task qualification.",
+    "CPU audit does not rerun model, VJP, RGB encoding, postprocessing, physics or GPU timing."
+  ]
+}

@@ -1,0 +1,239 @@
+{
+  "analysis_kind": "posthoc CPU saved-array description; not a new gate or rollout",
+  "cohorts": {
+    "pilot_development": {
+      "serialized": {
+        "n": 8,
+        "successes": 7
+      },
+      "aligned_async": {
+        "n": 8,
+        "successes": 7
+      },
+      "rtc_async": {
+        "n": 8,
+        "successes": 7
+      }
+    },
+    "known_diagnostic": {
+      "serialized": {
+        "n": 2,
+        "successes": 2
+      },
+      "aligned_async": {
+        "n": 2,
+        "successes": 1
+      },
+      "rtc_async": {
+        "n": 2,
+        "successes": 1
+      }
+    }
+  },
+  "first_replans": [
+    {
+      "identity": [
+        0,
+        10
+      ],
+      "eight_inputs_exact": true,
+      "old_normalized_prefix_exact": true,
+      "expected_delay": 7,
+      "actual_delay": 3,
+      "expected_prefix_mse": {
+        "no_rtc": 0.12829164513298225,
+        "rtc": 0.021260529878702323
+      },
+      "actual_prefix_mse": {
+        "no_rtc": 0.07590820718666605,
+        "rtc": 0.0026314135961824536
+      },
+      "rtc_vs_unguided_full_mse": 0.003076055021084339
+    },
+    {
+      "identity": [
+        2,
+        10
+      ],
+      "eight_inputs_exact": true,
+      "old_normalized_prefix_exact": true,
+      "expected_delay": 7,
+      "actual_delay": 3,
+      "expected_prefix_mse": {
+        "no_rtc": 0.29937851585641934,
+        "rtc": 0.002458257596761562
+      },
+      "actual_prefix_mse": {
+        "no_rtc": 0.14848699991099507,
+        "rtc": 0.0029551285551498393
+      },
+      "rtc_vs_unguided_full_mse": 0.010752980174991324
+    },
+    {
+      "identity": [
+        6,
+        10
+      ],
+      "eight_inputs_exact": true,
+      "old_normalized_prefix_exact": true,
+      "expected_delay": 7,
+      "actual_delay": 3,
+      "expected_prefix_mse": {
+        "no_rtc": 0.5355740073239103,
+        "rtc": 0.0029230391456897724
+      },
+      "actual_prefix_mse": {
+        "no_rtc": 0.2812618318495047,
+        "rtc": 0.0019722406121522634
+      },
+      "rtc_vs_unguided_full_mse": 0.020372875086291757
+    },
+    {
+      "identity": [
+        7,
+        10
+      ],
+      "eight_inputs_exact": true,
+      "old_normalized_prefix_exact": true,
+      "expected_delay": 7,
+      "actual_delay": 3,
+      "expected_prefix_mse": {
+        "no_rtc": 0.06153778265934158,
+        "rtc": 0.004362331453222407
+      },
+      "actual_prefix_mse": {
+        "no_rtc": 0.070436066882807,
+        "rtc": 0.004326589806515555
+      },
+      "rtc_vs_unguided_full_mse": 0.0022649981317002773
+    },
+    {
+      "identity": [
+        7,
+        11
+      ],
+      "eight_inputs_exact": true,
+      "old_normalized_prefix_exact": true,
+      "expected_delay": 7,
+      "actual_delay": 3,
+      "expected_prefix_mse": {
+        "no_rtc": 0.18600440136357976,
+        "rtc": 0.0029871166169080834
+      },
+      "actual_prefix_mse": {
+        "no_rtc": 0.24714364319187415,
+        "rtc": 0.0027380866201678167
+      },
+      "rtc_vs_unguided_full_mse": 0.007707386568922824
+    },
+    {
+      "identity": [
+        6,
+        11
+      ],
+      "eight_inputs_exact": true,
+      "old_normalized_prefix_exact": true,
+      "expected_delay": 7,
+      "actual_delay": 3,
+      "expected_prefix_mse": {
+        "no_rtc": 0.12079713625988045,
+        "rtc": 0.001522329398521672
+      },
+      "actual_prefix_mse": {
+        "no_rtc": 0.1359869514734966,
+        "rtc": 0.0015996048453876704
+      },
+      "rtc_vs_unguided_full_mse": 0.003939621898280915
+    },
+    {
+      "identity": [
+        2,
+        11
+      ],
+      "eight_inputs_exact": true,
+      "old_normalized_prefix_exact": true,
+      "expected_delay": 7,
+      "actual_delay": 4,
+      "expected_prefix_mse": {
+        "no_rtc": 0.07008099646524868,
+        "rtc": 0.0014220832119355034
+      },
+      "actual_prefix_mse": {
+        "no_rtc": 0.08896934379567108,
+        "rtc": 0.0013455129993824786
+      },
+      "rtc_vs_unguided_full_mse": 0.0022023394916523757
+    },
+    {
+      "identity": [
+        0,
+        11
+      ],
+      "eight_inputs_exact": true,
+      "old_normalized_prefix_exact": true,
+      "expected_delay": 7,
+      "actual_delay": 3,
+      "expected_prefix_mse": {
+        "no_rtc": 0.09041384692499774,
+        "rtc": 0.004778936623400913
+      },
+      "actual_prefix_mse": {
+        "no_rtc": 0.11629661415306879,
+        "rtc": 0.0034636047273508526
+      },
+      "rtc_vs_unguided_full_mse": 0.002597517592732323
+    },
+    {
+      "identity": [
+        7,
+        18
+      ],
+      "eight_inputs_exact": true,
+      "old_normalized_prefix_exact": true,
+      "expected_delay": 7,
+      "actual_delay": 3,
+      "expected_prefix_mse": {
+        "no_rtc": 0.17332582312468323,
+        "rtc": 0.002618551686958187
+      },
+      "actual_prefix_mse": {
+        "no_rtc": 0.09081841035327823,
+        "rtc": 0.0016716426467354036
+      },
+      "rtc_vs_unguided_full_mse": 0.006622446697438132
+    },
+    {
+      "identity": [
+        7,
+        19
+      ],
+      "eight_inputs_exact": true,
+      "old_normalized_prefix_exact": true,
+      "expected_delay": 7,
+      "actual_delay": 3,
+      "expected_prefix_mse": {
+        "no_rtc": 0.21602831171350872,
+        "rtc": 0.0016365268875056813
+      },
+      "actual_prefix_mse": {
+        "no_rtc": 0.1783852275899153,
+        "rtc": 0.0020281902476619687
+      },
+      "rtc_vs_unguided_full_mse": 0.006941619719550996
+    }
+  ],
+  "rtc_delay_pairs_n": 79,
+  "overpredicted": 78,
+  "equal": 1,
+  "underpredicted": 0,
+  "mean_expected_minus_actual": 1.4303797468354431,
+  "capture_total_s": 142.16710854391567,
+  "new_model_forwards": 0,
+  "new_env": 0,
+  "cuda_initialized": false,
+  "limitations": [
+    "Prefix matching is not expert action quality or a success predictor.",
+    "Only first replanning requests are matched here; later trajectories differ.",
+    "Expected delay overprediction is descriptive, not a demonstrated cause."
+  ]
+}

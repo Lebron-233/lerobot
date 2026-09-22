@@ -1,0 +1,205 @@
+{
+  "experiment": "E-RDC1",
+  "stage": "inputs",
+  "execution_head": "fa80d0b5f70f94bce04b9e0c320e5cd31d375a5b",
+  "status": "completed",
+  "first_failure": null,
+  "vla_frozen": true,
+  "dynamic_equivalence_passed": true,
+  "runtime_receipt": {
+    "requests": 482,
+    "rgb_encodings": 482,
+    "captures": [
+      {
+        "guided": false,
+        "owner": 139976870471488,
+        "setup": 1,
+        "warmup": 3,
+        "capture": 1,
+        "projection_shapes": [
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ]
+        ],
+        "status": "captured",
+        "captured_steps": 10,
+        "captured_vjps": 0,
+        "seconds": 1.36802722804714
+      },
+      {
+        "guided": true,
+        "owner": 139976870471488,
+        "setup": 1,
+        "warmup": 3,
+        "capture": 1,
+        "projection_shapes": [
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ]
+        ],
+        "status": "captured",
+        "captured_steps": 10,
+        "captured_vjps": 10,
+        "seconds": 3.229836718994193
+      }
+    ],
+    "replays": {
+      "no_prefix": 16,
+      "guided": 225
+    },
+    "native_steps": {
+      "public": {
+        "steps": 2410,
+        "guided_vjps_returned": 2250
+      }
+    },
+    "cached_steps": {
+      "setup": {
+        "steps": 20,
+        "guided_vjps_returned": 10
+      },
+      "warmup": {
+        "steps": 60,
+        "guided_vjps_returned": 30
+      },
+      "capture": {
+        "steps": 20,
+        "guided_vjps_returned": 10
+      }
+    },
+    "sampler_restored": true,
+    "processor_restored": true,
+    "graphs_released": true,
+    "owner": 139976870471488,
+    "close_thread": 139976870471488
+  },
+  "completed_requests": 482,
+  "attempts": 1,
+  "retries": 0,
+  "new_env": 0,
+  "training_updates": 0,
+  "qualification_reads": 0,
+  "realtime_qualified": false,
+  "execution": {
+    "child_pid": 1644749,
+    "exit_code": 0,
+    "exit_confirmed": true,
+    "started_utc": "2026-09-22T01:24:45.675284+00:00",
+    "finished_utc": "2026-09-22T01:28:08.679516+00:00",
+    "wall_s": 203.00428467104211,
+    "stop_reason": null,
+    "forced": false,
+    "pending": {},
+    "active": {}
+  },
+  "accounting": {
+    "call_intents": {
+      "dynamic_request": 482
+    },
+    "call_returns": {
+      "dynamic_request": 482
+    },
+    "call_errors": {},
+    "unknown_calls": [],
+    "journal_consistent": true,
+    "measured_native_returns": 0,
+    "settling_native_returns": 0,
+    "request_snapshots": 0,
+    "last_model_phase": null,
+    "accounting_basis": "flushed_call_intent_return_error_journal"
+  }
+}
