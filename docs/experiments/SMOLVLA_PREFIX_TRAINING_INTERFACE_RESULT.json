@@ -1,0 +1,71 @@
+{
+  "experiment": "F-PTI1",
+  "head": "30e495c32fb49740bb487b90920d18e4f7656395",
+  "status": "completed",
+  "first_failure": null,
+  "registration_id": 5771229301,
+  "forwards_started": 5,
+  "forwards_returned": 5,
+  "backwards": 5,
+  "model_loads": 1,
+  "optimizer_updates": 0,
+  "new_env": 0,
+  "graph_captures": 0,
+  "attempts": 1,
+  "retries": 0,
+  "cases": [
+    {
+      "label": "native_c0",
+      "C": 0,
+      "source_row": 20,
+      "valid_rows": 50,
+      "coordinates": 350,
+      "loss": 0.39132222533226013,
+      "seconds": 0.7161712560337037
+    },
+    {
+      "label": "interface_c0",
+      "C": 0,
+      "source_row": 20,
+      "valid_rows": 50,
+      "coordinates": 350,
+      "loss": 0.39132222533226013,
+      "seconds": 0.1163098179968074
+    },
+    {
+      "label": "interface_c3",
+      "C": 3,
+      "source_row": 20,
+      "valid_rows": 50,
+      "coordinates": 329,
+      "loss": 0.40979960560798645,
+      "seconds": 0.12507342302706093
+    },
+    {
+      "label": "interface_c8",
+      "C": 8,
+      "source_row": 20,
+      "valid_rows": 50,
+      "coordinates": 294,
+      "loss": 0.5240527987480164,
+      "seconds": 0.11743163596838713
+    },
+    {
+      "label": "terminal_c1",
+      "C": 1,
+      "source_row": 172,
+      "valid_rows": 3,
+      "coordinates": 14,
+      "loss": 0.20138122141361237,
+      "seconds": 0.13015370501670986
+    }
+  ],
+  "projection_parameters_unchanged": true,
+  "c0_exact": true,
+  "projection_gradient_tensors": 8,
+  "cuda_peak_allocated_bytes": 1557575680,
+  "all_sources_unchanged": true,
+  "requires_grad_restored": true,
+  "wall_s": 7.771407122025266,
+  "evidence_sha256": "782a0a68ec135105a333d34d752fc9fc695d722e0b5622c554acc5a1e6b583ce"
+}

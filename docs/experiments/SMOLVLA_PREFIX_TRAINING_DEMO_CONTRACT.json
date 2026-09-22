@@ -1,0 +1,36 @@
+{
+  "episode": 814,
+  "task_index": 25,
+  "language": "pick up the milk and place it in the basket",
+  "rows": 175,
+  "diagnostic_anchors": [
+    20,
+    172
+  ],
+  "cross_source_numeric_columns_exact": [
+    "episode_index",
+    "task_index",
+    "frame_index",
+    "index",
+    "timestamp",
+    "observation.state",
+    "action"
+  ],
+  "image_source": "original embedded image bytes; no flip or resampling",
+  "numeric_source": "lerobot/libero@a1aaacb7f6cd6ee5fb43120f673cebb0cfea7dd4",
+  "image_repository": "HuggingFaceVLA/libero@86958911c0f959db2bbbdb107eb3e17c5f9c798e",
+  "files": {
+    "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_prefix_training_interface_20260922/matched_demo.parquet": "badabde0650deb7b356aa99d5cf98cd62a5a3a354b874acb4a081a6c4669990d",
+    "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_prefix_training_interface_20260922/corrected_source/data.parquet": "cbc2fb9de2e46aae1889bbf50e909b702b1a50c3763abfe1e7395e6478eb47b5",
+    "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_prefix_training_interface_20260922/corrected_source/episodes.parquet": "324db6d3f8efbfb340177507c11bfa2e78b1753c46802b3700fa8c8b4be461db",
+    "/home/rp/Workspace/SmolVLA_RTC/lerobot/outputs/smolvla_prefix_training_interface_20260922/corrected_source/tasks.parquet": "80bbbcdf623b7447c0f187af8ea70aa3a5c0018aaf56adba1731aeddcf18f5ff"
+  },
+  "packet_sha256": "b134a3efe14f2d745c4ed7dddb0319394d36e4ae0afba5e8a51825259b6d3276",
+  "stored_fps": 10.0,
+  "timestamp_step": 0.1,
+  "physical_control_step_proven": false,
+  "full_training_ready": false,
+  "use": "numerical forward/backward interface diagnostic only, no optimizer updates",
+  "train_dev_test_split_claimed": false,
+  "base_pretraining_unseen_claimed": false
+}

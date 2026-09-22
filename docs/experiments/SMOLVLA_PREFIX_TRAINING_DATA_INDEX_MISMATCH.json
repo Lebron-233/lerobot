@@ -1,0 +1,111 @@
+{
+  "source": {
+    "dataset": "HuggingFaceVLA/libero",
+    "revision": "86958911c0f959db2bbbdb107eb3e17c5f9c798e",
+    "path": "data/chunk-000/file-037.parquet",
+    "url": "https://huggingface.co/datasets/HuggingFaceVLA/libero/resolve/86958911c0f959db2bbbdb107eb3e17c5f9c798e/data/chunk-000/file-037.parquet",
+    "sha256": "053a7c57ce09d15802a7747503b4e8825d59871297d2cc3a2928176e78ee6654",
+    "bytes": 103342449,
+    "seconds": 30.295614978997037
+  },
+  "metadata_target": {
+    "episode_index": 814,
+    "data/chunk_index": 0,
+    "data/file_index": 37,
+    "dataset_from_index": 154492,
+    "dataset_to_index": 154667,
+    "tasks": [
+      "pick up the milk and place it in the basket"
+    ],
+    "length": 175
+  },
+  "actual_episodes": [
+    {
+      "episode_index": 90,
+      "rows": 223,
+      "task_indices": [
+        8
+      ],
+      "frame_first_last": [
+        0,
+        222
+      ],
+      "global_first_last": [
+        25124,
+        25346
+      ],
+      "state_shape": [
+        223,
+        8
+      ],
+      "action_shape": [
+        223,
+        7
+      ],
+      "finite": true,
+      "timestamp_diff_minmax": [
+        0.09999847412109375,
+        0.10000038146972656
+      ]
+    },
+    {
+      "episode_index": 91,
+      "rows": 258,
+      "task_indices": [
+        7
+      ],
+      "frame_first_last": [
+        0,
+        257
+      ],
+      "global_first_last": [
+        25347,
+        25604
+      ],
+      "state_shape": [
+        258,
+        8
+      ],
+      "action_shape": [
+        258,
+        7
+      ],
+      "finite": true,
+      "timestamp_diff_minmax": [
+        0.09999847412109375,
+        0.10000038146972656
+      ]
+    },
+    {
+      "episode_index": 92,
+      "rows": 280,
+      "task_indices": [
+        5
+      ],
+      "frame_first_last": [
+        0,
+        279
+      ],
+      "global_first_last": [
+        25605,
+        25884
+      ],
+      "state_shape": [
+        280,
+        8
+      ],
+      "action_shape": [
+        280,
+        7
+      ],
+      "finite": true,
+      "timestamp_diff_minmax": [
+        0.09999847412109375,
+        0.10000038146972656
+      ]
+    }
+  ],
+  "target_present": false,
+  "metadata_row_total": 3946,
+  "actual_rows": 761
+}

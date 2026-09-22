@@ -1,0 +1,40 @@
+{
+  "checked_utc": "2026-09-22T04:32:13.678955+00:00",
+  "execution_head": "30e495c32fb49740bb487b90920d18e4f7656395",
+  "session": "wc_sess_dd77d5a04d6d4b3782aee5191ee848f9",
+  "formal_job": "1662f75a-5c32-4785-954e-e563f2b2cb99",
+  "formal_exit_code": 0,
+  "audit_exit_code": 0,
+  "formal_attempts": 1,
+  "formal_retries": 0,
+  "sources_unchanged": 33,
+  "old_pending_unchanged": 21,
+  "demo_cross_source_rows_exact": 175,
+  "cpu_tests": {
+    "passed": 154,
+    "skipped": 1,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 18.005
+  },
+  "registration_id": 5771229301,
+  "pretrained_optimizer_updates": 0,
+  "new_env": 0,
+  "scientific_success_claimed": false,
+  "technical_interface_passed": true,
+  "new_safety_interceptions": 0,
+  "hashes": {
+    "result.json": "319ef862ca0fa1c9745eabba251898695c1451731f62f660c78daeaaeb7a8ffd",
+    "independent_audit.json": "d3b578baf46c687f4584e5de221e726a85290c0da1bef5b222279e2da4abb873",
+    "evidence.pt": "782a0a68ec135105a333d34d752fc9fc695d722e0b5622c554acc5a1e6b583ce"
+  },
+  "data_contract_sha256": "0f1f79895df25299c45ecaeb4b34daf7e61ff78b2f0ffde81899165789323324",
+  "development_notes": [
+    "Initial C0 flattened loss reduction differed in its last bits; preserved native reduction and exact tests passed.",
+    "PyArrow absent in frozen inference venv; existing CPU data environment used without installs.",
+    "Two legacy jsonl metadata requests returned404; used v3 parquet files.",
+    "Corrected metadata omits tasks; selected fixed episode then verified actual task and row interval.",
+    "Ruff naming and closure binding fixed before execution freeze."
+  ],
+  "audit_scope": "CPU arrays/arithmetic audit, not a second model run or parameter-gradient derivation."
+}

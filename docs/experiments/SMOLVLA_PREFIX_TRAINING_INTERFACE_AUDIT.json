@@ -1,0 +1,55 @@
+{
+  "independent_contract_accepted": true,
+  "real_checkpoint_forwards": 5,
+  "c0_exact_arrays": 4,
+  "c0_exact_parameter_gradient_tensors": 8,
+  "cases": [
+    {
+      "label": "native_c0",
+      "C": 0,
+      "valid_rows": 50,
+      "coordinates": 350,
+      "independent_loss": 0.391322255030254
+    },
+    {
+      "label": "interface_c0",
+      "C": 0,
+      "valid_rows": 50,
+      "coordinates": 350,
+      "independent_loss": 0.391322255030254
+    },
+    {
+      "label": "interface_c3",
+      "C": 3,
+      "valid_rows": 50,
+      "coordinates": 329,
+      "independent_loss": 0.40979956602614487
+    },
+    {
+      "label": "interface_c8",
+      "C": 8,
+      "valid_rows": 50,
+      "coordinates": 294,
+      "independent_loss": 0.5240528175519032
+    },
+    {
+      "label": "terminal_c1",
+      "C": 1,
+      "valid_rows": 3,
+      "coordinates": 14,
+      "independent_loss": 0.20138120282217725
+    }
+  ],
+  "optimizer_updates": 0,
+  "new_env": 0,
+  "audit_model_forwards": 0,
+  "cuda_initialized": false,
+  "training_convergence_claimed": false,
+  "task_retention_claimed": false,
+  "full_dataset_time_contract_accepted": false,
+  "limitations": [
+    "One demonstration; numerical diagnostic, not task evaluation.",
+    "Projection gradients only; no full expert-parameter optimizer test.",
+    "CPU audit does not recompute the Transformer or parameter gradients."
+  ]
+}
