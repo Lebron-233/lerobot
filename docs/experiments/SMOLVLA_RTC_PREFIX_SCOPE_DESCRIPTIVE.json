@@ -1,0 +1,452 @@
+{
+  "kind": "posthoc saved-array comparison only, not an acceptance gate",
+  "matched_first_replans": [
+    {
+      "identity": [
+        0,
+        10
+      ],
+      "first_replan_eight_inputs_exact": true,
+      "old_prefix_exact": true,
+      "noise_exact": true,
+      "declared_C": [
+        7,
+        7
+      ],
+      "actual_delay": [
+        7,
+        7
+      ],
+      "weights_first_C_equal": true,
+      "explicit_tail_nonzero_exp": 3,
+      "explicit_tail_nonzero_prefix": 0,
+      "first_replan_full_equal": false,
+      "common_observation_prefix": 28,
+      "first_command_difference": {
+        "index": 27,
+        "exp_source": [
+          2,
+          7
+        ],
+        "prefix_source": [
+          2,
+          7
+        ]
+      },
+      "outcomes": {
+        "committed_exp": {
+          "success": false,
+          "actions": 280
+        },
+        "committed_prefix": {
+          "success": false,
+          "actions": 280
+        }
+      }
+    },
+    {
+      "identity": [
+        2,
+        10
+      ],
+      "first_replan_eight_inputs_exact": true,
+      "old_prefix_exact": true,
+      "noise_exact": true,
+      "declared_C": [
+        7,
+        7
+      ],
+      "actual_delay": [
+        7,
+        7
+      ],
+      "weights_first_C_equal": true,
+      "explicit_tail_nonzero_exp": 3,
+      "explicit_tail_nonzero_prefix": 0,
+      "first_replan_full_equal": false,
+      "common_observation_prefix": 28,
+      "first_command_difference": {
+        "index": 27,
+        "exp_source": [
+          2,
+          7
+        ],
+        "prefix_source": [
+          2,
+          7
+        ]
+      },
+      "outcomes": {
+        "committed_exp": {
+          "success": true,
+          "actions": 115
+        },
+        "committed_prefix": {
+          "success": true,
+          "actions": 116
+        }
+      }
+    },
+    {
+      "identity": [
+        6,
+        10
+      ],
+      "first_replan_eight_inputs_exact": true,
+      "old_prefix_exact": true,
+      "noise_exact": true,
+      "declared_C": [
+        7,
+        7
+      ],
+      "actual_delay": [
+        7,
+        7
+      ],
+      "weights_first_C_equal": true,
+      "explicit_tail_nonzero_exp": 3,
+      "explicit_tail_nonzero_prefix": 0,
+      "first_replan_full_equal": false,
+      "common_observation_prefix": 28,
+      "first_command_difference": {
+        "index": 27,
+        "exp_source": [
+          2,
+          7
+        ],
+        "prefix_source": [
+          2,
+          7
+        ]
+      },
+      "outcomes": {
+        "committed_exp": {
+          "success": true,
+          "actions": 143
+        },
+        "committed_prefix": {
+          "success": true,
+          "actions": 142
+        }
+      }
+    },
+    {
+      "identity": [
+        7,
+        10
+      ],
+      "first_replan_eight_inputs_exact": true,
+      "old_prefix_exact": true,
+      "noise_exact": true,
+      "declared_C": [
+        7,
+        7
+      ],
+      "actual_delay": [
+        7,
+        7
+      ],
+      "weights_first_C_equal": true,
+      "explicit_tail_nonzero_exp": 3,
+      "explicit_tail_nonzero_prefix": 0,
+      "first_replan_full_equal": false,
+      "common_observation_prefix": 28,
+      "first_command_difference": {
+        "index": 27,
+        "exp_source": [
+          2,
+          7
+        ],
+        "prefix_source": [
+          2,
+          7
+        ]
+      },
+      "outcomes": {
+        "committed_exp": {
+          "success": true,
+          "actions": 124
+        },
+        "committed_prefix": {
+          "success": true,
+          "actions": 129
+        }
+      }
+    },
+    {
+      "identity": [
+        7,
+        11
+      ],
+      "first_replan_eight_inputs_exact": true,
+      "old_prefix_exact": true,
+      "noise_exact": true,
+      "declared_C": [
+        7,
+        7
+      ],
+      "actual_delay": [
+        7,
+        7
+      ],
+      "weights_first_C_equal": true,
+      "explicit_tail_nonzero_exp": 3,
+      "explicit_tail_nonzero_prefix": 0,
+      "first_replan_full_equal": false,
+      "common_observation_prefix": 28,
+      "first_command_difference": {
+        "index": 27,
+        "exp_source": [
+          2,
+          7
+        ],
+        "prefix_source": [
+          2,
+          7
+        ]
+      },
+      "outcomes": {
+        "committed_exp": {
+          "success": true,
+          "actions": 117
+        },
+        "committed_prefix": {
+          "success": true,
+          "actions": 117
+        }
+      }
+    },
+    {
+      "identity": [
+        6,
+        11
+      ],
+      "first_replan_eight_inputs_exact": true,
+      "old_prefix_exact": true,
+      "noise_exact": true,
+      "declared_C": [
+        7,
+        7
+      ],
+      "actual_delay": [
+        7,
+        7
+      ],
+      "weights_first_C_equal": true,
+      "explicit_tail_nonzero_exp": 3,
+      "explicit_tail_nonzero_prefix": 0,
+      "first_replan_full_equal": false,
+      "common_observation_prefix": 28,
+      "first_command_difference": {
+        "index": 27,
+        "exp_source": [
+          2,
+          7
+        ],
+        "prefix_source": [
+          2,
+          7
+        ]
+      },
+      "outcomes": {
+        "committed_exp": {
+          "success": true,
+          "actions": 146
+        },
+        "committed_prefix": {
+          "success": true,
+          "actions": 146
+        }
+      }
+    },
+    {
+      "identity": [
+        2,
+        11
+      ],
+      "first_replan_eight_inputs_exact": true,
+      "old_prefix_exact": true,
+      "noise_exact": true,
+      "declared_C": [
+        7,
+        7
+      ],
+      "actual_delay": [
+        7,
+        7
+      ],
+      "weights_first_C_equal": true,
+      "explicit_tail_nonzero_exp": 3,
+      "explicit_tail_nonzero_prefix": 0,
+      "first_replan_full_equal": false,
+      "common_observation_prefix": 28,
+      "first_command_difference": {
+        "index": 27,
+        "exp_source": [
+          2,
+          7
+        ],
+        "prefix_source": [
+          2,
+          7
+        ]
+      },
+      "outcomes": {
+        "committed_exp": {
+          "success": false,
+          "actions": 280
+        },
+        "committed_prefix": {
+          "success": false,
+          "actions": 280
+        }
+      }
+    },
+    {
+      "identity": [
+        0,
+        11
+      ],
+      "first_replan_eight_inputs_exact": true,
+      "old_prefix_exact": true,
+      "noise_exact": true,
+      "declared_C": [
+        7,
+        7
+      ],
+      "actual_delay": [
+        7,
+        7
+      ],
+      "weights_first_C_equal": true,
+      "explicit_tail_nonzero_exp": 3,
+      "explicit_tail_nonzero_prefix": 0,
+      "first_replan_full_equal": false,
+      "common_observation_prefix": 28,
+      "first_command_difference": {
+        "index": 27,
+        "exp_source": [
+          2,
+          7
+        ],
+        "prefix_source": [
+          2,
+          7
+        ]
+      },
+      "outcomes": {
+        "committed_exp": {
+          "success": true,
+          "actions": 133
+        },
+        "committed_prefix": {
+          "success": true,
+          "actions": 137
+        }
+      }
+    },
+    {
+      "identity": [
+        7,
+        18
+      ],
+      "first_replan_eight_inputs_exact": true,
+      "old_prefix_exact": true,
+      "noise_exact": true,
+      "declared_C": [
+        7,
+        7
+      ],
+      "actual_delay": [
+        7,
+        7
+      ],
+      "weights_first_C_equal": true,
+      "explicit_tail_nonzero_exp": 3,
+      "explicit_tail_nonzero_prefix": 0,
+      "first_replan_full_equal": false,
+      "common_observation_prefix": 28,
+      "first_command_difference": {
+        "index": 27,
+        "exp_source": [
+          2,
+          7
+        ],
+        "prefix_source": [
+          2,
+          7
+        ]
+      },
+      "outcomes": {
+        "committed_exp": {
+          "success": false,
+          "actions": 280
+        },
+        "committed_prefix": {
+          "success": true,
+          "actions": 166
+        }
+      }
+    },
+    {
+      "identity": [
+        7,
+        19
+      ],
+      "first_replan_eight_inputs_exact": true,
+      "old_prefix_exact": true,
+      "noise_exact": true,
+      "declared_C": [
+        7,
+        7
+      ],
+      "actual_delay": [
+        7,
+        7
+      ],
+      "weights_first_C_equal": true,
+      "explicit_tail_nonzero_exp": 3,
+      "explicit_tail_nonzero_prefix": 0,
+      "first_replan_full_equal": false,
+      "common_observation_prefix": 28,
+      "first_command_difference": {
+        "index": 27,
+        "exp_source": [
+          2,
+          7
+        ],
+        "prefix_source": [
+          2,
+          7
+        ]
+      },
+      "outcomes": {
+        "committed_exp": {
+          "success": true,
+          "actions": 170
+        },
+        "committed_prefix": {
+          "success": false,
+          "actions": 280
+        }
+      }
+    }
+  ],
+  "candidate_vs_exp_restored": [
+    [
+      7,
+      18
+    ]
+  ],
+  "candidate_vs_exp_lost": [
+    [
+      7,
+      19
+    ]
+  ],
+  "all_nonbootstrap_requests": 384,
+  "capture_total_feedback_s": 211.5092614555033,
+  "new_model_forwards": 0,
+  "new_env": 0,
+  "limitation": "Only first replan may share input and C. Later feedback and estimated C can differ; this does not isolate a unique contact mechanism or establish an online selector."
+}

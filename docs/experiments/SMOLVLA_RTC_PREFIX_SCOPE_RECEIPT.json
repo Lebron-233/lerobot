@@ -1,0 +1,66 @@
+{
+  "checked_utc": "2026-09-22T03:33:15.129105+00:00",
+  "execution_head": "576b2d6c0c215e653e47298c7d3070eb2eb2bc07",
+  "session": "wc_sess_4b614fa01a644fb1a542f46220115dfa",
+  "stages": {
+    "inputs": {
+      "execution": {
+        "child_pid": 1669264,
+        "exit_code": 0,
+        "exit_confirmed": true,
+        "started_utc": "2026-09-22T03:09:03.962477+00:00",
+        "finished_utc": "2026-09-22T03:12:33.399654+00:00",
+        "wall_s": 209.43745159904938,
+        "stop_reason": null,
+        "forced": false,
+        "pending": {},
+        "active": {}
+      },
+      "registration_id": 5770647170,
+      "worker_proc_absent": true,
+      "hashes": {
+        "result.json": "5854bebaa9b3916735572cf956a958f81ed875d59416b6eb99273ba9c4e9fc9c",
+        "independent_audit.json": "e81c171f0a7b551e12aae145cc6ffe7ce6dd6a300e4142730fa9ec44663b7d1c"
+      },
+      "preparation_sha256": "a8fae6d93dbb94b71e71f8972e8d941aa7439f9b12096dafd22351383cd0ede5"
+    },
+    "feedback": {
+      "execution": {
+        "child_pid": 1671060,
+        "exit_code": 0,
+        "exit_confirmed": true,
+        "started_utc": "2026-09-22T03:16:02.254645+00:00",
+        "finished_utc": "2026-09-22T03:28:14.447910+00:00",
+        "wall_s": 732.1933296399657,
+        "stop_reason": null,
+        "forced": false,
+        "pending": {},
+        "active": {}
+      },
+      "registration_id": 5770694618,
+      "worker_proc_absent": true,
+      "hashes": {
+        "result.json": "f9f8177f075c83b568cae4369e17cf79850b40aa1ce7b7149c3803a658cc4a11",
+        "independent_audit.json": "12ca93f1af187dd77f4f8913796dcbcecb0622e686bc5529393ad9024fa03e7b"
+      },
+      "preparation_sha256": "79e1f541c53d058d0b045dfd89737e7be9d409f65d6542964d7091ff6a614388"
+    }
+  },
+  "input_formal_job": "5236b3b9-0d9f-44bc-9f05-69fca440673c",
+  "input_audit_job": "0ebfc2ad-63e6-4b24-a98d-677714c5d217",
+  "feedback_formal_job": "3900cdd5-31ce-434e-bee8-aea84a3385ba",
+  "feedback_audit_job": "5897dad3-f955-450a-85c2-aa975de69888",
+  "all_exit_codes": 0,
+  "source_hashes_unchanged": 750,
+  "old_pending_unchanged": 21,
+  "formal_attempts_by_stage": {
+    "inputs": 1,
+    "feedback": 1
+  },
+  "formal_retries": 0,
+  "new_mutation_safety_interceptions": 0,
+  "github_connector_error": "ToolError: FORBIDDEN: This conversation is restricted to developer MCPs",
+  "blocked_old_plan_fetch_repeated": false,
+  "archive_model_forwards": 0,
+  "cuda_initialized": false
+}

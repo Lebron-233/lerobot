@@ -1,0 +1,206 @@
+{
+  "experiment": "E-RPI1",
+  "stage": "inputs",
+  "execution_head": "576b2d6c0c215e653e47298c7d3070eb2eb2bc07",
+  "status": "completed",
+  "first_failure": null,
+  "vla_loads": 1,
+  "vla_frozen": true,
+  "prefix_scope_equivalence_passed": true,
+  "runtime_receipt": {
+    "requests": 482,
+    "rgb_encodings": 482,
+    "captures": [
+      {
+        "guided": false,
+        "owner": 128023552931648,
+        "setup": 1,
+        "warmup": 3,
+        "capture": 1,
+        "projection_shapes": [
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ]
+        ],
+        "status": "captured",
+        "captured_steps": 10,
+        "captured_vjps": 0,
+        "seconds": 1.3985240650363266
+      },
+      {
+        "guided": true,
+        "owner": 128023552931648,
+        "setup": 1,
+        "warmup": 3,
+        "capture": 1,
+        "projection_shapes": [
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ]
+        ],
+        "status": "captured",
+        "captured_steps": 10,
+        "captured_vjps": 10,
+        "seconds": 3.3310461819637567
+      }
+    ],
+    "replays": {
+      "no_prefix": 16,
+      "guided": 225
+    },
+    "native_steps": {
+      "public": {
+        "steps": 2410,
+        "guided_vjps_returned": 2250
+      }
+    },
+    "cached_steps": {
+      "setup": {
+        "steps": 20,
+        "guided_vjps_returned": 10
+      },
+      "warmup": {
+        "steps": 60,
+        "guided_vjps_returned": 30
+      },
+      "capture": {
+        "steps": 20,
+        "guided_vjps_returned": 10
+      }
+    },
+    "sampler_restored": true,
+    "processor_restored": true,
+    "graphs_released": true,
+    "owner": 128023552931648,
+    "close_thread": 128023552931648
+  },
+  "completed_requests": 482,
+  "attempts": 1,
+  "retries": 0,
+  "training_updates": 0,
+  "new_env": 0,
+  "qualification_reads": 0,
+  "deployment_qualified": false,
+  "execution": {
+    "child_pid": 1669264,
+    "exit_code": 0,
+    "exit_confirmed": true,
+    "started_utc": "2026-09-22T03:09:03.962477+00:00",
+    "finished_utc": "2026-09-22T03:12:33.399654+00:00",
+    "wall_s": 209.43745159904938,
+    "stop_reason": null,
+    "forced": false,
+    "pending": {},
+    "active": {}
+  },
+  "accounting": {
+    "call_intents": {
+      "dynamic_request": 482
+    },
+    "call_returns": {
+      "dynamic_request": 482
+    },
+    "call_errors": {},
+    "unknown_calls": [],
+    "journal_consistent": true,
+    "measured_native_returns": 0,
+    "settling_native_returns": 0,
+    "request_snapshots": 0,
+    "last_model_phase": null,
+    "accounting_basis": "flushed_call_intent_return_error_journal"
+  }
+}

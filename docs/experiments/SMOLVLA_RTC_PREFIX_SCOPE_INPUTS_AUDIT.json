@@ -1,0 +1,57 @@
+{
+  "independent_contract_accepted": true,
+  "prefix_scope_equivalence_passed": true,
+  "requests": 482,
+  "submit_feasible_combinations_exact": 225,
+  "no_prefix_anchors_exact": 32,
+  "cross_arm_arrays_exact": 723,
+  "timing": {
+    "native_eager": {
+      "n": 225,
+      "mean": 0.6991461548074666,
+      "max": 0.8993820400210097,
+      "p50": 0.6936887169722468,
+      "p95": 0.7621613190276548,
+      "p99": 0.8175302180461586,
+      "above350ms": 225,
+      "required_delay_steps": 18
+    },
+    "graph": {
+      "n": 225,
+      "mean": 0.1098090650824209,
+      "max": 0.11810446600429714,
+      "p50": 0.1094951779814437,
+      "p95": 0.11220500501804054,
+      "p99": 0.11495590698905289,
+      "above350ms": 0,
+      "required_delay_steps": 4
+    }
+  },
+  "graph_budget_passed": true,
+  "graph_faster_mean": true,
+  "captures": 2,
+  "replayed_guided_vjps": 2250,
+  "extra_sampler_calls": 10,
+  "first_graph_request_s": 4.807124444050714,
+  "capture_seconds": 4.729570247000083,
+  "calls_closed": 482,
+  "phases": {
+    "started": 11,
+    "returned": 11
+  },
+  "kinds": {
+    "dynamic_request": 482
+  },
+  "stage": "inputs",
+  "first_failure": null,
+  "audit_model_forwards": 0,
+  "cuda_initialized": false,
+  "new_qualification_claimed": false,
+  "deployment_qualified": false,
+  "limitations": [
+    "Known development data, not independent confirmation.",
+    "Same coverage estimation rule does not guarantee equal per-request C across arms.",
+    "Zero explicit tail weights do not guarantee unchanged tail actions through the full VJP.",
+    "CPU audit does not rerun models, VJP, vision, postprocessing, physics or GPU timing."
+  ]
+}
