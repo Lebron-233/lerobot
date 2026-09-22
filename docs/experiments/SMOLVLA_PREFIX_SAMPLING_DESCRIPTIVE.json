@@ -1,0 +1,228 @@
+{
+  "kind": "posthoc saved-output reductions; not new acceptance gates",
+  "candidate_change_percent": {
+    "ordinary/native_unconditioned": {
+      "normalized": {
+        "suffix": -2.367969958343852,
+        "first": -57.76279450569195,
+        "short": -18.597379159227813
+      },
+      "command": {
+        "suffix": 9.071308569669556,
+        "first": -8.272067717862386,
+        "short": 43.134300067067024
+      }
+    },
+    "frozen/native_unconditioned": {
+      "normalized": {
+        "suffix": -0.9668280401609941,
+        "first": -58.02515344452293,
+        "short": -19.638591683672235
+      },
+      "command": {
+        "suffix": 16.304311912427096,
+        "first": -7.961681588576086,
+        "short": 41.49407063963773
+      }
+    },
+    "ordinary/correct_prefix": {
+      "normalized": {
+        "suffix": -2.6511448195951637,
+        "first": 2.1979579988097298,
+        "short": -5.368458453993408
+      },
+      "command": {
+        "suffix": -9.21955304695593,
+        "first": 0.29567227546005714,
+        "short": -25.42444864570482
+      }
+    },
+    "frozen/correct_prefix": {
+      "normalized": {
+        "suffix": -5.709901439786003,
+        "first": 3.517453728475428,
+        "short": -5.893912436645044
+      },
+      "command": {
+        "suffix": -16.90868307711081,
+        "first": 0.5581076692838138,
+        "short": -25.646187038865776
+      }
+    }
+  },
+  "per_trajectory": [
+    {
+      "task": 0,
+      "trajectory_id": "7b547cb72d23dd1f0767eb966c652ca2f89f75c40afda81452540882757df835",
+      "ordinary/native_unconditioned": {
+        "suffix": 0.38447558603171483,
+        "first": 0.0851397089243245
+      },
+      "frozen/correct_prefix": {
+        "suffix": 0.4372567440850855,
+        "first": 0.04195677463673229
+      },
+      "ordinary/correct_prefix": {
+        "suffix": 0.4294049950076878,
+        "first": 0.04211333143199349
+      },
+      "prefix/correct_prefix": {
+        "suffix": 0.4173690618174616,
+        "first": 0.04762012458277093
+      }
+    },
+    {
+      "task": 2,
+      "trajectory_id": "523bff54e04e1ac11c4e2fb00338411a6ba8493b54351e13aef0a6dc11b11df0",
+      "ordinary/native_unconditioned": {
+        "suffix": 0.16617182671169187,
+        "first": 0.054704943388758545
+      },
+      "frozen/correct_prefix": {
+        "suffix": 0.1756398328738254,
+        "first": 0.029233364513422753
+      },
+      "ordinary/correct_prefix": {
+        "suffix": 0.1737824995857318,
+        "first": 0.029919594658774237
+      },
+      "prefix/correct_prefix": {
+        "suffix": 0.17059379682313536,
+        "first": 0.025726953888238722
+      }
+    },
+    {
+      "task": 6,
+      "trajectory_id": "6c88178d57b4a6556238d7d3314ad00dd4d8b61ed1a78da4906cc662d4f6f475",
+      "ordinary/native_unconditioned": {
+        "suffix": 0.3158574264065648,
+        "first": 0.346689804359686
+      },
+      "frozen/correct_prefix": {
+        "suffix": 0.2830916968520085,
+        "first": 0.026613540666117624
+      },
+      "ordinary/correct_prefix": {
+        "suffix": 0.2818028505646154,
+        "first": 0.028128712487391606
+      },
+      "prefix/correct_prefix": {
+        "suffix": 0.28092762396185067,
+        "first": 0.035591284059326725
+      }
+    },
+    {
+      "task": 7,
+      "trajectory_id": "5f4c2d8e2e3220c80291bdab097882f89257a74aa94dd0c92881427bab5de51d",
+      "ordinary/native_unconditioned": {
+        "suffix": 0.1977243671401137,
+        "first": 0.1775618479635696
+      },
+      "frozen/correct_prefix": {
+        "suffix": 0.2059604930934732,
+        "first": 0.17316098436981914
+      },
+      "ordinary/correct_prefix": {
+        "suffix": 0.18233456222963695,
+        "first": 0.17430149783071422
+      },
+      "prefix/correct_prefix": {
+        "suffix": 0.170138095794767,
+        "first": 0.17155735833902003
+      }
+    }
+  ],
+  "improving_cases_vs_ordinary": {
+    "suffix": 9,
+    "first": 14
+  },
+  "command_squared_error_by_coordinate": {
+    "ordinary/native_unconditioned": {
+      "suffix": [
+        0.021823160871391547,
+        0.01913573076395983,
+        0.03888647141024364,
+        0.0005993115135180146,
+        0.0022238030649377703,
+        0.0011298615427916279,
+        0.20944192353244256
+      ],
+      "first": [
+        0.014773344140796143,
+        0.004869847190046742,
+        0.016565594215650077,
+        0.0001857290734976474,
+        0.0012805938561104607,
+        0.0013209074383575578,
+        0.25601059930634706
+      ]
+    },
+    "frozen/correct_prefix": {
+      "suffix": [
+        0.021464562041648635,
+        0.020869632850508014,
+        0.05327130203858687,
+        0.000560747518360649,
+        0.0020223615520056862,
+        0.001026920238899184,
+        0.2857115679785928
+      ],
+      "first": [
+        0.00556165978568688,
+        0.002346458489785295,
+        0.005906411560883243,
+        9.387419799878561e-05,
+        0.00015958836769929097,
+        0.00013583729360956996,
+        0.25489776192092695
+      ]
+    },
+    "ordinary/correct_prefix": {
+      "suffix": [
+        0.021948213064905953,
+        0.018308568760830767,
+        0.05064507338824562,
+        0.0005577606220737388,
+        0.0020111720340997676,
+        0.0010205005434844442,
+        0.25783236994495273
+      ],
+      "first": [
+        0.005655741662599075,
+        0.0023963835224308063,
+        0.006304229165647587,
+        9.510931932497461e-05,
+        0.000161417948156287,
+        0.00014507192954558195,
+        0.25504777395603084
+      ]
+    },
+    "prefix/correct_prefix": {
+      "suffix": [
+        0.022266914815181057,
+        0.017951120352633458,
+        0.04515322218302365,
+        0.0005507671751168011,
+        0.0020479158591671237,
+        0.0010226989077051559,
+        0.23084835248641947
+      ],
+      "first": [
+        0.005721912232005578,
+        0.002947293029718843,
+        0.007140531634374747,
+        8.591417270513207e-05,
+        0.00018854140703041913,
+        0.00015602577106457494,
+        0.2543632499906676
+      ]
+    }
+  },
+  "new_model_forwards": 0,
+  "new_env": 0,
+  "limitations": [
+    "Coordinate indices are not relabelled as physical distances.",
+    "Means from normalization spaces impose different coordinate weights.",
+    "Correct expert prefix at inference is not an online executed-policy prefix."
+  ]
+}

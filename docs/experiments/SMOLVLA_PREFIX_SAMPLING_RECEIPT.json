@@ -1,0 +1,41 @@
+{
+  "checked_utc": "2026-09-22T07:26:08.424264+00:00",
+  "execution_head": "97a02e91b9aae05a1f29f3392ebf8e449a7dddf9",
+  "previous_result_head": "bf9e54746bbce60e7ce2e0cb748ae89f8bafc881",
+  "session": "wc_sess_b92053890dbe45578ae199e0af47e8ca",
+  "formal_job": "45c8231a-79cb-40f3-9c27-5a3f3ce36fb4",
+  "audit_job": "b11b2785-91d8-48bc-abef-189e5c26b3b6",
+  "formal_exit_code": 0,
+  "audit_exit_code": 0,
+  "registration_id": 5772651006,
+  "source_hashes_unchanged": 65,
+  "old_pending_unchanged": 21,
+  "new_decodes_this_turn": 192,
+  "new_optimizer_updates_this_turn": 0,
+  "new_env_this_turn": 0,
+  "sealed_evaluations": 0,
+  "formal_attempts": 1,
+  "formal_retries": 0,
+  "decoded_action_followup_supported": false,
+  "cpu_tests": {
+    "passed": 35,
+    "job": "43a6a305-a7fd-4c77-b4b9-6dbdf648aa0b"
+  },
+  "new_safety_interceptions": 0,
+  "development_notes": [
+    "One guessed file read returned not_found; actual driver located.",
+    "Initial lint errors fixed before frozen-source tests."
+  ],
+  "hashes": {
+    "result.json": "247d7d247f0c16644690442f02e7d10b0fc80a703a937cc35810cf7451578beb",
+    "independent_audit.json": "582300d5613516eb98b56e1df31dd3369243278272871aa7490c942b7e17a1fb",
+    "evaluation.pt": "54370bef4919713983edc8233ad88c05c06856853c0b4418e8bcbe2cd007db50",
+    "descriptive.json": "39aa0a47eed7b163550a7972ac05fae9126b53a9ab0f362d57988ee865bad8c6"
+  },
+  "audit_limits": [
+    "Four already seen development trajectories; expert prefixes are offline conditioning.",
+    "Full block error includes hard-copied prefix; decisions use suffix and first unexecuted action instead.",
+    "CPU arithmetic audit does not recompute Transformer, postprocessing, random CUDA generator or GPU timing.",
+    "C0 scalar path equivalence does not qualify conditional Graph execution or live task retention."
+  ]
+}
