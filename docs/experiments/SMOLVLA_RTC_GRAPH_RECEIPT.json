@@ -1,0 +1,39 @@
+{
+  "checked_utc": "2026-09-22T00:56:30.950172+00:00",
+  "execution_head": "a43a31d8c4416a27f826a996dae98d2910f9b2e5",
+  "registration_id": 5769675534,
+  "formal_job": "9a5181c5-1221-41d8-a6f4-28f7cdc0751b",
+  "audit_job": "7d8a9f80-c57f-4ff0-a3de-dc1819a04a1d",
+  "formal_exit_code": 0,
+  "audit_exit_code": 0,
+  "execution": {
+    "child_pid": 1635334,
+    "exit_code": 0,
+    "exit_confirmed": true,
+    "started_utc": "2026-09-22T00:52:32.204645+00:00",
+    "finished_utc": "2026-09-22T00:54:53.945435+00:00",
+    "wall_s": 141.7408143109642,
+    "stop_reason": null,
+    "forced": false,
+    "pending": {},
+    "active": {}
+  },
+  "source_hashes_unchanged": 717,
+  "old_pending_unchanged": 21,
+  "worker_proc_absent": true,
+  "frozen_baseline_unchanged": true,
+  "full_rtc_equivalence_passed": true,
+  "rtc_graph_cost_candidate_supported": true,
+  "new_mutation_safety_interceptions": 0,
+  "github_connector_error": "ToolError: FORBIDDEN: This conversation is restricted to developer MCPs",
+  "blocked_previous_comment_read_repeated": false,
+  "formal_attempts": 1,
+  "formal_retries": 0,
+  "hashes": {
+    "result": "353c32abc6ad2b73d03c21b9b2ee21f8834e355f47581026b674b2c41e2fe99b",
+    "audit": "cf23253175483a7fc5c493bfa7e1fc6e2791008b2d5469e524cfc8520edc6233",
+    "descriptive": "36640829745df9ff7af458b89ab493abdecee50aa70abfe5f8ec381cb4ca797b"
+  },
+  "archive_model_forwards": 0,
+  "cuda_initialized": false
+}

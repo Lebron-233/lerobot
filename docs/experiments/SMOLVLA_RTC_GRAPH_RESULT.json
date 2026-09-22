@@ -1,0 +1,250 @@
+{
+  "experiment": "E-RGC1",
+  "execution_head": "a43a31d8c4416a27f826a996dae98d2910f9b2e5",
+  "status": "completed",
+  "first_failure": null,
+  "runtime_init_s": 0.00043730391189455986,
+  "vla_frozen": true,
+  "timing": {
+    "native_eager": {
+      "n": 80,
+      "mean_s": 0.6601626431642217,
+      "p50_s": 0.6561708420049399,
+      "p95_s": 0.6948135399725288,
+      "p99_s": 0.8044442590326071,
+      "max_s": 0.8044442590326071,
+      "required_delay_steps": 18,
+      "above350ms": 80
+    },
+    "cached_eager": {
+      "n": 80,
+      "mean_s": 0.6634155512758297,
+      "p50_s": 0.6578062929911539,
+      "p95_s": 0.6895240279845893,
+      "p99_s": 0.8585552420699969,
+      "max_s": 0.8585552420699969,
+      "required_delay_steps": 19,
+      "above350ms": 80
+    },
+    "graph": {
+      "n": 80,
+      "mean_s": 0.10818378751137062,
+      "p50_s": 0.10688793903682381,
+      "p95_s": 0.11311755492351949,
+      "p99_s": 0.11579293699469417,
+      "max_s": 0.11579293699469417,
+      "required_delay_steps": 4,
+      "above350ms": 0
+    }
+  },
+  "graph_budget_passed": true,
+  "graph_faster_mean": true,
+  "runtime_receipt": {
+    "requests": 288,
+    "rgb_encodings": 288,
+    "captures": [
+      {
+        "guided": false,
+        "owner": 134246331729728,
+        "setup": 1,
+        "warmup": 3,
+        "capture": 1,
+        "projection_shapes": [
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ]
+        ],
+        "status": "captured",
+        "captured_steps": 10,
+        "captured_vjps": 0,
+        "seconds": 1.320911995950155
+      },
+      {
+        "guided": true,
+        "owner": 134246331729728,
+        "setup": 1,
+        "warmup": 3,
+        "capture": 1,
+        "projection_shapes": [
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ],
+          [
+            1,
+            50,
+            32
+          ]
+        ],
+        "status": "captured",
+        "captured_steps": 10,
+        "captured_vjps": 10,
+        "seconds": 3.297201357083395
+      }
+    ],
+    "replays": {
+      "no_prefix": 16,
+      "guided": 80
+    },
+    "native_steps": {
+      "public": {
+        "steps": 960,
+        "guided_vjps_returned": 800
+      }
+    },
+    "cached_steps": {
+      "public": {
+        "steps": 960,
+        "guided_vjps_returned": 800
+      },
+      "setup": {
+        "steps": 20,
+        "guided_vjps_returned": 10
+      },
+      "warmup": {
+        "steps": 60,
+        "guided_vjps_returned": 30
+      },
+      "capture": {
+        "steps": 20,
+        "guided_vjps_returned": 10
+      }
+    },
+    "sampler_restored": true,
+    "processor_restored": true,
+    "graphs_released": true,
+    "owner": 134246331729728,
+    "close_thread": 134246331729728
+  },
+  "counts": {
+    "vla_loads": 1,
+    "no_prefix_exact": 48,
+    "input_exact": 288,
+    "cross_arm_exact": 192,
+    "requests": 288,
+    "rgb_encodings": 288
+  },
+  "completed_requests": 288,
+  "attempts": 1,
+  "retries": 0,
+  "new_env": 0,
+  "training_updates": 0,
+  "qualification_reads": 0,
+  "realtime_qualified": false,
+  "execution": {
+    "child_pid": 1635334,
+    "exit_code": 0,
+    "exit_confirmed": true,
+    "started_utc": "2026-09-22T00:52:32.204645+00:00",
+    "finished_utc": "2026-09-22T00:54:53.945435+00:00",
+    "wall_s": 141.7408143109642,
+    "stop_reason": null,
+    "forced": false,
+    "pending": {},
+    "active": {}
+  },
+  "accounting": {
+    "call_intents": {
+      "rtc_full_request": 288
+    },
+    "call_returns": {
+      "rtc_full_request": 288
+    },
+    "call_errors": {},
+    "unknown_calls": [],
+    "journal_consistent": true,
+    "measured_native_returns": 0,
+    "settling_native_returns": 0,
+    "request_snapshots": 0,
+    "last_model_phase": null,
+    "accounting_basis": "flushed_call_intent_return_error_journal"
+  }
+}
