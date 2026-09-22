@@ -1,0 +1,52 @@
+{
+  "checked_utc": "2026-09-22T09:21:09.713298+00:00",
+  "feasibility_head": "985ee5c057860ad88df543c96d50f1592f8dd24a",
+  "factorial_head": "62cb5f6b71e5e13515fca4bb3e7fcef922a0e6ab",
+  "session": "wc_sess_1f0f920380744dab9c4894d2286876e9",
+  "formal_jobs": {
+    "feasibility": "7d99c5a3-5647-4883-9908-e7a41886e2a7",
+    "factorial": "1b09b2d3-4249-4f01-8a4d-daa816c3507e"
+  },
+  "audit_jobs": {
+    "feasibility": "219f8c2b-871b-4d5c-a7ca-4d52a295dbda",
+    "factorial": "4e115546-0c39-4e63-9085-d6eaefd02395"
+  },
+  "all_exit_codes": 0,
+  "registrations": {
+    "feasibility": 5773840185,
+    "factorial": 5773988521
+  },
+  "sources_verified": 78,
+  "old_pending_unchanged": 21,
+  "tests_final": {
+    "passed": 41,
+    "job": "b9bcde3f-c4a4-497c-a947-7e44a06251de"
+  },
+  "formal_attempts_per_stage": 1,
+  "formal_retries": 0,
+  "formal_model_loads": 2,
+  "technical_probe_updates": 6,
+  "factorial_updates": 512,
+  "total_training_forwards": 518,
+  "total_backwards": 518,
+  "decoded_requests": 320,
+  "total_full_vision_calls": 838,
+  "new_env": 0,
+  "sealed_evaluations": 0,
+  "graph_captures": 0,
+  "both_audits_accepted": true,
+  "expert_adaptation_followup_supported": false,
+  "github_old_commit_error": "ToolError: FORBIDDEN: This conversation is restricted to developer MCPs",
+  "denied_old_commit_fetch_repeated": false,
+  "new_mutation_safety_interceptions": 0,
+  "development_notes": [
+    "Loop-variable binding and import/dict-format lint errors fixed before frozen-source tests."
+  ],
+  "hashes": {
+    "result.json": "c7d392aaffa76ee2e937551dc4dc73332d73e0ef3c09082e97d49c59db7276a6",
+    "independent_audit.json": "65e18285049d42ef7164d06b235481f636b710f1cac8c50a70eb43ebd4c9ba7a",
+    "evidence.pt": "48c4dfd6838ada3fb5b94b57ef5bf68f5f65c7acc1432d495f401d78eed4297a",
+    "descriptive.json": "fafa857a9da4413719a648a4c75cd0d4c6522e67ad79ad029201e1ff333e9dd4",
+    "training.jsonl": "e8de18bd6407f5b5e288c94008731b9aaa079bc2a524572df75c84ee80411e7a"
+  }
+}

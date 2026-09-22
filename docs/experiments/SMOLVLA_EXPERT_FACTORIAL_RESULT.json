@@ -1,0 +1,82 @@
+{
+  "experiment": "F-EAT1",
+  "head": "62cb5f6b71e5e13515fca4bb3e7fcef922a0e6ab",
+  "registration_id": 5773988521,
+  "status": "completed",
+  "first_failure": null,
+  "model_loads": 1,
+  "training_forwards": 512,
+  "backwards": 512,
+  "updates": {
+    "projection_ordinary": 128,
+    "projection_prefix": 128,
+    "expert_ordinary": 128,
+    "expert_prefix": 128
+  },
+  "decodes": 320,
+  "denoise_steps": 3200,
+  "vision_encodes": 832,
+  "new_env": 0,
+  "sealed_evaluations": 0,
+  "graph_captures": 0,
+  "attempts": 1,
+  "retries": 0,
+  "deployment_qualified": false,
+  "base_restored": true,
+  "frozen_parameters_unchanged": true,
+  "c0_pairs_exact": 80,
+  "zero_adapter_start_pairs_exact": 2,
+  "checkpoints": {
+    "projection_ordinary": "38f47e33d2fa29399bbbb046be7ff02022e8d9100db6c46fc71f82049d5cb0dc",
+    "projection_prefix": "ac35c5a7210cf1cfbf6fc1e87e27628cc676dbee97a35b1533737366eeb76c35",
+    "expert_ordinary": "2fd65c841c9884aa24e2f22a4e3b899c3e28ea3902c79103f61a95f467f95974",
+    "expert_prefix": "d20c3ff3b5bb8841cd97184110ef59ff6acbf3f9ebd9af1f53138acd5bd7e932"
+  },
+  "resources": {
+    "projection_ordinary": {
+      "trainable_parameters": 723392,
+      "trainable_tensors": 8,
+      "peak_allocated": 1570522112,
+      "peak_reserved": 1598029824,
+      "training_wall_s": 15.44696589896921,
+      "forward_mean_s": 0.06458217320505355,
+      "backward_mean_s": 0.05179403231613833,
+      "update_mean_s": 0.0006427370963137946
+    },
+    "projection_prefix": {
+      "trainable_parameters": 723392,
+      "trainable_tensors": 8,
+      "peak_allocated": 1568332288,
+      "peak_reserved": 1598029824,
+      "training_wall_s": 14.557414671056904,
+      "forward_mean_s": 0.06004537559329037,
+      "backward_mean_s": 0.05016491288461111,
+      "update_mean_s": 0.000545193322977866
+    },
+    "expert_ordinary": {
+      "trainable_parameters": 1010112,
+      "trainable_tensors": 72,
+      "peak_allocated": 1574919168,
+      "peak_reserved": 1602224128,
+      "training_wall_s": 15.988851477974094,
+      "forward_mean_s": 0.06283536796763656,
+      "backward_mean_s": 0.05380532940489502,
+      "update_mean_s": 0.0028048181538906647
+    },
+    "expert_prefix": {
+      "trainable_parameters": 1010112,
+      "trainable_tensors": 72,
+      "peak_allocated": 1572631040,
+      "peak_reserved": 1602224128,
+      "training_wall_s": 16.032544531975873,
+      "forward_mean_s": 0.06325678089251596,
+      "backward_mean_s": 0.053690334116254235,
+      "update_mean_s": 0.002787937994071399
+    }
+  },
+  "sources_unchanged": true,
+  "saved_rows": 320,
+  "calls": 832,
+  "wall_s": 161.51296066993382,
+  "evidence_sha256": "48c4dfd6838ada3fb5b94b57ef5bf68f5f65c7acc1432d495f401d78eed4297a"
+}

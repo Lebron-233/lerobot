@@ -1,0 +1,900 @@
+{
+  "kind": "Posthoc saved-parameter/output reductions only; no new forward/optimizer, no new gate.",
+  "compact_table": [
+    {
+      "label": "frozen",
+      "mode": "native_unconditioned",
+      "normalized": {
+        "suffix": 0.26229306752351944,
+        "first": 0.16706179050507813,
+        "short": 0.15111745433767046
+      },
+      "command": {
+        "suffix": 0.03928622206937796,
+        "first": 0.04200167819977705,
+        "short": 0.015484817568365946
+      }
+    },
+    {
+      "label": "frozen",
+      "mode": "correct_prefix",
+      "normalized": {
+        "suffix": 0.27548719172609815,
+        "first": 0.06774116604652296,
+        "short": 0.12904597105450644
+      },
+      "command": {
+        "suffix": 0.0549895848883717,
+        "first": 0.03844308451665571,
+        "short": 0.029467350544692926
+      }
+    },
+    {
+      "label": "frozen",
+      "mode": "mismatched_prefix",
+      "normalized": {
+        "suffix": 0.3754046402474527,
+        "first": 0.5399759313064996,
+        "short": 0.3591945209025015
+      },
+      "command": {
+        "suffix": 0.07197632727864517,
+        "first": 0.1255696775531019,
+        "short": 0.07702587195725384
+      }
+    },
+    {
+      "label": "projection_ordinary",
+      "mode": "native_unconditioned",
+      "normalized": {
+        "suffix": 0.2660573015725213,
+        "first": 0.16602407615908468,
+        "short": 0.14918452657080755
+      },
+      "command": {
+        "suffix": 0.041891466099897856,
+        "first": 0.04214380217440082,
+        "short": 0.015307371257858212
+      }
+    },
+    {
+      "label": "projection_ordinary",
+      "mode": "correct_prefix",
+      "normalized": {
+        "suffix": 0.26683122684691796,
+        "first": 0.06861578410221839,
+        "short": 0.12832942646136175
+      },
+      "command": {
+        "suffix": 0.05033195119408472,
+        "first": 0.038543675357676443,
+        "short": 0.02937973412293228
+      }
+    },
+    {
+      "label": "projection_ordinary",
+      "mode": "mismatched_prefix",
+      "normalized": {
+        "suffix": 0.3756026796697319,
+        "first": 0.5395039213881039,
+        "short": 0.35803596183871
+      },
+      "command": {
+        "suffix": 0.07217066311974187,
+        "first": 0.12520532013048483,
+        "short": 0.07695566909527848
+      }
+    },
+    {
+      "label": "projection_prefix",
+      "mode": "native_unconditioned",
+      "normalized": {
+        "suffix": 0.2611276360264647,
+        "first": 0.16597531412615704,
+        "short": 0.14815932433318071
+      },
+      "command": {
+        "suffix": 0.038358182079299,
+        "first": 0.042402897190944505,
+        "short": 0.015320355803094102
+      }
+    },
+    {
+      "label": "projection_prefix",
+      "mode": "correct_prefix",
+      "normalized": {
+        "suffix": 0.25975714459930366,
+        "first": 0.0701239302173391,
+        "short": 0.12144011451753552
+      },
+      "command": {
+        "suffix": 0.04569157025417811,
+        "first": 0.038657638319652424,
+        "short": 0.021910098708602745
+      }
+    },
+    {
+      "label": "projection_prefix",
+      "mode": "mismatched_prefix",
+      "normalized": {
+        "suffix": 0.3643795398845746,
+        "first": 0.519153124872917,
+        "short": 0.33079381208168945
+      },
+      "command": {
+        "suffix": 0.06793589467437139,
+        "first": 0.12248767544084144,
+        "short": 0.06396935432068264
+      }
+    },
+    {
+      "label": "expert_ordinary",
+      "mode": "native_unconditioned",
+      "normalized": {
+        "suffix": 0.2661250369523842,
+        "first": 0.16596713991305284,
+        "short": 0.14912248639711784
+      },
+      "command": {
+        "suffix": 0.04194240830251396,
+        "first": 0.042091759727802824,
+        "short": 0.015299003997710597
+      }
+    },
+    {
+      "label": "expert_ordinary",
+      "mode": "correct_prefix",
+      "normalized": {
+        "suffix": 0.26687092375522237,
+        "first": 0.0684691211784453,
+        "short": 0.1282524846737945
+      },
+      "command": {
+        "suffix": 0.0503501419337106,
+        "first": 0.03854493532354105,
+        "short": 0.029376814702760642
+      }
+    },
+    {
+      "label": "expert_ordinary",
+      "mode": "mismatched_prefix",
+      "normalized": {
+        "suffix": 0.3756148245538951,
+        "first": 0.5399877886245392,
+        "short": 0.35815377925951125
+      },
+      "command": {
+        "suffix": 0.07217425787784218,
+        "first": 0.12533123852538486,
+        "short": 0.07696789281001036
+      }
+    },
+    {
+      "label": "expert_prefix",
+      "mode": "native_unconditioned",
+      "normalized": {
+        "suffix": 0.2611381680099202,
+        "first": 0.1659931559798059,
+        "short": 0.14817364759057156
+      },
+      "command": {
+        "suffix": 0.03835613650977481,
+        "first": 0.042403107951766744,
+        "short": 0.015324821733161765
+      }
+    },
+    {
+      "label": "expert_prefix",
+      "mode": "correct_prefix",
+      "normalized": {
+        "suffix": 0.2597372648707059,
+        "first": 0.07014815185126,
+        "short": 0.12146927976068503
+      },
+      "command": {
+        "suffix": 0.04568557386000071,
+        "first": 0.03863674612003217,
+        "short": 0.021914853055296227
+      }
+    },
+    {
+      "label": "expert_prefix",
+      "mode": "mismatched_prefix",
+      "normalized": {
+        "suffix": 0.36439109648014056,
+        "first": 0.519434727677734,
+        "short": 0.3308321657192966
+      },
+      "command": {
+        "suffix": 0.06791694114509167,
+        "first": 0.12251454619973114,
+        "short": 0.06397792107162469
+      }
+    }
+  ],
+  "candidate_percent_change": {
+    "projection_prefix/correct_prefix": {
+      "normalized": {
+        "suffix": -0.007653198000923123,
+        "first": 0.03454118137107276,
+        "short": 0.024016152541839197
+      },
+      "command": {
+        "suffix": -0.013123633405554003,
+        "first": -0.05404416960885783,
+        "short": 0.021699339453973288
+      }
+    },
+    "expert_ordinary/correct_prefix": {
+      "normalized": {
+        "suffix": -2.6730746025593777,
+        "first": 2.4522451054086014,
+        "short": -5.288946198868816
+      },
+      "command": {
+        "suffix": -9.264260029000749,
+        "first": 0.2381915956544578,
+        "short": -25.40085343821564
+      }
+    },
+    "frozen/correct_prefix": {
+      "normalized": {
+        "suffix": -5.717117647724079,
+        "first": 3.5532098799184952,
+        "short": -5.871311775104671
+      },
+      "command": {
+        "suffix": -16.91958767693561,
+        "first": 0.5037618750195705,
+        "short": -25.630052752594356
+      }
+    },
+    "projection_ordinary/native_unconditioned": {
+      "normalized": {
+        "suffix": -2.3754419309152675,
+        "first": -57.74820527593608,
+        "short": -18.577829381633638
+      },
+      "command": {
+        "suffix": 9.056994450982248,
+        "first": -8.321641317163643,
+        "short": 43.16535926471366
+      }
+    }
+  },
+  "per_trajectory": [
+    {
+      "task": 0,
+      "trajectory_id": "7b547cb72d23dd1f0767eb966c652ca2f89f75c40afda81452540882757df835",
+      "projection_ordinary": {
+        "suffix": 0.4294049950076878,
+        "first": 0.04211333143199349
+      },
+      "projection_prefix": {
+        "suffix": 0.4173690618174616,
+        "first": 0.04762012458277093
+      },
+      "expert_ordinary": {
+        "suffix": 0.4296760280132849,
+        "first": 0.042154472447083056
+      },
+      "expert_prefix": {
+        "suffix": 0.41732704055379405,
+        "first": 0.0478734228112163
+      }
+    },
+    {
+      "task": 2,
+      "trajectory_id": "523bff54e04e1ac11c4e2fb00338411a6ba8493b54351e13aef0a6dc11b11df0",
+      "projection_ordinary": {
+        "suffix": 0.1737824995857318,
+        "first": 0.029919594658774237
+      },
+      "projection_prefix": {
+        "suffix": 0.17059379682313536,
+        "first": 0.025726953888238722
+      },
+      "expert_ordinary": {
+        "suffix": 0.17386816209987838,
+        "first": 0.029872640217450407
+      },
+      "expert_prefix": {
+        "suffix": 0.17055030776068147,
+        "first": 0.026111851146614403
+      }
+    },
+    {
+      "task": 6,
+      "trajectory_id": "6c88178d57b4a6556238d7d3314ad00dd4d8b61ed1a78da4906cc662d4f6f475",
+      "projection_ordinary": {
+        "suffix": 0.2818028505646154,
+        "first": 0.028128712487391606
+      },
+      "projection_prefix": {
+        "suffix": 0.28092762396185067,
+        "first": 0.035591284059326725
+      },
+      "expert_ordinary": {
+        "suffix": 0.2817511905469968,
+        "first": 0.027594118586007868
+      },
+      "expert_prefix": {
+        "suffix": 0.2810162703954666,
+        "first": 0.035347922713266366
+      }
+    },
+    {
+      "task": 7,
+      "trajectory_id": "5f4c2d8e2e3220c80291bdab097882f89257a74aa94dd0c92881427bab5de51d",
+      "projection_ordinary": {
+        "suffix": 0.18233456222963695,
+        "first": 0.17430149783071422
+      },
+      "projection_prefix": {
+        "suffix": 0.170138095794767,
+        "first": 0.17155735833902003
+      },
+      "expert_ordinary": {
+        "suffix": 0.18218831436072935,
+        "first": 0.1742552534632399
+      },
+      "expert_prefix": {
+        "suffix": 0.1700554407728815,
+        "first": 0.1712594107339429
+      }
+    }
+  ],
+  "effective_adapter_deltas": {
+    "expert_ordinary": {
+      "layers": [
+        {
+          "path": "vlm_with_expert.lm_expert.layers.0.self_attn.q_proj",
+          "delta_frobenius": 0.0015370385954156518,
+          "base_frobenius": 13.841316223144531,
+          "relative_frobenius": 0.00011104714212706313,
+          "A_change_norm": 0.0017314699944108725,
+          "B_norm": 0.00266644055955112
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.0.self_attn.v_proj",
+          "delta_frobenius": 0.001033460022881627,
+          "base_frobenius": 7.8952860832214355,
+          "relative_frobenius": 0.00013089583080727607,
+          "A_change_norm": 0.0026182220317423344,
+          "B_norm": 0.0017646073829382658
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.2.self_attn.q_proj",
+          "delta_frobenius": 0.0018860663985833526,
+          "base_frobenius": 13.78509521484375,
+          "relative_frobenius": 0.0001368192461086437,
+          "A_change_norm": 0.0038752800319343805,
+          "B_norm": 0.0033157540019601583
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.2.self_attn.v_proj",
+          "delta_frobenius": 0.0011119345435872674,
+          "base_frobenius": 7.927071571350098,
+          "relative_frobenius": 0.0001402705383952707,
+          "A_change_norm": 0.002935233758762479,
+          "B_norm": 0.001878582639619708
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.4.self_attn.q_proj",
+          "delta_frobenius": 0.0018913520034402609,
+          "base_frobenius": 13.720051765441895,
+          "relative_frobenius": 0.00013785313058178872,
+          "A_change_norm": 0.00335676409304142,
+          "B_norm": 0.0033394324127584696
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.4.self_attn.v_proj",
+          "delta_frobenius": 0.0013143835822120309,
+          "base_frobenius": 7.869287490844727,
+          "relative_frobenius": 0.00016702701395843178,
+          "A_change_norm": 0.004778840579092503,
+          "B_norm": 0.002158561022952199
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.6.self_attn.q_proj",
+          "delta_frobenius": 0.0019969898276031017,
+          "base_frobenius": 13.770350456237793,
+          "relative_frobenius": 0.0001450209820177406,
+          "A_change_norm": 0.004325825721025467,
+          "B_norm": 0.0033432140480726957
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.6.self_attn.v_proj",
+          "delta_frobenius": 0.0013421546900644898,
+          "base_frobenius": 7.86687707901001,
+          "relative_frobenius": 0.00017060832760762423,
+          "A_change_norm": 0.004404034931212664,
+          "B_norm": 0.0023724662605673075
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.8.self_attn.q_proj",
+          "delta_frobenius": 0.002067834371700883,
+          "base_frobenius": 13.805977821350098,
+          "relative_frobenius": 0.0001497781922807917,
+          "A_change_norm": 0.0038640880957245827,
+          "B_norm": 0.0035392583813518286
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.8.self_attn.v_proj",
+          "delta_frobenius": 0.0013403495540842414,
+          "base_frobenius": 7.868853569030762,
+          "relative_frobenius": 0.0001703360612737015,
+          "A_change_norm": 0.004192463122308254,
+          "B_norm": 0.002249641576781869
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.10.self_attn.q_proj",
+          "delta_frobenius": 0.002229615580290556,
+          "base_frobenius": 13.839055061340332,
+          "relative_frobenius": 0.0001611103944014758,
+          "A_change_norm": 0.002788569312542677,
+          "B_norm": 0.003764741588383913
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.10.self_attn.v_proj",
+          "delta_frobenius": 0.0012995295692235231,
+          "base_frobenius": 7.8935546875,
+          "relative_frobenius": 0.0001646317250560969,
+          "A_change_norm": 0.003765350440517068,
+          "B_norm": 0.0022661301773041487
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.12.self_attn.q_proj",
+          "delta_frobenius": 0.0019052104325965047,
+          "base_frobenius": 13.823103904724121,
+          "relative_frobenius": 0.00013782797032035887,
+          "A_change_norm": 0.0026362852659076452,
+          "B_norm": 0.003282202174887061
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.12.self_attn.v_proj",
+          "delta_frobenius": 0.0013963524252176285,
+          "base_frobenius": 7.870055675506592,
+          "relative_frobenius": 0.00017742598720360547,
+          "A_change_norm": 0.004535759333521128,
+          "B_norm": 0.0024449750781059265
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.14.self_attn.q_proj",
+          "delta_frobenius": 0.0019886160735040903,
+          "base_frobenius": 13.84223461151123,
+          "relative_frobenius": 0.0001436629390809685,
+          "A_change_norm": 0.0026822839863598347,
+          "B_norm": 0.0034506109077483416
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.14.self_attn.v_proj",
+          "delta_frobenius": 0.0012927085626870394,
+          "base_frobenius": 7.888209342956543,
+          "relative_frobenius": 0.00016387857613153756,
+          "A_change_norm": 0.0036617647856473923,
+          "B_norm": 0.0022329322528094053
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.16.self_attn.q_proj",
+          "delta_frobenius": 0.0020985063165426254,
+          "base_frobenius": 13.85328483581543,
+          "relative_frobenius": 0.00015148078091442585,
+          "A_change_norm": 0.0029793239664286375,
+          "B_norm": 0.0035878694616258144
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.16.self_attn.v_proj",
+          "delta_frobenius": 0.0014860655646771193,
+          "base_frobenius": 7.924884796142578,
+          "relative_frobenius": 0.00018751889001578093,
+          "A_change_norm": 0.0043291812762618065,
+          "B_norm": 0.0025196385104209185
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.18.self_attn.q_proj",
+          "delta_frobenius": 0.0021276352927088737,
+          "base_frobenius": 13.858394622802734,
+          "relative_frobenius": 0.00015352682385127991,
+          "A_change_norm": 0.0027734050527215004,
+          "B_norm": 0.003666119882836938
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.18.self_attn.v_proj",
+          "delta_frobenius": 0.001202352810651064,
+          "base_frobenius": 7.897561073303223,
+          "relative_frobenius": 0.00015224356320686638,
+          "A_change_norm": 0.003095717402175069,
+          "B_norm": 0.0020551576744765043
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.20.self_attn.q_proj",
+          "delta_frobenius": 0.0020404651295393705,
+          "base_frobenius": 13.886096000671387,
+          "relative_frobenius": 0.00014694304263684899,
+          "A_change_norm": 0.0026603341102600098,
+          "B_norm": 0.0035007589031010866
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.20.self_attn.v_proj",
+          "delta_frobenius": 0.0012446308974176645,
+          "base_frobenius": 7.911091327667236,
+          "relative_frobenius": 0.00015732733299955726,
+          "A_change_norm": 0.003189782379195094,
+          "B_norm": 0.00214400514960289
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.22.self_attn.q_proj",
+          "delta_frobenius": 0.002001834334805608,
+          "base_frobenius": 13.856624603271484,
+          "relative_frobenius": 0.00014446767454501241,
+          "A_change_norm": 0.0029143879655748606,
+          "B_norm": 0.003485672175884247
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.22.self_attn.v_proj",
+          "delta_frobenius": 0.0012243668315932155,
+          "base_frobenius": 7.901489734649658,
+          "relative_frobenius": 0.00015495393017772585,
+          "A_change_norm": 0.0029048044234514236,
+          "B_norm": 0.0021071038208901882
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.24.self_attn.q_proj",
+          "delta_frobenius": 0.0020008611027151346,
+          "base_frobenius": 13.946197509765625,
+          "relative_frobenius": 0.0001434700097888708,
+          "A_change_norm": 0.002535904524847865,
+          "B_norm": 0.0035028227139264345
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.24.self_attn.v_proj",
+          "delta_frobenius": 0.0010815479326993227,
+          "base_frobenius": 7.928457736968994,
+          "relative_frobenius": 0.0001364134077448398,
+          "A_change_norm": 0.0024918674025684595,
+          "B_norm": 0.001811624737456441
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.26.self_attn.q_proj",
+          "delta_frobenius": 0.0019172981847077608,
+          "base_frobenius": 13.88112735748291,
+          "relative_frobenius": 0.00013812266115564853,
+          "A_change_norm": 0.002555492799729109,
+          "B_norm": 0.0033412249758839607
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.26.self_attn.v_proj",
+          "delta_frobenius": 0.0011567050823941827,
+          "base_frobenius": 7.896873474121094,
+          "relative_frobenius": 0.0001464763336116448,
+          "A_change_norm": 0.0028428046498447657,
+          "B_norm": 0.0020845276303589344
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.28.self_attn.q_proj",
+          "delta_frobenius": 0.002182282507419586,
+          "base_frobenius": 13.931351661682129,
+          "relative_frobenius": 0.00015664543025195599,
+          "A_change_norm": 0.002981447847560048,
+          "B_norm": 0.0037083744537085295
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.28.self_attn.v_proj",
+          "delta_frobenius": 0.0013316267868503928,
+          "base_frobenius": 7.9178547859191895,
+          "relative_frobenius": 0.00016818025324027985,
+          "A_change_norm": 0.0024061540607362986,
+          "B_norm": 0.0022412165999412537
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.30.self_attn.q_proj",
+          "delta_frobenius": 0.0021565742790699005,
+          "base_frobenius": 13.856953620910645,
+          "relative_frobenius": 0.00015563119086436927,
+          "A_change_norm": 0.002525504445657134,
+          "B_norm": 0.003629454644396901
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.30.self_attn.v_proj",
+          "delta_frobenius": 0.0012042969465255737,
+          "base_frobenius": 7.895042419433594,
+          "relative_frobenius": 0.00015253837045747787,
+          "A_change_norm": 0.0023586160968989134,
+          "B_norm": 0.002097844146192074
+        }
+      ],
+      "aggregate_delta_to_base_norm": 0.00014871473608026487
+    },
+    "expert_prefix": {
+      "layers": [
+        {
+          "path": "vlm_with_expert.lm_expert.layers.0.self_attn.q_proj",
+          "delta_frobenius": 0.002246875548735261,
+          "base_frobenius": 13.841316223144531,
+          "relative_frobenius": 0.0001623310672584921,
+          "A_change_norm": 0.003849511733278632,
+          "B_norm": 0.003923641983419657
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.0.self_attn.v_proj",
+          "delta_frobenius": 0.0011676830472424626,
+          "base_frobenius": 7.8952860832214355,
+          "relative_frobenius": 0.0001478962367400527,
+          "A_change_norm": 0.0037979362532496452,
+          "B_norm": 0.002036435529589653
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.2.self_attn.q_proj",
+          "delta_frobenius": 0.0025644367560744286,
+          "base_frobenius": 13.78509521484375,
+          "relative_frobenius": 0.00018602967611514032,
+          "A_change_norm": 0.005801493767648935,
+          "B_norm": 0.004445910453796387
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.2.self_attn.v_proj",
+          "delta_frobenius": 0.0014880457893013954,
+          "base_frobenius": 7.927071571350098,
+          "relative_frobenius": 0.00018771695613395423,
+          "A_change_norm": 0.0054213907569646835,
+          "B_norm": 0.002552010817453265
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.4.self_attn.q_proj",
+          "delta_frobenius": 0.0022851277608424425,
+          "base_frobenius": 13.720051765441895,
+          "relative_frobenius": 0.00016655387298669666,
+          "A_change_norm": 0.004750063642859459,
+          "B_norm": 0.0040057445876300335
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.4.self_attn.v_proj",
+          "delta_frobenius": 0.0014595638494938612,
+          "base_frobenius": 7.869287490844727,
+          "relative_frobenius": 0.0001854759902926162,
+          "A_change_norm": 0.004840472247451544,
+          "B_norm": 0.0023947665467858315
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.6.self_attn.q_proj",
+          "delta_frobenius": 0.00232905731536448,
+          "base_frobenius": 13.770350456237793,
+          "relative_frobenius": 0.00016913565923459828,
+          "A_change_norm": 0.005133691243827343,
+          "B_norm": 0.003901837393641472
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.6.self_attn.v_proj",
+          "delta_frobenius": 0.001459406572394073,
+          "base_frobenius": 7.86687707901001,
+          "relative_frobenius": 0.00018551282119005919,
+          "A_change_norm": 0.005248618312180042,
+          "B_norm": 0.002583538182079792
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.8.self_attn.q_proj",
+          "delta_frobenius": 0.0023883809335529804,
+          "base_frobenius": 13.805977821350098,
+          "relative_frobenius": 0.00017299615137744695,
+          "A_change_norm": 0.004432491958141327,
+          "B_norm": 0.0040556578896939754
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.8.self_attn.v_proj",
+          "delta_frobenius": 0.0015350113390013576,
+          "base_frobenius": 7.868853569030762,
+          "relative_frobenius": 0.00019507433171384037,
+          "A_change_norm": 0.005078038666397333,
+          "B_norm": 0.002596949227154255
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.10.self_attn.q_proj",
+          "delta_frobenius": 0.0021848545875400305,
+          "base_frobenius": 13.839055061340332,
+          "relative_frobenius": 0.0001578759984113276,
+          "A_change_norm": 0.003109766636043787,
+          "B_norm": 0.0037144755478948355
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.10.self_attn.v_proj",
+          "delta_frobenius": 0.0013628540327772498,
+          "base_frobenius": 7.8935546875,
+          "relative_frobenius": 0.00017265403585042804,
+          "A_change_norm": 0.003927305806428194,
+          "B_norm": 0.002391667803749442
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.12.self_attn.q_proj",
+          "delta_frobenius": 0.0023883196990936995,
+          "base_frobenius": 13.823103904724121,
+          "relative_frobenius": 0.00017277737788390368,
+          "A_change_norm": 0.0037564043886959553,
+          "B_norm": 0.004081821534782648
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.12.self_attn.v_proj",
+          "delta_frobenius": 0.001325719291344285,
+          "base_frobenius": 7.870055675506592,
+          "relative_frobenius": 0.00016845106438267976,
+          "A_change_norm": 0.003991010598838329,
+          "B_norm": 0.0023095784708857536
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.14.self_attn.q_proj",
+          "delta_frobenius": 0.0021743548568338156,
+          "base_frobenius": 13.84223461151123,
+          "relative_frobenius": 0.00015708120190538466,
+          "A_change_norm": 0.003324702847748995,
+          "B_norm": 0.0037766131572425365
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.14.self_attn.v_proj",
+          "delta_frobenius": 0.0014947070740163326,
+          "base_frobenius": 7.888209342956543,
+          "relative_frobenius": 0.00018948623619507998,
+          "A_change_norm": 0.0042345523834228516,
+          "B_norm": 0.0025455083232373
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.16.self_attn.q_proj",
+          "delta_frobenius": 0.00215181615203619,
+          "base_frobenius": 13.85328483581543,
+          "relative_frobenius": 0.0001553289475850761,
+          "A_change_norm": 0.002931326860561967,
+          "B_norm": 0.0037024833727627993
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.16.self_attn.v_proj",
+          "delta_frobenius": 0.0014703779015690088,
+          "base_frobenius": 7.924884796142578,
+          "relative_frobenius": 0.00018553933477960527,
+          "A_change_norm": 0.004330724012106657,
+          "B_norm": 0.002523575909435749
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.18.self_attn.q_proj",
+          "delta_frobenius": 0.0023583790753036737,
+          "base_frobenius": 13.858394622802734,
+          "relative_frobenius": 0.0001701769360806793,
+          "A_change_norm": 0.0037793018855154514,
+          "B_norm": 0.004047377035021782
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.18.self_attn.v_proj",
+          "delta_frobenius": 0.0014003069372847676,
+          "base_frobenius": 7.897561073303223,
+          "relative_frobenius": 0.0001773087860783562,
+          "A_change_norm": 0.0036040483973920345,
+          "B_norm": 0.0024168810341507196
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.20.self_attn.q_proj",
+          "delta_frobenius": 0.0023234416730701923,
+          "base_frobenius": 13.886096000671387,
+          "relative_frobenius": 0.00016732144285924733,
+          "A_change_norm": 0.003477294696494937,
+          "B_norm": 0.004014687612652779
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.20.self_attn.v_proj",
+          "delta_frobenius": 0.0014212419046089053,
+          "base_frobenius": 7.911091327667236,
+          "relative_frobenius": 0.000179651819053106,
+          "A_change_norm": 0.003933796193450689,
+          "B_norm": 0.0024626897647976875
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.22.self_attn.q_proj",
+          "delta_frobenius": 0.002202861476689577,
+          "base_frobenius": 13.856624603271484,
+          "relative_frobenius": 0.0001589753373991698,
+          "A_change_norm": 0.003243059851229191,
+          "B_norm": 0.003858668264001608
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.22.self_attn.v_proj",
+          "delta_frobenius": 0.0013220056425780058,
+          "base_frobenius": 7.901489734649658,
+          "relative_frobenius": 0.00016731093637645245,
+          "A_change_norm": 0.0031436728313565254,
+          "B_norm": 0.0022948533296585083
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.24.self_attn.q_proj",
+          "delta_frobenius": 0.0022890144027769566,
+          "base_frobenius": 13.946197509765625,
+          "relative_frobenius": 0.00016413179400842637,
+          "A_change_norm": 0.0031702485866844654,
+          "B_norm": 0.003984599839895964
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.24.self_attn.v_proj",
+          "delta_frobenius": 0.0012803648132830858,
+          "base_frobenius": 7.928457736968994,
+          "relative_frobenius": 0.0001614897628314793,
+          "A_change_norm": 0.002955019474029541,
+          "B_norm": 0.0021550683304667473
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.26.self_attn.q_proj",
+          "delta_frobenius": 0.0022996452171355486,
+          "base_frobenius": 13.88112735748291,
+          "relative_frobenius": 0.0001656670356169343,
+          "A_change_norm": 0.0030662696808576584,
+          "B_norm": 0.0040003713220357895
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.26.self_attn.v_proj",
+          "delta_frobenius": 0.001247889595106244,
+          "base_frobenius": 7.896873474121094,
+          "relative_frobenius": 0.00015802324924152344,
+          "A_change_norm": 0.0030936847906559706,
+          "B_norm": 0.0022327781189233065
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.28.self_attn.q_proj",
+          "delta_frobenius": 0.002438972471281886,
+          "base_frobenius": 13.931351661682129,
+          "relative_frobenius": 0.00017507077427580953,
+          "A_change_norm": 0.003517822129651904,
+          "B_norm": 0.0041716317646205425
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.28.self_attn.v_proj",
+          "delta_frobenius": 0.001491317292675376,
+          "base_frobenius": 7.9178547859191895,
+          "relative_frobenius": 0.00018834865477401763,
+          "A_change_norm": 0.0030955024994909763,
+          "B_norm": 0.0025344002060592175
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.30.self_attn.q_proj",
+          "delta_frobenius": 0.0027544184122234583,
+          "base_frobenius": 13.856953620910645,
+          "relative_frobenius": 0.00019877517479471862,
+          "A_change_norm": 0.003896343056112528,
+          "B_norm": 0.004612044431269169
+        },
+        {
+          "path": "vlm_with_expert.lm_expert.layers.30.self_attn.v_proj",
+          "delta_frobenius": 0.0015793094644322991,
+          "base_frobenius": 7.895042419433594,
+          "relative_frobenius": 0.00020003812096547335,
+          "A_change_norm": 0.003408916760236025,
+          "B_norm": 0.0027373391203582287
+        }
+      ],
+      "aggregate_delta_to_base_norm": 0.000171499668813894
+    }
+  },
+  "interaction": {
+    "suffix": {
+      "projection_prefix_training_gain": 0.0070740822476142995,
+      "expert_prefix_training_gain": 0.007133658884516447,
+      "difference_in_gains": 5.957663690214776e-05
+    },
+    "first": {
+      "projection_prefix_training_gain": -0.0015081461151207204,
+      "expert_prefix_training_gain": -0.0016790306728147047,
+      "difference_in_gains": -0.00017088455769398436
+    }
+  },
+  "gates": {
+    "better_than_projection_prefix": false,
+    "better_than_expert_ordinary_same_prefix": false,
+    "better_than_frozen_same_prefix": false,
+    "better_than_projection_ordinary_unconditioned": true,
+    "at_least_three_trajectories_each_metric": false,
+    "correct_better_than_mismatch": true,
+    "positive_interaction_both_metrics": false,
+    "command_not_worse_than_projection_ordinary_unconditioned": false,
+    "command_not_worse_than_projection_prefix": false
+  },
+  "sources_unchanged": true,
+  "cuda_initialized": false,
+  "limitations": [
+    "LoRA effective weight norm is descriptive and not an output-sensitivity or merge-equivalence proof.",
+    "Single rank/seed and very small known dataset cannot establish a general capacity limit."
+  ]
+}
