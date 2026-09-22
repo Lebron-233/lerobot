@@ -1,0 +1,33 @@
+{
+  "checked_utc": "2026-09-22T02:37:27.191011+00:00",
+  "execution_head": "586dab6672270efab35ccbe36a9aeccafdf9e3dc",
+  "registration_id": 5770313380,
+  "formal_job": "08fe464b-73f8-473c-9bd1-65fdd3acb37b",
+  "audit_job": "71686171-88ee-4595-8d11-f4caebdd049b",
+  "formal_exit_code": 0,
+  "audit_exit_code": 0,
+  "execution": {
+    "child_pid": 1658406,
+    "exit_code": 0,
+    "exit_confirmed": true,
+    "started_utc": "2026-09-22T02:22:49.679207+00:00",
+    "finished_utc": "2026-09-22T02:33:03.676937+00:00",
+    "wall_s": 613.9977496750653,
+    "stop_reason": null,
+    "forced": false,
+    "pending": {},
+    "active": {}
+  },
+  "sources_unchanged": 737,
+  "old_pending_unchanged": 21,
+  "worker_proc_absent": true,
+  "hashes": {
+    "result.json": "88a5af6994b5e2d162e51c6d8dc1975f21afb442056df43e6b7eb149eaf8a71c",
+    "independent_audit.json": "798c21ca1aa7fd37b548071317f36504bd5e14004e0dc911b7e195720ff93748",
+    "descriptive.json": "050616cc26752a7b380023e244a0461eeea6a3058d5d8a4fcd757f7c1c255dc5"
+  },
+  "new_mutation_safety_interceptions": 0,
+  "github_connector_error": "ToolError: FORBIDDEN: This conversation is restricted to developer MCPs",
+  "blocked_latest_read_repeated": false,
+  "cuda_initialized": false
+}

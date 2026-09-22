@@ -1,0 +1,185 @@
+{
+  "kind": "posthoc saved-array comparisons, not a new acceptance gate",
+  "matched_first_replans": [
+    {
+      "identity": [
+        0,
+        10
+      ],
+      "full": true,
+      "noise": true,
+      "processed": true,
+      "prefix": true,
+      "rtc_weights": true,
+      "eight_inputs_exact": true,
+      "first21_observations_exact": true,
+      "first_expected": 7,
+      "first_original_actual": 4,
+      "first_committed_actual": 7,
+      "same_outcome": true
+    },
+    {
+      "identity": [
+        2,
+        10
+      ],
+      "full": true,
+      "noise": true,
+      "processed": true,
+      "prefix": true,
+      "rtc_weights": true,
+      "eight_inputs_exact": true,
+      "first21_observations_exact": true,
+      "first_expected": 7,
+      "first_original_actual": 3,
+      "first_committed_actual": 7,
+      "same_outcome": true
+    },
+    {
+      "identity": [
+        6,
+        10
+      ],
+      "full": true,
+      "noise": true,
+      "processed": true,
+      "prefix": true,
+      "rtc_weights": true,
+      "eight_inputs_exact": true,
+      "first21_observations_exact": true,
+      "first_expected": 7,
+      "first_original_actual": 3,
+      "first_committed_actual": 7,
+      "same_outcome": true
+    },
+    {
+      "identity": [
+        7,
+        10
+      ],
+      "full": true,
+      "noise": true,
+      "processed": true,
+      "prefix": true,
+      "rtc_weights": true,
+      "eight_inputs_exact": true,
+      "first21_observations_exact": true,
+      "first_expected": 7,
+      "first_original_actual": 3,
+      "first_committed_actual": 7,
+      "same_outcome": true
+    },
+    {
+      "identity": [
+        7,
+        11
+      ],
+      "full": true,
+      "noise": true,
+      "processed": true,
+      "prefix": true,
+      "rtc_weights": true,
+      "eight_inputs_exact": true,
+      "first21_observations_exact": true,
+      "first_expected": 7,
+      "first_original_actual": 4,
+      "first_committed_actual": 7,
+      "same_outcome": true
+    },
+    {
+      "identity": [
+        6,
+        11
+      ],
+      "full": true,
+      "noise": true,
+      "processed": true,
+      "prefix": true,
+      "rtc_weights": true,
+      "eight_inputs_exact": true,
+      "first21_observations_exact": true,
+      "first_expected": 7,
+      "first_original_actual": 3,
+      "first_committed_actual": 7,
+      "same_outcome": true
+    },
+    {
+      "identity": [
+        2,
+        11
+      ],
+      "full": true,
+      "noise": true,
+      "processed": true,
+      "prefix": true,
+      "rtc_weights": true,
+      "eight_inputs_exact": true,
+      "first21_observations_exact": true,
+      "first_expected": 7,
+      "first_original_actual": 4,
+      "first_committed_actual": 7,
+      "same_outcome": true
+    },
+    {
+      "identity": [
+        0,
+        11
+      ],
+      "full": true,
+      "noise": true,
+      "processed": true,
+      "prefix": true,
+      "rtc_weights": true,
+      "eight_inputs_exact": true,
+      "first21_observations_exact": true,
+      "first_expected": 7,
+      "first_original_actual": 3,
+      "first_committed_actual": 7,
+      "same_outcome": true
+    },
+    {
+      "identity": [
+        7,
+        18
+      ],
+      "full": true,
+      "noise": true,
+      "processed": true,
+      "prefix": true,
+      "rtc_weights": true,
+      "eight_inputs_exact": true,
+      "first21_observations_exact": true,
+      "first_expected": 7,
+      "first_original_actual": 3,
+      "first_committed_actual": 7,
+      "same_outcome": true
+    },
+    {
+      "identity": [
+        7,
+        19
+      ],
+      "full": true,
+      "noise": true,
+      "processed": true,
+      "prefix": true,
+      "rtc_weights": true,
+      "eight_inputs_exact": true,
+      "first21_observations_exact": true,
+      "first_expected": 7,
+      "first_original_actual": 3,
+      "first_committed_actual": 7,
+      "same_outcome": true
+    }
+  ],
+  "same_outcomes": 10,
+  "candidate_wall_change_vs_serialized_percent": 12.398761141347148,
+  "candidate_wall_change_vs_aligned_percent": 21.045033520665758,
+  "candidate_wall_change_vs_rtc_percent": -0.4454097836810278,
+  "mean_ready_hold_s": 0.09534633817887049,
+  "capture_total_s": 189.7747555312235,
+  "all_nonbootstrap_requests": 306,
+  "new_model_forwards": 0,
+  "new_env": 0,
+  "limitation": "Identical first replan inputs/output do not imply later trajectories identical or identify the unique cause of task loss."
+}
