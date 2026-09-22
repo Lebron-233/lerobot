@@ -1,0 +1,43 @@
+[
+  {
+    "file": "rlds_info.json",
+    "url": "https://huggingface.co/datasets/openvla/modified_libero_rlds/resolve/6ce6aaaaabdbe590b1eef5cd29c0d33f14a08551/libero_object_no_noops/1.0.0/dataset_info.json",
+    "bytes": 1151,
+    "sha256": "289506e265703e2c2a4893b75546faacd69b76fd7bccaf962fc01655375aeee2"
+  },
+  {
+    "file": "rlds_features.json",
+    "url": "https://huggingface.co/datasets/openvla/modified_libero_rlds/resolve/6ce6aaaaabdbe590b1eef5cd29c0d33f14a08551/libero_object_no_noops/1.0.0/features.json",
+    "bytes": 9195,
+    "sha256": "d6f56537585d15aa99772c6da942e5957cceda26b57a18098ef8e3164cdaffde"
+  },
+  {
+    "file": "regenerator.py",
+    "url": "https://raw.githubusercontent.com/openvla/openvla/c8f03f48af692657d3060c19588038c7220e9af9/experiments/robot/libero/regenerate_libero_dataset.py",
+    "bytes": 11225,
+    "sha256": "f17dd49e61659b515ccd691c0ee57d20fb57909af3b8b53ef7e7e6bee55ceb49"
+  },
+  {
+    "file": "libero_utils.py",
+    "url": "https://raw.githubusercontent.com/openvla/openvla/c8f03f48af692657d3060c19588038c7220e9af9/experiments/robot/libero/libero_utils.py",
+    "bytes": 3933,
+    "sha256": "6c162ce0954c8659018ee8ff1604a33904b50ac0631a8ca0f8bf1f7a4d25181d"
+  },
+  {
+    "file": "object_metainfo.json",
+    "url": "https://raw.githubusercontent.com/openvla/openvla/c8f03f48af692657d3060c19588038c7220e9af9/experiments/robot/libero/libero_object_metainfo.json",
+    "error": "HTTPError('404 Client Error: Not Found for url: https://raw.githubusercontent.com/openvla/openvla/c8f03f48af692657d3060c19588038c7220e9af9/experiments/robot/libero/libero_object_metainfo.json')"
+  },
+  {
+    "file": "env_wrapper.py",
+    "url": "https://raw.githubusercontent.com/Lifelong-Robot-Learning/LIBERO/8f1084e3132a39270c3a13ebe37270a43ece2a01/libero/libero/envs/env_wrapper.py",
+    "bytes": 8781,
+    "sha256": "a782fb76c9792268d28979474fe72849e1e98ada49c8e997a65359a8d6b6acd0"
+  },
+  {
+    "file": "converter.py",
+    "url": "https://raw.githubusercontent.com/Physical-Intelligence/openpi/215abfb217dbac7d5f1273282331b9b1866c0479/examples/libero/convert_libero_data_to_lerobot.py",
+    "bytes": 3766,
+    "sha256": "199c309a601f23fa120e0c9ca3d8f7f2dba525924a60e79906fca4c6b9f03602"
+  }
+]

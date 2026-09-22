@@ -1,0 +1,32 @@
+{
+  "independent_contract_accepted": true,
+  "native_actions_checked": 350,
+  "arms": [
+    {
+      "hz": 20,
+      "state_mse": 5.898304934644836e-07,
+      "position_rmse_m": 0.00038708261212643875,
+      "exact_state_rows": 26,
+      "success": true,
+      "sha256": "bdceedd0c377450070aadd50c799fc9cdbd89fe22a5f9aa3c71d675fc9a8871a"
+    },
+    {
+      "hz": 10,
+      "state_mse": 0.04676378462262264,
+      "position_rmse_m": 0.09868843152641424,
+      "exact_state_rows": 0,
+      "success": false,
+      "sha256": "f8b8da25d076bff7ba3f6eca684acd977a8956be72ecd52bca73f5e34fbc5205"
+    }
+  ],
+  "twenty_hz_more_consistent": true,
+  "state_mse_ratio_20_to_10": 1.261297600748817e-05,
+  "full_four_task_training_ready": false,
+  "audit_env": 0,
+  "audit_model_forwards": 0,
+  "limitations": [
+    "One known demonstration, not VLA task retention.",
+    "HDF5 and RLDS match actions but not every state; do not claim bitwise replay.",
+    "Published converter timestamps remain 10 FPS; no relabelling or interpolation."
+  ]
+}

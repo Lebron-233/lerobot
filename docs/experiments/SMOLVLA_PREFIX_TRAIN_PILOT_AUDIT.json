@@ -1,0 +1,171 @@
+{
+  "independent_contract_accepted": true,
+  "updates": {
+    "ordinary": 128,
+    "prefix": 128
+  },
+  "complete_forwards": 400,
+  "matched_training_target_pairs": 128,
+  "evaluation_losses_recomputed": 144,
+  "checkpoints": {
+    "ordinary": {
+      "sha256": "2377b2c3d849c909f9cdf5b320e6d97b6fab07008f96541c5b86f62a41e77ac9",
+      "changed_tensors": 8,
+      "parameter_sha256": {
+        "action_in_proj.weight": "208cc07284df65d36b613adef01f7b300dec62f98e029c4542c56026781ac675",
+        "action_in_proj.bias": "be28e8c5624d5efa13795bc44569e817ecae749aa71b089a172a0ca626391d79",
+        "action_time_mlp_in.weight": "1330868b47cf65677b3add33d7665f67b754cd087e98506849c2c58e146e1ce0",
+        "action_time_mlp_in.bias": "dad4c989d8a671cd92ad211f4677810756f050b904495386f0f267df4f3ceb05",
+        "action_time_mlp_out.weight": "ea64cc2ee0e17b3ea62641607e617a73794413c2ebd51b13f28bc33aa6579358",
+        "action_time_mlp_out.bias": "8c39af56ec06d5bb4d65de1393190934e1bd0a7c45edc5f3aeb065283c89ff8c",
+        "action_out_proj.weight": "baf076525228bf0b7cec5e819e074305b61e8215f1a1da9f8ca9c9eea5022caa",
+        "action_out_proj.bias": "49cc7e33ad710ec40e74c2c1a363a4e65dcac1319447ae320aed6b6197203bca"
+      }
+    },
+    "prefix": {
+      "sha256": "0d424426bd2fa9a2f0f4abb69b4e10c3443a2029749366bf16f2cca9821c2bed",
+      "changed_tensors": 8,
+      "parameter_sha256": {
+        "action_in_proj.weight": "d462c20ab03f514e5478eba6d6879c2cbe2c757bdc4189dc0fd5b8baa20f558d",
+        "action_in_proj.bias": "608fe5138031bd9a3fdecc183eaf2970214faba5e199c0d89d8e130ed62fc1cb",
+        "action_time_mlp_in.weight": "7688f61dc448972827b3767a134660fcd7d1e505f3e594a989c441562fc83d93",
+        "action_time_mlp_in.bias": "ec9f4f4289479093095141ece4600a62e3f92f36813d2a3e758aaec8be1dab7e",
+        "action_time_mlp_out.weight": "6b1eced0003fd4cdaa251c1cf1b78a2ebb0a7b534ab32227d7a299763aff7d52",
+        "action_time_mlp_out.bias": "cb0f60a66929382b2de4fcfd61266dcb63277a326c80cc2f237dacdecd960cf4",
+        "action_out_proj.weight": "60bde4833baf8e19c423b85f087ba8a87ac32307144a90deba1137b81c586a62",
+        "action_out_proj.bias": "9a514e30c53101e67666d4429475393015814a3d91b35a1dea37e922c6ae01cd"
+      }
+    }
+  },
+  "loss_table": {
+    "frozen": {
+      "unconditioned": {
+        "n_trajectories": 4,
+        "n_cases": 16,
+        "mean": 0.32169079427996194,
+        "per_trajectory": {
+          "7b547cb72d23dd1f0767eb966c652ca2f89f75c40afda81452540882757df835": 0.4059580608750205,
+          "523bff54e04e1ac11c4e2fb00338411a6ba8493b54351e13aef0a6dc11b11df0": 0.24070104046241417,
+          "6c88178d57b4a6556238d7d3314ad00dd4d8b61ed1a78da4906cc662d4f6f475": 0.37308685129941355,
+          "5f4c2d8e2e3220c80291bdab097882f89257a74aa94dd0c92881427bab5de51d": 0.2670172244829997
+        }
+      },
+      "correct_prefix": {
+        "n_trajectories": 4,
+        "n_cases": 16,
+        "mean": 0.34348945835052747,
+        "per_trajectory": {
+          "7b547cb72d23dd1f0767eb966c652ca2f89f75c40afda81452540882757df835": 0.4291510741461789,
+          "523bff54e04e1ac11c4e2fb00338411a6ba8493b54351e13aef0a6dc11b11df0": 0.28834522987851563,
+          "6c88178d57b4a6556238d7d3314ad00dd4d8b61ed1a78da4906cc662d4f6f475": 0.3923148566427985,
+          "5f4c2d8e2e3220c80291bdab097882f89257a74aa94dd0c92881427bab5de51d": 0.2641466727346166
+        }
+      },
+      "mismatched_prefix": {
+        "n_trajectories": 4,
+        "n_cases": 16,
+        "mean": 0.44834741659246924,
+        "per_trajectory": {
+          "7b547cb72d23dd1f0767eb966c652ca2f89f75c40afda81452540882757df835": 0.5154608462977236,
+          "523bff54e04e1ac11c4e2fb00338411a6ba8493b54351e13aef0a6dc11b11df0": 0.5087036658850873,
+          "6c88178d57b4a6556238d7d3314ad00dd4d8b61ed1a78da4906cc662d4f6f475": 0.4603388301460921,
+          "5f4c2d8e2e3220c80291bdab097882f89257a74aa94dd0c92881427bab5de51d": 0.3088863240409738
+        }
+      }
+    },
+    "ordinary": {
+      "unconditioned": {
+        "n_trajectories": 4,
+        "n_cases": 16,
+        "mean": 0.3234908984034428,
+        "per_trajectory": {
+          "7b547cb72d23dd1f0767eb966c652ca2f89f75c40afda81452540882757df835": 0.4108540934599718,
+          "523bff54e04e1ac11c4e2fb00338411a6ba8493b54351e13aef0a6dc11b11df0": 0.24013395667676052,
+          "6c88178d57b4a6556238d7d3314ad00dd4d8b61ed1a78da4906cc662d4f6f475": 0.37371701704625526,
+          "5f4c2d8e2e3220c80291bdab097882f89257a74aa94dd0c92881427bab5de51d": 0.26925852643078374
+        }
+      },
+      "correct_prefix": {
+        "n_trajectories": 4,
+        "n_cases": 16,
+        "mean": 0.3430036477064039,
+        "per_trajectory": {
+          "7b547cb72d23dd1f0767eb966c652ca2f89f75c40afda81452540882757df835": 0.43253515136052356,
+          "523bff54e04e1ac11c4e2fb00338411a6ba8493b54351e13aef0a6dc11b11df0": 0.28397442774184734,
+          "6c88178d57b4a6556238d7d3314ad00dd4d8b61ed1a78da4906cc662d4f6f475": 0.39240154827410423,
+          "5f4c2d8e2e3220c80291bdab097882f89257a74aa94dd0c92881427bab5de51d": 0.26310346344914054
+        }
+      },
+      "mismatched_prefix": {
+        "n_trajectories": 4,
+        "n_cases": 16,
+        "mean": 0.44754764776772826,
+        "per_trajectory": {
+          "7b547cb72d23dd1f0767eb966c652ca2f89f75c40afda81452540882757df835": 0.5194406434203815,
+          "523bff54e04e1ac11c4e2fb00338411a6ba8493b54351e13aef0a6dc11b11df0": 0.5022915638364723,
+          "6c88178d57b4a6556238d7d3314ad00dd4d8b61ed1a78da4906cc662d4f6f475": 0.4598087030335272,
+          "5f4c2d8e2e3220c80291bdab097882f89257a74aa94dd0c92881427bab5de51d": 0.30864968078053184
+        }
+      }
+    },
+    "prefix": {
+      "unconditioned": {
+        "n_trajectories": 4,
+        "n_cases": 16,
+        "mean": 0.3230214348915955,
+        "per_trajectory": {
+          "7b547cb72d23dd1f0767eb966c652ca2f89f75c40afda81452540882757df835": 0.41209289990776454,
+          "523bff54e04e1ac11c4e2fb00338411a6ba8493b54351e13aef0a6dc11b11df0": 0.24002998202035764,
+          "6c88178d57b4a6556238d7d3314ad00dd4d8b61ed1a78da4906cc662d4f6f475": 0.3713737505587163,
+          "5f4c2d8e2e3220c80291bdab097882f89257a74aa94dd0c92881427bab5de51d": 0.26858910707954364
+        }
+      },
+      "correct_prefix": {
+        "n_trajectories": 4,
+        "n_cases": 16,
+        "mean": 0.3309832823365972,
+        "per_trajectory": {
+          "7b547cb72d23dd1f0767eb966c652ca2f89f75c40afda81452540882757df835": 0.42583794607840886,
+          "523bff54e04e1ac11c4e2fb00338411a6ba8493b54351e13aef0a6dc11b11df0": 0.2648831746350704,
+          "6c88178d57b4a6556238d7d3314ad00dd4d8b61ed1a78da4906cc662d4f6f475": 0.38394736720414907,
+          "5f4c2d8e2e3220c80291bdab097882f89257a74aa94dd0c92881427bab5de51d": 0.24926464142876056
+        }
+      },
+      "mismatched_prefix": {
+        "n_trajectories": 4,
+        "n_cases": 16,
+        "mean": 0.42794343669029666,
+        "per_trajectory": {
+          "7b547cb72d23dd1f0767eb966c652ca2f89f75c40afda81452540882757df835": 0.5118476805060173,
+          "523bff54e04e1ac11c4e2fb00338411a6ba8493b54351e13aef0a6dc11b11df0": 0.4646290474878473,
+          "6c88178d57b4a6556238d7d3314ad00dd4d8b61ed1a78da4906cc662d4f6f475": 0.444604996519651,
+          "5f4c2d8e2e3220c80291bdab097882f89257a74aa94dd0c92881427bab5de51d": 0.2906920222476712
+        }
+      }
+    }
+  },
+  "trajectory_gain_vs_ordinary": {
+    "7b547cb72d23dd1f0767eb966c652ca2f89f75c40afda81452540882757df835": -0.014983852618437044,
+    "523bff54e04e1ac11c4e2fb00338411a6ba8493b54351e13aef0a6dc11b11df0": -0.024749217958309866,
+    "6c88178d57b4a6556238d7d3314ad00dd4d8b61ed1a78da4906cc662d4f6f475": -0.010230350157893808,
+    "5f4c2d8e2e3220c80291bdab097882f89257a74aa94dd0c92881427bab5de51d": 0.019993885002023176
+  },
+  "development_gates": {
+    "better_than_matched_ordinary": false,
+    "better_than_frozen_prefix": true,
+    "at_least_three_trajectories_better": false,
+    "correct_better_than_mismatched": true
+  },
+  "offline_followup_supported": false,
+  "training_convergence_proven": false,
+  "deployment_qualified": false,
+  "new_env": 0,
+  "sealed_evaluations": 0,
+  "audit_model_forwards": 0,
+  "limitations": [
+    "Four development trajectories; correct expert prefix is offline conditioning, not an online recovery guarantee.",
+    "Only projection parameters trained; no full-expert optimizer experiment.",
+    "CPU audit recomputes losses but not Transformer, gradients or all intermediate AdamW updates.",
+    "No conditional ten-step sampler, new-checkpoint Graph or task-retention evaluation in this pilot."
+  ]
+}

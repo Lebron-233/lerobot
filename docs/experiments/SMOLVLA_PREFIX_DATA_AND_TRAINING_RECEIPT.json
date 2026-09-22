@@ -1,0 +1,50 @@
+{
+  "checked_utc": "2026-09-22T05:52:17.213086+00:00",
+  "time_execution_head": "86c6af436fc5c25dd83faf75847e839e0d53f417",
+  "pilot_execution_head": "24c7ed49c6f05299991e605b7b92a21721c69e09",
+  "formal_jobs": {
+    "data_replay": "659af437-354b-4d12-8f17-1cf420c4423a",
+    "training_pilot": "8b7db1c5-6c56-4fd9-9a66-c4d2edbfa3ff"
+  },
+  "formal_exit_codes": {
+    "data_replay": 0,
+    "training_pilot": 0
+  },
+  "pilot_audit_job": "1fad2f91-7a4a-438d-8acc-0a4402544a78",
+  "both_independent_audits_accepted": true,
+  "cohort_independent_audit_accepted": true,
+  "registration_ids": {
+    "data_replay": 5771629057,
+    "training_pilot": 5771750593
+  },
+  "sources_unchanged": {
+    "data_replay": 21,
+    "training_pilot": 51
+  },
+  "original_pending_exact": 21,
+  "model_forwards": 400,
+  "optimizer_updates": 256,
+  "diagnostic_envs": 2,
+  "vla_closed_loop_episodes": 0,
+  "sealed_evaluations": 0,
+  "cpu_regression": {
+    "passed": 35,
+    "failed": 0,
+    "job": "15cc6fa4-245f-4789-882b-a3931539133a"
+  },
+  "formal_attempts_per_stage": 1,
+  "formal_retries": 0,
+  "no_new_mutation_safety_interceptions": true,
+  "github_old_commit_read_error": "ToolError: FORBIDDEN: This conversation is restricted to developer MCPs",
+  "denied_old_commit_read_repeated": false,
+  "offline_followup_supported": false,
+  "deployment_qualified": false,
+  "result_hashes": {
+    "result.json": "6cef21d222964548d81fc4114dcd65c5637910e28d24257b58d72fa97555de3c",
+    "independent_audit.json": "3cddf051e5e5785ac4f25902b2d649d66397e251aaa8a692fae730977f6a4adf",
+    "evaluation.pt": "49084afbabd591e1dcb1ed0492a81ee9aecdc447e9e3c5789d7e2cf1dc91ae74",
+    "ordinary_checkpoint.pt": "2377b2c3d849c909f9cdf5b320e6d97b6fab07008f96541c5b86f62a41e77ac9",
+    "prefix_checkpoint.pt": "0d424426bd2fa9a2f0f4abb69b4e10c3443a2029749366bf16f2cca9821c2bed"
+  },
+  "cuda_initialized_in_this_check": false
+}

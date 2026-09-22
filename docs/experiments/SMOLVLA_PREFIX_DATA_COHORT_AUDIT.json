@@ -1,0 +1,116 @@
+{
+  "independent_cohort_audit_accepted": true,
+  "trajectory_count": 20,
+  "train_trajectories": 12,
+  "dev_trajectories": 4,
+  "sealed_trajectories": 4,
+  "old_diagnostic_excluded": 1,
+  "unique_action_sequences": 20,
+  "split_overlaps": 0,
+  "source_files_hashed": 4,
+  "packets_checked": 16,
+  "raw_images_exact": 254,
+  "sealed_pixels_decoded": 0,
+  "rows": [
+    {
+      "task": 0,
+      "split": "dev",
+      "rows": 164,
+      "anchors": 9
+    },
+    {
+      "task": 0,
+      "split": "train",
+      "rows": 153,
+      "anchors": 8
+    },
+    {
+      "task": 0,
+      "split": "train",
+      "rows": 153,
+      "anchors": 8
+    },
+    {
+      "task": 0,
+      "split": "train",
+      "rows": 152,
+      "anchors": 8
+    },
+    {
+      "task": 0,
+      "split": "train",
+      "rows": 155,
+      "anchors": 8
+    },
+    {
+      "task": 0,
+      "split": "train",
+      "rows": 169,
+      "anchors": 9
+    },
+    {
+      "task": 2,
+      "split": "dev",
+      "rows": 115,
+      "anchors": 6
+    },
+    {
+      "task": 2,
+      "split": "train",
+      "rows": 124,
+      "anchors": 7
+    },
+    {
+      "task": 6,
+      "split": "dev",
+      "rows": 167,
+      "anchors": 9
+    },
+    {
+      "task": 6,
+      "split": "train",
+      "rows": 156,
+      "anchors": 8
+    },
+    {
+      "task": 6,
+      "split": "train",
+      "rows": 144,
+      "anchors": 8
+    },
+    {
+      "task": 6,
+      "split": "train",
+      "rows": 152,
+      "anchors": 8
+    },
+    {
+      "task": 6,
+      "split": "train",
+      "rows": 149,
+      "anchors": 8
+    },
+    {
+      "task": 7,
+      "split": "dev",
+      "rows": 137,
+      "anchors": 7
+    },
+    {
+      "task": 7,
+      "split": "train",
+      "rows": 143,
+      "anchors": 8
+    },
+    {
+      "task": 7,
+      "split": "train",
+      "rows": 141,
+      "anchors": 8
+    }
+  ],
+  "full_four_task_physical_replay_claimed": false,
+  "optimizer_updates": 0,
+  "model_forwards": 0,
+  "manifest_sha256": "d1a60540fce2056d10c29ea361329da2730e2e5f89415f86731c9e57c68d7bbf"
+}

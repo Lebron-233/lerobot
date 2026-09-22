@@ -1,0 +1,47 @@
+{
+  "posthoc_saved_results_only": true,
+  "prefix_change_vs_ordinary_same_correct_input_pct": -3.504442430914212,
+  "prefix_change_vs_ordinary_no_prefix_pct": 2.316103473121589,
+  "prefix_change_vs_frozen_correct_input_pct": -3.640919891395289,
+  "prefix_change_vs_frozen_no_prefix_pct": 2.888639719216868,
+  "correct_change_vs_own_mismatch_pct": -22.65723598978098,
+  "per_task": [
+    {
+      "task": 0,
+      "language": "pick up the alphabet soup and place it in the basket",
+      "trajectory_id": "7b547cb72d23dd1f0767eb966c652ca2f89f75c40afda81452540882757df835",
+      "ordinary_no_prefix": 0.4108540934599718,
+      "ordinary_correct_prefix": 0.43253515136052356,
+      "prefix_correct_prefix": 0.42583794607840886
+    },
+    {
+      "task": 2,
+      "language": "pick up the salad dressing and place it in the basket",
+      "trajectory_id": "523bff54e04e1ac11c4e2fb00338411a6ba8493b54351e13aef0a6dc11b11df0",
+      "ordinary_no_prefix": 0.24013395667676052,
+      "ordinary_correct_prefix": 0.28397442774184734,
+      "prefix_correct_prefix": 0.2648831746350704
+    },
+    {
+      "task": 6,
+      "language": "pick up the butter and place it in the basket",
+      "trajectory_id": "6c88178d57b4a6556238d7d3314ad00dd4d8b61ed1a78da4906cc662d4f6f475",
+      "ordinary_no_prefix": 0.37371701704625526,
+      "ordinary_correct_prefix": 0.39240154827410423,
+      "prefix_correct_prefix": 0.38394736720414907
+    },
+    {
+      "task": 7,
+      "language": "pick up the milk and place it in the basket",
+      "trajectory_id": "5f4c2d8e2e3220c80291bdab097882f89257a74aa94dd0c92881427bab5de51d",
+      "ordinary_no_prefix": 0.26925852643078374,
+      "ordinary_correct_prefix": 0.26310346344914054,
+      "prefix_correct_prefix": 0.24926464142876056
+    }
+  ],
+  "same_correct_input_improved_trajectories": 4,
+  "own_configuration_improved_trajectories": 1,
+  "new_model_forwards": 0,
+  "new_env": 0,
+  "interpretation": "Input-scheme adaptation is observed; task recovery or superiority over unconditioned policy is not established."
+}

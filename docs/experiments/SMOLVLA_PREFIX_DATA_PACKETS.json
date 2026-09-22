@@ -1,0 +1,257 @@
+[
+  {
+    "trajectory_id": "7b547cb72d23dd1f0767eb966c652ca2f89f75c40afda81452540882757df835",
+    "split": "dev",
+    "path": "7b547cb72d23dd1f0767eb966c652ca2f89f75c40afda81452540882757df835.npz",
+    "sha256": "a281d73757f4981274066ddad8d7f59eea7aa6cd81abe2715fd03ff8682a6124",
+    "anchors": [
+      0,
+      20,
+      40,
+      60,
+      80,
+      100,
+      120,
+      140,
+      160
+    ]
+  },
+  {
+    "trajectory_id": "269fda1a10d90f7c08de948c3f171fb553dde2349313b1e16ec5dd548d77e0c9",
+    "split": "train",
+    "path": "269fda1a10d90f7c08de948c3f171fb553dde2349313b1e16ec5dd548d77e0c9.npz",
+    "sha256": "cb478df64b9796c10cb029f5777010b6d2edecac07135ec5e9c84e391dee2427",
+    "anchors": [
+      0,
+      20,
+      40,
+      60,
+      80,
+      100,
+      120,
+      140
+    ]
+  },
+  {
+    "trajectory_id": "84ba59a034184c08a074f00cf3012e30a38653888e770e56f1709879be3f393a",
+    "split": "train",
+    "path": "84ba59a034184c08a074f00cf3012e30a38653888e770e56f1709879be3f393a.npz",
+    "sha256": "9650feebd2f201852f79d4a863ce8e3fedf8c58f8d25a856dbd12692648090d6",
+    "anchors": [
+      0,
+      20,
+      40,
+      60,
+      80,
+      100,
+      120,
+      140
+    ]
+  },
+  {
+    "trajectory_id": "c8ae02edd515dfbcdb45ff390f3ebcf8c8cd35059f837558b58136c050b0b4fe",
+    "split": "train",
+    "path": "c8ae02edd515dfbcdb45ff390f3ebcf8c8cd35059f837558b58136c050b0b4fe.npz",
+    "sha256": "088f685b68c6c741b6827f235e5019bde30d6d92c89cd58a1054ae58a70bed81",
+    "anchors": [
+      0,
+      20,
+      40,
+      60,
+      80,
+      100,
+      120,
+      140
+    ]
+  },
+  {
+    "trajectory_id": "4af21f24d2cced08db47479822c4e7be740692e1a6ddc8fce32d0aa365ee30d9",
+    "split": "train",
+    "path": "4af21f24d2cced08db47479822c4e7be740692e1a6ddc8fce32d0aa365ee30d9.npz",
+    "sha256": "bb60b702ad8d1a9e466c1dae71d5c7acb25a327cf8775d380948ccc4312de32b",
+    "anchors": [
+      0,
+      20,
+      40,
+      60,
+      80,
+      100,
+      120,
+      140
+    ]
+  },
+  {
+    "trajectory_id": "f4867785c413580f6b62cf52927cdaa2140c7bbbae5c3a7284d3936f40599108",
+    "split": "train",
+    "path": "f4867785c413580f6b62cf52927cdaa2140c7bbbae5c3a7284d3936f40599108.npz",
+    "sha256": "2746476f4b803ac4c7c70826c2de9ffe836256d9f2a08d3605953f176b1e2a1f",
+    "anchors": [
+      0,
+      20,
+      40,
+      60,
+      80,
+      100,
+      120,
+      140,
+      160
+    ]
+  },
+  {
+    "trajectory_id": "523bff54e04e1ac11c4e2fb00338411a6ba8493b54351e13aef0a6dc11b11df0",
+    "split": "dev",
+    "path": "523bff54e04e1ac11c4e2fb00338411a6ba8493b54351e13aef0a6dc11b11df0.npz",
+    "sha256": "d2c2a402624946e4b1e2855a3b6e4b77ab476eea79c7e2e1997a352d134580e8",
+    "anchors": [
+      0,
+      20,
+      40,
+      60,
+      80,
+      100
+    ]
+  },
+  {
+    "trajectory_id": "5b36ee98a5535445629edaf90ef13ff638db249f584af6478b49c0bf1f060c41",
+    "split": "train",
+    "path": "5b36ee98a5535445629edaf90ef13ff638db249f584af6478b49c0bf1f060c41.npz",
+    "sha256": "966c2b3a937d88315bdf9c466408ee2e92979cdb46362adc65c91e11d4c1dff9",
+    "anchors": [
+      0,
+      20,
+      40,
+      60,
+      80,
+      100,
+      120
+    ]
+  },
+  {
+    "trajectory_id": "6c88178d57b4a6556238d7d3314ad00dd4d8b61ed1a78da4906cc662d4f6f475",
+    "split": "dev",
+    "path": "6c88178d57b4a6556238d7d3314ad00dd4d8b61ed1a78da4906cc662d4f6f475.npz",
+    "sha256": "cee68b07d91aa7c4cbe0eb4273b0a8606146adcae8ea859ca06f0b98b326f9e6",
+    "anchors": [
+      0,
+      20,
+      40,
+      60,
+      80,
+      100,
+      120,
+      140,
+      160
+    ]
+  },
+  {
+    "trajectory_id": "f6f2ac2ca0fa49a38f2472e136ef63c49ebfd1183941f6255fd8ab15e50fb8d0",
+    "split": "train",
+    "path": "f6f2ac2ca0fa49a38f2472e136ef63c49ebfd1183941f6255fd8ab15e50fb8d0.npz",
+    "sha256": "b4f358d554f37706f112db3c621ba8d223c97c0d6efdf2a763afda065a497e2d",
+    "anchors": [
+      0,
+      20,
+      40,
+      60,
+      80,
+      100,
+      120,
+      140
+    ]
+  },
+  {
+    "trajectory_id": "14302bb3c104d0ed1daf217b93c7b23d676a97eacd71b91ca50511a9dc6b8b3d",
+    "split": "train",
+    "path": "14302bb3c104d0ed1daf217b93c7b23d676a97eacd71b91ca50511a9dc6b8b3d.npz",
+    "sha256": "89889ebb62797eefe44bc15d35538c4178d4569ededd0cb74dbde980dd7af018",
+    "anchors": [
+      0,
+      20,
+      40,
+      60,
+      80,
+      100,
+      120,
+      140
+    ]
+  },
+  {
+    "trajectory_id": "be09613f9ce62b5dff89f54130f19f25bae4934c26a023dcb88c732fa27b0a23",
+    "split": "train",
+    "path": "be09613f9ce62b5dff89f54130f19f25bae4934c26a023dcb88c732fa27b0a23.npz",
+    "sha256": "451e650fb1d89e147c864d67ecf3328c0df0803f9e7671728e8f6356b40ebda1",
+    "anchors": [
+      0,
+      20,
+      40,
+      60,
+      80,
+      100,
+      120,
+      140
+    ]
+  },
+  {
+    "trajectory_id": "0b6f825822fe94898915aac63245668bca0fd38e55079303ec54999d90ddc568",
+    "split": "train",
+    "path": "0b6f825822fe94898915aac63245668bca0fd38e55079303ec54999d90ddc568.npz",
+    "sha256": "7303379466c20d6762f6e835d31ab27aaa189a625884c148e7049d474ef7d318",
+    "anchors": [
+      0,
+      20,
+      40,
+      60,
+      80,
+      100,
+      120,
+      140
+    ]
+  },
+  {
+    "trajectory_id": "5f4c2d8e2e3220c80291bdab097882f89257a74aa94dd0c92881427bab5de51d",
+    "split": "dev",
+    "path": "5f4c2d8e2e3220c80291bdab097882f89257a74aa94dd0c92881427bab5de51d.npz",
+    "sha256": "00f87ce478d78e014ae50c38da614b38f595359abb93804ca0bac94b23b837ca",
+    "anchors": [
+      0,
+      20,
+      40,
+      60,
+      80,
+      100,
+      120
+    ]
+  },
+  {
+    "trajectory_id": "29ced020af539b96a6115f35d56acdb80479f20189d4b477129f57bd02df004f",
+    "split": "train",
+    "path": "29ced020af539b96a6115f35d56acdb80479f20189d4b477129f57bd02df004f.npz",
+    "sha256": "4116dfedd33a36cc31b1a4675df8887cd84e2d8bfa8f2590f199417c4aa5e084",
+    "anchors": [
+      0,
+      20,
+      40,
+      60,
+      80,
+      100,
+      120,
+      140
+    ]
+  },
+  {
+    "trajectory_id": "cd828a8c0aca8d5de1f5c521c0435b622e46e7240304210a7a2a2a782b4dd438",
+    "split": "train",
+    "path": "cd828a8c0aca8d5de1f5c521c0435b622e46e7240304210a7a2a2a782b4dd438.npz",
+    "sha256": "9e75a7929a49df4ac61d3c8071fe327d2a94a1122505b7a001749276f94649d8",
+    "anchors": [
+      0,
+      20,
+      40,
+      60,
+      80,
+      100,
+      120,
+      140
+    ]
+  }
+]

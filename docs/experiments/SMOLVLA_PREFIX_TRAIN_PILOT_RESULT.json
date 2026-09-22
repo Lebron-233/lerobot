@@ -1,0 +1,38 @@
+{
+  "experiment": "F-PTP1",
+  "head": "24c7ed49c6f05299991e605b7b92a21721c69e09",
+  "status": "completed",
+  "first_failure": null,
+  "registration_id": 5771750593,
+  "forwards_started": 400,
+  "forwards_returned": 400,
+  "backwards": 256,
+  "updates": {
+    "ordinary": 128,
+    "prefix": 128
+  },
+  "model_loads": 1,
+  "attempts": 1,
+  "retries": 0,
+  "new_env": 0,
+  "sealed_evaluations": 0,
+  "graph_captures": 0,
+  "deployment_qualified": false,
+  "trainable_numel": 723392,
+  "trainable_tensors": [
+    "action_in_proj.weight",
+    "action_in_proj.bias",
+    "action_time_mlp_in.weight",
+    "action_time_mlp_in.bias",
+    "action_time_mlp_out.weight",
+    "action_time_mlp_out.bias",
+    "action_out_proj.weight",
+    "action_out_proj.bias"
+  ],
+  "frozen_parameters_unchanged": true,
+  "base_parameters_restored": true,
+  "evaluation_rows": 144,
+  "wall_s": 44.43115019798279,
+  "sources_unchanged": true,
+  "cuda_peak_allocated_bytes": 1566045184
+}

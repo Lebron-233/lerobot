@@ -1,0 +1,49 @@
+{
+  "experiment": "F-DTC1",
+  "head": "86c6af436fc5c25dd83faf75847e839e0d53f417",
+  "registration_id": 5771629057,
+  "status": "completed",
+  "first_failure": null,
+  "arms": [
+    {
+      "control_freq": 20,
+      "actions": 175,
+      "settling": 10,
+      "state_mse": 5.898304934644836e-07,
+      "position_rmse_m": 0.00038708261212643875,
+      "max_abs_state": 0.0035776570439338684,
+      "exact_state_rows": 26,
+      "simulation_dt_minmax": [
+        0.04999999999999449,
+        0.0500000000000167
+      ],
+      "terminal_success": true,
+      "any_success": true,
+      "wall_s": 4.024198586936109
+    },
+    {
+      "control_freq": 10,
+      "actions": 175,
+      "settling": 10,
+      "state_mse": 0.04676378462262264,
+      "position_rmse_m": 0.09868843152641424,
+      "max_abs_state": 1.0491015315055847,
+      "exact_state_rows": 0,
+      "simulation_dt_minmax": [
+        0.09999999999994458,
+        0.1000000000000334
+      ],
+      "terminal_success": false,
+      "any_success": false,
+      "wall_s": 4.264285744982772
+    }
+  ],
+  "attempts": 1,
+  "retries": 0,
+  "policy_forwards": 0,
+  "optimizer_updates": 0,
+  "env_created": 2,
+  "env_closed": 2,
+  "wall_s": 9.615030206972733,
+  "sources_unchanged": true
+}

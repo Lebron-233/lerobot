@@ -1,0 +1,14 @@
+{
+  "comparison": "posthoc scope check, no new model or Env",
+  "same_initial_state_before_settling": true,
+  "settling_actions_each": 10,
+  "settling_physical_duration_s": {
+    "20Hz": 0.5,
+    "10Hz": 1.0
+  },
+  "measured_first_state_equal": false,
+  "measured_first_state_max_abs_difference": 0.000951103400439024,
+  "position_metric_definition": "sqrt(mean over all 175x3 coordinate squared errors)), not sqrt(mean per-row 3D squared norm)",
+  "vla_policy_forwards": 0,
+  "note": "Frequency also changes total physical duration of the ten prescribed settling steps; this is a source replay comparison, not a unique-cause manipulation-performance estimate."
+}

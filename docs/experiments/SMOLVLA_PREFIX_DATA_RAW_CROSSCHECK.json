@@ -1,0 +1,33 @@
+{
+  "upstream_record": {
+    "record": 7,
+    "offset": 41199009,
+    "bytes": 7427185,
+    "source_path": "/iris/u/moojink/prismatic-dev/LIBERO/libero/datasets/regenerated--no_noops/libero_object/pick_up_the_milk_and_place_it_in_the_basket_demo.hdf5",
+    "language": "pick up the milk and place it in the basket",
+    "rows": 175,
+    "action_sha256": "7869df1c85d4661979e587b67c77326aed0117dfbade00f418c227ffc0eca7d7"
+  },
+  "episode": 814,
+  "rows": 175,
+  "numeric_exact": {
+    "action": true,
+    "observation.state": true
+  },
+  "images": {
+    "observation.images.image": {
+      "exact_rows": 0,
+      "rows": 175,
+      "max_pixel_difference": 17
+    },
+    "observation.images.image2": {
+      "exact_rows": 0,
+      "rows": 175,
+      "max_pixel_difference": 20
+    }
+  },
+  "upstream_has_timestamp": false,
+  "replay_code_control_freq": 20,
+  "converted_metadata_fps": 10,
+  "physical_sim_time_not_yet_read": true
+}
