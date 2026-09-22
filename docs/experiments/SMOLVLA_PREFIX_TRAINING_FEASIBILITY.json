@@ -1,0 +1,245 @@
+{
+  "probe": "F-PTF0",
+  "checked_utc": "2026-09-22T03:45:15.873087+00:00",
+  "base_head": "c6bc33ec9f6b057d44f16e6f1ca182b674abc9c9",
+  "probe_sha256": "202a1d60114604bf26fa49dff5e936ccbcde4f811a14f424431ed572f8f6e52c",
+  "core_sha256": {
+    "src/lerobot/policies/smolvla/modeling_smolvla.py": "4ba07311ae6eadafc5f797e69858573bebf45a7fda8488d229f05e9d406cc315",
+    "src/lerobot/policies/common/vla_utils.py": "88efbc82314a0ffd826f4693ff42fc580a5385424370b271351e2674cf0e33cb"
+  },
+  "suffix_interface": {
+    "scalar_time_shape": [
+      2
+    ],
+    "scalar_suffix_shape": [
+      2,
+      50,
+      8
+    ],
+    "scalar_gradient_finite_nonzero": true,
+    "per_action_time_shape": [
+      2,
+      50
+    ],
+    "shared_time_helper_shape": [
+      2,
+      50,
+      8
+    ],
+    "current_smolvla_per_action_time_supported": false,
+    "observed_error": "expand(torch.FloatTensor{[2, 1, 50, 8]}, size=[2, 50, 8]): the number of sizes provided (3) must be greater or equal to the number of dimensions in the tensor (4)",
+    "scope": "Actual suffix method on tiny random CPU projections, not pretrained inference"
+  },
+  "suffix_objective": {
+    "cases": [
+      {
+        "C": 0,
+        "valid_suffix_coordinates": 700,
+        "loss": 0.09897709637880325
+      },
+      {
+        "C": 3,
+        "valid_suffix_coordinates": 658,
+        "loss": 0.08266924321651459
+      },
+      {
+        "C": 8,
+        "valid_suffix_coordinates": 588,
+        "loss": 0.06082616373896599
+      },
+      {
+        "C": 49,
+        "valid_suffix_coordinates": 14,
+        "loss": 0.1333368569612503
+      }
+    ],
+    "clean_prefix_preserved": true,
+    "masked_prefix_and_padding_prediction_gradients_zero": true,
+    "suffix_prediction_gradient_nonzero": true,
+    "scope": "Synthetic objective arithmetic only; not model-gradient or task-quality validation"
+  },
+  "dataset_inventory": {
+    "config_path": "/home/rp/Workspace/SmolVLA_RTC/libero-reference-cache/config/config.yaml",
+    "config_sha256": "1acadaf137bd6e0e9cc1c5130d4904f418f336aa912c417a74aa35be9335dc8b",
+    "configured_demo_root": "/home/rp/Workspace/SmolVLA_RTC/libero-reference-cache/no-datasets-downloaded",
+    "roots": [
+      {
+        "root": "/home/rp/Workspace/SmolVLA_RTC/libero-reference-cache/no-datasets-downloaded",
+        "exists": false,
+        "data_file_count": 0,
+        "metadata": [],
+        "examples": [],
+        "visited_dirs": 0,
+        "scan_truncated": false
+      },
+      {
+        "root": "/home/rp/Workspace/SmolVLA_RTC/libero-reference-cache/hub",
+        "exists": true,
+        "data_file_count": 0,
+        "metadata": [],
+        "examples": [],
+        "visited_dirs": 205,
+        "scan_truncated": false
+      },
+      {
+        "root": "/home/rp/.cache/huggingface/lerobot",
+        "exists": true,
+        "data_file_count": 3,
+        "metadata": [
+          {
+            "path": "/home/rp/.cache/huggingface/lerobot/hub/datasets--lerobot--svla_so100_pickplace/snapshots/728583b5eaf9e739a7f119e2def466fa1d552402/meta/info.json",
+            "sha256": "aec8d0c7bd3d2dc693c160bd58f9fb6aabcbb24d4b28e2f09950a3aa6b246eef",
+            "robot_type": "so100",
+            "fps": 30,
+            "total_episodes": 50,
+            "total_frames": 19631,
+            "features": {
+              "action": {
+                "dtype": "float32",
+                "shape": [
+                  6
+                ],
+                "names": [
+                  "main_shoulder_pan",
+                  "main_shoulder_lift",
+                  "main_elbow_flex",
+                  "main_wrist_flex",
+                  "main_wrist_roll",
+                  "main_gripper"
+                ],
+                "fps": 30.0
+              },
+              "observation.state": {
+                "dtype": "float32",
+                "shape": [
+                  6
+                ],
+                "names": [
+                  "main_shoulder_pan",
+                  "main_shoulder_lift",
+                  "main_elbow_flex",
+                  "main_wrist_flex",
+                  "main_wrist_roll",
+                  "main_gripper"
+                ],
+                "fps": 30.0
+              },
+              "observation.images.top": {
+                "dtype": "video",
+                "shape": [
+                  480,
+                  640,
+                  3
+                ],
+                "names": [
+                  "height",
+                  "width",
+                  "channels"
+                ],
+                "info": {
+                  "video.fps": 30.0,
+                  "video.height": 480,
+                  "video.width": 640,
+                  "video.channels": 3,
+                  "video.codec": "av1",
+                  "video.pix_fmt": "yuv420p",
+                  "video.is_depth_map": false,
+                  "has_audio": false
+                }
+              },
+              "observation.images.wrist": {
+                "dtype": "video",
+                "shape": [
+                  480,
+                  640,
+                  3
+                ],
+                "names": [
+                  "height",
+                  "width",
+                  "channels"
+                ],
+                "info": {
+                  "video.fps": 30.0,
+                  "video.height": 480,
+                  "video.width": 640,
+                  "video.channels": 3,
+                  "video.codec": "av1",
+                  "video.pix_fmt": "yuv420p",
+                  "video.is_depth_map": false,
+                  "has_audio": false
+                }
+              },
+              "timestamp": {
+                "dtype": "float32",
+                "shape": [
+                  1
+                ],
+                "names": null,
+                "fps": 30.0
+              },
+              "frame_index": {
+                "dtype": "int64",
+                "shape": [
+                  1
+                ],
+                "names": null,
+                "fps": 30.0
+              },
+              "episode_index": {
+                "dtype": "int64",
+                "shape": [
+                  1
+                ],
+                "names": null,
+                "fps": 30.0
+              },
+              "index": {
+                "dtype": "int64",
+                "shape": [
+                  1
+                ],
+                "names": null,
+                "fps": 30.0
+              },
+              "task_index": {
+                "dtype": "int64",
+                "shape": [
+                  1
+                ],
+                "names": null,
+                "fps": 30.0
+              }
+            }
+          }
+        ],
+        "examples": [
+          "/home/rp/.cache/huggingface/lerobot/hub/datasets--lerobot--svla_so100_pickplace/snapshots/728583b5eaf9e739a7f119e2def466fa1d552402/data/chunk-000/file-000.parquet",
+          "/home/rp/.cache/huggingface/lerobot/hub/datasets--lerobot--svla_so100_pickplace/snapshots/728583b5eaf9e739a7f119e2def466fa1d552402/meta/tasks.parquet",
+          "/home/rp/.cache/huggingface/lerobot/hub/datasets--lerobot--svla_so100_pickplace/snapshots/728583b5eaf9e739a7f119e2def466fa1d552402/meta/episodes/chunk-000/file-000.parquet"
+        ],
+        "visited_dirs": 19,
+        "scan_truncated": false
+      },
+      {
+        "root": "/home/rp/.cache/huggingface/hub",
+        "exists": true,
+        "data_file_count": 0,
+        "metadata": [],
+        "examples": [],
+        "visited_dirs": 1,
+        "scan_truncated": false
+      }
+    ],
+    "scope": "Only configured/shared experiment and standard HF caches; no full-machine or remote scan"
+  },
+  "pretrained_model_loads": 0,
+  "policy_forwards": 0,
+  "new_env": 0,
+  "optimizer_updates": 0,
+  "network_requests": 0,
+  "scientific_qualification_claimed": false,
+  "core_unchanged": true,
+  "cuda_initialized": false,
+  "completed": true
+}
