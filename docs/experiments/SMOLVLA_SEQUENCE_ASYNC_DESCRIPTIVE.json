@@ -1,0 +1,485 @@
+{
+  "analysis_kind": "Saved evidence descriptive arithmetic only; no new rollout or revised gate",
+  "triples": [
+    {
+      "identity": [
+        0,
+        10
+      ],
+      "cohort": "prior_pilot_development",
+      "arms": {
+        "serialized": {
+          "success": true,
+          "actions": 143,
+          "wall_s": 7.471813924959861,
+          "no_action_slots": 7,
+          "requests": 8
+        },
+        "aligned_async": {
+          "success": true,
+          "actions": 143,
+          "wall_s": 7.117357073002495,
+          "no_action_slots": 0,
+          "requests": 8
+        },
+        "sequence_async": {
+          "success": true,
+          "actions": 153,
+          "wall_s": 7.628758770995773,
+          "no_action_slots": 0,
+          "requests": 8
+        }
+      }
+    },
+    {
+      "identity": [
+        2,
+        10
+      ],
+      "cohort": "prior_pilot_development",
+      "arms": {
+        "aligned_async": {
+          "success": true,
+          "actions": 117,
+          "wall_s": 5.833499036962166,
+          "no_action_slots": 0,
+          "requests": 6
+        },
+        "sequence_async": {
+          "success": false,
+          "actions": 280,
+          "wall_s": 13.974678126978688,
+          "no_action_slots": 0,
+          "requests": 13
+        },
+        "serialized": {
+          "success": false,
+          "actions": 280,
+          "wall_s": 14.625529387965798,
+          "no_action_slots": 13,
+          "requests": 14
+        }
+      }
+    },
+    {
+      "identity": [
+        6,
+        10
+      ],
+      "cohort": "prior_pilot_development",
+      "arms": {
+        "sequence_async": {
+          "success": true,
+          "actions": 158,
+          "wall_s": 7.872219137032516,
+          "no_action_slots": 0,
+          "requests": 8
+        },
+        "serialized": {
+          "success": true,
+          "actions": 146,
+          "wall_s": 7.618745193001814,
+          "no_action_slots": 7,
+          "requests": 8
+        },
+        "aligned_async": {
+          "success": true,
+          "actions": 142,
+          "wall_s": 7.06886218697764,
+          "no_action_slots": 0,
+          "requests": 8
+        }
+      }
+    },
+    {
+      "identity": [
+        7,
+        10
+      ],
+      "cohort": "prior_pilot_development",
+      "arms": {
+        "serialized": {
+          "success": true,
+          "actions": 124,
+          "wall_s": 6.471366119920276,
+          "no_action_slots": 6,
+          "requests": 7
+        },
+        "aligned_async": {
+          "success": true,
+          "actions": 126,
+          "wall_s": 6.268661270965822,
+          "no_action_slots": 0,
+          "requests": 7
+        },
+        "sequence_async": {
+          "success": false,
+          "actions": 280,
+          "wall_s": 13.97227525699418,
+          "no_action_slots": 0,
+          "requests": 13
+        }
+      }
+    },
+    {
+      "identity": [
+        7,
+        11
+      ],
+      "cohort": "prior_pilot_development",
+      "arms": {
+        "aligned_async": {
+          "success": true,
+          "actions": 117,
+          "wall_s": 5.824748429004103,
+          "no_action_slots": 0,
+          "requests": 6
+        },
+        "sequence_async": {
+          "success": true,
+          "actions": 121,
+          "wall_s": 6.0200092770392075,
+          "no_action_slots": 0,
+          "requests": 6
+        },
+        "serialized": {
+          "success": true,
+          "actions": 116,
+          "wall_s": 6.016349510988221,
+          "no_action_slots": 5,
+          "requests": 6
+        }
+      }
+    },
+    {
+      "identity": [
+        6,
+        11
+      ],
+      "cohort": "prior_pilot_development",
+      "arms": {
+        "sequence_async": {
+          "success": true,
+          "actions": 151,
+          "wall_s": 7.526995211024769,
+          "no_action_slots": 0,
+          "requests": 7
+        },
+        "serialized": {
+          "success": true,
+          "actions": 140,
+          "wall_s": 7.272921934956685,
+          "no_action_slots": 6,
+          "requests": 7
+        },
+        "aligned_async": {
+          "success": true,
+          "actions": 149,
+          "wall_s": 7.41663311899174,
+          "no_action_slots": 0,
+          "requests": 8
+        }
+      }
+    },
+    {
+      "identity": [
+        2,
+        11
+      ],
+      "cohort": "prior_pilot_development",
+      "arms": {
+        "serialized": {
+          "success": true,
+          "actions": 119,
+          "wall_s": 6.184770999941975,
+          "no_action_slots": 5,
+          "requests": 6
+        },
+        "aligned_async": {
+          "success": true,
+          "actions": 119,
+          "wall_s": 5.916856070049107,
+          "no_action_slots": 0,
+          "requests": 6
+        },
+        "sequence_async": {
+          "success": true,
+          "actions": 129,
+          "wall_s": 6.418403557036072,
+          "no_action_slots": 0,
+          "requests": 6
+        }
+      }
+    },
+    {
+      "identity": [
+        0,
+        11
+      ],
+      "cohort": "prior_pilot_development",
+      "arms": {
+        "aligned_async": {
+          "success": true,
+          "actions": 137,
+          "wall_s": 6.814481185982004,
+          "no_action_slots": 0,
+          "requests": 7
+        },
+        "sequence_async": {
+          "success": true,
+          "actions": 133,
+          "wall_s": 6.621609654976055,
+          "no_action_slots": 0,
+          "requests": 7
+        },
+        "serialized": {
+          "success": true,
+          "actions": 121,
+          "wall_s": 6.3460733640240505,
+          "no_action_slots": 6,
+          "requests": 7
+        }
+      }
+    },
+    {
+      "identity": [
+        7,
+        18
+      ],
+      "cohort": "known_diagnostic",
+      "arms": {
+        "sequence_async": {
+          "success": true,
+          "actions": 153,
+          "wall_s": 7.641104765003547,
+          "no_action_slots": 0,
+          "requests": 8
+        },
+        "serialized": {
+          "success": true,
+          "actions": 141,
+          "wall_s": 7.405110670020804,
+          "no_action_slots": 8,
+          "requests": 8
+        },
+        "aligned_async": {
+          "success": true,
+          "actions": 141,
+          "wall_s": 7.038375228992663,
+          "no_action_slots": 0,
+          "requests": 8
+        }
+      }
+    },
+    {
+      "identity": [
+        7,
+        19
+      ],
+      "cohort": "known_diagnostic",
+      "arms": {
+        "serialized": {
+          "success": true,
+          "actions": 190,
+          "wall_s": 9.920863887993619,
+          "no_action_slots": 9,
+          "requests": 10
+        },
+        "aligned_async": {
+          "success": false,
+          "actions": 280,
+          "wall_s": 13.967863698024303,
+          "no_action_slots": 0,
+          "requests": 14
+        },
+        "sequence_async": {
+          "success": true,
+          "actions": 138,
+          "wall_s": 6.873944165068679,
+          "no_action_slots": 0,
+          "requests": 7
+        }
+      }
+    }
+  ],
+  "sequence_wall_change_vs_serialized_percent": 6.575343291146041,
+  "sequence_wall_change_vs_aligned_percent": 15.3993048459792,
+  "capture_preparation_sum_s": 37.575278548989445,
+  "capture_preparation_max_s": 1.572810988058336,
+  "case_request_indices": [
+    {
+      "identity": [
+        2,
+        10
+      ],
+      "arm": "aligned_async",
+      "indices": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100
+      ]
+    },
+    {
+      "identity": [
+        2,
+        10
+      ],
+      "arm": "sequence_async",
+      "indices": [
+        0,
+        20,
+        42,
+        64,
+        86,
+        108,
+        130,
+        152,
+        174,
+        196,
+        218,
+        240,
+        262
+      ]
+    },
+    {
+      "identity": [
+        2,
+        10
+      ],
+      "arm": "serialized",
+      "indices": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120,
+        140,
+        160,
+        180,
+        200,
+        220,
+        240,
+        260
+      ]
+    },
+    {
+      "identity": [
+        7,
+        10
+      ],
+      "arm": "serialized",
+      "indices": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120
+      ]
+    },
+    {
+      "identity": [
+        7,
+        10
+      ],
+      "arm": "aligned_async",
+      "indices": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120
+      ]
+    },
+    {
+      "identity": [
+        7,
+        10
+      ],
+      "arm": "sequence_async",
+      "indices": [
+        0,
+        20,
+        42,
+        64,
+        86,
+        108,
+        130,
+        152,
+        174,
+        196,
+        218,
+        240,
+        262
+      ]
+    },
+    {
+      "identity": [
+        7,
+        19
+      ],
+      "arm": "serialized",
+      "indices": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120,
+        140,
+        160,
+        180
+      ]
+    },
+    {
+      "identity": [
+        7,
+        19
+      ],
+      "arm": "aligned_async",
+      "indices": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120,
+        140,
+        160,
+        180,
+        200,
+        220,
+        240,
+        260
+      ]
+    },
+    {
+      "identity": [
+        7,
+        19
+      ],
+      "arm": "sequence_async",
+      "indices": [
+        0,
+        20,
+        42,
+        64,
+        86,
+        108,
+        130
+      ]
+    }
+  ],
+  "new_model_forwards": 0,
+  "new_env": 0
+}

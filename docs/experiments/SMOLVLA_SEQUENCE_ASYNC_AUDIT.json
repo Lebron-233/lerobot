@@ -1,0 +1,4962 @@
+{
+  "independent_contract_accepted": true,
+  "frozen_baseline_unchanged": true,
+  "episodes": 30,
+  "initial_triples_exact": 10,
+  "native_actions_checked": 4687,
+  "request_outputs_checked": 242,
+  "calls_closed": 10126,
+  "phases": {
+    "started": 32,
+    "returned": 32
+  },
+  "runtime_closed": 30,
+  "graph_captures": 30,
+  "arms": {
+    "serialized": {
+      "episodes": 10,
+      "successes": 9,
+      "actions": 1520,
+      "wall_s": 79.3335449937731,
+      "no_action_slots": 72,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "requests": 81,
+      "model_native_intersections": 0,
+      "same_numeric_boundary_commands": 0,
+      "request_time_s": {
+        "n": 71,
+        "mean": 0.07893837154121466,
+        "max": 0.08960801910143346,
+        "p50": 0.08041530498303473,
+        "p95": 0.08721989206969738,
+        "p99": 0.08960801910143346,
+        "required_delay_steps": 3
+      },
+      "queue_wait_s": {
+        "n": 71,
+        "mean": 0.0002987572208414195,
+        "max": 0.0005704349605366588,
+        "p50": 0.0003032069653272629,
+        "p95": 0.0004897599574178457,
+        "p99": 0.0005704349605366588
+      },
+      "bootstrap_s": {
+        "n": 10,
+        "mean": 1.3896694107912482,
+        "max": 2.011426910990849,
+        "p50": 1.319545964943245,
+        "p95": 2.011426910990849,
+        "p99": 2.011426910990849
+      },
+      "boundary_l2_7d": {
+        "n": 71,
+        "mean": 0.5097414765578046,
+        "max": 2.473768042940064,
+        "p50": 0.21454222213465332,
+        "p95": 2.0874691855416043,
+        "p99": 2.473768042940064
+      },
+      "max_observation_to_action_s": 2.9738382319919765,
+      "max_nominal_lag_steps": 0,
+      "max_actual_delay": 0,
+      "requests_above_350ms": 0,
+      "plan_rows": {
+        "executed": 1520,
+        "skipped_head": 0,
+        "superseded_tail": 2130,
+        "terminal_tail": 400,
+        "not_installed": 0
+      }
+    },
+    "aligned_async": {
+      "episodes": 10,
+      "successes": 9,
+      "actions": 1471,
+      "wall_s": 73.26733729895204,
+      "no_action_slots": 0,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 2,
+      "requests": 78,
+      "model_native_intersections": 136,
+      "same_numeric_boundary_commands": 0,
+      "request_time_s": {
+        "n": 68,
+        "mean": 0.08390440305982552,
+        "max": 0.10352923697791994,
+        "p50": 0.08381511003244668,
+        "p95": 0.09445920493453741,
+        "p99": 0.10352923697791994,
+        "required_delay_steps": 4
+      },
+      "queue_wait_s": {
+        "n": 68,
+        "mean": 0.00030611106879351773,
+        "max": 0.0005678819725289941,
+        "p50": 0.00031862989999353886,
+        "p95": 0.0005245479987934232,
+        "p99": 0.0005678819725289941
+      },
+      "bootstrap_s": {
+        "n": 10,
+        "mean": 1.3137711041141302,
+        "max": 1.340212943032384,
+        "p50": 1.310694557032548,
+        "p95": 1.340212943032384,
+        "p99": 1.340212943032384
+      },
+      "boundary_l2_7d": {
+        "n": 66,
+        "mean": 0.4282121297932064,
+        "max": 2.15335461729209,
+        "p50": 0.21692693900924137,
+        "p95": 2.0739864338148717,
+        "p99": 2.15335461729209
+      },
+      "max_observation_to_action_s": 2.3971915380097926,
+      "max_nominal_lag_steps": 0,
+      "max_actual_delay": 3,
+      "requests_above_350ms": 0,
+      "plan_rows": {
+        "executed": 1471,
+        "skipped_head": 133,
+        "superseded_tail": 1847,
+        "terminal_tail": 349,
+        "not_installed": 100
+      }
+    },
+    "sequence_async": {
+      "episodes": 10,
+      "successes": 8,
+      "actions": 1696,
+      "wall_s": 84.54999792214949,
+      "no_action_slots": 0,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 2,
+      "requests": 83,
+      "model_native_intersections": 145,
+      "same_numeric_boundary_commands": 0,
+      "request_time_s": {
+        "n": 73,
+        "mean": 0.08378624997886332,
+        "max": 0.11556987301446497,
+        "p50": 0.08453386195469648,
+        "p95": 0.09621320106089115,
+        "p99": 0.11556987301446497,
+        "required_delay_steps": 4
+      },
+      "queue_wait_s": {
+        "n": 73,
+        "mean": 0.00031245420431743747,
+        "max": 0.0012763859704136848,
+        "p50": 0.00031707598827779293,
+        "p95": 0.0005437700310721993,
+        "p99": 0.0012763859704136848
+      },
+      "bootstrap_s": {
+        "n": 10,
+        "mean": 1.312233610788826,
+        "max": 1.3345094049582258,
+        "p50": 1.3118861159309745,
+        "p95": 1.3345094049582258,
+        "p99": 1.3345094049582258
+      },
+      "boundary_l2_7d": {
+        "n": 71,
+        "mean": 0.49294753701342153,
+        "max": 2.442496436762721,
+        "p50": 0.22997740592993526,
+        "p95": 2.086654849434945,
+        "p99": 2.442496436762721
+      },
+      "max_observation_to_action_s": 2.3909116429276764,
+      "max_nominal_lag_steps": 3,
+      "max_actual_delay": 3,
+      "requests_above_350ms": 0,
+      "plan_rows": {
+        "executed": 1696,
+        "skipped_head": 0,
+        "superseded_tail": 1987,
+        "terminal_tail": 367,
+        "not_installed": 100
+      }
+    }
+  },
+  "triples": [
+    {
+      "identity": [
+        0,
+        10
+      ],
+      "cohort": "prior_pilot_development",
+      "arms": {
+        "serialized": {
+          "success": true,
+          "actions": 143,
+          "wall_s": 7.471813924959861,
+          "no_action_slots": 7,
+          "requests": 8
+        },
+        "aligned_async": {
+          "success": true,
+          "actions": 143,
+          "wall_s": 7.117357073002495,
+          "no_action_slots": 0,
+          "requests": 8
+        },
+        "sequence_async": {
+          "success": true,
+          "actions": 153,
+          "wall_s": 7.628758770995773,
+          "no_action_slots": 0,
+          "requests": 8
+        }
+      }
+    },
+    {
+      "identity": [
+        2,
+        10
+      ],
+      "cohort": "prior_pilot_development",
+      "arms": {
+        "aligned_async": {
+          "success": true,
+          "actions": 117,
+          "wall_s": 5.833499036962166,
+          "no_action_slots": 0,
+          "requests": 6
+        },
+        "sequence_async": {
+          "success": false,
+          "actions": 280,
+          "wall_s": 13.974678126978688,
+          "no_action_slots": 0,
+          "requests": 13
+        },
+        "serialized": {
+          "success": false,
+          "actions": 280,
+          "wall_s": 14.625529387965798,
+          "no_action_slots": 13,
+          "requests": 14
+        }
+      }
+    },
+    {
+      "identity": [
+        6,
+        10
+      ],
+      "cohort": "prior_pilot_development",
+      "arms": {
+        "sequence_async": {
+          "success": true,
+          "actions": 158,
+          "wall_s": 7.872219137032516,
+          "no_action_slots": 0,
+          "requests": 8
+        },
+        "serialized": {
+          "success": true,
+          "actions": 146,
+          "wall_s": 7.618745193001814,
+          "no_action_slots": 7,
+          "requests": 8
+        },
+        "aligned_async": {
+          "success": true,
+          "actions": 142,
+          "wall_s": 7.06886218697764,
+          "no_action_slots": 0,
+          "requests": 8
+        }
+      }
+    },
+    {
+      "identity": [
+        7,
+        10
+      ],
+      "cohort": "prior_pilot_development",
+      "arms": {
+        "serialized": {
+          "success": true,
+          "actions": 124,
+          "wall_s": 6.471366119920276,
+          "no_action_slots": 6,
+          "requests": 7
+        },
+        "aligned_async": {
+          "success": true,
+          "actions": 126,
+          "wall_s": 6.268661270965822,
+          "no_action_slots": 0,
+          "requests": 7
+        },
+        "sequence_async": {
+          "success": false,
+          "actions": 280,
+          "wall_s": 13.97227525699418,
+          "no_action_slots": 0,
+          "requests": 13
+        }
+      }
+    },
+    {
+      "identity": [
+        7,
+        11
+      ],
+      "cohort": "prior_pilot_development",
+      "arms": {
+        "aligned_async": {
+          "success": true,
+          "actions": 117,
+          "wall_s": 5.824748429004103,
+          "no_action_slots": 0,
+          "requests": 6
+        },
+        "sequence_async": {
+          "success": true,
+          "actions": 121,
+          "wall_s": 6.0200092770392075,
+          "no_action_slots": 0,
+          "requests": 6
+        },
+        "serialized": {
+          "success": true,
+          "actions": 116,
+          "wall_s": 6.016349510988221,
+          "no_action_slots": 5,
+          "requests": 6
+        }
+      }
+    },
+    {
+      "identity": [
+        6,
+        11
+      ],
+      "cohort": "prior_pilot_development",
+      "arms": {
+        "sequence_async": {
+          "success": true,
+          "actions": 151,
+          "wall_s": 7.526995211024769,
+          "no_action_slots": 0,
+          "requests": 7
+        },
+        "serialized": {
+          "success": true,
+          "actions": 140,
+          "wall_s": 7.272921934956685,
+          "no_action_slots": 6,
+          "requests": 7
+        },
+        "aligned_async": {
+          "success": true,
+          "actions": 149,
+          "wall_s": 7.41663311899174,
+          "no_action_slots": 0,
+          "requests": 8
+        }
+      }
+    },
+    {
+      "identity": [
+        2,
+        11
+      ],
+      "cohort": "prior_pilot_development",
+      "arms": {
+        "serialized": {
+          "success": true,
+          "actions": 119,
+          "wall_s": 6.184770999941975,
+          "no_action_slots": 5,
+          "requests": 6
+        },
+        "aligned_async": {
+          "success": true,
+          "actions": 119,
+          "wall_s": 5.916856070049107,
+          "no_action_slots": 0,
+          "requests": 6
+        },
+        "sequence_async": {
+          "success": true,
+          "actions": 129,
+          "wall_s": 6.418403557036072,
+          "no_action_slots": 0,
+          "requests": 6
+        }
+      }
+    },
+    {
+      "identity": [
+        0,
+        11
+      ],
+      "cohort": "prior_pilot_development",
+      "arms": {
+        "aligned_async": {
+          "success": true,
+          "actions": 137,
+          "wall_s": 6.814481185982004,
+          "no_action_slots": 0,
+          "requests": 7
+        },
+        "sequence_async": {
+          "success": true,
+          "actions": 133,
+          "wall_s": 6.621609654976055,
+          "no_action_slots": 0,
+          "requests": 7
+        },
+        "serialized": {
+          "success": true,
+          "actions": 121,
+          "wall_s": 6.3460733640240505,
+          "no_action_slots": 6,
+          "requests": 7
+        }
+      }
+    },
+    {
+      "identity": [
+        7,
+        18
+      ],
+      "cohort": "known_diagnostic",
+      "arms": {
+        "sequence_async": {
+          "success": true,
+          "actions": 153,
+          "wall_s": 7.641104765003547,
+          "no_action_slots": 0,
+          "requests": 8
+        },
+        "serialized": {
+          "success": true,
+          "actions": 141,
+          "wall_s": 7.405110670020804,
+          "no_action_slots": 8,
+          "requests": 8
+        },
+        "aligned_async": {
+          "success": true,
+          "actions": 141,
+          "wall_s": 7.038375228992663,
+          "no_action_slots": 0,
+          "requests": 8
+        }
+      }
+    },
+    {
+      "identity": [
+        7,
+        19
+      ],
+      "cohort": "known_diagnostic",
+      "arms": {
+        "serialized": {
+          "success": true,
+          "actions": 190,
+          "wall_s": 9.920863887993619,
+          "no_action_slots": 9,
+          "requests": 10
+        },
+        "aligned_async": {
+          "success": false,
+          "actions": 280,
+          "wall_s": 13.967863698024303,
+          "no_action_slots": 0,
+          "requests": 14
+        },
+        "sequence_async": {
+          "success": true,
+          "actions": 138,
+          "wall_s": 6.873944165068679,
+          "no_action_slots": 0,
+          "requests": 7
+        }
+      }
+    }
+  ],
+  "cohorts": {
+    "prior_pilot_development": {
+      "serialized": {
+        "n": 8,
+        "successes": 7
+      },
+      "aligned_async": {
+        "n": 8,
+        "successes": 8
+      },
+      "sequence_async": {
+        "n": 8,
+        "successes": 6
+      }
+    },
+    "known_diagnostic": {
+      "serialized": {
+        "n": 2,
+        "successes": 2
+      },
+      "aligned_async": {
+        "n": 2,
+        "successes": 1
+      },
+      "sequence_async": {
+        "n": 2,
+        "successes": 2
+      }
+    }
+  },
+  "lost_success_identities": {
+    "vs_serialized": [
+      [
+        7,
+        10
+      ]
+    ],
+    "vs_aligned_async": [
+      [
+        2,
+        10
+      ],
+      [
+        7,
+        10
+      ]
+    ]
+  },
+  "development_gates": {
+    "no_lost_success_vs_serialized": false,
+    "no_lost_success_vs_aligned": false,
+    "all_arm_p99_budget": true,
+    "all_nonbootstrap_budget": true,
+    "sequence_overlap": true,
+    "sequence_wait_ratio_improved": true,
+    "sequence_no_queue_fault": true,
+    "sequence_contiguous_prefix": true
+  },
+  "development_followup_supported": false,
+  "per_episode": [
+    {
+      "ordinal": 0,
+      "pair_index": 0,
+      "identity": [
+        0,
+        10
+      ],
+      "arm": "serialized",
+      "cohort": "prior_pilot_development",
+      "success": true,
+      "actions": 143,
+      "wall_s": 7.471813924959861,
+      "terminal_reason": "native_success",
+      "no_action_slots": 7,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "requests": 8,
+      "request_seconds": [
+        0.08384391898289323,
+        0.08133790001738816,
+        0.08517729502636939,
+        0.06995619600638747,
+        0.07575855299364775,
+        0.07222701702266932,
+        0.08590193104464561
+      ],
+      "queue_wait_seconds": [
+        0.0003896999405696988,
+        0.0003250779118388891,
+        0.0002991619985550642,
+        0.00010981305968016386,
+        0.00024762400425970554,
+        0.00013049703557044268,
+        0.00026388291735202074
+      ],
+      "bootstrap_s": 2.011426910990849,
+      "startup_s": 2.0121458979556337,
+      "capture_s": 1.572810988058336,
+      "max_actual_delay": 0,
+      "model_native_intersections": 0,
+      "observation_to_action_s": {
+        "n": 143,
+        "mean": 0.8244841472226214,
+        "max": 2.9738382319919765,
+        "p50": 0.6349736170377582,
+        "p95": 2.623773472965695,
+        "p99": 2.923735589021817
+      },
+      "max_nominal_lag_steps": 0,
+      "plan_rows": {
+        "executed": 143,
+        "skipped_head": 0,
+        "superseded_tail": 210,
+        "terminal_tail": 47,
+        "not_installed": 0
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 7,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 8,
+          "executed": 3,
+          "skipped_head": 0,
+          "superseded_tail": 0,
+          "terminal_tail": 47,
+          "not_installed": 0
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120,
+        140
+      ],
+      "boundary_l2": [
+        0.11537443551628991,
+        0.22678531997921503,
+        0.13138884445500051,
+        0.3642367870153071,
+        0.1857247573384259,
+        0.39984622981632106,
+        0.11243276495830155
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 1,
+      "pair_index": 0,
+      "identity": [
+        0,
+        10
+      ],
+      "arm": "aligned_async",
+      "cohort": "prior_pilot_development",
+      "success": true,
+      "actions": 143,
+      "wall_s": 7.117357073002495,
+      "terminal_reason": "native_success",
+      "no_action_slots": 0,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "requests": 8,
+      "request_seconds": [
+        0.08430315798614174,
+        0.08567125804256648,
+        0.08063913497608155,
+        0.08274437999352813,
+        0.09445920493453741,
+        0.09381950995884836,
+        0.0825614370405674
+      ],
+      "queue_wait_seconds": [
+        0.00035149604082107544,
+        0.0003392379730939865,
+        0.0002893200144171715,
+        0.00028019503224641085,
+        0.0003490430535748601,
+        0.00026445602998137474,
+        0.0002575659891590476
+      ],
+      "bootstrap_s": 1.310694557032548,
+      "startup_s": 1.311211706022732,
+      "capture_s": 1.2371858820552006,
+      "max_actual_delay": 2,
+      "model_native_intersections": 14,
+      "observation_to_action_s": {
+        "n": 143,
+        "mean": 0.7946549035866022,
+        "max": 2.3671903640497476,
+        "p50": 0.6848089400446042,
+        "p95": 2.017384739010595,
+        "p99": 2.3177844639867544
+      },
+      "max_nominal_lag_steps": 0,
+      "plan_rows": {
+        "executed": 143,
+        "skipped_head": 14,
+        "superseded_tail": 196,
+        "terminal_tail": 47,
+        "not_installed": 0
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 7,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 8,
+          "executed": 1,
+          "skipped_head": 2,
+          "superseded_tail": 0,
+          "terminal_tail": 47,
+          "not_installed": 0
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120,
+        140
+      ],
+      "boundary_l2": [
+        0.19999779223078526,
+        0.14305193704090222,
+        0.21030042348833192,
+        0.2608665124361894,
+        0.2590515939635431,
+        0.37560568409052114,
+        2.1333328961262747
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 2,
+      "pair_index": 0,
+      "identity": [
+        0,
+        10
+      ],
+      "arm": "sequence_async",
+      "cohort": "prior_pilot_development",
+      "success": true,
+      "actions": 153,
+      "wall_s": 7.628758770995773,
+      "terminal_reason": "native_success",
+      "no_action_slots": 0,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 1,
+      "requests": 8,
+      "request_seconds": [
+        0.0797208349686116,
+        0.07150220405310392,
+        0.07795400102622807,
+        0.07244238501880318,
+        0.0811218039598316,
+        0.0859286249615252,
+        0.08137199201155454
+      ],
+      "queue_wait_seconds": [
+        0.00048538995906710625,
+        0.00011846597772091627,
+        0.00011847796849906445,
+        0.0001118009677156806,
+        0.00022628996521234512,
+        0.0003704660339280963,
+        0.00023025099653750658
+      ],
+      "bootstrap_s": 1.3288768820930272,
+      "startup_s": 1.3292750859400257,
+      "capture_s": 1.2516801609890535,
+      "max_actual_delay": 2,
+      "model_native_intersections": 13,
+      "observation_to_action_s": {
+        "n": 153,
+        "mean": 0.8288185725154452,
+        "max": 2.3884189929813147,
+        "p50": 0.7385167910251766,
+        "p95": 2.0387209280161187,
+        "p99": 2.3393085700226948
+      },
+      "max_nominal_lag_steps": 2,
+      "plan_rows": {
+        "executed": 153,
+        "skipped_head": 0,
+        "superseded_tail": 168,
+        "terminal_tail": 29,
+        "not_installed": 50
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 7,
+          "executed": 21,
+          "skipped_head": 0,
+          "superseded_tail": 0,
+          "terminal_tail": 29,
+          "not_installed": 0
+        },
+        {
+          "request_id": 8,
+          "executed": 0,
+          "skipped_head": 0,
+          "superseded_tail": 0,
+          "terminal_tail": 0,
+          "not_installed": 50
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        42,
+        64,
+        86,
+        108,
+        130,
+        152
+      ],
+      "boundary_l2": [
+        0.2149869122940059,
+        0.1386850457015732,
+        0.13556553912397207,
+        0.21355657677198256,
+        0.1922995492929583,
+        0.33487881896843036
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 3,
+      "pair_index": 1,
+      "identity": [
+        2,
+        10
+      ],
+      "arm": "aligned_async",
+      "cohort": "prior_pilot_development",
+      "success": true,
+      "actions": 117,
+      "wall_s": 5.833499036962166,
+      "terminal_reason": "native_success",
+      "no_action_slots": 0,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "requests": 6,
+      "request_seconds": [
+        0.08747248991858214,
+        0.07274633704219013,
+        0.08613508194684982,
+        0.08946408692281693,
+        0.08481232193298638
+      ],
+      "queue_wait_seconds": [
+        0.00025518506299704313,
+        0.000136864953674376,
+        0.00024732796009629965,
+        0.0003362339921295643,
+        0.00028793804813176394
+      ],
+      "bootstrap_s": 1.3285183750558645,
+      "startup_s": 1.329053694033064,
+      "capture_s": 1.2554767199326307,
+      "max_actual_delay": 2,
+      "model_native_intersections": 10,
+      "observation_to_action_s": {
+        "n": 117,
+        "mean": 0.8271562661368671,
+        "max": 2.384641601005569,
+        "p50": 0.683865912957117,
+        "p95": 2.1348627670668066,
+        "p99": 2.3351715580793098
+      },
+      "max_nominal_lag_steps": 0,
+      "plan_rows": {
+        "executed": 117,
+        "skipped_head": 10,
+        "superseded_tail": 140,
+        "terminal_tail": 33,
+        "not_installed": 0
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 15,
+          "skipped_head": 2,
+          "superseded_tail": 0,
+          "terminal_tail": 33,
+          "not_installed": 0
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100
+      ],
+      "boundary_l2": [
+        0.3809696025660298,
+        0.19378993990958776,
+        0.16395805487677284,
+        0.11583000217584433,
+        0.2035331877187045
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 4,
+      "pair_index": 1,
+      "identity": [
+        2,
+        10
+      ],
+      "arm": "sequence_async",
+      "cohort": "prior_pilot_development",
+      "success": false,
+      "actions": 280,
+      "wall_s": 13.974678126978688,
+      "terminal_reason": "time_limit",
+      "no_action_slots": 0,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "requests": 13,
+      "request_seconds": [
+        0.09180137899238616,
+        0.08167765603866428,
+        0.08427760796621442,
+        0.09012629499193281,
+        0.08261825994122773,
+        0.09011855802964419,
+        0.09293900802731514,
+        0.07449737109709531,
+        0.0888792839832604,
+        0.08527385198976845,
+        0.08265046298038214,
+        0.08938517898786813
+      ],
+      "queue_wait_seconds": [
+        0.0003569490509107709,
+        0.0003477269783616066,
+        0.00036617403384298086,
+        0.0003678050125017762,
+        0.00025066803209483624,
+        0.0012763859704136848,
+        0.00037734105717390776,
+        0.00021418393589556217,
+        0.0003162580542266369,
+        0.00040584104135632515,
+        0.0004040480125695467,
+        0.0004501640796661377
+      ],
+      "bootstrap_s": 1.314503003959544,
+      "startup_s": 1.314979639952071,
+      "capture_s": 1.2425012598978356,
+      "max_actual_delay": 2,
+      "model_native_intersections": 24,
+      "observation_to_action_s": {
+        "n": 280,
+        "mean": 0.7431899325909659,
+        "max": 2.371035880059935,
+        "p50": 0.683062922093086,
+        "p95": 1.6712181660113856,
+        "p99": 2.2712232660269365
+      },
+      "max_nominal_lag_steps": 2,
+      "plan_rows": {
+        "executed": 280,
+        "skipped_head": 0,
+        "superseded_tail": 336,
+        "terminal_tail": 34,
+        "not_installed": 0
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 7,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 8,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 9,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 10,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 11,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 12,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 13,
+          "executed": 16,
+          "skipped_head": 0,
+          "superseded_tail": 0,
+          "terminal_tail": 34,
+          "not_installed": 0
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        42,
+        64,
+        86,
+        108,
+        130,
+        152,
+        174,
+        196,
+        218,
+        240,
+        262
+      ],
+      "boundary_l2": [
+        0.2137891435507861,
+        0.22157910307578052,
+        0.6672683378827501,
+        0.22523535048695148,
+        2.141593208120177,
+        1.4146453595431159,
+        0.6665855117601198,
+        2.0265673964870694,
+        0.17184939630542076,
+        0.4941699337731771,
+        0.6330494132203289,
+        1.1298600514833879
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 5,
+      "pair_index": 1,
+      "identity": [
+        2,
+        10
+      ],
+      "arm": "serialized",
+      "cohort": "prior_pilot_development",
+      "success": false,
+      "actions": 280,
+      "wall_s": 14.625529387965798,
+      "terminal_reason": "time_limit",
+      "no_action_slots": 13,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "requests": 14,
+      "request_seconds": [
+        0.08770241599995643,
+        0.0839428739855066,
+        0.0810123230330646,
+        0.08203851198777556,
+        0.07952126499731094,
+        0.08041530498303473,
+        0.08104410907253623,
+        0.08249481697566807,
+        0.08164620294701308,
+        0.08270797808654606,
+        0.08187576499767601,
+        0.08366231003310531,
+        0.08721989206969738
+      ],
+      "queue_wait_seconds": [
+        0.000446068006567657,
+        0.0004210399929434061,
+        0.00028016301803290844,
+        0.0005704349605366588,
+        0.00039927393663674593,
+        0.00031188910361379385,
+        0.00035981694236397743,
+        0.0003032069653272629,
+        0.00032116007059812546,
+        0.0003700118977576494,
+        0.00028707506135106087,
+        0.00044492899905890226,
+        0.0004897599574178457
+      ],
+      "bootstrap_s": 1.319545964943245,
+      "startup_s": 1.3199631600873545,
+      "capture_s": 1.2452419500332326,
+      "max_actual_delay": 0,
+      "model_native_intersections": 0,
+      "observation_to_action_s": {
+        "n": 280,
+        "mean": 0.6456497740836182,
+        "max": 2.2762424619868398,
+        "p50": 0.5814315979368985,
+        "p95": 1.576176595990546,
+        "p99": 2.176026694010943
+      },
+      "max_nominal_lag_steps": 0,
+      "plan_rows": {
+        "executed": 280,
+        "skipped_head": 0,
+        "superseded_tail": 390,
+        "terminal_tail": 30,
+        "not_installed": 0
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 7,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 8,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 9,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 10,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 11,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 12,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 13,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 14,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 0,
+          "terminal_tail": 30,
+          "not_installed": 0
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120,
+        140,
+        160,
+        180,
+        200,
+        220,
+        240,
+        260
+      ],
+      "boundary_l2": [
+        0.13460726507157436,
+        0.26846769292963235,
+        0.20865824655224122,
+        0.27314592997229287,
+        2.003998844275794,
+        2.473768042940064,
+        0.2144857170109694,
+        2.154199917376215,
+        2.044203580378699,
+        2.107053104134349,
+        0.4060348217073318,
+        1.192965865437246,
+        2.0149388267544133
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 6,
+      "pair_index": 2,
+      "identity": [
+        6,
+        10
+      ],
+      "arm": "sequence_async",
+      "cohort": "prior_pilot_development",
+      "success": true,
+      "actions": 158,
+      "wall_s": 7.872219137032516,
+      "terminal_reason": "native_success",
+      "no_action_slots": 0,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "requests": 8,
+      "request_seconds": [
+        0.08007205196190625,
+        0.08979987807106227,
+        0.11556987301446497,
+        0.08627613598946482,
+        0.08515363303013146,
+        0.07709575304761529,
+        0.08830408495850861
+      ],
+      "queue_wait_seconds": [
+        0.0001391560072079301,
+        0.0006454319227486849,
+        0.00028074905276298523,
+        0.0004338460275903344,
+        0.00035552901681512594,
+        0.00019831699319183826,
+        0.00035157206002622843
+      ],
+      "bootstrap_s": 1.3072548849740997,
+      "startup_s": 1.3076254389015958,
+      "capture_s": 1.233160485047847,
+      "max_actual_delay": 3,
+      "model_native_intersections": 15,
+      "observation_to_action_s": {
+        "n": 158,
+        "mean": 0.8245379364234395,
+        "max": 2.3655821370193735,
+        "p50": 0.7328453700756654,
+        "p95": 2.0157144860131666,
+        "p99": 2.315770253073424
+      },
+      "max_nominal_lag_steps": 3,
+      "plan_rows": {
+        "executed": 158,
+        "skipped_head": 0,
+        "superseded_tail": 195,
+        "terminal_tail": 47,
+        "not_installed": 0
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 23,
+          "skipped_head": 0,
+          "superseded_tail": 27,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 7,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 8,
+          "executed": 3,
+          "skipped_head": 0,
+          "superseded_tail": 0,
+          "terminal_tail": 47,
+          "not_installed": 0
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        42,
+        64,
+        87,
+        109,
+        131,
+        153
+      ],
+      "boundary_l2": [
+        0.16384156964296856,
+        0.3741337120844141,
+        0.17182647416911587,
+        0.4014092056588604,
+        0.1305391920691676,
+        0.4972512462619183,
+        0.18821037468717583
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 7,
+      "pair_index": 2,
+      "identity": [
+        6,
+        10
+      ],
+      "arm": "serialized",
+      "cohort": "prior_pilot_development",
+      "success": true,
+      "actions": 146,
+      "wall_s": 7.618745193001814,
+      "terminal_reason": "native_success",
+      "no_action_slots": 7,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "requests": 8,
+      "request_seconds": [
+        0.08960801910143346,
+        0.0810606530867517,
+        0.07224844896700233,
+        0.07504522101953626,
+        0.07851613301318139,
+        0.08175550401210785,
+        0.08092982799280435
+      ],
+      "queue_wait_seconds": [
+        0.0003409909550100565,
+        0.000340126920491457,
+        0.00025217700749635696,
+        0.00020895595662295818,
+        0.00041379895992577076,
+        0.00027470896020531654,
+        0.00035337102599442005
+      ],
+      "bootstrap_s": 1.3315367420436814,
+      "startup_s": 1.3319646569434553,
+      "capture_s": 1.2585279589984566,
+      "max_actual_delay": 0,
+      "model_native_intersections": 0,
+      "observation_to_action_s": {
+        "n": 146,
+        "mean": 0.7175743553256425,
+        "max": 2.2889869639184326,
+        "p50": 0.6262917220592499,
+        "p95": 1.9382616649381816,
+        "p99": 2.2381999019999057
+      },
+      "max_nominal_lag_steps": 0,
+      "plan_rows": {
+        "executed": 146,
+        "skipped_head": 0,
+        "superseded_tail": 210,
+        "terminal_tail": 44,
+        "not_installed": 0
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 7,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 8,
+          "executed": 6,
+          "skipped_head": 0,
+          "superseded_tail": 0,
+          "terminal_tail": 44,
+          "not_installed": 0
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120,
+        140
+      ],
+      "boundary_l2": [
+        0.10556121921544923,
+        0.3467021058452051,
+        0.6621979199646643,
+        0.5914740198907906,
+        0.1750882636457014,
+        0.14177277337314576,
+        2.0448417729670245
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 8,
+      "pair_index": 2,
+      "identity": [
+        6,
+        10
+      ],
+      "arm": "aligned_async",
+      "cohort": "prior_pilot_development",
+      "success": true,
+      "actions": 142,
+      "wall_s": 7.06886218697764,
+      "terminal_reason": "native_success",
+      "no_action_slots": 0,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 1,
+      "requests": 8,
+      "request_seconds": [
+        0.08214142790529877,
+        0.08684192097280174,
+        0.0879000840941444,
+        0.07140886597335339,
+        0.07754864799790084,
+        0.09315405099187046,
+        0.07293788495007902
+      ],
+      "queue_wait_seconds": [
+        0.0001529509900137782,
+        0.0005287050735205412,
+        0.0003606729442253709,
+        0.00012647605035454035,
+        0.0001726839691400528,
+        0.00036713609006255865,
+        0.0005640950985252857
+      ],
+      "bootstrap_s": 1.334778000949882,
+      "startup_s": 1.3352751909988,
+      "capture_s": 1.259730746038258,
+      "max_actual_delay": 2,
+      "model_native_intersections": 14,
+      "observation_to_action_s": {
+        "n": 142,
+        "mean": 0.8032810963119682,
+        "max": 2.3914706190116704,
+        "p50": 0.6838449269998819,
+        "p95": 2.041591397020966,
+        "p99": 2.3417741199955344
+      },
+      "max_nominal_lag_steps": 0,
+      "plan_rows": {
+        "executed": 142,
+        "skipped_head": 12,
+        "superseded_tail": 168,
+        "terminal_tail": 28,
+        "not_installed": 50
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 7,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 0,
+          "terminal_tail": 28,
+          "not_installed": 0
+        },
+        {
+          "request_id": 8,
+          "executed": 0,
+          "skipped_head": 0,
+          "superseded_tail": 0,
+          "terminal_tail": 0,
+          "not_installed": 50
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120,
+        140
+      ],
+      "boundary_l2": [
+        0.19857639309477923,
+        0.13391619181660952,
+        0.5460892980959074,
+        0.3072794027385271,
+        0.11183996634550228,
+        0.2200655932585191
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 9,
+      "pair_index": 3,
+      "identity": [
+        7,
+        10
+      ],
+      "arm": "serialized",
+      "cohort": "prior_pilot_development",
+      "success": true,
+      "actions": 124,
+      "wall_s": 6.471366119920276,
+      "terminal_reason": "native_success",
+      "no_action_slots": 6,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "requests": 7,
+      "request_seconds": [
+        0.07160116697195917,
+        0.06956819107290357,
+        0.07175227592233568,
+        0.07848150399513543,
+        0.07235770695842803,
+        0.08354701800271869
+      ],
+      "queue_wait_seconds": [
+        0.00030517694540321827,
+        0.00015781901311129332,
+        0.00020858203060925007,
+        0.0005432420875877142,
+        0.00022170809097588062,
+        0.00036255200393497944
+      ],
+      "bootstrap_s": 1.3368756599957123,
+      "startup_s": 1.337615430005826,
+      "capture_s": 1.2627313690027222,
+      "max_actual_delay": 0,
+      "model_native_intersections": 0,
+      "observation_to_action_s": {
+        "n": 124,
+        "mean": 0.74656468740901,
+        "max": 2.2940136740216985,
+        "p50": 0.6308671600418165,
+        "p95": 1.9941099040443078,
+        "p99": 2.2439296540105715
+      },
+      "max_nominal_lag_steps": 0,
+      "plan_rows": {
+        "executed": 124,
+        "skipped_head": 0,
+        "superseded_tail": 180,
+        "terminal_tail": 46,
+        "not_installed": 0
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 7,
+          "executed": 4,
+          "skipped_head": 0,
+          "superseded_tail": 0,
+          "terminal_tail": 46,
+          "not_installed": 0
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120
+      ],
+      "boundary_l2": [
+        0.12833384626615668,
+        0.1580996261200079,
+        0.1863213871801056,
+        0.28690535638966785,
+        0.1828770485937364,
+        0.28534861266796196
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 10,
+      "pair_index": 3,
+      "identity": [
+        7,
+        10
+      ],
+      "arm": "aligned_async",
+      "cohort": "prior_pilot_development",
+      "success": true,
+      "actions": 126,
+      "wall_s": 6.268661270965822,
+      "terminal_reason": "native_success",
+      "no_action_slots": 0,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "requests": 7,
+      "request_seconds": [
+        0.08287494198884815,
+        0.09202411503065377,
+        0.08360597805585712,
+        0.0812646469566971,
+        0.08429836097639054,
+        0.08775261300615966
+      ],
+      "queue_wait_seconds": [
+        0.0001450579147785902,
+        0.0005245479987934232,
+        0.000368154956959188,
+        0.0004886980168521404,
+        0.0003876839764416218,
+        0.0004739270079880953
+      ],
+      "bootstrap_s": 1.3302778910147026,
+      "startup_s": 1.3306484679924324,
+      "capture_s": 1.2569774399744347,
+      "max_actual_delay": 2,
+      "model_native_intersections": 12,
+      "observation_to_action_s": {
+        "n": 126,
+        "mean": 0.8147344343661744,
+        "max": 2.3872688999399543,
+        "p50": 0.6833978479262441,
+        "p95": 2.087440621922724,
+        "p99": 2.3375364230014384
+      },
+      "max_nominal_lag_steps": 0,
+      "plan_rows": {
+        "executed": 126,
+        "skipped_head": 12,
+        "superseded_tail": 168,
+        "terminal_tail": 44,
+        "not_installed": 0
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 7,
+          "executed": 4,
+          "skipped_head": 2,
+          "superseded_tail": 0,
+          "terminal_tail": 44,
+          "not_installed": 0
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120
+      ],
+      "boundary_l2": [
+        0.2381148772727458,
+        0.21692693900924137,
+        0.14868645429255692,
+        0.16464909497159066,
+        0.11372217458724204,
+        0.3338957225049255
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 11,
+      "pair_index": 3,
+      "identity": [
+        7,
+        10
+      ],
+      "arm": "sequence_async",
+      "cohort": "prior_pilot_development",
+      "success": false,
+      "actions": 280,
+      "wall_s": 13.97227525699418,
+      "terminal_reason": "time_limit",
+      "no_action_slots": 0,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "requests": 13,
+      "request_seconds": [
+        0.08702180604450405,
+        0.09666220098733902,
+        0.08177554397843778,
+        0.09053889103233814,
+        0.09108009201008826,
+        0.08628042601048946,
+        0.09659724798984826,
+        0.08453386195469648,
+        0.08672935701906681,
+        0.08389750507194549,
+        0.08999043609946966,
+        0.0868798429146409
+      ],
+      "queue_wait_seconds": [
+        0.00036636192817240953,
+        0.0004292179364711046,
+        0.00028528308030217886,
+        0.0002817140193656087,
+        0.0005437700310721993,
+        0.0005030200118198991,
+        0.00037730811163783073,
+        0.0003394089872017503,
+        0.0005995519459247589,
+        0.0002934399526566267,
+        0.00038788991514593363,
+        0.0002855591010302305
+      ],
+      "bootstrap_s": 1.2739285950083286,
+      "startup_s": 1.2743896460160613,
+      "capture_s": 1.2014675759710371,
+      "max_actual_delay": 2,
+      "model_native_intersections": 24,
+      "observation_to_action_s": {
+        "n": 280,
+        "mean": 0.7367890764630699,
+        "max": 2.3307014419697225,
+        "p50": 0.683111457969062,
+        "p95": 1.630947214900516,
+        "p99": 2.230952293961309
+      },
+      "max_nominal_lag_steps": 2,
+      "plan_rows": {
+        "executed": 280,
+        "skipped_head": 0,
+        "superseded_tail": 336,
+        "terminal_tail": 34,
+        "not_installed": 0
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 7,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 8,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 9,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 10,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 11,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 12,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 13,
+          "executed": 16,
+          "skipped_head": 0,
+          "superseded_tail": 0,
+          "terminal_tail": 34,
+          "not_installed": 0
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        42,
+        64,
+        86,
+        108,
+        130,
+        152,
+        174,
+        196,
+        218,
+        240,
+        262
+      ],
+      "boundary_l2": [
+        0.308940000663252,
+        0.21352125303799846,
+        0.6847636507875202,
+        2.0274095770433807,
+        2.442496436762721,
+        0.4496587290995785,
+        0.7429187506386153,
+        0.6329889286726522,
+        0.8536314218932881,
+        2.2848185093353512,
+        0.15562750467922004,
+        2.086654849434945
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 12,
+      "pair_index": 4,
+      "identity": [
+        7,
+        11
+      ],
+      "arm": "aligned_async",
+      "cohort": "prior_pilot_development",
+      "success": true,
+      "actions": 117,
+      "wall_s": 5.824748429004103,
+      "terminal_reason": "native_success",
+      "no_action_slots": 0,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "requests": 6,
+      "request_seconds": [
+        0.07241040398366749,
+        0.08311059500556439,
+        0.07867001905106008,
+        0.08097231201827526,
+        0.09659232699777931
+      ],
+      "queue_wait_seconds": [
+        0.00012571201659739017,
+        0.000497407978400588,
+        0.00025091099087148905,
+        0.000314502976834774,
+        0.0004997099749743938
+      ],
+      "bootstrap_s": 1.312556940014474,
+      "startup_s": 1.313134474097751,
+      "capture_s": 1.2390334500232711,
+      "max_actual_delay": 2,
+      "model_native_intersections": 10,
+      "observation_to_action_s": {
+        "n": 117,
+        "mean": 0.828165694956795,
+        "max": 2.3691540609579533,
+        "p50": 0.6899019050179049,
+        "p95": 2.1194137309212238,
+        "p99": 2.3192962009925395
+      },
+      "max_nominal_lag_steps": 0,
+      "plan_rows": {
+        "executed": 117,
+        "skipped_head": 10,
+        "superseded_tail": 140,
+        "terminal_tail": 33,
+        "not_installed": 0
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 15,
+          "skipped_head": 2,
+          "superseded_tail": 0,
+          "terminal_tail": 33,
+          "not_installed": 0
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100
+      ],
+      "boundary_l2": [
+        0.19967819791795735,
+        0.17856453805866118,
+        0.17716994721944931,
+        0.2750830340075427,
+        0.1044239864964138
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 13,
+      "pair_index": 4,
+      "identity": [
+        7,
+        11
+      ],
+      "arm": "sequence_async",
+      "cohort": "prior_pilot_development",
+      "success": true,
+      "actions": 121,
+      "wall_s": 6.0200092770392075,
+      "terminal_reason": "native_success",
+      "no_action_slots": 0,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "requests": 6,
+      "request_seconds": [
+        0.08315209299325943,
+        0.07980714202858508,
+        0.09621320106089115,
+        0.07373614294920117,
+        0.08809481700882316
+      ],
+      "queue_wait_seconds": [
+        0.0004109590081498027,
+        0.0004385679494589567,
+        0.0003425050526857376,
+        0.00011500599794089794,
+        0.00025333696976304054
+      ],
+      "bootstrap_s": 1.3345094049582258,
+      "startup_s": 1.3348839050158858,
+      "capture_s": 1.2611894039437175,
+      "max_actual_delay": 2,
+      "model_native_intersections": 10,
+      "observation_to_action_s": {
+        "n": 121,
+        "mean": 0.851904768297595,
+        "max": 2.3909116429276764,
+        "p50": 0.7310430969810113,
+        "p95": 2.090876374975778,
+        "p99": 2.3415480649564415
+      },
+      "max_nominal_lag_steps": 2,
+      "plan_rows": {
+        "executed": 121,
+        "skipped_head": 0,
+        "superseded_tail": 140,
+        "terminal_tail": 39,
+        "not_installed": 0
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 11,
+          "skipped_head": 0,
+          "superseded_tail": 0,
+          "terminal_tail": 39,
+          "not_installed": 0
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        42,
+        64,
+        86,
+        108
+      ],
+      "boundary_l2": [
+        0.1660340900657759,
+        0.1512528855016681,
+        0.10874784006152527,
+        0.07528918468187168,
+        0.21347876851450562
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 14,
+      "pair_index": 4,
+      "identity": [
+        7,
+        11
+      ],
+      "arm": "serialized",
+      "cohort": "prior_pilot_development",
+      "success": true,
+      "actions": 116,
+      "wall_s": 6.016349510988221,
+      "terminal_reason": "native_success",
+      "no_action_slots": 5,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "requests": 6,
+      "request_seconds": [
+        0.07886459305882454,
+        0.07773472694680095,
+        0.07104625797364861,
+        0.07048021897207946,
+        0.07000587391667068
+      ],
+      "queue_wait_seconds": [
+        0.00033353804610669613,
+        0.00029276800341904163,
+        0.00019590300507843494,
+        0.00010195397771894932,
+        9.187508840113878e-05
+      ],
+      "bootstrap_s": 1.2919558730209246,
+      "startup_s": 1.29240621405188,
+      "capture_s": 1.2191443350166082,
+      "max_actual_delay": 0,
+      "model_native_intersections": 0,
+      "observation_to_action_s": {
+        "n": 116,
+        "mean": 0.7562332723845712,
+        "max": 2.2486561719560996,
+        "p50": 0.633883906994015,
+        "p95": 1.9986323369666934,
+        "p99": 2.198636978981085
+      },
+      "max_nominal_lag_steps": 0,
+      "plan_rows": {
+        "executed": 116,
+        "skipped_head": 0,
+        "superseded_tail": 150,
+        "terminal_tail": 34,
+        "not_installed": 0
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 16,
+          "skipped_head": 0,
+          "superseded_tail": 0,
+          "terminal_tail": 34,
+          "not_installed": 0
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100
+      ],
+      "boundary_l2": [
+        0.34713239397697626,
+        0.12787667304941303,
+        0.1551550284794225,
+        0.09516170830296015,
+        0.1528504799844391
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 15,
+      "pair_index": 5,
+      "identity": [
+        6,
+        11
+      ],
+      "arm": "sequence_async",
+      "cohort": "prior_pilot_development",
+      "success": true,
+      "actions": 151,
+      "wall_s": 7.526995211024769,
+      "terminal_reason": "native_success",
+      "no_action_slots": 0,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "requests": 7,
+      "request_seconds": [
+        0.07623123202938586,
+        0.07033041899558157,
+        0.07214585202746093,
+        0.07423627795651555,
+        0.0943654770962894,
+        0.08324735099449754
+      ],
+      "queue_wait_seconds": [
+        0.00013656390365213156,
+        0.00017325300723314285,
+        0.00013651989866048098,
+        0.00012809503823518753,
+        0.00041498092468827963,
+        0.0002258049789816141
+      ],
+      "bootstrap_s": 1.306224719970487,
+      "startup_s": 1.3065833280561492,
+      "capture_s": 1.230686902999878,
+      "max_actual_delay": 2,
+      "model_native_intersections": 12,
+      "observation_to_action_s": {
+        "n": 151,
+        "mean": 0.8241433156631109,
+        "max": 2.362757211900316,
+        "p50": 0.7384899680037051,
+        "p95": 2.0127470219740644,
+        "p99": 2.312929680920206
+      },
+      "max_nominal_lag_steps": 2,
+      "plan_rows": {
+        "executed": 151,
+        "skipped_head": 0,
+        "superseded_tail": 168,
+        "terminal_tail": 31,
+        "not_installed": 0
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 7,
+          "executed": 19,
+          "skipped_head": 0,
+          "superseded_tail": 0,
+          "terminal_tail": 31,
+          "not_installed": 0
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        42,
+        64,
+        86,
+        108,
+        130
+      ],
+      "boundary_l2": [
+        0.3765718925123144,
+        0.11901569519248494,
+        0.3465811183029644,
+        0.15814726049673658,
+        0.08961122856670767,
+        0.3695572057599348
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 16,
+      "pair_index": 5,
+      "identity": [
+        6,
+        11
+      ],
+      "arm": "serialized",
+      "cohort": "prior_pilot_development",
+      "success": true,
+      "actions": 140,
+      "wall_s": 7.272921934956685,
+      "terminal_reason": "native_success",
+      "no_action_slots": 6,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "requests": 7,
+      "request_seconds": [
+        0.08338011999148875,
+        0.0863216680008918,
+        0.08330605900846422,
+        0.06880812300369143,
+        0.07681612193118781,
+        0.0809588780393824
+      ],
+      "queue_wait_seconds": [
+        0.0003400089917704463,
+        0.0003563129575923085,
+        0.00030492700170725584,
+        0.00012019800487905741,
+        0.00023765605874359608,
+        0.0002589880023151636
+      ],
+      "bootstrap_s": 1.3510633099358529,
+      "startup_s": 1.3516453839838505,
+      "capture_s": 1.2776536920573562,
+      "max_actual_delay": 0,
+      "model_native_intersections": 0,
+      "observation_to_action_s": {
+        "n": 140,
+        "mean": 0.7399514177431619,
+        "max": 2.309047037968412,
+        "p50": 0.630895251990296,
+        "p95": 1.9590364530449733,
+        "p99": 2.2590710680233315
+      },
+      "max_nominal_lag_steps": 0,
+      "plan_rows": {
+        "executed": 140,
+        "skipped_head": 0,
+        "superseded_tail": 180,
+        "terminal_tail": 30,
+        "not_installed": 0
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 7,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 0,
+          "terminal_tail": 30,
+          "not_installed": 0
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120
+      ],
+      "boundary_l2": [
+        0.41242484592410444,
+        0.08675673417727629,
+        0.5672447243377262,
+        0.26726068122040825,
+        0.10514621484318888,
+        0.21454222213465332
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 17,
+      "pair_index": 5,
+      "identity": [
+        6,
+        11
+      ],
+      "arm": "aligned_async",
+      "cohort": "prior_pilot_development",
+      "success": true,
+      "actions": 149,
+      "wall_s": 7.41663311899174,
+      "terminal_reason": "native_success",
+      "no_action_slots": 0,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "requests": 8,
+      "request_seconds": [
+        0.09285788494162261,
+        0.0735240529756993,
+        0.070956626906991,
+        0.07006905600428581,
+        0.08381511003244668,
+        0.09054458397440612,
+        0.0821062660543248
+      ],
+      "queue_wait_seconds": [
+        0.0003829660126939416,
+        0.000128875020891428,
+        0.00011450902093201876,
+        0.00014786003157496452,
+        0.0002878600498661399,
+        0.00037815305404365063,
+        0.00031862989999353886
+      ],
+      "bootstrap_s": 1.2775008990429342,
+      "startup_s": 1.2779610889265314,
+      "capture_s": 1.204201358021237,
+      "max_actual_delay": 2,
+      "model_native_intersections": 14,
+      "observation_to_action_s": {
+        "n": 149,
+        "mean": 0.7717811412618639,
+        "max": 2.3341854870086536,
+        "p50": 0.6827413049759343,
+        "p95": 1.9844836330739781,
+        "p99": 2.2850699049886316
+      },
+      "max_nominal_lag_steps": 0,
+      "plan_rows": {
+        "executed": 149,
+        "skipped_head": 14,
+        "superseded_tail": 196,
+        "terminal_tail": 41,
+        "not_installed": 0
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 7,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 8,
+          "executed": 7,
+          "skipped_head": 2,
+          "superseded_tail": 0,
+          "terminal_tail": 41,
+          "not_installed": 0
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120,
+        140
+      ],
+      "boundary_l2": [
+        0.3048364002951844,
+        0.16147055810193614,
+        0.18536991042826134,
+        0.19920210454593157,
+        0.05132731878979924,
+        0.30767802791558,
+        2.0448665159627986
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 18,
+      "pair_index": 6,
+      "identity": [
+        2,
+        11
+      ],
+      "arm": "serialized",
+      "cohort": "prior_pilot_development",
+      "success": true,
+      "actions": 119,
+      "wall_s": 6.184770999941975,
+      "terminal_reason": "native_success",
+      "no_action_slots": 5,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "requests": 6,
+      "request_seconds": [
+        0.08096043509431183,
+        0.08566127298399806,
+        0.08089304901659489,
+        0.08161037904210389,
+        0.0675829240353778
+      ],
+      "queue_wait_seconds": [
+        0.0003128699027001858,
+        0.00036936101969331503,
+        0.0003516960423439741,
+        0.0004385189386084676,
+        0.00012528302613645792
+      ],
+      "bootstrap_s": 1.3137935779523104,
+      "startup_s": 1.314135611988604,
+      "capture_s": 1.238844397943467,
+      "max_actual_delay": 0,
+      "model_native_intersections": 0,
+      "observation_to_action_s": {
+        "n": 119,
+        "mean": 0.7627134651831985,
+        "max": 2.2706606320571154,
+        "p50": 0.637485958985053,
+        "p95": 2.020708637079224,
+        "p99": 2.220622410066426
+      },
+      "max_nominal_lag_steps": 0,
+      "plan_rows": {
+        "executed": 119,
+        "skipped_head": 0,
+        "superseded_tail": 150,
+        "terminal_tail": 31,
+        "not_installed": 0
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 19,
+          "skipped_head": 0,
+          "superseded_tail": 0,
+          "terminal_tail": 31,
+          "not_installed": 0
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100
+      ],
+      "boundary_l2": [
+        0.19237374150540693,
+        1.9942889263389523,
+        0.24834055268996896,
+        0.22435297342206958,
+        0.14784976266351887
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 19,
+      "pair_index": 6,
+      "identity": [
+        2,
+        11
+      ],
+      "arm": "aligned_async",
+      "cohort": "prior_pilot_development",
+      "success": true,
+      "actions": 119,
+      "wall_s": 5.916856070049107,
+      "terminal_reason": "native_success",
+      "no_action_slots": 0,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "requests": 6,
+      "request_seconds": [
+        0.09077422390691936,
+        0.09101232991088182,
+        0.08748246799223125,
+        0.10352923697791994,
+        0.0854092090157792
+      ],
+      "queue_wait_seconds": [
+        0.000426946091465652,
+        0.0003587260143831372,
+        0.0005678819725289941,
+        0.00031972804572433233,
+        0.00039197399746626616
+      ],
+      "bootstrap_s": 1.2907965859631076,
+      "startup_s": 1.2913125610211864,
+      "capture_s": 1.2183555490337312,
+      "max_actual_delay": 3,
+      "model_native_intersections": 11,
+      "observation_to_action_s": {
+        "n": 119,
+        "mean": 0.8284612102570998,
+        "max": 2.348748291027732,
+        "p50": 0.7292432500980794,
+        "p95": 2.0991035520564765,
+        "p99": 2.2995857280911878
+      },
+      "max_nominal_lag_steps": 0,
+      "plan_rows": {
+        "executed": 119,
+        "skipped_head": 11,
+        "superseded_tail": 139,
+        "terminal_tail": 31,
+        "not_installed": 0
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 21,
+          "skipped_head": 2,
+          "superseded_tail": 27,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 19,
+          "skipped_head": 3,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 17,
+          "skipped_head": 2,
+          "superseded_tail": 0,
+          "terminal_tail": 31,
+          "not_installed": 0
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100
+      ],
+      "boundary_l2": [
+        0.24186866941106194,
+        1.3828246350362385,
+        0.32031701807421387,
+        0.1098860335509385,
+        0.29285933421769755
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 20,
+      "pair_index": 6,
+      "identity": [
+        2,
+        11
+      ],
+      "arm": "sequence_async",
+      "cohort": "prior_pilot_development",
+      "success": true,
+      "actions": 129,
+      "wall_s": 6.418403557036072,
+      "terminal_reason": "native_success",
+      "no_action_slots": 0,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "requests": 6,
+      "request_seconds": [
+        0.07751081406604499,
+        0.09448714996688068,
+        0.07213599106762558,
+        0.07378197205252945,
+        0.09046052803751081
+      ],
+      "queue_wait_seconds": [
+        0.00027379696257412434,
+        0.000383890001103282,
+        0.00012158299796283245,
+        0.0001621479168534279,
+        0.00019476294983178377
+      ],
+      "bootstrap_s": 1.303977467934601,
+      "startup_s": 1.304404875030741,
+      "capture_s": 1.2301084880018607,
+      "max_actual_delay": 2,
+      "model_native_intersections": 10,
+      "observation_to_action_s": {
+        "n": 129,
+        "mean": 0.8478776169904731,
+        "max": 2.361377494991757,
+        "p50": 0.7379623639862984,
+        "p95": 2.0615103309974074,
+        "p99": 2.3118529070634395
+      },
+      "max_nominal_lag_steps": 2,
+      "plan_rows": {
+        "executed": 129,
+        "skipped_head": 0,
+        "superseded_tail": 140,
+        "terminal_tail": 31,
+        "not_installed": 0
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 19,
+          "skipped_head": 0,
+          "superseded_tail": 0,
+          "terminal_tail": 31,
+          "not_installed": 0
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        42,
+        64,
+        86,
+        108
+      ],
+      "boundary_l2": [
+        0.40066749238242616,
+        2.000778899343824,
+        0.24673170657069932,
+        0.22997740592993526,
+        0.08410334822904134
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 21,
+      "pair_index": 7,
+      "identity": [
+        0,
+        11
+      ],
+      "arm": "aligned_async",
+      "cohort": "prior_pilot_development",
+      "success": true,
+      "actions": 137,
+      "wall_s": 6.814481185982004,
+      "terminal_reason": "native_success",
+      "no_action_slots": 0,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "requests": 7,
+      "request_seconds": [
+        0.08599096303805709,
+        0.0836221119388938,
+        0.08054116205312312,
+        0.0758470690343529,
+        0.08167970296926796,
+        0.0711289239116013
+      ],
+      "queue_wait_seconds": [
+        0.0004409010289236903,
+        0.00038581807166337967,
+        0.00024379102978855371,
+        0.00031309493351727724,
+        0.000362480990588665,
+        0.0001391720725223422
+      ],
+      "bootstrap_s": 1.3032285260269418,
+      "startup_s": 1.3036935749696568,
+      "capture_s": 1.2269430049927905,
+      "max_actual_delay": 2,
+      "model_native_intersections": 12,
+      "observation_to_action_s": {
+        "n": 137,
+        "mean": 0.791244511104216,
+        "max": 2.360623940010555,
+        "p50": 0.6817701349500567,
+        "p95": 2.0607005190104246,
+        "p99": 2.3113562390208244
+      },
+      "max_nominal_lag_steps": 0,
+      "plan_rows": {
+        "executed": 137,
+        "skipped_head": 12,
+        "superseded_tail": 168,
+        "terminal_tail": 33,
+        "not_installed": 0
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 7,
+          "executed": 15,
+          "skipped_head": 2,
+          "superseded_tail": 0,
+          "terminal_tail": 33,
+          "not_installed": 0
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120
+      ],
+      "boundary_l2": [
+        0.249696729895199,
+        0.1833621006259017,
+        0.08367258572162202,
+        0.07100037211006283,
+        0.09067014834502087,
+        1.4515461300925996
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 22,
+      "pair_index": 7,
+      "identity": [
+        0,
+        11
+      ],
+      "arm": "sequence_async",
+      "cohort": "prior_pilot_development",
+      "success": true,
+      "actions": 133,
+      "wall_s": 6.621609654976055,
+      "terminal_reason": "native_success",
+      "no_action_slots": 0,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "requests": 7,
+      "request_seconds": [
+        0.08820323192048818,
+        0.08829848805908114,
+        0.0810658480040729,
+        0.09334246092475951,
+        0.09223605901934206,
+        0.08480233792215586
+      ],
+      "queue_wait_seconds": [
+        0.00041940505616366863,
+        0.0004281179280951619,
+        0.0003666699631139636,
+        0.00037512206472456455,
+        0.0002993630478158593,
+        0.00031707598827779293
+      ],
+      "bootstrap_s": 1.312673687003553,
+      "startup_s": 1.3130776779726148,
+      "capture_s": 1.237424882943742,
+      "max_actual_delay": 2,
+      "model_native_intersections": 12,
+      "observation_to_action_s": {
+        "n": 133,
+        "mean": 0.8482309521020117,
+        "max": 2.370163858984597,
+        "p50": 0.777411891031079,
+        "p95": 2.0702191590098664,
+        "p99": 2.320975393988192
+      },
+      "max_nominal_lag_steps": 2,
+      "plan_rows": {
+        "executed": 133,
+        "skipped_head": 0,
+        "superseded_tail": 168,
+        "terminal_tail": 49,
+        "not_installed": 0
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 7,
+          "executed": 1,
+          "skipped_head": 0,
+          "superseded_tail": 0,
+          "terminal_tail": 49,
+          "not_installed": 0
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        42,
+        64,
+        86,
+        108,
+        130
+      ],
+      "boundary_l2": [
+        0.3390504294743671,
+        0.12994409978414997,
+        0.18725163015369362,
+        0.08639040303680433,
+        0.2825097538331734,
+        0.3281077381230999
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 23,
+      "pair_index": 7,
+      "identity": [
+        0,
+        11
+      ],
+      "arm": "serialized",
+      "cohort": "prior_pilot_development",
+      "success": true,
+      "actions": 121,
+      "wall_s": 6.3460733640240505,
+      "terminal_reason": "native_success",
+      "no_action_slots": 6,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "requests": 7,
+      "request_seconds": [
+        0.0830729209119454,
+        0.08032090601045638,
+        0.06799398199655116,
+        0.08333216200117022,
+        0.06787066999822855,
+        0.06957416899967939
+      ],
+      "queue_wait_seconds": [
+        0.0004473080625757575,
+        0.0004920989740639925,
+        0.00013156700879335403,
+        0.0004330390365794301,
+        0.00014649704098701477,
+        0.00010922597721219063
+      ],
+      "bootstrap_s": 1.3117523769615218,
+      "startup_s": 1.3121934030205011,
+      "capture_s": 1.2350866310298443,
+      "max_actual_delay": 0,
+      "model_native_intersections": 0,
+      "observation_to_action_s": {
+        "n": 121,
+        "mean": 0.7609358121292696,
+        "max": 2.269059662008658,
+        "p50": 0.6394710190361366,
+        "p95": 1.96913924603723,
+        "p99": 2.2189641430741176
+      },
+      "max_nominal_lag_steps": 0,
+      "plan_rows": {
+        "executed": 121,
+        "skipped_head": 0,
+        "superseded_tail": 180,
+        "terminal_tail": 49,
+        "not_installed": 0
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 7,
+          "executed": 1,
+          "skipped_head": 0,
+          "superseded_tail": 0,
+          "terminal_tail": 49,
+          "not_installed": 0
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120
+      ],
+      "boundary_l2": [
+        0.19101204792313933,
+        0.07481691729998552,
+        0.13649587235225075,
+        0.08598013784393256,
+        0.25771335856359523,
+        0.5749089768893008
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 24,
+      "pair_index": 8,
+      "identity": [
+        7,
+        18
+      ],
+      "arm": "sequence_async",
+      "cohort": "known_diagnostic",
+      "success": true,
+      "actions": 153,
+      "wall_s": 7.641104765003547,
+      "terminal_reason": "native_success",
+      "no_action_slots": 0,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 1,
+      "requests": 8,
+      "request_seconds": [
+        0.07082542998250574,
+        0.07199547602795064,
+        0.07556909101549536,
+        0.07102410099469125,
+        0.07302056602202356,
+        0.0883735379902646,
+        0.08658709889277816
+      ],
+      "queue_wait_seconds": [
+        0.00012254202738404274,
+        0.00011343206278979778,
+        0.0001365459756925702,
+        0.00013362301979213953,
+        0.00012754101771861315,
+        0.0003451029770076275,
+        0.0003298360388725996
+      ],
+      "bootstrap_s": 1.3285013460554183,
+      "startup_s": 1.3289690790697932,
+      "capture_s": 1.256930547999218,
+      "max_actual_delay": 2,
+      "model_native_intersections": 13,
+      "observation_to_action_s": {
+        "n": 153,
+        "mean": 0.8299745683135233,
+        "max": 2.3842618910130113,
+        "p50": 0.7390705379657447,
+        "p95": 2.0342660329770297,
+        "p99": 2.3344269819790497
+      },
+      "max_nominal_lag_steps": 2,
+      "plan_rows": {
+        "executed": 153,
+        "skipped_head": 0,
+        "superseded_tail": 168,
+        "terminal_tail": 29,
+        "not_installed": 50
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 7,
+          "executed": 21,
+          "skipped_head": 0,
+          "superseded_tail": 0,
+          "terminal_tail": 29,
+          "not_installed": 0
+        },
+        {
+          "request_id": 8,
+          "executed": 0,
+          "skipped_head": 0,
+          "superseded_tail": 0,
+          "terminal_tail": 0,
+          "not_installed": 50
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        42,
+        64,
+        86,
+        108,
+        130,
+        152
+      ],
+      "boundary_l2": [
+        0.23547694096946253,
+        0.29298010669574953,
+        0.10349882873556811,
+        0.19689274351968405,
+        0.13164320562121415,
+        0.2842735758854045
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 25,
+      "pair_index": 8,
+      "identity": [
+        7,
+        18
+      ],
+      "arm": "serialized",
+      "cohort": "known_diagnostic",
+      "success": true,
+      "actions": 141,
+      "wall_s": 7.405110670020804,
+      "terminal_reason": "native_success",
+      "no_action_slots": 8,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "requests": 8,
+      "request_seconds": [
+        0.0737906510476023,
+        0.0836961769964546,
+        0.07856660697143525,
+        0.08023386006243527,
+        0.08357925398740917,
+        0.08013075205963105,
+        0.08847000193782151
+      ],
+      "queue_wait_seconds": [
+        0.00021239102352410555,
+        0.00031634001061320305,
+        0.00023375602904707193,
+        0.0002738538896664977,
+        0.0003447809722274542,
+        0.0002471059560775757,
+        0.00036370998714119196
+      ],
+      "bootstrap_s": 1.3035004560369998,
+      "startup_s": 1.3040017751045525,
+      "capture_s": 1.2306180000305176,
+      "max_actual_delay": 0,
+      "model_native_intersections": 0,
+      "observation_to_action_s": {
+        "n": 141,
+        "mean": 0.7302617004185796,
+        "max": 2.260560457012616,
+        "p50": 0.6325205080211163,
+        "p95": 1.9107162749860436,
+        "p99": 2.210576632991433
+      },
+      "max_nominal_lag_steps": 0,
+      "plan_rows": {
+        "executed": 141,
+        "skipped_head": 0,
+        "superseded_tail": 210,
+        "terminal_tail": 49,
+        "not_installed": 0
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 7,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 8,
+          "executed": 1,
+          "skipped_head": 0,
+          "superseded_tail": 0,
+          "terminal_tail": 49,
+          "not_installed": 0
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120,
+        140
+      ],
+      "boundary_l2": [
+        0.193459792250279,
+        0.1917054909397652,
+        0.18648177018347353,
+        0.1883514053859863,
+        0.1597865020593787,
+        0.23782638775174006,
+        2.0874691855416043
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 26,
+      "pair_index": 8,
+      "identity": [
+        7,
+        18
+      ],
+      "arm": "aligned_async",
+      "cohort": "known_diagnostic",
+      "success": true,
+      "actions": 141,
+      "wall_s": 7.038375228992663,
+      "terminal_reason": "native_success",
+      "no_action_slots": 0,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 1,
+      "requests": 8,
+      "request_seconds": [
+        0.09343079989776015,
+        0.08984677493572235,
+        0.08368740999139845,
+        0.08924799493979663,
+        0.07510919508058578,
+        0.0984823590843007,
+        0.09250493999570608
+      ],
+      "queue_wait_seconds": [
+        0.0003844000166282058,
+        0.000417154049500823,
+        0.0003143530339002609,
+        0.0001523670507594943,
+        0.00017862999811768532,
+        0.0003680349327623844,
+        0.0004321140004321933
+      ],
+      "bootstrap_s": 1.340212943032384,
+      "startup_s": 1.3406364800175652,
+      "capture_s": 1.2666953359730542,
+      "max_actual_delay": 2,
+      "model_native_intersections": 13,
+      "observation_to_action_s": {
+        "n": 141,
+        "mean": 0.797601752405068,
+        "max": 2.3971915380097926,
+        "p50": 0.6841369060566649,
+        "p95": 2.0475081120384857,
+        "p99": 2.3480129670351744
+      },
+      "max_nominal_lag_steps": 0,
+      "plan_rows": {
+        "executed": 141,
+        "skipped_head": 12,
+        "superseded_tail": 168,
+        "terminal_tail": 29,
+        "not_installed": 50
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 7,
+          "executed": 19,
+          "skipped_head": 2,
+          "superseded_tail": 0,
+          "terminal_tail": 29,
+          "not_installed": 0
+        },
+        {
+          "request_id": 8,
+          "executed": 0,
+          "skipped_head": 0,
+          "superseded_tail": 0,
+          "terminal_tail": 0,
+          "not_installed": 50
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120,
+        140
+      ],
+      "boundary_l2": [
+        0.10512318005628371,
+        0.20004588113000724,
+        0.11004186774909906,
+        0.18881628330857692,
+        0.13097597767761174,
+        0.3630452146142762
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 27,
+      "pair_index": 9,
+      "identity": [
+        7,
+        19
+      ],
+      "arm": "serialized",
+      "cohort": "known_diagnostic",
+      "success": true,
+      "actions": 190,
+      "wall_s": 9.920863887993619,
+      "terminal_reason": "native_success",
+      "no_action_slots": 9,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "requests": 10,
+      "request_seconds": [
+        0.08380635001230985,
+        0.077411980018951,
+        0.07831560808699578,
+        0.07141400699038059,
+        0.07799145393073559,
+        0.07480528601445258,
+        0.08233588293660432,
+        0.0796504340833053,
+        0.07787231297697872
+      ],
+      "queue_wait_seconds": [
+        0.00027511001098901033,
+        0.0003509209491312504,
+        0.00025716691743582487,
+        0.00017037894576787949,
+        0.000262125045992434,
+        0.0002671900438144803,
+        0.0003273020265623927,
+        0.00026601296849548817,
+        0.0002982279984280467
+      ],
+      "bootstrap_s": 1.3252432360313833,
+      "startup_s": 1.3256737149786204,
+      "capture_s": 1.25308571907226,
+      "max_actual_delay": 0,
+      "model_native_intersections": 0,
+      "observation_to_action_s": {
+        "n": 190,
+        "mean": 0.6762111766564072,
+        "max": 2.281233177985996,
+        "p50": 0.582520822994411,
+        "p95": 1.8313345180358738,
+        "p99": 2.231358074932359
+      },
+      "max_nominal_lag_steps": 0,
+      "plan_rows": {
+        "executed": 190,
+        "skipped_head": 0,
+        "superseded_tail": 270,
+        "terminal_tail": 40,
+        "not_installed": 0
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 7,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 8,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 9,
+          "executed": 20,
+          "skipped_head": 0,
+          "superseded_tail": 30,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 10,
+          "executed": 10,
+          "skipped_head": 0,
+          "superseded_tail": 0,
+          "terminal_tail": 40,
+          "not_installed": 0
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120,
+        140,
+        160,
+        180
+      ],
+      "boundary_l2": [
+        0.15223355278528142,
+        0.2326582729875542,
+        2.0240866332287406,
+        0.29333323182021886,
+        0.3352089318083921,
+        0.1822708018231739,
+        0.17521282266175195,
+        0.14759042572071693,
+        0.41644370899407446
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 28,
+      "pair_index": 9,
+      "identity": [
+        7,
+        19
+      ],
+      "arm": "aligned_async",
+      "cohort": "known_diagnostic",
+      "success": false,
+      "actions": 280,
+      "wall_s": 13.967863698024303,
+      "terminal_reason": "time_limit",
+      "no_action_slots": 0,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "requests": 14,
+      "request_seconds": [
+        0.08973018696997315,
+        0.09135913290083408,
+        0.09441073099151254,
+        0.08961476990953088,
+        0.09139822598081082,
+        0.07251992600504309,
+        0.09412983199581504,
+        0.0751351040089503,
+        0.0728963779984042,
+        0.07317349698860198,
+        0.07154117699246854,
+        0.07443536701612175,
+        0.0716170280938968
+      ],
+      "queue_wait_seconds": [
+        0.0003059339942410588,
+        0.0004429680993780494,
+        0.0003195559838786721,
+        0.00043916504364460707,
+        0.00035441305954009295,
+        0.00011179607827216387,
+        0.0003615909954532981,
+        0.00012754893396049738,
+        0.00011347699910402298,
+        0.00016987393610179424,
+        0.00011190003715455532,
+        0.00013579498045146465,
+        0.00012121594045311213
+      ],
+      "bootstrap_s": 1.3091463230084628,
+      "startup_s": 1.309556888998486,
+      "capture_s": 1.2346458879765123,
+      "max_actual_delay": 2,
+      "model_native_intersections": 26,
+      "observation_to_action_s": {
+        "n": 280,
+        "mean": 0.7041433326870902,
+        "max": 2.3658771640621126,
+        "p50": 0.6397185130044818,
+        "p95": 1.6661589570576325,
+        "p99": 2.2661825959803537
+      },
+      "max_nominal_lag_steps": 0,
+      "plan_rows": {
+        "executed": 280,
+        "skipped_head": 26,
+        "superseded_tail": 364,
+        "terminal_tail": 30,
+        "not_installed": 0
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 7,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 8,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 9,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 10,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 11,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 12,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 13,
+          "executed": 20,
+          "skipped_head": 2,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 14,
+          "executed": 18,
+          "skipped_head": 2,
+          "superseded_tail": 0,
+          "terminal_tail": 30,
+          "not_installed": 0
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120,
+        140,
+        160,
+        180,
+        200,
+        220,
+        240,
+        260
+      ],
+      "boundary_l2": [
+        0.2597668404456557,
+        0.17461317362789805,
+        0.41315248858278486,
+        0.36997579128424346,
+        0.22575972437211247,
+        2.078699201575123,
+        2.15335461729209,
+        0.33457480264625944,
+        1.9878370724372203,
+        0.33091749428091194,
+        0.40899472774897405,
+        0.3108957622759159,
+        2.0739864338148717
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    },
+    {
+      "ordinal": 29,
+      "pair_index": 9,
+      "identity": [
+        7,
+        19
+      ],
+      "arm": "sequence_async",
+      "cohort": "known_diagnostic",
+      "success": true,
+      "actions": 138,
+      "wall_s": 6.873944165068679,
+      "terminal_reason": "native_success",
+      "no_action_slots": 0,
+      "underflows": 0,
+      "expired": 0,
+      "cancelled_at_stop": 0,
+      "requests": 7,
+      "request_seconds": [
+        0.07256383309140801,
+        0.08797346998471767,
+        0.08004013600293547,
+        0.08027049899101257,
+        0.08999013004358858,
+        0.07173261302523315
+      ],
+      "queue_wait_seconds": [
+        0.0001209089532494545,
+        0.0003988520475104451,
+        0.00030723295640200377,
+        0.0002064690925180912,
+        0.00034209899604320526,
+        0.00011563091538846493
+      ],
+      "bootstrap_s": 1.3118861159309745,
+      "startup_s": 1.3122906780336052,
+      "capture_s": 1.2371384259313345,
+      "max_actual_delay": 2,
+      "model_native_intersections": 12,
+      "observation_to_action_s": {
+        "n": 138,
+        "mean": 0.8312261514601879,
+        "max": 2.368413416086696,
+        "p50": 0.7345852719154209,
+        "p95": 2.0683879629941657,
+        "p99": 2.3185485230060294
+      },
+      "max_nominal_lag_steps": 2,
+      "plan_rows": {
+        "executed": 138,
+        "skipped_head": 0,
+        "superseded_tail": 168,
+        "terminal_tail": 44,
+        "not_installed": 0
+      },
+      "plan_partitions": [
+        {
+          "request_id": 1,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 2,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 3,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 4,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 5,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 6,
+          "executed": 22,
+          "skipped_head": 0,
+          "superseded_tail": 28,
+          "terminal_tail": 0,
+          "not_installed": 0
+        },
+        {
+          "request_id": 7,
+          "executed": 6,
+          "skipped_head": 0,
+          "superseded_tail": 0,
+          "terminal_tail": 44,
+          "not_installed": 0
+        }
+      ],
+      "request_observation_indices": [
+        0,
+        20,
+        42,
+        64,
+        86,
+        108,
+        130
+      ],
+      "boundary_l2": [
+        0.18958357030151926,
+        0.2027365984444113,
+        0.28096785919421036,
+        0.11182312412884074,
+        0.21459148972030972,
+        0.21820097375471326
+      ],
+      "same_numeric_boundary_commands": 0,
+      "repeated_plan_rows": 0,
+      "internal_execution_holes": 0
+    }
+  ],
+  "new_qualification_claimed": false,
+  "realtime_qualified": false,
+  "first_failure": null,
+  "audit_model_forwards": 0,
+  "cuda_initialized": false,
+  "limitations": [
+    "Known development identities, not statistical confirmation.",
+    "Same qsize trigger with different queue lengths can change request cadence.",
+    "No repeated plan identity does not imply no semantic command repetition.",
+    "CPU audit does not rerun vision, policy, postprocessing, physics or GPU timing."
+  ]
+}

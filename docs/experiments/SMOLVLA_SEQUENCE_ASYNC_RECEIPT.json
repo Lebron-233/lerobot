@@ -1,0 +1,32 @@
+{
+  "checked_utc": "2026-09-22T00:14:44.230069+00:00",
+  "execution_head": "1ad00ed6338faff50fda1595f8af3964b6fa7699",
+  "registration_id": 5769332410,
+  "formal_job": "fa5ce7e2-6a9a-4395-a1cc-a4eb408bca0f",
+  "audit_job": "0d3b78f0-92e1-4d39-95d2-9a91eb23e338",
+  "formal_exit_code": 0,
+  "audit_exit_code": 0,
+  "execution": {
+    "child_pid": 1625408,
+    "exit_code": 0,
+    "exit_confirmed": true,
+    "started_utc": "2026-09-22T00:07:13.614501+00:00",
+    "finished_utc": "2026-09-22T00:12:59.512300+00:00",
+    "wall_s": 345.8978617900284,
+    "stop_reason": null,
+    "forced": false,
+    "pending": {},
+    "active": {}
+  },
+  "frozen_baseline_unchanged": true,
+  "old_pending_unchanged": 21,
+  "source_hashes_unchanged": 719,
+  "worker_proc_absent": true,
+  "new_mutation_safety_interceptions": 0,
+  "github_connector_error": "ToolError: FORBIDDEN: This conversation is restricted to developer MCPs",
+  "blocked_latest_read_repeated": false,
+  "result_sha256": "9e69ada6b2d729ccdc49857e1c0ccc0aa5f1a028e9d0a53973ef7e5b5fa887fa",
+  "audit_sha256": "ac8dda53a60d4ec7f5b57ce1010041cddcf676cfefe8cd3d4d5f432e21bf81e9",
+  "descriptive_sha256": "14e09c4770b779e5e326342e8e252d870e87e241252394ade8054469a37bd8d0",
+  "cuda_initialized": false
+}
